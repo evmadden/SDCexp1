@@ -27,6 +27,12 @@ namespace test.Controllers
             return View();
         }
 
+        public IActionResult ThirdPage()
+        {
+            return View();
+        }
+
+
         public IActionResult Privacy()
         {
             return View();
