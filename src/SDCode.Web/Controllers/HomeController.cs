@@ -32,6 +32,10 @@ namespace test.Controllers
             return View();
         }
 
+        public IActionResult Demographics()
+        {
+            return View();
+        }
 
         public IActionResult Privacy()
         {
