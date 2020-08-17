@@ -22,12 +22,12 @@ namespace test.Controllers
         {
             return View();
         }
-        public IActionResult SecondPage()
+        public IActionResult ConsentInfo()
         {
             return View();
         }
 
-        public IActionResult ThirdPage()
+        public IActionResult ConsentAgreed()
         {
             return View();
         }
