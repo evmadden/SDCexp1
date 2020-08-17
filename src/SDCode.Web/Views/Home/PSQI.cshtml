@@ -15,98 +15,166 @@
      <fieldset>
          <legend>The following questions relate to your usual sleep habits during the past month only. 
             Your answers should include the most accurate reply for the majority of days and nights in the past month. 
-            Please answer all questions.
-            <br>
+            Please answer all questions.<br>
+            <br/>
             Reminder: Please respond in 24-hour time (e.g., 0700 or 2100)</legend>
-            <br>
+            <br/>
          <div>
-            <label for="pID">Participant ID:</label><br>
-            <input type="number" id="pID" name="pID"><br>
+            <label for="1">1. During the past month, when have you usually gone to bed at night?</label><br>
+            <input type="number" id="1" name="1"><br>
         </div>
         <br>
         <div>
-            <label for="sex">Sex:</label><br>
-            <input type="radio" id="male" name="sex" value="male">
-            <label for="male">Male</label><br>
-            <input type="radio" id="female" name="sex" value="female">
-            <label for="female">Female</label><br>
-            <input type="radio" id="other" name="sex" value="other">
-            <label for="other">Other</label>
+            <label for="2">2. During the past month, how long (in minutes) has it usually taken you to fall asleep each night?</label><br>
+            <input type="number" id="2" name="2"><br>
         </div>
         <br>
         <div>
-            <label for="age">Age:</label><br>
-            <input type="number" id="age" name="age"><br>
+            <label for="3">3. During the past month, when have you usually gotten up in the morning?</label><br>
+            <input type="number" id="3" name="3"><br>
         </div>
         <br>
         <div>
-            <label for="year">Year of study (if you are not a student, put your highest degree awarded; e.g., "Master's Awarded"):</label><br>
-            <input type="text" id="year" name="year"><br>
+            <label for="4">4. During the past month, how many hours of actual sleep did you get at night on average? 
+                (e.g., 7 hours, 20 minutes) This may be different than the number of hours spent in bed. </label>
+            <label for="4hours">Hours:</label>
+            <input type="number" id="4hours" name="4hours">
+            <label for="4mins">Minutes:</label>
+            <input type="number" id="4mins" name="4mins">
         </div>
         <br>
+    </fieldset>
+</form>
+</div>
+
+ <form>
+     <fieldset data-role="controlgroup" data-type="horizontal" data-role="fieldcontain">
+         <legend>For each of the remaining questions, check the one best response. Please answer all questions.<br>
+            During the past month, how often have you had trouble sleeping because you...</legend>
         <div>
-            <label for="course">Course of study/major:</label><br>
-            <input type="text" id="course" name="course"><br>
+            <label for="5">Cannot get to sleep within 30 minutes.</label><br>
+            <input type="radio" id="5.never" name="never" value="never">
+            <label for="5.never">Never during the last month</label>
+            <input type="radio" id="5.lessthan" name="lessthan" value="lessthan">
+            <label for="5.lessthan">Less than once a week</label>
+            <input type="radio" id="5.week" name="week" value="week">
+            <label for="5.week">Once or twice a week</label>  
+            <input type="radio" id="5.morethan" name="morethan" value="morethan">
+            <label for="5.morethan">3 or more times a week</label><br>                                 
         </div>
         <br>        
         <div>
-            <label for="hand">Right or Left handed:</label><br>
-            <input type="radio" id="Right" name="hand" value="Right">
-            <label for="Right">Right</label><br>
-            <input type="radio" id="Left" name="hand" value="Left">
-            <label for="Left">Left</label><br>
+            <label for="6">Wake up in the middle of the night or early morning.</label><br>
+            <input type="radio" id="6.never" name="never" value="never">
+            <label for="6.never">Never during the last month</label>
+            <input type="radio" id="6.lessthan" name="lessthan" value="lessthan">
+            <label for="6.lessthan">Less than once a week</label>
+            <input type="radio" id="6.week" name="week" value="week">
+            <label for="6.week">Once or twice a week</label>  
+            <input type="radio" id="6.morethan" name="morethan" value="morethan">
+            <label for="6.morethan">3 or more times a week</label><br> 
         </div>
         <br>
         <div>
-            <label for="impairments">Do you have hearing, vision or speech impairments?</label><br>
-            <input type="radio" id="yes" name="impairments" value="yes">
-            <label for="yes">Yes</label><br>
-            <input type="radio" id="no" name="impairments" value="no">
-            <label for="no">No</label><br>
+            <label for="7">Have to get up to use the bathroom.</label><br>
+            <input type="radio" id="7.never" name="never" value="never">
+            <label for="7.never">Never during the last month</label>
+            <input type="radio" id="7.lessthan" name="lessthan" value="lessthan">
+            <label for="7.lessthan">Less than once a week</label>
+            <input type="radio" id="7.week" name="week" value="week">
+            <label for="7.week">Once or twice a week</label>  
+            <input type="radio" id="7.morethan" name="morethan" value="morethan">
+            <label for="7.morethan">3 or more times a week</label><br> 
         </div>
         <br>
         <div>
-            <label for="glasses">Do you wear glasses or contacts?</label><br>
-            <input type="radio" id="yes" name="glasses" value="yes">
-            <label for="yes">Yes</label><br>
-            <input type="radio" id="no" name="glasses" value="no">
-            <label for="no">No</label><br>
+            <label for="8">Cannot breathe comfortably.</label><br>
+            <input type="radio" id="8.never" name="never" value="never">
+            <label for="8.never">Never during the last month</label>
+            <input type="radio" id="8.lessthan" name="lessthan" value="lessthan">
+            <label for="8.lessthan">Less than once a week</label>
+            <input type="radio" id="8.week" name="week" value="week">
+            <label for="8.week">Once or twice a week</label>  
+            <input type="radio" id="8.morethan" name="morethan" value="morethan">
+            <label for="8.morethan">3 or more times a week</label><br>
         </div>
         <br>
         <div>
-            <label for="language">What is your native language?<br>
-            Please write the language your parents spoke to you as a child.</label><br>
-            <input type="text" id="language" name="language"><br>
+            <label for="9">Cough or snore loudly.</label><br>
+            <input type="radio" id="9.never" name="never" value="never">
+            <label for="9.never">Never during the last month</label>
+            <input type="radio" id="9.lessthan" name="lessthan" value="lessthan">
+            <label for="9.lessthan">Less than once a week</label>
+            <input type="radio" id="9.week" name="week" value="week">
+            <label for="9.week">Once or twice a week</label>  
+            <input type="radio" id="9.morethan" name="morethan" value="morethan">
+            <label for="9.morethan">3 or more times a week</label><br>
         </div>
         <br>
         <div>
-            <label for="bilingual">Please list any other languages you speak fluently.</label><br>
-            <input type="text" id="bilingual" name="bilingual"><br>
+            <label for="10">Feel too hot.</label><br>
+            <input type="radio" id="10.never" name="never" value="never">
+            <label for="10.never">Never during the last month</label>
+            <input type="radio" id="10.lessthan" name="lessthan" value="lessthan">
+            <label for="10.lessthan">Less than once a week</label>
+            <input type="radio" id="10.week" name="week" value="week">
+            <label for="10.week">Once or twice a week</label>  
+            <input type="radio" id="10.morethan" name="morethan" value="morethan">
+            <label for="10.morethan">3 or more times a week</label><br>
         </div>
         <br>
         <div>
-            <label for="currentcountry">In what country do you currently live?</label><br>
-            <input type="text" id="currentcountry" name="currentcountry"><br>
+            <label for="11">Feel too cold.</label><br>
+            <input type="radio" id="11.never" name="never" value="never">
+            <label for="11.never">Never during the last month</label>
+            <input type="radio" id="11.lessthan" name="lessthan" value="lessthan">
+            <label for="11.lessthan">Less than once a week</label>
+            <input type="radio" id="11.week" name="week" value="week">
+            <label for="11.week">Once or twice a week</label>  
+            <input type="radio" id="11.morethan" name="morethan" value="morethan">
+            <label for="11.morethan">3 or more times a week</label><br>
         </div>
         <br>
         <div>
-            <label for="birthcountry">In what country did you spend the majority of your first 10 years?</label><br>
-            <input type="text" id="birthcountry" name="birthcountry"><br>
+            <label for="12">Had bad dreams.</label><br>
+            <input type="radio" id="12.never" name="never" value="never">
+            <label for="12.never">Never during the last month</label>
+            <input type="radio" id="12.lessthan" name="lessthan" value="lessthan">
+            <label for="12.lessthan">Less than once a week</label>
+            <input type="radio" id="12.week" name="week" value="week">
+            <label for="12.week">Once or twice a week</label>  
+            <input type="radio" id="12.morethan" name="morethan" value="morethan">
+            <label for="12.morethan">3 or more times a week</label><br>
         </div>
         <br>
+        <div>
+            <label for="13">Have pain.</label><br>
+            <input type="radio" id="13.never" name="never" value="never">
+            <label for="13.never">Never during the last month</label>
+            <input type="radio" id="13.lessthan" name="lessthan" value="lessthan">
+            <label for="13.lessthan">Less than once a week</label>
+            <input type="radio" id="13.week" name="week" value="week">
+            <label for="13.week">Once or twice a week</label>  
+            <input type="radio" id="13.morethan" name="morethan" value="morethan">
+            <label for="13.morethan">3 or more times a week</label><br>
+        </div>
         <br>
         <div>
-            <label for="bed">What time did you go to bed last night? (please enter in 24-hour format; e.g. 2100)</label><br>
-            <input type="number" id="bed" name="bed"><br>
+            <label for="14">Other reason(s).</label><br>
+            <input type="radio" id="14.never" name="never" value="never">
+            <label for="14.never">Never during the last month</label>
+            <input type="radio" id="14.lessthan" name="lessthan" value="lessthan">
+            <label for="14.lessthan">Less than once a week</label>
+            <input type="radio" id="14.week" name="week" value="week">
+            <label for="14.week">Once or twice a week</label>  
+            <input type="radio" id="14.morethan" name="morethan" value="morethan">
+            <label for="14.morethan">3 or more times a week</label><br>
         </div>
         <div>
-            <label for="wake">What time did you wake up this morning? (please enter in 24-hour format: e.g., 0700</label><br>
-            <input type="number" id="wake" name="wake"><br>
+            <label for="14b">If other, please describe:</label>
+            <input type="text" id="14b" name="14b"><br>
         </div>
-        <div>
-            <label for="latency">Amount of time taken to fall asleep (mins):</label><br>
-            <input type="number" id="latency" name="latency"><br>
-        </div>
+        <br>
         <div>
             <label for="TST">Total hours of sleep:</label><br>
             <input type="text" id="wake" name="wake"><br>
