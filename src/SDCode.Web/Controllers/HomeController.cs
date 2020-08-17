@@ -37,6 +37,11 @@ namespace test.Controllers
             return View();
         }
 
+        public IActionResult PSQI()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();

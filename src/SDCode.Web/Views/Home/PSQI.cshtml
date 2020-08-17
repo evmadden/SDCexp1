@@ -9,11 +9,16 @@
 </div>
 
 <div class="text-align: left">
-    <h1 class="display-4; text-center;">Demographics</h1>
+    <h1 class="display-4; text-center;">Pittsburgh Sleep Quality Index</h1>
     <br/>
  <form>
      <fieldset>
-         <legend>Before we get started, we would like to know some basic demographic information.</legend>
+         <legend>The following questions relate to your usual sleep habits during the past month only. 
+            Your answers should include the most accurate reply for the majority of days and nights in the past month. 
+            Please answer all questions.
+            <br>
+            Reminder: Please respond in 24-hour time (e.g., 0700 or 2100)</legend>
+            <br>
          <div>
             <label for="pID">Participant ID:</label><br>
             <input type="number" id="pID" name="pID"><br>
@@ -111,7 +116,7 @@
 </div>
 
 <div id="formDiv">
-    <form action="/Home/PSQI"> 
+    <form action="/Home/Demographics"> 
         <div style="text-align: right;">
             <input style="margin-right: 50px;" type="submit" value="Next"/>
         </div>
