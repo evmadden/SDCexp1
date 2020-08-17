@@ -42,6 +42,11 @@ namespace test.Controllers
             return View();
         }
 
+        public IActionResult Epworth()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();
