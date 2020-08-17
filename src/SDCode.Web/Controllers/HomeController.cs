@@ -5,9 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using test.Models;
+using SDCode.Web.Models;
 
-namespace test.Controllers
+namespace SDCode.Web.Controllers
 {
     public class HomeController : Controller
     {
@@ -32,7 +32,7 @@ namespace test.Controllers
             return View();
         }
 
-        public IActionResult Demographics(string consent)
+        public IActionResult Demographics(string consent, string withdraw)
         {
             DemographicsViewModel demographicsViewModel=new DemographicsViewModel();
             demographicsViewModel.Consent=consent;

@@ -1,6 +1,6 @@
 using System;
 
-namespace test.Models
+namespace SDCode.Web.Models
 {
     public class DemographicsViewModel
     {
