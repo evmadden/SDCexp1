@@ -1,7 +1,8 @@
-﻿@{
+﻿@model DemographicsViewModel
+@{
     ViewData["Title"] = "Home Page";
 }
-
+@Model.Consent
 <div class="text-right">
     <div style="background-color: Darkcyan;">  
         <img src="/img/Logo.png" style="width:200px;height:100px;"/> <!-- https://www.york.ac.uk/staff/external-relations/brand/logo/ -->
@@ -11,12 +12,12 @@
 <div class="text-align: left">
     <h1 class="display-4; text-center;">Demographics</h1>
     <br/>
- <form>
+ <form action="/Home/PSQI">
      <fieldset>
          <legend>Before we get started, we would like to know some basic demographic information.</legend>
          <div>
             <label for="pID">Participant ID:</label><br>
-            <input type="number" id="pID" name="pID"><br>
+            <input type="number" id="pID" name="pID" required><br>
         </div>
         <br>
         <div>
@@ -105,15 +106,11 @@
         <div>
             <label for="TST">Total hours of sleep:</label><br>
             <input type="text" id="wake" name="wake"><br>
+        </div>
+        <div style="text-align: right;">
+            <input style="margin-right: 50px;" type="submit" value="Next"/>
         </div>                              
   </fieldset>
 </form>
 </div>
 
-<div id="formDiv">
-    <form action="/Home/PSQI"> 
-        <div style="text-align: right;">
-            <input style="margin-right: 50px;" type="submit" value="Next"/>
-        </div>
-    </form>
-</div>

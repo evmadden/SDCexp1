@@ -73,3 +73,7 @@ body {
 input[type="radio"] {
   margin-left: 20px;
 }
+
+/*input:required{
+  border: 1px dashed red;
+}*/

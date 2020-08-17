@@ -32,9 +32,11 @@ namespace test.Controllers
             return View();
         }
 
-        public IActionResult Demographics()
+        public IActionResult Demographics(string consent)
         {
-            return View();
+            DemographicsViewModel demographicsViewModel=new DemographicsViewModel();
+            demographicsViewModel.Consent=consent;
+            return View(demographicsViewModel);
         }
 
         public IActionResult PSQI()
