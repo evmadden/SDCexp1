@@ -47,6 +47,11 @@ namespace test.Controllers
             return View();
         }
 
+        public IActionResult Stanford()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();
