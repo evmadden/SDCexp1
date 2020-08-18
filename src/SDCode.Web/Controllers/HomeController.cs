@@ -32,12 +32,17 @@ namespace SDCode.Web.Controllers
             return View();
         }
 
-        public IActionResult Demographics(string consent, string withdraw)
+        public IActionResult Demographics()
+        {
+            return View();
+        }
+
+       /* public IActionResult Demographics(string consent, string withdraw)
         {
             DemographicsViewModel demographicsViewModel=new DemographicsViewModel();
             demographicsViewModel.Consent=consent;
             return View(demographicsViewModel);
-        }
+        }*/
 
         public IActionResult PSQI()
         {
