@@ -49,8 +49,9 @@ namespace SDCode.Web.Controllers
             return View();
         }
 
-        public IActionResult Epworth()
+        public IActionResult Epworth(string q1)
         {
+            Debug.WriteLine($"q1: {q1}");
             return View();
         }
 
