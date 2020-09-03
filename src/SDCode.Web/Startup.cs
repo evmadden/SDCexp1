@@ -27,6 +27,7 @@ namespace SDCode.Web
         {
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddScoped<ICsvFile<HolidayModel, HolidayMap>, CsvFile<HolidayModel, HolidayMap>>();
+            services.AddScoped<ICsvFile<ConsentModel, ConsentMap>, CsvFile<ConsentModel, ConsentMap>>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

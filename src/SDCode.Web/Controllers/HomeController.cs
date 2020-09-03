@@ -6,16 +6,19 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SDCode.Web.Models;
+using SDCode.Web.Classes;
 
 namespace SDCode.Web.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ICsvFile<ConsentModel, ConsentMap> _csvFile;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ICsvFile<ConsentModel, ConsentMap> csvFile)
         {
             _logger = logger;
+            _csvFile = csvFile;
         }
 
         public IActionResult Index()
@@ -32,9 +35,14 @@ namespace SDCode.Web.Controllers
             return View();
         }
 
-        public IActionResult Demographics(string ParticipantID, bool InfoSheet, bool Withdraw, bool NPSDisorder, bool ADHD, bool HeadInjury, bool NormalVision, bool VisionProblems)
+        public IActionResult Demographics(string participantID, bool infoSheet, bool withdraw, bool npsDisorder, bool adhd, bool headInjury, bool normalVision, bool visionProblems)
         {
-            var 
+            Debug.WriteLine("infoSheet");
+            Debug.WriteLine(infoSheet);
+            var consentModels = new List<ConsentModel>();
+            var consentModel = new ConsentModel{ParticipantID = participantID, InfoSheet = infoSheet, Withdraw = withdraw, NPSDisorder = npsDisorder, ADHD = adhd, HeadInjury = headInjury, NormalVision = normalVision, VisionProblems = visionProblems};
+            consentModels.Add(consentModel);
+            _csvFile.Write(consentModels);
             return View();
         }
 
