@@ -13,6 +13,12 @@ namespace SDCode.Web.Models
         public bool Withdraw { get; set; }
         [Name(nameof(NPSDisorder))]
         public bool NPSDisorder{ get; set; }
+        [Name(nameof(ADHD))]
+        public bool ADHD{ get; set; } 
+        [Name(nameof(HeadInjury))]
+        public bool HeadInjury{ get; set; }
+        [Name(nameof(NormalVision))]
+        public bool NormalVision{ get; set; }        
     }
 
     public sealed class ConsentMap : ClassMap<ConsentModel>
@@ -23,6 +29,9 @@ namespace SDCode.Web.Models
             Map(m => m.InfoSheet).Name(nameof(ConsentModel.InfoSheet));
             Map(m => m.Withdraw).Name(nameof(ConsentModel.Withdraw));
             Map(m => m.NPSDisorder).Name(nameof(ConsentModel.NPSDisorder));
+            Map(m => m.ADHD).Name(nameof(ConsentModel.ADHD));
+            Map(m => m.HeadInjury).Name(nameof(ConsentModel.HeadInjury));
+            Map(m => m.NormalVision).Name(nameof(ConsentModel.NormalVision));
         }
     }
 }
