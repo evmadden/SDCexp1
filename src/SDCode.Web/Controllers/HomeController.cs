@@ -32,7 +32,7 @@ namespace SDCode.Web.Controllers
             return View();
         }
 
-        public IActionResult Demographics(string ParticipantID, bool InfoSheet, bool Withdraw, bool NPSDisorder, bool ADHD, bool HeadInjury, bool NormalVision)
+        public IActionResult Demographics(string ParticipantID, bool InfoSheet, bool Withdraw, bool NPSDisorder, bool ADHD, bool HeadInjury, bool NormalVision, bool VisionProblems)
         {
             var 
             return View();
