@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SDCode.Web.Classes;
 using SDCode.Web.Models;
+using System.Collections.Generic;
 
 namespace SDCode.Web.Controllers
 {
@@ -25,7 +26,7 @@ namespace SDCode.Web.Controllers
         }
         public IActionResult Add(string name, int monthNumber, int dayNumber)
         {
-            var holidays = _csvFile.Read().ToList();
+            var holidays = new List<HolidayModel>(); // _csvFile.Read().ToList();
             var holiday = new HolidayModel { Name = name, MonthNumber = monthNumber, DayNumber = dayNumber };
             holidays.Insert(0, holiday);
             _csvFile.Write(holidays);

@@ -32,7 +32,7 @@ namespace SDCode.Web.Controllers
             return View();
         }
 
-        public IActionResult Demographics()
+        public IActionResult Demographics(string ParticipantID, bool InfoSheet, bool Withdraw, bool NPSDisorder)
         {
             return View();
         }
@@ -49,9 +49,9 @@ namespace SDCode.Web.Controllers
             return View();
         }
 
-        public IActionResult Epworth(string q1)
+        public IActionResult Epworth(string q1, string q5)
         {
-            Debug.WriteLine($"q1: {q1}");
+            Debug.WriteLine($"q1: {q1}", $"q5: {q5}");
             return View();
         }
 
