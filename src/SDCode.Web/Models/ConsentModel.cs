@@ -20,7 +20,15 @@ namespace SDCode.Web.Models
         [Name(nameof(NormalVision))]
         public bool NormalVision{ get; set; }    
         [Name(nameof(VisionProblems))]
-        public bool VisionProblems{ get; set; }              
+        public bool VisionProblems{ get; set; }   
+        [Name(nameof(AltShifts))]
+        public bool AltShifts{ get; set; }
+        [Name(nameof(Smoker))]
+        public bool Smoker{ get; set; }
+        [Name(nameof(DataProtection))]
+        public bool DataProtection{ get; set; }   
+        [Name(nameof(AgreeParticipate))]
+        public bool AgreeParticipate{ get; set; }            
     }
 
     public sealed class ConsentMap : ClassMap<ConsentModel>
@@ -35,6 +43,10 @@ namespace SDCode.Web.Models
             Map(m => m.HeadInjury).Name(nameof(ConsentModel.HeadInjury));
             Map(m => m.NormalVision).Name(nameof(ConsentModel.NormalVision));
             Map(m => m.VisionProblems).Name(nameof(ConsentModel.VisionProblems));
+            Map(m => m.AltShifts).Name(nameof(ConsentModel.AltShifts));
+            Map(m => m.Smoker).Name(nameof(ConsentModel.Smoker));
+            Map(m => m.DataProtection).Name(nameof(ConsentModel.DataProtection));
+            Map(m => m.AgreeParticipate).Name(nameof(ConsentModel.AgreeParticipate));
         }
     }
 }
