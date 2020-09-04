@@ -14,6 +14,7 @@ namespace SDCode.Web.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ICsvFile<ConsentModel, ConsentMap> _csvFile;
+        
 
         public HomeController(ILogger<HomeController> logger, ICsvFile<ConsentModel, ConsentMap> csvFile)
         {
@@ -53,8 +54,12 @@ namespace SDCode.Web.Controllers
             return View(demographicsViewModel);
         }*/
 
-        public IActionResult PSQI()
+        public IActionResult PSQI(bool sex, string age, string yearStudy, bool handed, bool impairments, bool glasses, string langauge, string bilingual, string currentCountry, string bed, string wake, string latency, string tst)
         {
+            var demographicsModels = new List<DemographicsModel>();
+            var demographicsModel = new DemographicsModel{Sex = sex, Age = age, YearStudy = yearStudy, Handed = handed, Impairments = impairments, Glasses = glasses, Language = langauge, Bilingual = bilingual, CurrentCountry = currentCountry, Bed = bed, Wake = wake, Latency = latency, TST = tst};
+            demographicsModels.Add(demographicsModel);
+            _csvFile.Write(demographicsModels);            
             return View();
         }
 
