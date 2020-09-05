@@ -13,13 +13,14 @@ namespace SDCode.Web.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly ICsvFile<ConsentModel, ConsentMap> _csvFile;
-        
+        private readonly ICsvFile<ConsentModel, ConsentMap> _consentCsvFile;
+        private readonly ICsvFile<DemographicsModel, DemographicsMap> _demographicsCsvFile;
 
-        public HomeController(ILogger<HomeController> logger, ICsvFile<ConsentModel, ConsentMap> csvFile)
+        public HomeController(ILogger<HomeController> logger, ICsvFile<ConsentModel, ConsentMap> consentCsvFile, ICsvFile<DemographicsModel, DemographicsMap> demographicsCsvFile)
         {
             _logger = logger;
-            _csvFile = csvFile;
+            _consentCsvFile = consentCsvFile;
+            _demographicsCsvFile = demographicsCsvFile;
         }
 
         public IActionResult Index()
@@ -43,7 +44,7 @@ namespace SDCode.Web.Controllers
             var consentModels = new List<ConsentModel>();
             var consentModel = new ConsentModel{ParticipantID = participantID, InfoSheet = infoSheet, Withdraw = withdraw, NPSDisorder = npsDisorder, ADHD = adhd, HeadInjury = headInjury, NormalVision = normalVision, VisionProblems = visionProblems, AltShifts = altShifts, Smoker = smoker, DataProtection = dataProtection, AgreeParticipate = agreeParticipate};
             consentModels.Add(consentModel);
-            _csvFile.Write(consentModels);
+            _consentCsvFile.Write(consentModels);
             return View();
         }
 
@@ -59,7 +60,7 @@ namespace SDCode.Web.Controllers
             var demographicsModels = new List<DemographicsModel>();
             var demographicsModel = new DemographicsModel{Sex = sex, Age = age, YearStudy = yearStudy, Handed = handed, Impairments = impairments, Glasses = glasses, Language = langauge, Bilingual = bilingual, CurrentCountry = currentCountry, Bed = bed, Wake = wake, Latency = latency, TST = tst};
             demographicsModels.Add(demographicsModel);
-            _csvFile.Write(demographicsModels);            
+            _demographicsCsvFile.Write(demographicsModels);            
             return View();
         }
 
