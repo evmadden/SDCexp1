@@ -1,4 +1,6 @@
-﻿@{
+﻿@model SDCode.Web.Models.DemographicsViewModel
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -12,6 +14,7 @@
     <h1 class="display-4; text-center;">Demographics</h1>
     <br/>
  <form action="/Home/PSQI">
+    <input type="hidden" name="participantID" value="@Model.ParticipantID" />
      <fieldset>
          <legend>Before we get started, we would like to know some basic demographic information.</legend>
         <div>

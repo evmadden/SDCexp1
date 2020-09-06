@@ -5,6 +5,8 @@ namespace SDCode.Web.Models
 {
     public class EpworthModel
     {
+        [Name(nameof(ParticipantID))]
+        public string ParticipantID { get; set; }
         [Name(nameof(Reading))]
         public string Reading { get; set; }
         [Name(nameof(TV))]
@@ -27,6 +29,7 @@ namespace SDCode.Web.Models
     {
         public EpworthMap()
         {
+            Map(m => m.ParticipantID).Name(nameof(EpworthModel.ParticipantID));
             Map(m => m.Reading).Name(nameof(EpworthModel.Reading));
             Map(m => m.TV).Name(nameof(EpworthModel.TV));
             Map(m => m.PublicPlace).Name(nameof(EpworthModel.PublicPlace));

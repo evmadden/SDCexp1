@@ -1,4 +1,5 @@
-﻿@{
+﻿@model SDCode.Web.Models.EpworthViewModel
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -25,6 +26,7 @@
 <p>It's important that you answer each question as best you can.</p>
 
     <form action="/Home/Stanford">
+    <input type="hidden" name="participantID" value="@Model.ParticipantID" />
       <table class="table-calculator  js-table-calculator" data-results-explainer-id="epworth-calculator-results"><thead><tr><th scope="col">Situation</th>
           <th scope="col">Chance of dozing (0 = low, 3 = high)</th>
         </tr></thead><tbody><tr><td><label for="q1">Sitting and reading</label></td>

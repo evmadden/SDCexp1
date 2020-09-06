@@ -5,6 +5,8 @@ namespace SDCode.Web.Models
 {
     public class PSQIModel
     {
+        [Name(nameof(ParticipantID))]
+        public string ParticipantID { get; set; }
         [Name(nameof(MonthBed))]
         public string MonthBed { get; set; }
         [Name(nameof(MonthLatency))]
@@ -65,6 +67,7 @@ namespace SDCode.Web.Models
     {
         public PSQIMap()
         {
+            Map(m => m.ParticipantID).Name(nameof(PSQIModel.ParticipantID));
             Map(m => m.MonthBed).Name(nameof(PSQIModel.MonthBed));
             Map(m => m.MonthLatency).Name(nameof(PSQIModel.MonthLatency));
             Map(m => m.MonthWake).Name(nameof(PSQIModel.MonthWake));

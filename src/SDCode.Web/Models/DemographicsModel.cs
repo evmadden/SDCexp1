@@ -5,6 +5,8 @@ namespace SDCode.Web.Models
 {
     public class DemographicsModel
     {
+        [Name(nameof(ParticipantID))]
+        public string ParticipantID { get; set; }
         [Name(nameof(Sex))]
         public string Sex { get; set; }
         [Name(nameof(Age))]
@@ -37,6 +39,7 @@ namespace SDCode.Web.Models
     {
         public DemographicsMap()
         {
+            Map(m => m.ParticipantID).Name(nameof(DemographicsModel.ParticipantID));
             Map(m => m.Sex).Name(nameof(DemographicsModel.Sex));
             Map(m => m.Age).Name(nameof(DemographicsModel.Age));
             Map(m => m.YearStudy).Name(nameof(DemographicsModel.YearStudy));
