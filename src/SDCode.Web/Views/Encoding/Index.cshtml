@@ -19,6 +19,14 @@
         var imageElement = document.getElementById('image');
         var numberElement = document.getElementById('number');
         var imageDisplayDurationInMilliseconds = 3000;
+        var numberDisplayProbabilityPercentage = 10;
+        var numberCheckIntervalInMilliseconds = 100;
+        var spacebarDetected = false;
+        var numberDisplayThresholdInMilliseconds = 5000;
+
+        var endTheTest = function(reason) {
+            alert('Test finished.\n\nReason:\n\n'+reason)
+        }
 
         var imageIndex = 0;
         var showNextImage = function(){
@@ -42,6 +50,20 @@
             var randomNumber = getRandomInt(100);
             numberElement.innerText = randomNumber;
             numberElement.style.display = 'inline';
+
+            var timeSinceNumberDisplayedInMilliseconds = 0;
+            spacebarDetected = false;
+            var checkOnTheNumber = function() {
+                timeSinceNumberDisplayedInMilliseconds = timeSinceNumberDisplayedInMilliseconds + numberCheckIntervalInMilliseconds;
+                if (timeSinceNumberDisplayedInMilliseconds > numberDisplayThresholdInMilliseconds) {
+                    endTheTest('Number displayed too long');
+                } else if (spacebarDetected) {
+                    showNextImage();
+                } else {
+                    setTimeout(checkOnTheNumber, numberCheckIntervalInMilliseconds);
+                }
+            };
+            setTimeout(checkOnTheNumber, numberCheckIntervalInMilliseconds);
         };
 
         var hideBothImageAndNumber = function() {
@@ -50,23 +72,16 @@
         }
 
         var showNextImageOrNumber = function() {
-            var randomNumber = getRandomInt(10);
-            var shouldShowNumber = randomNumber <= 1;
+            var randomNumber = getRandomInt(100);
+            var shouldShowNumber = randomNumber <= (numberDisplayProbabilityPercentage);
             var whatToDo = shouldShowNumber ? showNextNumber : showNextImage;
             whatToDo();
         };
 
-        function isHidden(el) { // https://stackoverflow.com/a/21696585/116895
-            return (el.offsetParent === null)
-        }
-
         document.body.onkeyup = function(e){
             var spacebarWasPressed = e.key == ' ';
             if (spacebarWasPressed) {
-                var numberIsVisible = !isHidden(numberElement);
-                if (numberIsVisible) {
-                    showNextImage();
-                }
+                spacebarDetected = true;
             }
         }
 
