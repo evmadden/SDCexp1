@@ -86,6 +86,11 @@ namespace SDCode.Web.Controllers
             return View(new StanfordViewModel(participantID));
         }
 
+        public IActionResult EncodingInstructions()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();
