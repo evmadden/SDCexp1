@@ -6,17 +6,17 @@ namespace SDCode.Web.Models
     public class DemographicsModel
     {
         [Name(nameof(Sex))]
-        public bool Sex { get; set; }
+        public string Sex { get; set; }
         [Name(nameof(Age))]
         public string Age { get; set; }
         [Name(nameof(YearStudy))]
         public string YearStudy { get; set; }
         [Name(nameof(Handed))]
-        public bool Handed{ get; set; }
+        public string Handed{ get; set; }
         [Name(nameof(Impairments))]
-        public bool Impairments{ get; set; } 
+        public string Impairments{ get; set; } 
         [Name(nameof(Glasses))]
-        public bool Glasses{ get; set; }
+        public string Glasses{ get; set; }
         [Name(nameof(Language))]
         public string Language{ get; set; }    
         [Name(nameof(Bilingual))]

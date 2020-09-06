@@ -55,7 +55,7 @@ namespace SDCode.Web.Controllers
             return View(demographicsViewModel);
         }*/
 
-        public IActionResult PSQI(bool sex, string age, string yearStudy, bool handed, bool impairments, bool glasses, string langauge, string bilingual, string currentCountry, string bed, string wake, string latency, string tst)
+        public IActionResult PSQI(string sex, string age, string yearStudy, string handed, string impairments, string glasses, string langauge, string bilingual, string currentCountry, string bed, string wake, string latency, string tst)
         {
             var demographicsModels = new List<DemographicsModel>();
             var demographicsModel = new DemographicsModel{Sex = sex, Age = age, YearStudy = yearStudy, Handed = handed, Impairments = impairments, Glasses = glasses, Language = langauge, Bilingual = bilingual, CurrentCountry = currentCountry, Bed = bed, Wake = wake, Latency = latency, TST = tst};
