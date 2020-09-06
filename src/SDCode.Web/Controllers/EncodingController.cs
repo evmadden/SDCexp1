@@ -21,7 +21,7 @@ namespace SDCode.Web.Controllers
 
         public IActionResult Index()
         {
-            var imageUrls = new List<string>{"https://placekitten.com/800/700", ""};
+            var imageUrls = new List<string>{"https://placekitten.com/800/700?image=1", "https://placekitten.com/800/700?image=2", "https://placekitten.com/800/700?image=3"};
             var encodingIndexViewModel = new EncodingIndexViewModel(imageUrls);
             return View(encodingIndexViewModel);
         }

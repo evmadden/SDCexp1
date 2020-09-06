@@ -1,13 +1,14 @@
 using CsvHelper.Configuration;
 using CsvHelper.Configuration.Attributes;
+using System.Collections.Generic;
 
 namespace SDCode.Web.Models
 {
     public class EncodingIndexViewModel
     {
-        public EncodingIndexViewModel(string IEnumerable<string> imageUrls) {
-            ImageUrls = ImageUrls;
+        public EncodingIndexViewModel(IEnumerable<string> imageUrls) {
+            ImageUrls = imageUrls;
         }
-        IEnumerable<string> ImageUrls {get;}
+        public IEnumerable<string> ImageUrls {get;}
     }
 }

@@ -3,6 +3,81 @@
     ViewData["Title"] = "Home Page";
 }
 
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+        var images = [];
+        function preload() {
+            for (var i = 0; i < arguments.length; i++) {
+                images[i] = new Image();
+                images[i].src = preload.arguments[i];
+            }
+        }
+
+        //-- usage --//
+        preload(@Html.Raw(string.Join(",", Model.ImageUrls.Select(x=>$"\"{x}\""))));
+
+        var imageElement = document.getElementById('image');
+        var numberElement = document.getElementById('number');
+        var imageDisplayDurationInMilliseconds = 3000;
+
+        var imageIndex = 0;
+        var showNextImage = function(){
+            hideBothImageAndNumber();
+            imageUrl = images[imageIndex].src;
+            imageElement.src = imageUrl;
+            imageIndex = imageIndex + 1;
+            if (imageIndex === images.length) {
+                imageIndex = 0;
+            }
+            imageElement.style.display = 'block';
+            setTimeout(showNextImageOrNumber, imageDisplayDurationInMilliseconds);
+        };
+
+        function getRandomInt(max) {
+            return Math.floor(Math.random() * Math.floor(max));
+        }
+
+        var showNextNumber = function() {
+            hideBothImageAndNumber();
+            var randomNumber = getRandomInt(100);
+            numberElement.innerText = randomNumber;
+            numberElement.style.display = 'inline';
+        };
+
+        var hideBothImageAndNumber = function() {
+            imageElement.style.display = 'none';
+            numberElement.style.display = 'none';
+        }
+
+        var showNextImageOrNumber = function() {
+            var randomNumber = getRandomInt(10);
+            var shouldShowNumber = randomNumber <= 1;
+            var whatToDo = shouldShowNumber ? showNextNumber : showNextImage;
+            whatToDo();
+        };
+
+        function isHidden(el) { // https://stackoverflow.com/a/21696585/116895
+            return (el.offsetParent === null)
+        }
+
+        document.body.onkeyup = function(e){
+            var spacebarWasPressed = e.key == ' ';
+            if (spacebarWasPressed) {
+                var numberIsVisible = !isHidden(numberElement);
+                if (numberIsVisible) {
+                    showNextImage();
+                }
+            }
+        }
+
+        showNextImage();
+    });
+</script>
+
+<div style="text-align: center;">
+    <img id="image" src="@Model.ImageUrls.First()" style="display: none;"/>
+    <span id="number" style="font-size: 192pt;" style="display: none;"></span>
+</div>
 
 
 <div id="formDiv">
