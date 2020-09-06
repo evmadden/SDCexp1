@@ -15,12 +15,14 @@ namespace SDCode.Web.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly ICsvFile<ConsentModel, ConsentMap> _consentCsvFile;
         private readonly ICsvFile<DemographicsModel, DemographicsMap> _demographicsCsvFile;
+        private readonly ICsvFile<PSQIModel, PSQIMap> _psqiCsvFile;
 
-        public HomeController(ILogger<HomeController> logger, ICsvFile<ConsentModel, ConsentMap> consentCsvFile, ICsvFile<DemographicsModel, DemographicsMap> demographicsCsvFile)
+        public HomeController(ILogger<HomeController> logger, ICsvFile<ConsentModel, ConsentMap> consentCsvFile, ICsvFile<DemographicsModel, DemographicsMap> demographicsCsvFile, ICsvFile<PSQIModel, PSQIMap> psqiCsvFile)
         {
             _logger = logger;
             _consentCsvFile = consentCsvFile;
             _demographicsCsvFile = demographicsCsvFile;
+            _psqiCsvFile = psqiCsvFile;
         }
 
         public IActionResult Index()
@@ -64,9 +66,12 @@ namespace SDCode.Web.Controllers
             return View();
         }
 
-        public IActionResult Epworth(string q1, string q5)
+        public IActionResult Epworth(string monthbed, string monthlatency, string monthwake, string totalhours, string totalminutes, string no30min, string waso, string bathroom, string breathing, string snoring, string hot, string cold, string dreams, string pain, string otherfrequency, string otherdescribe, string sleepquality, string medication, string sleepiness, string enthusiasm, string bedpartner, string partsnore, string breathpause, string legs, string disorientation, string otherrestless, string otherrestdescribe)
         {
-            Debug.WriteLine($"q1: {q1}", $"q5: {q5}");
+            var psqiModels = new List<PSQIModel>();
+            var psqiModel = new PSQIModel{MonthBed = monthbed, MonthLatency = monthlatency, MonthWake = monthwake, TotalHours = totalhours, TotalMinutes = totalminutes, No30Min = no30min, WASO = waso, Bathroom = bathroom, Breathing = breathing, Snoring = snoring, Hot = hot, Cold = cold, Dreams = dreams, Pain = pain, OtherFrequency = otherfrequency, OtherDescribe = otherdescribe, SleepQuality = sleepquality, Medication = medication, Sleepiness = sleepiness, Enthusiasm = enthusiasm, BedPartner = bedpartner, PartSnore = partsnore, BreathPause = breathpause, Legs = legs, Disorientation = disorientation, OtherRestless = otherrestless, OtherRestDescribe = otherrestdescribe};
+            psqiModels.Add(psqiModel);
+            _psqiCsvFile.Write(psqiModels);
             return View();
         }
 
