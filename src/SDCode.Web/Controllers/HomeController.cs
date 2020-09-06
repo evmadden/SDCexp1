@@ -16,13 +16,15 @@ namespace SDCode.Web.Controllers
         private readonly ICsvFile<ConsentModel, ConsentMap> _consentCsvFile;
         private readonly ICsvFile<DemographicsModel, DemographicsMap> _demographicsCsvFile;
         private readonly ICsvFile<PSQIModel, PSQIMap> _psqiCsvFile;
+        private readonly ICsvFile<EpworthModel, EpworthMap> _epworthCsvFile;
 
-        public HomeController(ILogger<HomeController> logger, ICsvFile<ConsentModel, ConsentMap> consentCsvFile, ICsvFile<DemographicsModel, DemographicsMap> demographicsCsvFile, ICsvFile<PSQIModel, PSQIMap> psqiCsvFile)
+        public HomeController(ILogger<HomeController> logger, ICsvFile<ConsentModel, ConsentMap> consentCsvFile, ICsvFile<DemographicsModel, DemographicsMap> demographicsCsvFile, ICsvFile<PSQIModel, PSQIMap> psqiCsvFile, ICsvFile<EpworthModel, EpworthMap> epworthCsvFile)
         {
             _logger = logger;
             _consentCsvFile = consentCsvFile;
             _demographicsCsvFile = demographicsCsvFile;
             _psqiCsvFile = psqiCsvFile;
+            _epworthCsvFile = epworthCsvFile;
         }
 
         public IActionResult Index()
@@ -75,8 +77,12 @@ namespace SDCode.Web.Controllers
             return View();
         }
 
-        public IActionResult Stanford()
+        public IActionResult Stanford(string reading, string tv, string publicplace, string passengercar, string afternoon, string talking, string lunch, string traffic)
         {
+            var epworthModels = new List<EpworthModel>();
+            var epworthModel = new EpworthModel{Reading = reading, TV = tv, PublicPlace = publicplace, PassengerCar = passengercar, Afternoon = afternoon, Talking = talking, Lunch = lunch, Traffic = traffic};
+            epworthModels.Add(epworthModel);
+            _epworthCsvFile.Write(epworthModels);
             return View();
         }
 
