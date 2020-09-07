@@ -39,7 +39,7 @@
             imageElement.src = imageUrl;
             imageElement.style.display = 'block';
             imageIndex = imageIndex + 1;
-            var whatToDo = imageIndex === images.length ? showFinishedMessage : showNextImageOrNumber;
+            var whatToDo = imageIndex === images.length ? showFinishedMessage : showPlusSign;
             setTimeout(whatToDo, imageDisplayDurationInMilliseconds);
         };
 
@@ -60,7 +60,7 @@
                 if (timeSinceNumberDisplayedInMilliseconds > numberDisplayThresholdInMilliseconds) {
                     endTheTest('Number displayed too long');
                 } else if (spacebarDetected) {
-                    showNextImage();
+                    showPlusSign();
                 } else {
                     setTimeout(checkOnTheNumber, numberCheckIntervalInMilliseconds);
                 }
@@ -91,7 +91,8 @@
             hideBothImageAndNumber();
             numberElement.innerText = '+';
             numberElement.style.display = 'block';
-            setTimeout(showNextImage, plusSignDisplayDurationInMilliseconds);
+            var whatToDo = imageIndex === 0 ? showNextImage : showNextImageOrNumber;
+            setTimeout(whatToDo, plusSignDisplayDurationInMilliseconds);
         };
 
         showPlusSign();
