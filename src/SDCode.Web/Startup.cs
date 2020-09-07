@@ -31,6 +31,8 @@ namespace SDCode.Web
             services.AddScoped<ICsvFile<DemographicsModel, DemographicsMap>, CsvFile<DemographicsModel, DemographicsMap>>();
             services.AddScoped<ICsvFile<PSQIModel, PSQIMap>, CsvFile<PSQIModel, PSQIMap>>();
             services.AddScoped<ICsvFile<EpworthModel, EpworthMap>, CsvFile<EpworthModel, EpworthMap>>();
+            services.AddScoped<IEncodingPhaseImageIndexesGetter, EncodingPhaseImageIndexesGetter>();
+            services.AddScoped<IStimuliImageUrlGetter, StimuliImageUrlGetter>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

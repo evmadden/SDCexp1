@@ -13,15 +13,20 @@ namespace SDCode.Web.Controllers
     public class EncodingController : Controller
     {
         private readonly ILogger<EncodingController> _logger;
+        private readonly IEncodingPhaseImageIndexesGetter _encodingPhaseImageIndexesGetter;
+        private readonly IStimuliImageUrlGetter _stimuliImageUrlGetter;
 
-        public EncodingController(ILogger<EncodingController> logger)
+        public EncodingController(ILogger<EncodingController> logger, IEncodingPhaseImageIndexesGetter encodingPhaseImageIndexesGetter, IStimuliImageUrlGetter stimuliImageUrlGetter)
         {
             _logger = logger;
+            _encodingPhaseImageIndexesGetter = encodingPhaseImageIndexesGetter;
+            _stimuliImageUrlGetter = stimuliImageUrlGetter;
         }
 
         public IActionResult Index()
         {
-            var imageUrls = new List<string>{"https://placekitten.com/800/700?image=1", "https://placekitten.com/800/700?image=2", "https://placekitten.com/800/700?image=3"};
+            var imageIndexes = _encodingPhaseImageIndexesGetter.Get();
+            var imageUrls = _stimuliImageUrlGetter.Get(imageIndexes);
             var encodingIndexViewModel = new EncodingIndexViewModel(imageUrls);
             return View(encodingIndexViewModel);
         }
