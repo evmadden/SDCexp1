@@ -2,7 +2,6 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-
 <script>
     document.addEventListener("DOMContentLoaded", function(){
         var images = [];
@@ -25,7 +24,7 @@
         var numberDisplayThresholdInMilliseconds = 5000;
 
         var endTheTest = function(reason) {
-            alert('Test finished.\n\nReason:\n\n'+reason)
+            alert('Test finished.\n\nReason:\n\n'+reason);
         }
 
         var imageIndex = 0;
@@ -49,7 +48,7 @@
             hideBothImageAndNumber();
             var randomNumber = getRandomInt(100);
             numberElement.innerText = randomNumber;
-            numberElement.style.display = 'inline';
+            numberElement.style.display = 'block';
 
             var timeSinceNumberDisplayedInMilliseconds = 0;
             spacebarDetected = false;
@@ -88,10 +87,9 @@
         showNextImage();
     });
 </script>
-
-<div style="text-align: center;">
-    <img id="image" src="@Model.ImageUrls.First()" style="display: none;"/>
-    <span id="number" style="font-size: 192pt;" style="display: none;"></span>
+<div style="vertical-align: top; text-align: center;">
+    <img id="image" style="display: none; width: 800px; height: 700px;"/>
+    <div id="number" style="font-size: 700px; line-height: 600px; display: none; width: 800px; height: 700px;"></div>
 </div>
 
 
