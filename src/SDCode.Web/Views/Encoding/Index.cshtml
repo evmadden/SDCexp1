@@ -18,6 +18,7 @@
         var imageElement = document.getElementById('image');
         var numberElement = document.getElementById('number');
         var imageDisplayDurationInMilliseconds = 3000;
+        var plusSignDisplayDurationInMilliseconds = 1500;
         var numberDisplayProbabilityPercentage = 10;
         var numberCheckIntervalInMilliseconds = 100;
         var spacebarDetected = false;
@@ -84,7 +85,14 @@
             }
         }
 
-        showNextImage();
+        var showPlusSign = function() {
+            hideBothImageAndNumber();
+            numberElement.innerText = '+';
+            numberElement.style.display = 'block';
+            setTimeout(showNextImage, plusSignDisplayDurationInMilliseconds);
+        };
+
+        showPlusSign();
     });
 </script>
 <div style="vertical-align: top; text-align: center;">
