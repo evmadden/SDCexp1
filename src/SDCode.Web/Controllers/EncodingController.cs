@@ -26,6 +26,11 @@ namespace SDCode.Web.Controllers
             return View(encodingIndexViewModel);
         }
 
+        public IActionResult EncodingFinishedMessage()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
