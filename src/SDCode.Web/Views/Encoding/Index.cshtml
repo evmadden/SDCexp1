@@ -28,17 +28,19 @@
             alert('Test finished.\n\nReason:\n\n'+reason);
         }
 
+        var showFinishedMessage = function() {
+            location.href = '@Url.Action("EncodingFinishedMessage")';
+        }
+
         var imageIndex = 0;
-        var showNextImage = function(){
+        var showNextImage = function() {
             hideBothImageAndNumber();
             imageUrl = images[imageIndex].src;
             imageElement.src = imageUrl;
-            imageIndex = imageIndex + 1;
-            if (imageIndex === images.length) {
-                imageIndex = 0;
-            }
             imageElement.style.display = 'block';
-            setTimeout(showNextImageOrNumber, imageDisplayDurationInMilliseconds);
+            imageIndex = imageIndex + 1;
+            var whatToDo = imageIndex === images.length ? showFinishedMessage : showNextImageOrNumber;
+            setTimeout(whatToDo, imageDisplayDurationInMilliseconds);
         };
 
         function getRandomInt(max) {
