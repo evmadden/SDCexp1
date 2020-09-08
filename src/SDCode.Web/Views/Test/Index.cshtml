@@ -5,9 +5,19 @@
 <script>
     document.addEventListener("DOMContentLoaded", function(){
         var imageElement = document.getElementById('image');
+        var imageMessageElement = document.getElementById('imageMessage');
+        var imageJudgement;
+        var imageConfidence;
+        var imageShownAt;
+        var imageShownDuration;
         var showImage = function(url, progress) {
             imageElement.setAttribute('data-progress', progress);
             imageElement.src = url;
+            imageMessageElement.innerText = 'REACT_HOWTO_PLACEHOLDER_TEXT';
+            imageJudgement = null;
+            imageConfidence = null;
+            imageShownAt = new Date().getTime();
+            imageReactionTime = null;
         }
         var sendResponse = function() {
             var xhr = new XMLHttpRequest();
@@ -17,7 +27,7 @@
                 if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
                     var response = JSON.parse(this.response);
                     if (response.testEnded) {
-                        imageElement.style.display = 'none';
+                        document.getElementById('imageViewer').style.display = 'none';
                         document.getElementById(`${response.testEnded.toLowerCase()}Ended`).style.display = 'block';
                     } else {
                         showImage(response.viewModel.imageUrl, response.viewModel.progress);
@@ -25,22 +35,46 @@
                 }
             }
             var progress = imageElement.getAttribute('data-progress');
-            xhr.send(`participantID=@Model.ParticipantID&progress=${progress}`);
+            xhr.send(`participantID=@Model.ParticipantID&progress=${progress}&judgement${imageJudgement}=&confidence=${imageConfidence}&reactionTime=${imageReactionTime}`);
         };
         imageElement.onload = function() { 
             imageElement.style.display = 'block';
-            setTimeout(sendResponse, 1000);
         };
         showImage('@Model.ImageUrl', @Model.Progress)
+        var onJudgement = function(judgement) {
+            imageJudgement = judgement;
+            imageReactionTime = new Date().getTime() - imageShownAt;
+            imageMessageElement.innerText = 'CONFIDENCE_HOWTO_PLACEHOLDER_TEXT';
+            imageMessageElement.style.display = 'block';
+        };
+        var onConfidence = function(confidence) {
+            imageMessageElement.innerText = '';
+            imageConfidence = confidence;
+            sendResponse();
+        };
+        document.addEventListener('keyup', function(e) {
+            debugger;
+            const callback = {
+                "ArrowLeft"  : function() { onJudgement(1); },
+                "ArrowRight" : function() { onJudgement(2); },
+                "1" : function() { onConfidence(1); },
+                "2" : function() { onConfidence(2); },
+                "3" : function() { onConfidence(3); },
+                "4" : function() { onConfidence(4); }
+            }[e.key]
+            callback?.();
+        });
     });
 </script>
-<div style="vertical-align: top; text-align: center;">
+<div id="imageViewer" style="vertical-align: top; text-align: center;">
     <img id="image" style="display: none; width: 800px; height: 700px;"/>
+    <div id="imageMessage"></div>
+</div>
+<div>
     <div id="immediateEnded" style="display: none;">IMMEDIATE_FINISHED_PLACEHOLDER</div>
     <div id="delayedEnded" style="display: none;">DELAYED_FINISHED_PLACEHOLDER</div>
     <div id="followupEnded" style="display: none;">FOLLOWUP_FINISHED_PLACEHOLDER</div>
 </div>
-
 
 <div id="formDiv">
     <form action="/Test/Finished" method="post"> 

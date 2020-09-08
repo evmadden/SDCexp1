@@ -43,7 +43,7 @@ namespace SDCode.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult ResponseData(string participantID, int progress) {
+        public IActionResult ResponseData(string participantID, int progress, int judgement, int confidence, long reactionTime) {
             // 447_Immediate.csv
             // congruency (1 - congruent, 2 - incongruent), context (1 - no change, 2 - still in context, 3 - decontextualized, 4 - foil), old/new judgment, reaction time, confidence rating
             // congruency:  1 = "x"    2 = "_I"
@@ -59,14 +59,14 @@ namespace SDCode.Web.Controllers
             var context = _imageContextGetter.Get(seenViewModel.ImageUrl);
             string csvFilename = $"{participantID}_{seenTestName}";
             var responses = _responseDataCsvFile.WithFilename(csvFilename).Read().ToList();
-            responses.Insert(0, new ResponseDataModel{Image = Path.GetFileNameWithoutExtension(seenViewModel.ImageUrl), Congruency = congruency, Context = context});
+            responses.Insert(0, new ResponseDataModel{Image = Path.GetFileNameWithoutExtension(seenViewModel.ImageUrl), Congruency = congruency, Context = context, Judgement = judgement, Confidence = confidence, ReactionTime = reactionTime});
             _responseDataCsvFile.WithFilename(csvFilename).Write(responses);
             // todo mlh add "reaction time" (milliseconds measuring the "image to judgment" timespan)
             int nextProgress = progress + 1;
             var nextTestName = _testNameGetter.Get(testSets, nextProgress);
             var testHasEnded = !string.Equals(seenTestName, nextTestName);
             var nextViewModel = GetViewModel(testSets, nextProgress);
-            return Json(new {TestEnded=testHasEnded ? seenTestName : null,ViewModel=nextViewModel});
+            return Json(new {TestEnded=testHasEnded ? seenTestName : null, ViewModel=nextViewModel});
         }
 
         private TestImmediateViewModel GetViewModel(TestSetsModel testSets, int progress) {
