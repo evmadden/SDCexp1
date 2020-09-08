@@ -61,9 +61,8 @@ namespace SDCode.Web.Controllers
             var responses = _responseDataCsvFile.WithFilename(csvFilename).Read().ToList();
             responses.Insert(0, new ResponseDataModel{Image = Path.GetFileNameWithoutExtension(seenViewModel.ImageUrl), Congruency = congruency, Context = context});
             _responseDataCsvFile.WithFilename(csvFilename).Write(responses);
-            // todo mlh should ResponseDataModel include some reference to which image it regards?
-            // todo mlh what to do when last image of test has been seen?
-            // todo mlh is the "reaction time" milliseconds measuring the "image to judgment" timespan or the "image to confidence rating" timespan?
+            // todo mlh what to do when last image of test has been seen? https://github.com/evmadden/SDCexp1/commit/c92495bda470f561fcada264433d9121d4a13cc6#commitcomment-42113846
+            // todo mlh add "reaction time" (milliseconds measuring the "image to judgment" timespan)
             var nextViewModel = GetViewModel(testSets, progress+1);
             return Json(nextViewModel);
         }
