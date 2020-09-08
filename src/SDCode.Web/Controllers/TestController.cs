@@ -18,10 +18,10 @@ namespace SDCode.Web.Controllers
         private readonly ITestSetsGetter _testSetsGetter;
         private readonly INextImageGetter _nextImageGetter;
         private readonly IImageCongruencyGetter _imageCongruencyGetter;
-        private readonly ICurrentTestNameGetter _currentTestNameGetter;
+        private readonly ITestNameGetter _testNameGetter;
         private readonly IImageContextGetter _imageContextGetter;
 
-        public TestController(ILogger<TestController> logger, IImageIndexesGetter imageIndexesGetter, IStimuliImageUrlGetter stimuliImageUrlGetter, ICsvFile<TestSetsModel, TestSetsModel.Map> testSetsCsvFile, ITestSetsGetter testSetsGetter, INextImageGetter nextImageGetter, IImageCongruencyGetter imageCongruencyGetter, ICsvFile<ResponseDataModel, ResponseDataModel.Map> responseDataCsvFile, ICurrentTestNameGetter currentTestNameGetter, IImageContextGetter imageContextGetter)
+        public TestController(ILogger<TestController> logger, IImageIndexesGetter imageIndexesGetter, IStimuliImageUrlGetter stimuliImageUrlGetter, ICsvFile<TestSetsModel, TestSetsModel.Map> testSetsCsvFile, ITestSetsGetter testSetsGetter, INextImageGetter nextImageGetter, IImageCongruencyGetter imageCongruencyGetter, ICsvFile<ResponseDataModel, ResponseDataModel.Map> responseDataCsvFile, ITestNameGetter testNameGetter, IImageContextGetter imageContextGetter)
         {
             _logger = logger;
             _imageIndexesGetter = imageIndexesGetter;
@@ -31,7 +31,7 @@ namespace SDCode.Web.Controllers
             _nextImageGetter = nextImageGetter;
             _imageCongruencyGetter = imageCongruencyGetter;
             _responseDataCsvFile = responseDataCsvFile;
-            _currentTestNameGetter = currentTestNameGetter;
+            _testNameGetter = testNameGetter;
             _imageContextGetter = imageContextGetter;
         }
 
@@ -53,18 +53,20 @@ namespace SDCode.Web.Controllers
             // confidence rating: 1 not confident and 4 very confident
             // tests show E and EI (instead of A/AI) + D and DI (instead of B/BI/C/CI) + F and FI + N and NI (SINGLE sets all - 288 total images per session)
             var testSets = _testSetsGetter.Get(participantID);
-            var testName = _currentTestNameGetter.Get(testSets, progress);
+            var seenTestName = _testNameGetter.Get(testSets, progress);
             var seenViewModel = GetViewModel(testSets, progress);
             var congruency = _imageCongruencyGetter.Get(seenViewModel.ImageUrl);
             var context = _imageContextGetter.Get(seenViewModel.ImageUrl);
-            string csvFilename = $"{participantID}_{testName}";
+            string csvFilename = $"{participantID}_{seenTestName}";
             var responses = _responseDataCsvFile.WithFilename(csvFilename).Read().ToList();
             responses.Insert(0, new ResponseDataModel{Image = Path.GetFileNameWithoutExtension(seenViewModel.ImageUrl), Congruency = congruency, Context = context});
             _responseDataCsvFile.WithFilename(csvFilename).Write(responses);
-            // todo mlh what to do when last image of test has been seen? https://github.com/evmadden/SDCexp1/commit/c92495bda470f561fcada264433d9121d4a13cc6#commitcomment-42113846
             // todo mlh add "reaction time" (milliseconds measuring the "image to judgment" timespan)
-            var nextViewModel = GetViewModel(testSets, progress+1);
-            return Json(nextViewModel);
+            int nextProgress = progress + 1;
+            var nextTestName = _testNameGetter.Get(testSets, nextProgress);
+            var testHasEnded = !string.Equals(seenTestName, nextTestName);
+            var nextViewModel = GetViewModel(testSets, nextProgress);
+            return Json(new {TestEnded=testHasEnded ? seenTestName : null,ViewModel=nextViewModel});
         }
 
         private TestImmediateViewModel GetViewModel(TestSetsModel testSets, int progress) {

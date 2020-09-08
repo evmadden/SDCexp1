@@ -10,14 +10,18 @@
             imageElement.src = url;
         }
         var sendResponse = function() {
-            //document.getElementsByTagName('form')[0].submit();
             var xhr = new XMLHttpRequest();
             xhr.open("POST", '@Url.Action("ResponseData")', true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             xhr.onreadystatechange = function() {
                 if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
                     var response = JSON.parse(this.response);
-                    showImage(response.imageUrl, response.progress);
+                    if (response.testEnded) {
+                        imageElement.style.display = 'none';
+                        document.getElementById(`${response.testEnded.toLowerCase()}Ended`).style.display = 'block';
+                    } else {
+                        showImage(response.viewModel.imageUrl, response.viewModel.progress);
+                    }
                 }
             }
             var progress = imageElement.getAttribute('data-progress');
@@ -32,6 +36,9 @@
 </script>
 <div style="vertical-align: top; text-align: center;">
     <img id="image" style="display: none; width: 800px; height: 700px;"/>
+    <div id="immediateEnded" style="display: none;">IMMEDIATE_FINISHED_PLACEHOLDER</div>
+    <div id="delayedEnded" style="display: none;">DELAYED_FINISHED_PLACEHOLDER</div>
+    <div id="followupEnded" style="display: none;">FOLLOWUP_FINISHED_PLACEHOLDER</div>
 </div>
 
 

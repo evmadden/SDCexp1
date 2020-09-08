@@ -38,7 +38,7 @@ namespace SDCode.Web
             services.AddScoped<INextImageGetter, NextImageGetter>();
             services.AddScoped<IImageCongruencyGetter, ImageCongruencyGetter>();
             services.AddScoped<ICsvFile<ResponseDataModel, ResponseDataModel.Map>, CsvFile<ResponseDataModel, ResponseDataModel.Map>>();
-            services.AddScoped<ICurrentTestNameGetter, CurrentTestNameGetter>();
+            services.AddScoped<ITestNameGetter, TestNameGetter>();
             services.AddScoped<IImageContextGetter, ImageContextGetter>();
         }
 

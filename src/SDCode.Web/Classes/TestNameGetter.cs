@@ -3,12 +3,12 @@ using SDCode.Web.Models;
 
 namespace SDCode.Web.Classes
 {
-    public interface ICurrentTestNameGetter
+    public interface ITestNameGetter
     {
         string Get(TestSetsModel testSets, int progress);
     }
 
-    public class CurrentTestNameGetter : ICurrentTestNameGetter
+    public class TestNameGetter : ITestNameGetter
     {
         public string Get(TestSetsModel testSets, int progress)
         {
