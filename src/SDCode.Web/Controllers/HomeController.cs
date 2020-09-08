@@ -91,7 +91,7 @@ namespace SDCode.Web.Controllers
         public IActionResult EncodingInstructions(string participantID, string stanford)
         {
             var stanfordModels = new List<StanfordModel>();
-            var stanfordModel = new StanfordModel{ParticipantID = participantID, Stanford = stanford};
+            var stanfordModel = new StanfordModel{ParticipantID = participantID, Immediate = stanford};
             stanfordModels.Add(stanfordModel);
             _stanfordCsvFile.Write(stanfordModels);
             return View(new EncodingInstructionsViewModel(participantID));
