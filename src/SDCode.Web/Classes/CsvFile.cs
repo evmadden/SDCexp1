@@ -68,7 +68,9 @@ namespace SDCode.Web.Classes
 
         private string FilePath {
             get {
-                return $"_csv/{FileName}";
+                var result = $"_csv/{FileName}";
+                Directory.CreateDirectory(Path.GetDirectoryName(result));
+                return result;
             }
         }
 
