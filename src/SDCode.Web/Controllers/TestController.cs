@@ -1,12 +1,10 @@
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SDCode.Web.Models;
 using SDCode.Web.Classes;
+using System.IO;
 
 namespace SDCode.Web.Controllers
 {
@@ -61,7 +59,7 @@ namespace SDCode.Web.Controllers
             var context = _imageContextGetter.Get(seenViewModel.ImageUrl);
             string csvFilename = $"{participantID}_{testName}";
             var responses = _responseDataCsvFile.WithFilename(csvFilename).Read().ToList();
-            responses.Insert(0, new ResponseDataModel{Congruency = congruency, Context = context});
+            responses.Insert(0, new ResponseDataModel{Image = Path.GetFileNameWithoutExtension(seenViewModel.ImageUrl), Congruency = congruency, Context = context});
             _responseDataCsvFile.WithFilename(csvFilename).Write(responses);
             // todo mlh should ResponseDataModel include some reference to which image it regards?
             // todo mlh what to do when last image of test has been seen?

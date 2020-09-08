@@ -5,6 +5,8 @@ namespace SDCode.Web.Models
 {
     public class ResponseDataModel
     {
+        [Name(nameof(Image))]
+        public string Image { get; set; }
         [Name(nameof(Congruency))]
         public int Congruency { get; set; }
         [Name(nameof(Context))]
@@ -14,6 +16,7 @@ namespace SDCode.Web.Models
         {
             public Map()
             {
+                Map(m => m.Image).Name(nameof(Image));
                 Map(m => m.Congruency).Name(nameof(Congruency));
                 Map(m => m.Context).Name(nameof(Context));
             }
