@@ -45,7 +45,7 @@
             imageElement.style.display = 'block';
             imageIndex = imageIndex + 1;
             var whatToDo = imageIndex === images.length ? showFinishedMessage : showPlusSign;
-            //setTimeout(whatToDo, imageDisplayDurationInMilliseconds);
+            setTimeout(whatToDo, imageDisplayDurationInMilliseconds);
         };
 
         function getRandomInt(max) {
