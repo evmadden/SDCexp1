@@ -65,6 +65,7 @@ namespace SDCode.Web.Controllers
             _responseDataCsvFile.WithFilename(csvFilename).Write(responses);
             // todo mlh should ResponseDataModel include some reference to which image it regards?
             // todo mlh what to do when last image of test has been seen?
+            // todo mlh is the "reaction time" milliseconds measuring the "image to judgment" timespan or the "image to confidence rating" timespan?
             var nextViewModel = GetViewModel(testSets, progress+1);
             return Json(nextViewModel);
         }
