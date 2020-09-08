@@ -29,7 +29,7 @@
         }
 
         var showFinishedMessage = function() {
-            location.href = '@Url.Action("EncodingFinishedMessage")';
+            document.getElementsByTagName('form')[0].submit();
         }
 
         var imageIndex = 0;
@@ -106,8 +106,6 @@
 
 <div id="formDiv">
     <form action="/Encoding/EncodingFinishedMessage"> 
-        <div style="text-align: right;">
-            <input style="margin-right: 50px;" type="submit" value="Next"/>
-        </div>
+        <input type="hidden" name="participantID" value="@Model.ParticipantID" />
     </form>
 </div>

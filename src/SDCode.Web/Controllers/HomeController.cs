@@ -86,12 +86,14 @@ namespace SDCode.Web.Controllers
             return View(new StanfordViewModel(participantID));
         }
 
-        public IActionResult EncodingInstructions()
+        public IActionResult EncodingInstructions(string participantID)
         {
-            return View();
+            //Todo EM create csv file for Stanford
+            var viewModel = new EncodingInstructionsViewModel(participantID);
+            return View(viewModel);
         }
 
-        public IActionResult Privacy()
+        public IActionResult Privacy() 
         {
             return View();
         }

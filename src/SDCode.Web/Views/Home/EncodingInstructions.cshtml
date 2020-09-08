@@ -1,4 +1,5 @@
-﻿@{
+﻿@model EncodingInstructionsViewModel;
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -20,7 +21,8 @@
 </div>
 </div>
 <div id="formDiv">
-    <form action="/Home/EncodingInstructions"> 
+    <form action="/Encoding/Index">
+        <input type="hidden" name="participantID" value="@Model.ParticipantID" />
         <div style="text-align: right;">
             <input style="margin-right: 50px;" type="submit" value="Next"/>
         </div>

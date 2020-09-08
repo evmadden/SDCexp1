@@ -23,17 +23,34 @@ namespace SDCode.Web.Controllers
             _stimuliImageUrlGetter = stimuliImageUrlGetter;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string participantID)
         {
             var imageIndexes = _encodingPhaseImageIndexesGetter.Get();
             var imageUrls = _stimuliImageUrlGetter.Get(imageIndexes);
-            var encodingIndexViewModel = new EncodingIndexViewModel(imageUrls);
+            var encodingIndexViewModel = new EncodingIndexViewModel(participantID, imageUrls);
             return View(encodingIndexViewModel);
         }
 
-        public IActionResult EncodingFinishedMessage()
+        public IActionResult EncodingFinishedMessage(string participantID)
         {
+            // 447_Immediate.csv  testResponseData
+            // congruency (1 - congruent, 2 - incongruent), context (1 - no change, 2 - still in context, 3 - decontextualized, 4 - foil), old/new judgment, reaction time, confidence rating
+            // congruency:  1 = "x"    2 = "_I"
+            // context:  1 = "F" "FI"   2 = "A" "AI" "E" "EI"   3 = B-D & BI-DI   4 = "N" "NI"
+            // old/new judgment: record what they pressed (maybe coded as 1 or 2... maybe otherwise coded as somehow representing what they actually pressed on the keyboard)
+            // reaction time: ms from image display to user response
+            // confidence rating: 1 not confident and 4 very confident
+
+
+
+            // tests show E and EI (instead of A/AI) + D and DI (instead of B/BI/C/CI) + F and FI + N and NI (SINGLE sets all)
+            // 288 TOTAL IMAGES per session
+
+            // immediate delayed followup
+
+
             return View();
+
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
