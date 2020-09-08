@@ -13,25 +13,25 @@ namespace SDCode.Web.Controllers
     public class EncodingController : Controller
     {
         private readonly ILogger<EncodingController> _logger;
-        private readonly IEncodingPhaseImageIndexesGetter _encodingPhaseImageIndexesGetter;
+        private readonly IImageIndexesGetter _imageIndexesGetter;
         private readonly IStimuliImageUrlGetter _stimuliImageUrlGetter;
 
-        public EncodingController(ILogger<EncodingController> logger, IEncodingPhaseImageIndexesGetter encodingPhaseImageIndexesGetter, IStimuliImageUrlGetter stimuliImageUrlGetter)
+        public EncodingController(ILogger<EncodingController> logger, IImageIndexesGetter encodingPhaseImageIndexesGetter, IStimuliImageUrlGetter stimuliImageUrlGetter)
         {
             _logger = logger;
-            _encodingPhaseImageIndexesGetter = encodingPhaseImageIndexesGetter;
+            _imageIndexesGetter = encodingPhaseImageIndexesGetter;
             _stimuliImageUrlGetter = stimuliImageUrlGetter;
         }
 
         public IActionResult Index(string participantID)
         {
-            var imageIndexes = _encodingPhaseImageIndexesGetter.Get();
+            var imageIndexes = _imageIndexesGetter.Get(new List<string>{"A", "A", "AI", "AI", "B", "BI", "C", "CI", "F", "F", "FI", "FI"});
             var imageUrls = _stimuliImageUrlGetter.Get(imageIndexes);
-            var encodingIndexViewModel = new EncodingIndexViewModel(participantID, imageUrls);
-            return View(encodingIndexViewModel);
+            var viewModel = new EncodingIndexViewModel(participantID, imageUrls);
+            return View(viewModel);
         }
 
-        public IActionResult EncodingFinishedMessage(string participantID)
+        public IActionResult Finished(string participantID)
         {
             // 447_Immediate.csv  testResponseData
             // congruency (1 - congruent, 2 - incongruent), context (1 - no change, 2 - still in context, 3 - decontextualized, 4 - foil), old/new judgment, reaction time, confidence rating
@@ -41,16 +41,13 @@ namespace SDCode.Web.Controllers
             // reaction time: ms from image display to user response
             // confidence rating: 1 not confident and 4 very confident
 
-
-
             // tests show E and EI (instead of A/AI) + D and DI (instead of B/BI/C/CI) + F and FI + N and NI (SINGLE sets all)
             // 288 TOTAL IMAGES per session
 
             // immediate delayed followup
 
-
-            return View();
-
+            var viewModel = new EncodingFinishedViewModel(participantID);
+            return View(viewModel);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

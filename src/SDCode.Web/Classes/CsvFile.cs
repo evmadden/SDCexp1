@@ -16,15 +16,21 @@ namespace SDCode.Web.Classes
         IEnumerable<T> Read();
         void Write(IEnumerable<T> records);
         (IEnumerable<byte> Bytes, string ContentType, string FileName) GetDownload();
+        ICsvFile<T, TMap> WithFilename(string filename);
     }
 
     public class CsvFile<T, TMap> : ICsvFile<T, TMap> where TMap : CsvHelper.Configuration.ClassMap
     {
+        private string _filename;
+        public ICsvFile<T, TMap> WithFilename(string filename) {
+            _filename = filename?.Replace(".csv", "", StringComparison.InvariantCultureIgnoreCase);
+            return this;
+        }
         public IEnumerable<T> Read()
         {
             IEnumerable<T> result;
-            if (File.Exists(FileName)) {
-                using (var reader = new StreamReader(FileName, Encoding.Default))
+            if (File.Exists(FilePath)) {
+                using (var reader = new StreamReader(FilePath, Encoding.Default))
                 using (var csv = new CsvReader(reader, CultureInfo.CurrentCulture))
                 {
                     csv.Configuration.RegisterClassMap<TMap>();
@@ -33,15 +39,17 @@ namespace SDCode.Web.Classes
             } else {
                 result = new List<T>();
             }
+            _filename = null;
             return result;
         }
 
         public void Write(IEnumerable<T> records)
         {
-            using (StreamWriter sw = new StreamWriter(FileName, false, new UTF8Encoding(true)))
+            using (StreamWriter sw = new StreamWriter(FilePath, false, new UTF8Encoding(true)))
             using (CsvWriter cw = new CsvWriter(sw, CultureInfo.CurrentCulture))
             {
-                cw.Configuration.TypeConverterCache.AddConverter<bool>(new MyBooleanConverter()); // https://stackoverflow.com/a/63523529
+                cw.Configuration.TypeConverterCache.AddConverter<bool>(new CsvBooleanConverter()); // https://stackoverflow.com/a/63523529
+                cw.Configuration.TypeConverterCache.AddConverter<IEnumerable<string>>(new CsvStringsConverter()); // https://stackoverflow.com/a/63523529
                 cw.WriteHeader<T>();
                 cw.NextRecord();
                 foreach (T record in records)
@@ -50,21 +58,28 @@ namespace SDCode.Web.Classes
                     cw.NextRecord();
                 }
             }
+            _filename = null;
         }
 
         public (IEnumerable<byte> Bytes, string ContentType, string FileName) GetDownload() {
-            IEnumerable<byte> bytes = File.Exists(FileName) ? File.ReadAllBytes(FileName) : Enumerable.Empty<byte>();
+            IEnumerable<byte> bytes = File.Exists(FilePath) ? File.ReadAllBytes(FilePath) : Enumerable.Empty<byte>();
             return (bytes, "text/csv", FileName);
+        }
+
+        private string FilePath {
+            get {
+                return $"_csv/{FileName}";
+            }
         }
 
         private string FileName {
             get {
-                return $"{typeof(T).Name.Replace("Model", "Records")}.csv";
+                return $"{_filename ?? $"{typeof(T).Name.Replace("Model", "Records")}"}.csv";
             }
         }
     }
 
-    public class MyBooleanConverter : DefaultTypeConverter
+    public class CsvBooleanConverter : DefaultTypeConverter
     {
         public override string ConvertToString(object value, IWriterRow row, MemberMapData memberMapData)
         {
@@ -74,6 +89,24 @@ namespace SDCode.Web.Classes
             }
             var boolValue = (bool)value;
             return boolValue ? "1" : "0";
+        }
+    }
+
+    public class CsvStringsConverter : DefaultTypeConverter
+    {
+        public override string ConvertToString(object value, IWriterRow row, MemberMapData memberMapData)
+        {
+            if ( value == null )
+            {
+                return string.Empty;
+            }
+            var strings = (IEnumerable<string>)value;
+            return string.Join(",", strings);
+        }
+
+        public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
+        {
+            return text.Split(",").AsEnumerable<string>();
         }
     }
 }

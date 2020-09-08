@@ -31,8 +31,15 @@ namespace SDCode.Web
             services.AddScoped<ICsvFile<DemographicsModel, DemographicsMap>, CsvFile<DemographicsModel, DemographicsMap>>();
             services.AddScoped<ICsvFile<PSQIModel, PSQIMap>, CsvFile<PSQIModel, PSQIMap>>();
             services.AddScoped<ICsvFile<EpworthModel, EpworthMap>, CsvFile<EpworthModel, EpworthMap>>();
-            services.AddScoped<IEncodingPhaseImageIndexesGetter, EncodingPhaseImageIndexesGetter>();
+            services.AddScoped<IImageIndexesGetter, ImageIndexesGetter>();
             services.AddScoped<IStimuliImageUrlGetter, StimuliImageUrlGetter>();
+            services.AddScoped<ICsvFile<TestSetsModel, TestSetsModel.Map>, CsvFile<TestSetsModel, TestSetsModel.Map>>();
+            services.AddScoped<ITestSetsGetter, TestSetsGetter>();
+            services.AddScoped<INextImageGetter, NextImageGetter>();
+            services.AddScoped<IImageCongruencyGetter, ImageCongruencyGetter>();
+            services.AddScoped<ICsvFile<ResponseDataModel, ResponseDataModel.Map>, CsvFile<ResponseDataModel, ResponseDataModel.Map>>();
+            services.AddScoped<ICurrentTestNameGetter, CurrentTestNameGetter>();
+            services.AddScoped<IImageContextGetter, ImageContextGetter>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

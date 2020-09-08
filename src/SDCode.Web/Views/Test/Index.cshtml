@@ -1,0 +1,42 @@
+@model SDCode.Web.Models.TestImmediateViewModel
+@{
+    ViewData["Title"] = "Immediate";
+}
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+        var imageElement = document.getElementById('image');
+        var showImage = function(url, progress) {
+            imageElement.setAttribute('data-progress', progress);
+            imageElement.src = url;
+        }
+        var sendResponse = function() {
+            //document.getElementsByTagName('form')[0].submit();
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", '@Url.Action("ResponseData")', true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function() {
+                if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+                    var response = JSON.parse(this.response);
+                    showImage(response.imageUrl, response.progress);
+                }
+            }
+            var progress = imageElement.getAttribute('data-progress');
+            xhr.send(`participantID=@Model.ParticipantID&progress=${progress}`);
+        };
+        imageElement.onload = function() { 
+            imageElement.style.display = 'block';
+            setTimeout(sendResponse, 1000);
+        };
+        showImage('@Model.ImageUrl', @Model.Progress)
+    });
+</script>
+<div style="vertical-align: top; text-align: center;">
+    <img id="image" style="display: none; width: 800px; height: 700px;"/>
+</div>
+
+
+<div id="formDiv">
+    <form action="/Test/Finished" method="post"> 
+        <input type="hidden" name="participantID" value="@Model.ParticipantID" />
+    </form>
+</div>
