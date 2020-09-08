@@ -31,6 +31,7 @@ namespace SDCode.Web
             services.AddScoped<ICsvFile<DemographicsModel, DemographicsMap>, CsvFile<DemographicsModel, DemographicsMap>>();
             services.AddScoped<ICsvFile<PSQIModel, PSQIMap>, CsvFile<PSQIModel, PSQIMap>>();
             services.AddScoped<ICsvFile<EpworthModel, EpworthMap>, CsvFile<EpworthModel, EpworthMap>>();
+            services.AddScoped<ICsvFile<StanfordModel, StanfordMap>, CsvFile<StanfordModel, StanfordMap>>();
             services.AddScoped<IImageIndexesGetter, ImageIndexesGetter>();
             services.AddScoped<IStimuliImageUrlGetter, StimuliImageUrlGetter>();
             services.AddScoped<ICsvFile<TestSetsModel, TestSetsModel.Map>, CsvFile<TestSetsModel, TestSetsModel.Map>>();

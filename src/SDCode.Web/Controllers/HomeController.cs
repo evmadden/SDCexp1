@@ -17,14 +17,16 @@ namespace SDCode.Web.Controllers
         private readonly ICsvFile<DemographicsModel, DemographicsMap> _demographicsCsvFile;
         private readonly ICsvFile<PSQIModel, PSQIMap> _psqiCsvFile;
         private readonly ICsvFile<EpworthModel, EpworthMap> _epworthCsvFile;
+        private readonly ICsvFile<StanfordModel, StanfordMap> _stanfordCsvFile;
 
-        public HomeController(ILogger<HomeController> logger, ICsvFile<ConsentModel, ConsentMap> consentCsvFile, ICsvFile<DemographicsModel, DemographicsMap> demographicsCsvFile, ICsvFile<PSQIModel, PSQIMap> psqiCsvFile, ICsvFile<EpworthModel, EpworthMap> epworthCsvFile)
+        public HomeController(ILogger<HomeController> logger, ICsvFile<ConsentModel, ConsentMap> consentCsvFile, ICsvFile<DemographicsModel, DemographicsMap> demographicsCsvFile, ICsvFile<PSQIModel, PSQIMap> psqiCsvFile, ICsvFile<EpworthModel, EpworthMap> epworthCsvFile, ICsvFile<StanfordModel, StanfordMap> stanfordCsvFile)
         {
             _logger = logger;
             _consentCsvFile = consentCsvFile;
             _demographicsCsvFile = demographicsCsvFile;
             _psqiCsvFile = psqiCsvFile;
             _epworthCsvFile = epworthCsvFile;
+            _stanfordCsvFile = stanfordCsvFile;
         }
 
         public IActionResult Index()
@@ -86,11 +88,13 @@ namespace SDCode.Web.Controllers
             return View(new StanfordViewModel(participantID));
         }
 
-        public IActionResult EncodingInstructions(string participantID)
+        public IActionResult EncodingInstructions(string participantID, string stanford)
         {
-            //Todo EM create csv file for Stanford
-            var viewModel = new EncodingInstructionsViewModel(participantID);
-            return View(viewModel);
+            var stanfordModels = new List<StanfordModel>();
+            var stanfordModel = new StanfordModel{ParticipantID = participantID, Stanford = stanford};
+            stanfordModels.Add(stanfordModel);
+            _stanfordCsvFile.Write(stanfordModels);
+            return View(new EncodingInstructionsViewModel(participantID));
         }
 
         public IActionResult Privacy() 
