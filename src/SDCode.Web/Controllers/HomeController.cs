@@ -88,7 +88,7 @@ namespace SDCode.Web.Controllers
             var epworthModel = new EpworthModel{ParticipantID = participantID, Reading = reading, TV = tv, PublicPlace = publicplace, PassengerCar = passengercar, Afternoon = afternoon, Talking = talking, Lunch = lunch, Traffic = traffic};
             epworthModels.Add(epworthModel);
             _epworthCsvFile.Write(epworthModels);
-            return View(new StanfordViewModel(participantID));
+            return View(new StanfordViewModel(participantID, Url.Action("EncodingInstructions")));
         }
 
         public IActionResult EncodingInstructions(string participantID, string stanford)

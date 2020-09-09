@@ -5,6 +5,8 @@ using Microsoft.Extensions.Logging;
 using SDCode.Web.Models;
 using SDCode.Web.Classes;
 using System.IO;
+using System.Reflection;
+using System;
 
 namespace SDCode.Web.Controllers
 {
@@ -21,8 +23,10 @@ namespace SDCode.Web.Controllers
         private readonly ITestNameGetter _testNameGetter;
         private readonly IImageContextGetter _imageContextGetter;
         private readonly IProgressGetter _progressGetter;
+        private readonly ICsvFile<StanfordModel, StanfordMap> _stanfordCsvFile;
+        private readonly IStanfordRepository _stanfordRepository;
 
-        public TestController(ILogger<TestController> logger, IImageIndexesGetter imageIndexesGetter, IStimuliImageUrlGetter stimuliImageUrlGetter, ICsvFile<TestSetsModel, TestSetsModel.Map> testSetsCsvFile, ITestSetsGetter testSetsGetter, INextImageGetter nextImageGetter, IImageCongruencyGetter imageCongruencyGetter, ICsvFile<ResponseDataModel, ResponseDataModel.Map> responseDataCsvFile, ITestNameGetter testNameGetter, IImageContextGetter imageContextGetter, IProgressGetter progressGetter)
+        public TestController(ILogger<TestController> logger, IImageIndexesGetter imageIndexesGetter, IStimuliImageUrlGetter stimuliImageUrlGetter, ICsvFile<TestSetsModel, TestSetsModel.Map> testSetsCsvFile, ITestSetsGetter testSetsGetter, INextImageGetter nextImageGetter, IImageCongruencyGetter imageCongruencyGetter, ICsvFile<ResponseDataModel, ResponseDataModel.Map> responseDataCsvFile, ITestNameGetter testNameGetter, IImageContextGetter imageContextGetter, IProgressGetter progressGetter, ICsvFile<StanfordModel, StanfordMap> stanfordCsvFile, IStanfordRepository stanfordRepository)
         {
             _logger = logger;
             _imageIndexesGetter = imageIndexesGetter;
@@ -35,14 +39,22 @@ namespace SDCode.Web.Controllers
             _testNameGetter = testNameGetter;
             _imageContextGetter = imageContextGetter;
             _progressGetter = progressGetter;
+            _stanfordCsvFile = stanfordCsvFile;
+            _stanfordRepository = stanfordRepository;
+        }
+
+        public IActionResult Stanford(string participantID)
+        {
+            return View("~/Views/Home/Stanford.cshtml", new StanfordViewModel(participantID, $"/{RouteData.Values["controller"]}"));
         }
 
         [HttpPost]
-        public IActionResult Index(string participantID)
+        public IActionResult Index(string participantID, string stanford)
         {
             var testSets = _testSetsGetter.Get(participantID);
             var progress = _progressGetter.Get(participantID);
             var testName = _testNameGetter.Get(testSets, progress);
+            _stanfordRepository.Save(participantID, testName, stanford);
             var viewModel = new TestIndexViewModel(participantID, progress, testName);
             return View(viewModel);
         }
