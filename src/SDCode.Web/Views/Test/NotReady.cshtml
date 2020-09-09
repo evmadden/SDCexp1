@@ -1,0 +1,15 @@
+﻿@model TestNotReadyViewModel
+@{
+    ViewData["Title"] = "Test Not Ready";
+}
+
+<div>TEST_NOT_READY_PLACEHOLDER</div>
+
+<div>
+    <form action="@Url.Action("Welcome", "Home")" method="POST">
+        <input type="hidden" name="participantID" value="@Model.ParticipantID" />
+        <div style="text-align: right;">
+            <input style="margin-right: 50px;" type="submit" value="GOTO_ORIENTATION_TEXT_PLACEHOLDER"/>
+        </div>
+    </form>
+</div>

@@ -52,8 +52,12 @@ namespace SDCode.Web.Controllers
             var progress = _progressGetter.Get(participantID);
             var testName = _testNameGetter.Get(testSets, progress);
             if (string.Equals(testName, nameof(testSets.Immediate))) {
-                var viewModel = new TestIndexViewModel(participantID, progress, testName);
-                result = View("Index", viewModel);
+                var stanford = _stanfordRepository.Get(participantID, testName);
+                if (string.IsNullOrWhiteSpace(stanford.Immediate)) {
+                    result = View("NotReady", new TestNotReadyViewModel(participantID));
+                } else {
+                    result = View("Index", new TestIndexViewModel(participantID, progress, testName));
+                }
             } else {
                 result = View("~/Views/Home/Stanford.cshtml", new StanfordViewModel(participantID, $"/{RouteData.Values["controller"]}"));
             }

@@ -33,9 +33,9 @@ namespace SDCode.Web.Controllers
         {
             return View();
         }
-        public IActionResult Welcome()
+        public IActionResult Welcome(string participantId)
         {
-            return View();
+            return View(new HomeWelcomeViewModel(participantId));
         }
        
         public IActionResult WelcomeBack()
@@ -43,14 +43,14 @@ namespace SDCode.Web.Controllers
             return View();
         }
        
-        public IActionResult ConsentInfo()
+        public IActionResult ConsentInfo(string participantID)
         {
-            return View();
+            return View(new HomeConsentInfoViewModel(participantID));
         }
 
-        public IActionResult ConsentAgreed()
+        public IActionResult ConsentAgreed(string participantID)
         {
-            return View();
+            return View(new HomeConsentAgreedViewModel(participantID));
         }
 
         public IActionResult Demographics(string participantID, bool infoSheet, bool withdraw, bool npsDisorder, bool adhd, bool headInjury, bool normalVision, bool visionProblems, bool altShifts, bool smoker, bool dataProtection, bool agreeParticipate)

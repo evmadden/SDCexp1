@@ -1,4 +1,5 @@
-﻿@{
+﻿@model HomeConsentInfoViewModel
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -75,6 +76,7 @@
 </div>
 <div id="formDiv">
     <form action="/Home/ConsentAgreed" method="POST"> 
+        <input type="hidden" name="participantID" value="@Model.ParticipantID" />
         <div style="text-align: right;">
             <input style="margin-right: 50px;" type="submit" value="Next"/>
         </div>
