@@ -1,4 +1,5 @@
 @model SDCode.Web.Models.TestIndexViewModel
+@using SDCode.Web.Classes;
 @{
     ViewData["Title"] = "Test";
 }
@@ -39,7 +40,8 @@
                         document.getElementById('imageViewer').style.display = 'none';
                         document.getElementById(`${response.testEnded.toLowerCase()}Ended`).style.display = 'block';
                     } else {
-                        feedbackElement.style.display = 'block'; // todo mlh show feedback value
+                        feedbackElement.innerText = `FEEDBACK_PLACEHOLDER: ${response.feedback ? 'CORRECT' : 'INCORRECT'}`;
+                        feedbackElement.style.display = 'block';
                         setTimeout(function () {
                             showImage(response.viewModel.imageUrl, response.viewModel.progress);
                         }, 1500); // todo mlh replace with plus sign duration
@@ -69,8 +71,8 @@
         };
         document.addEventListener('keyup', function(e) {
             const callback = {
-                "ArrowLeft"  : function() { onJudgement(1); },
-                "ArrowRight" : function() { onJudgement(2); },
+                "ArrowLeft"  : function() { onJudgement(@Judgements.Old); },
+                "ArrowRight" : function() { onJudgement(@Judgements.New); },
                 "1" : function() { onConfidence(1); },
                 "2" : function() { onConfidence(2); },
                 "3" : function() { onConfidence(3); },

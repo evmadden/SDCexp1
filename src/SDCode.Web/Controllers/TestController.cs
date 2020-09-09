@@ -25,8 +25,9 @@ namespace SDCode.Web.Controllers
         private readonly IProgressGetter _progressGetter;
         private readonly ICsvFile<StanfordModel, StanfordMap> _stanfordCsvFile;
         private readonly IStanfordRepository _stanfordRepository;
+        private readonly IResponseFeedbackGetter _responseFeedbackGetter;
 
-        public TestController(ILogger<TestController> logger, IImageIndexesGetter imageIndexesGetter, IStimuliImageUrlGetter stimuliImageUrlGetter, ICsvFile<TestSetsModel, TestSetsModel.Map> testSetsCsvFile, ITestSetsGetter testSetsGetter, INextImageGetter nextImageGetter, IImageCongruencyGetter imageCongruencyGetter, ICsvFile<ResponseDataModel, ResponseDataModel.Map> responseDataCsvFile, ITestNameGetter testNameGetter, IImageContextGetter imageContextGetter, IProgressGetter progressGetter, ICsvFile<StanfordModel, StanfordMap> stanfordCsvFile, IStanfordRepository stanfordRepository)
+        public TestController(ILogger<TestController> logger, IImageIndexesGetter imageIndexesGetter, IStimuliImageUrlGetter stimuliImageUrlGetter, ICsvFile<TestSetsModel, TestSetsModel.Map> testSetsCsvFile, ITestSetsGetter testSetsGetter, INextImageGetter nextImageGetter, IImageCongruencyGetter imageCongruencyGetter, ICsvFile<ResponseDataModel, ResponseDataModel.Map> responseDataCsvFile, ITestNameGetter testNameGetter, IImageContextGetter imageContextGetter, IProgressGetter progressGetter, ICsvFile<StanfordModel, StanfordMap> stanfordCsvFile, IStanfordRepository stanfordRepository, IResponseFeedbackGetter responseFeedbackGetter)
         {
             _logger = logger;
             _imageIndexesGetter = imageIndexesGetter;
@@ -41,6 +42,7 @@ namespace SDCode.Web.Controllers
             _progressGetter = progressGetter;
             _stanfordCsvFile = stanfordCsvFile;
             _stanfordRepository = stanfordRepository;
+            _responseFeedbackGetter = responseFeedbackGetter;
         }
 
         public IActionResult Stanford(string participantID)
@@ -83,13 +85,15 @@ namespace SDCode.Web.Controllers
             var congruency = _imageCongruencyGetter.Get(seenViewModel.ImageUrl);
             var context = _imageContextGetter.Get(seenViewModel.ImageUrl);
             var responses = GetResponseDataCsvFile(participantID, seenTestName).Read().ToList();
-            responses.Insert(0, new ResponseDataModel{Image = Path.GetFileNameWithoutExtension(seenViewModel.ImageUrl), Congruency = congruency, Context = context, Judgement = judgement, Confidence = confidence, ReactionTime = reactionTime});
+            var imageName = Path.GetFileNameWithoutExtension(seenViewModel.ImageUrl);
+            var feedback = _responseFeedbackGetter.GetJudgementIsCorrect(imageName, judgement);
+            responses.Insert(0, new ResponseDataModel{Image = imageName, Congruency = congruency, Context = context, Judgement = judgement, Confidence = confidence, ReactionTime = reactionTime, Feedback = feedback});
             GetResponseDataCsvFile(participantID, seenTestName).Write(responses);
             int nextProgress = progress + 1;
             var nextTestName = _testNameGetter.Get(testSets, nextProgress);
             var testHasEnded = !string.Equals(seenTestName, nextTestName);
             var nextViewModel = GetViewModel(testSets, nextProgress);
-            return Json(new {TestEnded=testHasEnded ? seenTestName : null, ViewModel=nextViewModel});
+            return Json(new {TestEnded=testHasEnded ? seenTestName : null, feedback=feedback, ViewModel=nextViewModel});
         }
 
         private ICsvFile<ResponseDataModel, ResponseDataModel.Map> GetResponseDataCsvFile(string participantID, string testName) {

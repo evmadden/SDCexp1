@@ -17,6 +17,8 @@ namespace SDCode.Web.Models
         public int Confidence { get; set; }
         [Name(nameof(ReactionTime))]
         public long ReactionTime { get; set; }
+        [Name(nameof(Feedback))]
+        public bool Feedback { get; set; }
 
         public sealed class Map : ClassMap<ResponseDataModel>
         {
@@ -28,6 +30,7 @@ namespace SDCode.Web.Models
                 Map(m => m.Judgement).Name(nameof(Judgement));
                 Map(m => m.Confidence).Name(nameof(Confidence));
                 Map(m => m.ReactionTime).Name(nameof(ReactionTime));
+                Map(m => m.Feedback).Name(nameof(Feedback));
             }
         }
     }
