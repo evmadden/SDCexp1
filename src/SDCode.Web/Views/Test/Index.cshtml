@@ -1,4 +1,4 @@
-@model SDCode.Web.Models.TestImmediateViewModel
+@model SDCode.Web.Models.TestIndexViewModel
 @{
     ViewData["Title"] = "Test";
 }
@@ -10,12 +10,16 @@
 <script>
     document.addEventListener("DOMContentLoaded", function(){
         var imageElement = document.getElementById('image');
+        var confidenceElement = document.getElementById('confidence');
+        var feedbackElement = document.getElementById('feedback');
         var imageMessageElement = document.getElementById('imageMessage');
+        var welcomeContainerElement = document.getElementById('welcomeContainer');
         var imageJudgement;
         var imageConfidence;
         var imageShownAt;
         var imageShownDuration;
         var showImage = function(url, progress) {
+            feedbackElement.style.display = 'none';
             imageElement.setAttribute('data-progress', progress);
             imageElement.src = url;
             imageMessageElement.innerText = 'REACT_HOWTO_PLACEHOLDER_TEXT';
@@ -28,14 +32,17 @@
             var xhr = new XMLHttpRequest();
             xhr.open("POST", '@Url.Action("ResponseData")', true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.onreadystatechange = function() {
+            xhr.onreadystatechange = function() { // todo mlh what to show to user during network latency?
                 if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
                     var response = JSON.parse(this.response);
                     if (response.testEnded) {
                         document.getElementById('imageViewer').style.display = 'none';
                         document.getElementById(`${response.testEnded.toLowerCase()}Ended`).style.display = 'block';
                     } else {
-                        showImage(response.viewModel.imageUrl, response.viewModel.progress);
+                        feedbackElement.style.display = 'block'; // todo mlh show feedback value
+                        setTimeout(function () {
+                            showImage(response.viewModel.imageUrl, response.viewModel.progress);
+                        }, 1500); // todo mlh replace with plus sign duration
                     }
                 }
             }
@@ -45,20 +52,22 @@
         imageElement.onload = function() { 
             imageElement.style.display = 'block';
         };
-        showImage('@Model.ImageUrl', @Model.Progress)
         var onJudgement = function(judgement) {
             imageJudgement = judgement;
             imageReactionTime = new Date().getTime() - imageShownAt;
-            imageMessageElement.innerText = 'CONFIDENCE_HOWTO_PLACEHOLDER_TEXT';
+            imageMessageElement.innerText = 'CONFIDENCE_HOWTO_PLACEHOLDER_TEXT'; // todo mlh replace image visual with confidence prompt
             imageMessageElement.style.display = 'block';
+            imageElement.style.display = 'none';
+            confidenceElement.style.display = 'block';
         };
         var onConfidence = function(confidence) {
+            confidenceElement.style.display = 'none';
+            imageMessageElement.style.display = 'none';
             imageMessageElement.innerText = '';
             imageConfidence = confidence;
             sendResponse();
         };
         document.addEventListener('keyup', function(e) {
-            debugger;
             const callback = {
                 "ArrowLeft"  : function() { onJudgement(1); },
                 "ArrowRight" : function() { onJudgement(2); },
@@ -69,20 +78,37 @@
             }[e.key]
             callback?.();
         });
+        document.getElementById('startButton').addEventListener('click', function(){
+            welcomeContainerElement.style.display = 'none';
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", '@Url.Action("GetImage")', true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function() { // todo mlh what to show to user during network latency?
+                if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+                    var response = JSON.parse(this.response);
+                    showImage(response.viewModel.imageUrl, response.viewModel.progress);
+                }
+            }
+            xhr.send(`participantID=@Model.ParticipantID&progress=@Model.Progress`);
+        });
+        document.getElementById('@(Model.TestName.ToLower())Welcome').style.display = 'block';
+        welcomeContainerElement.style.display = 'block';
     });
 </script>
+<div id="welcomeContainer" style="display: none;">
+    <div id="immediateWelcome" style="display: none;">IMMEDIATE_WELCOME_PLACEHOLDER</div>
+    <div id="delayedWelcome" style="display: none;">DELAYED_WELCOME_PLACEHOLDER</div>
+    <div id="followupWelcome" style="display: none;">FOLLOWUP_WELCOME_PLACEHOLDER</div>
+    <div><button id="startButton">START_BUTTON_TEXT_PLACEHOLDER</button></div>
+</div>
 <div id="imageViewer" style="vertical-align: top; text-align: center;">
     <img id="image" style="display: none; width: 800px; height: 700px;"/>
+    <div id="confidence" style="display: none; width: 800px; height: 700px;">CONFIDENCE_QUESTION_PLACEHOLDER</div>
+    <div id="feedback" style="display: none; width: 800px; height: 700px;">FEEDBACK_PLACEHOLDER</div>
     <div id="imageMessage"></div>
 </div>
 <div>
     <div id="immediateEnded" style="display: none;">IMMEDIATE_FINISHED_PLACEHOLDER</div>
     <div id="delayedEnded" style="display: none;">DELAYED_FINISHED_PLACEHOLDER</div>
     <div id="followupEnded" style="display: none;">FOLLOWUP_FINISHED_PLACEHOLDER</div>
-</div>
-
-<div id="formDiv">
-    <form action="/Test/Finished" method="post"> 
-        <input type="hidden" name="participantID" value="@Model.ParticipantID" />
-    </form>
 </div>

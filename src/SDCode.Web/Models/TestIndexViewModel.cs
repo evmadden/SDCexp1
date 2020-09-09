@@ -2,17 +2,17 @@ using System;
 
 namespace SDCode.Web.Models
 {
-    public class TestImmediateViewModel
+    public class TestIndexViewModel
     {
-        public TestImmediateViewModel(string participantID, int progress, string imageUrl)
+        public TestIndexViewModel(string participantID, int progress, string testName)
         {
             ParticipantID = participantID;
             Progress = progress;
-            ImageUrl = imageUrl;
+            TestName = testName;
         }
 
         public string ParticipantID {get;}
         public int Progress { get; }
-        public string ImageUrl { get; }
+        public string TestName { get; }
     }
 }

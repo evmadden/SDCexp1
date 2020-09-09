@@ -41,6 +41,8 @@ namespace SDCode.Web
             services.AddScoped<ICsvFile<ResponseDataModel, ResponseDataModel.Map>, CsvFile<ResponseDataModel, ResponseDataModel.Map>>();
             services.AddScoped<ITestNameGetter, TestNameGetter>();
             services.AddScoped<IImageContextGetter, ImageContextGetter>();
+            services.AddScoped<IResponseDataCsvFileGetter, ResponseDataCsvFileGetter>();
+            services.AddScoped<IProgressGetter, ProgressGetter>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
