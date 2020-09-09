@@ -33,6 +33,16 @@ namespace SDCode.Web.Controllers
         {
             return View();
         }
+        public IActionResult Welcome()
+        {
+            return View();
+        }
+       
+        public IActionResult WelcomeBack()
+        {
+            return View();
+        }
+       
         public IActionResult ConsentInfo()
         {
             return View();
@@ -53,13 +63,6 @@ namespace SDCode.Web.Controllers
             _consentCsvFile.Write(consentModels);
             return View(new DemographicsViewModel(participantID));
         }
-
-       /* public IActionResult Demographics(string consent, string withdraw)
-        {
-            DemographicsViewModel demographicsViewModel=new DemographicsViewModel();
-            demographicsViewModel.Consent=consent;
-            return View(demographicsViewModel);
-        }*/
 
         public IActionResult PSQI(string participantID, string sex, string age, string yearStudy, string handed, string impairments, string glasses, string langauge, string bilingual, string currentCountry, string bed, string wake, string latency, string tst)
         {

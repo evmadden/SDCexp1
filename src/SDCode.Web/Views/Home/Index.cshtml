@@ -1,40 +1,33 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
 }
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var buttons = document.getElementsByClassName('firstPageButton');
+        for (var i=0;i<buttons.length; i++) {
+            buttons[i].addEventListener('click', function(){
+                var button = this;
+                var url = button.getAttribute('data-url');
+                location.href = url;
+            });
+        }
+    });
+</script>
 
 <div class="text-center">
     <div style="background-color: Darkcyan;">  
         <img src="/img/Logo.png"style="width:300px;height:150px;"/> <!-- https://www.york.ac.uk/staff/external-relations/brand/logo/ -->
     </div>
 </div>
-<div class="text-center">
-    <h1 class="display-4">Welcome to the Sleep and Decontextualization Study</h1>
-    <br/>
-</div>
+<div>FIRST_PAGE_TEXT_PLACEHOLDER</div>
 
-<div class="text-left">
-    <div style="alight-justify">
-        <p>Thank you for your interest in our study.<br/>
-        <br/>
-        In this experiment, we are looking at memory for objects within scenes.  
-        <br/>
-        There are four (4) parts to this experiment:  a study phase and three (3) testing phases.  
-        In the study phase, you will see a series of images.  In the test phases,
-        you will be asked to indicate whether the image being shown is old or new.<br/>
-        <br/>
-        Please note, this study requires participation across MULTIPLE days (today's session, one session tomorrow, 
-        and one final session 1-week from today).  Each session should last roughly one (1) hour. 
-        Please only agree to take part if you are prepared to fully commit to all of the 
-        experimental sessions.<br/>
-        <br/>
-        If you wish to take part in the study, please click the button below to view the informed consent form and to continue.</p>
+<div id="buttonsRow" class="row">
+    <div class="col-md firstPageButton" data-url="@Url.Action("Welcome")">
+        <div>New User</div>
+    </div>
+    <div class="col-md firstPageButton" data-url="@Url.Action("WelcomeBack")">
+        <div>Returning User</div>
     </div>
 </div>
 
-<div id="formDiv">
-    <form action="/Home/ConsentInfo"> 
-        <div style="text-align: right;">
-            <input style="margin-right: 50px;" type="submit" value="Next"/>
-        </div>
-    </form>
-     </div>

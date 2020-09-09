@@ -77,3 +77,16 @@ input[type="radio"] {
 /*input:required{
   border: 1px dashed red;
 }*/
+
+.firstPageButton {
+  vertical-align: middle;
+  text-align: center;
+}
+
+.firstPageButton div {
+  border: 5px dashed black;
+  margin: 50px;
+  padding: 50px;
+  cursor: pointer;
+  font-size: xx-large;
+}

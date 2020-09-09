@@ -37,6 +37,7 @@ namespace SDCode.Web.Controllers
             _progressGetter = progressGetter;
         }
 
+        [HttpPost]
         public IActionResult Index(string participantID)
         {
             var testSets = _testSetsGetter.Get(participantID);
