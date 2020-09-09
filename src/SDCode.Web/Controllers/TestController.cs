@@ -47,7 +47,17 @@ namespace SDCode.Web.Controllers
 
         public IActionResult Stanford(string participantID)
         {
-            return View("~/Views/Home/Stanford.cshtml", new StanfordViewModel(participantID, $"/{RouteData.Values["controller"]}"));
+            IActionResult result = null;
+            var testSets = _testSetsGetter.Get(participantID);
+            var progress = _progressGetter.Get(participantID);
+            var testName = _testNameGetter.Get(testSets, progress);
+            if (string.Equals(testName, nameof(testSets.Immediate))) {
+                var viewModel = new TestIndexViewModel(participantID, progress, testName);
+                result = View("Index", viewModel);
+            } else {
+                result = View("~/Views/Home/Stanford.cshtml", new StanfordViewModel(participantID, $"/{RouteData.Values["controller"]}"));
+            }
+            return result;
         }
 
         [HttpPost]
