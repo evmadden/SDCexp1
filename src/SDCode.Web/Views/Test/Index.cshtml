@@ -98,9 +98,9 @@
     });
 </script>
 <div id="welcomeContainer" style="display: none;">
-    <div id="immediateWelcome" style="display: none;">IMMEDIATE_WELCOME_PLACEHOLDER</div>
-    <div id="delayedWelcome" style="display: none;">DELAYED_WELCOME_PLACEHOLDER</div>
-    <div id="followupWelcome" style="display: none;">FOLLOWUP_WELCOME_PLACEHOLDER</div>
+    <div id="immediateWelcome" style="display: none;">@await Html.PartialAsync("WelcomeImmediate")</div>
+    <div id="delayedWelcome" style="display: none;">@await Html.PartialAsync("WelcomeDelayed")</div>
+    <div id="followupWelcome" style="display: none;">@await Html.PartialAsync("WelcomeFollowup")</div>
     <div><button id="startButton">START_BUTTON_TEXT_PLACEHOLDER</button></div>
 </div>
 <div id="imageViewer" style="vertical-align: top; text-align: center;">
