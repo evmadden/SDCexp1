@@ -3,8 +3,11 @@
     ViewData["Title"] = "Test Not Ready";
 }
 
-<div>TEST_NOT_READY_PLACEHOLDER</div>
-
+<div class="text-align: left">
+    <p>It looks like you are trying to access the study outside of the testing hours.  
+        Please return to this link at the time designated in your email or contact the researcher if
+        you belive this is an error.
+        </p>
 <div>
     <form action="@Url.Action("Welcome", "Home")" method="POST">
         <input type="hidden" name="participantID" value="@Model.ParticipantID" />
