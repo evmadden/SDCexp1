@@ -25,7 +25,9 @@ namespace SDCode.Web.Controllers
 
         public IActionResult Index(string participantID)
         {
-            var imageIndexes = _imageIndexesGetter.Get(new List<string>{"A", "A", "AI", "AI", "B", "BI", "C", "CI", "F", "F", "FI", "FI"});
+            var imageTypes = new List<string> { "A", "A", "AI", "AI", "B", "BI", "C", "CI", "F", "F", "FI", "FI" };
+            var imageIndexesRequests = imageTypes.Select(x=>new ImageIndexesRequest(x, 36));
+            var imageIndexes = _imageIndexesGetter.Get(imageIndexesRequests);
             var imageUrls = _stimuliImageUrlGetter.Get(imageIndexes);
             var viewModel = new EncodingIndexViewModel(participantID, imageUrls);
             return View(viewModel);

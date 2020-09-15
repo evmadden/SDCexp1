@@ -6,32 +6,41 @@ namespace SDCode.Web.Classes
 {
     public interface IImageIndexesGetter
     {
-        IEnumerable<string> Get(IEnumerable<string> imageSetTypes);
+        IEnumerable<string> Get(IEnumerable<ImageIndexesRequest> imageSetTypes);
     }
 
     public class ImageIndexesGetter : IImageIndexesGetter
     {
-        public IEnumerable<string> Get(IEnumerable<string> imageSetTypes)
+        private ICollectionRandomizer _collectionRandomizer;
+
+        public ImageIndexesGetter(ICollectionRandomizer collectionRandomizer)
         {
-            var result = new List<string>();
-            foreach (var imageSetType in imageSetTypes)
-            {
-                var randomizedSet = Randomize(Enumerable.Range(1, 36)); // randomized 1 through 36
-                var randomizedTypeIndexes = randomizedSet.Select(index => $"{imageSetType}{index}"); // randomized indexes, but with type letter prepended
-                result.AddRange(randomizedTypeIndexes); // add type-prepended indexes to result
-            }
-            result = Randomize(result).ToList(); // randomize final result
-            return result;
+            _collectionRandomizer = collectionRandomizer;
         }
 
-        private IEnumerable<T> Randomize<T>(IEnumerable<T> elements)
+        public IEnumerable<string> Get(IEnumerable<ImageIndexesRequest> requests)
         {
-            var random = new Random();
-            var result = elements
-                .Select(i => new { key = random.Next(), i })
-                .OrderBy(tmp => tmp.key)
-                .Select(tmp => tmp.i);
+            var result = new List<string>();
+            foreach (var request in requests)
+            {
+                var numerals = Enumerable.Range(1, request.Count); // 1 through request.Count
+                var typeIndexes = numerals.Select(index => $"{request.Type}{index}"); // numerals, but with type letter prepended
+                result.AddRange(typeIndexes); // add type-prepended indexes to result
+            }
+            result = _collectionRandomizer.Randomize(result).ToList(); // randomize final result
             return result;
         }
+    }
+
+    public class ImageIndexesRequest
+    {
+        public ImageIndexesRequest(string type, int count)
+        {
+            Type = type;
+            Count = count;
+        }
+
+        public string Type { get; }
+        public int Count { get; }
     }
 }
