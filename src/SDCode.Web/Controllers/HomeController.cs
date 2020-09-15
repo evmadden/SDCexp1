@@ -55,10 +55,10 @@ namespace SDCode.Web.Controllers
 
         public IActionResult Demographics(string participantID, bool infoSheet, bool withdraw, bool npsDisorder, bool adhd, bool headInjury, bool normalVision, bool visionProblems, bool altShifts, bool smoker, bool dataProtection, bool agreeParticipate)
         {
-            Debug.WriteLine("infoSheet");
-            Debug.WriteLine(infoSheet);
+            Debug.WriteLine("infoSheet"); // todo mlh remove unnecessary debug
+            Debug.WriteLine(infoSheet); // todo mlh remove unnecessary debug
             var consentModels = new List<ConsentModel>();
-            var consentModel = new ConsentModel{ParticipantID = participantID, InfoSheet = infoSheet, Withdraw = withdraw, NPSDisorder = npsDisorder, ADHD = adhd, HeadInjury = headInjury, NormalVision = normalVision, VisionProblems = visionProblems, AltShifts = altShifts, Smoker = smoker, DataProtection = dataProtection, AgreeParticipate = agreeParticipate};
+            var consentModel = new ConsentModel{ID = participantID, InfoSheet = infoSheet, Withdraw = withdraw, NPSDisorder = npsDisorder, ADHD = adhd, HeadInjury = headInjury, NormalVision = normalVision, VisionProblems = visionProblems, AltShifts = altShifts, Smoker = smoker, DataProtection = dataProtection, AgreeParticipate = agreeParticipate};
             consentModels.Add(consentModel);
             _consentCsvFile.Write(consentModels);
             return View(new DemographicsViewModel(participantID));

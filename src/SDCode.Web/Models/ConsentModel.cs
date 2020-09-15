@@ -5,8 +5,8 @@ namespace SDCode.Web.Models
 {
     public class ConsentModel
     {
-        [Name(nameof(ParticipantID))]
-        public string ParticipantID { get; set; }
+        [Name(nameof(ID))]
+        public string ID { get; set; }
         [Name(nameof(InfoSheet))]
         public bool InfoSheet { get; set; }
         [Name(nameof(Withdraw))]
@@ -35,7 +35,7 @@ namespace SDCode.Web.Models
     {
         public ConsentMap()
         {
-            Map(m => m.ParticipantID).Name(nameof(ConsentModel.ParticipantID));
+            Map(m => m.ID).Name(nameof(ConsentModel.ID));
             Map(m => m.InfoSheet).Name(nameof(ConsentModel.InfoSheet));
             Map(m => m.Withdraw).Name(nameof(ConsentModel.Withdraw));
             Map(m => m.NPSDisorder).Name(nameof(ConsentModel.NPSDisorder));

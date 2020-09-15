@@ -25,7 +25,9 @@ namespace SDCode.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            services.AddControllersWithViews(options=>{
+                options.Filters.Add<ParticipantVerifyFilter>();
+            }).AddRazorRuntimeCompilation();
             services.AddScoped<ICsvFile<HolidayModel, HolidayMap>, CsvFile<HolidayModel, HolidayMap>>();
             services.AddScoped<ICsvFile<ConsentModel, ConsentMap>, CsvFile<ConsentModel, ConsentMap>>();
             services.AddScoped<ICsvFile<DemographicsModel, DemographicsMap>, CsvFile<DemographicsModel, DemographicsMap>>();
