@@ -14,7 +14,6 @@
         var confidenceElement = document.getElementById('confidence');
         var feedbackElement = document.getElementById('feedback');
         var imageMessageElement = document.getElementById('imageMessage');
-        var welcomeContainerElement = document.getElementById('welcomeContainer');
         var imageJudgement;
         var imageConfidence;
         var imageShownAt;
@@ -24,6 +23,7 @@
             imageElement.setAttribute('data-progress', progress);
             imageElement.src = url;
             imageMessageElement.innerText = 'REACT_HOWTO_PLACEHOLDER_TEXT';
+            imageMessageElement.style.display = 'block';
             imageJudgement = null;
             imageConfidence = null;
             imageShownAt = new Date().getTime();
@@ -80,8 +80,7 @@
             }[e.key]
             callback?.();
         });
-        document.getElementById('startButton').addEventListener('click', function(){
-            welcomeContainerElement.style.display = 'none';
+        var showFirstImage = function() {
             var xhr = new XMLHttpRequest();
             xhr.open("POST", '@Url.Action("GetImage")', true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -91,18 +90,11 @@
                     showImage(response.viewModel.imageUrl, response.viewModel.progress);
                 }
             }
-            xhr.send(`participantID=@Model.ParticipantID&progress=@Model.Progress`);
-        });
-        document.getElementById('@(Model.TestName.ToLower())Welcome').style.display = 'block';
-        welcomeContainerElement.style.display = 'block';
+            xhr.send(`participantID=@Model.ParticipantID&progress=@Model.Progress`);            
+        };
+        showFirstImage();
     });
 </script>
-<div id="welcomeContainer" style="display: none;">
-    <div id="immediateWelcome" style="display: none;">@await Html.PartialAsync("WelcomeImmediate")</div>
-    <div id="delayedWelcome" style="display: none;">@await Html.PartialAsync("WelcomeDelayed")</div>
-    <div id="followupWelcome" style="display: none;">@await Html.PartialAsync("WelcomeFollowup")</div>
-    <div><button id="startButton">START_BUTTON_TEXT_PLACEHOLDER</button></div>
-</div>
 <div id="imageViewer" style="vertical-align: top; text-align: center;">
     <img id="image" style="display: none; width: 800px; height: 700px;"/>
     <div id="confidence" style="display: none; width: 800px; height: 700px;">CONFIDENCE_QUESTION_PLACEHOLDER</div>

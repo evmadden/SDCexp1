@@ -90,3 +90,7 @@ input[type="radio"] {
   cursor: pointer;
   font-size: xx-large;
 }
+
+.longSingleLine {
+  width: 300px;
+}

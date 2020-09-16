@@ -5,8 +5,7 @@ using Microsoft.Extensions.Logging;
 using SDCode.Web.Models;
 using SDCode.Web.Classes;
 using System.IO;
-using System.Reflection;
-using System;
+using System.Collections.Generic;
 
 namespace SDCode.Web.Controllers
 {
@@ -26,8 +25,10 @@ namespace SDCode.Web.Controllers
         private readonly ICsvFile<StanfordModel, StanfordMap> _stanfordCsvFile;
         private readonly IStanfordRepository _stanfordRepository;
         private readonly IResponseFeedbackGetter _responseFeedbackGetter;
+        private readonly ICsvFile<NeglectedModel, NeglectedModel.Map> _neglectedCsvFile;
 
-        public TestController(ILogger<TestController> logger, IImageIndexesGetter imageIndexesGetter, IStimuliImageUrlGetter stimuliImageUrlGetter, ICsvFile<TestSetsModel, TestSetsModel.Map> testSetsCsvFile, ITestSetsGetter testSetsGetter, INextImageGetter nextImageGetter, IImageCongruencyGetter imageCongruencyGetter, ICsvFile<ResponseDataModel, ResponseDataModel.Map> responseDataCsvFile, ITestNameGetter testNameGetter, IImageContextGetter imageContextGetter, IProgressGetter progressGetter, ICsvFile<StanfordModel, StanfordMap> stanfordCsvFile, IStanfordRepository stanfordRepository, IResponseFeedbackGetter responseFeedbackGetter)
+
+        public TestController(ILogger<TestController> logger, IImageIndexesGetter imageIndexesGetter, IStimuliImageUrlGetter stimuliImageUrlGetter, ICsvFile<TestSetsModel, TestSetsModel.Map> testSetsCsvFile, ITestSetsGetter testSetsGetter, INextImageGetter nextImageGetter, IImageCongruencyGetter imageCongruencyGetter, ICsvFile<ResponseDataModel, ResponseDataModel.Map> responseDataCsvFile, ITestNameGetter testNameGetter, IImageContextGetter imageContextGetter, IProgressGetter progressGetter, ICsvFile<StanfordModel, StanfordMap> stanfordCsvFile, IStanfordRepository stanfordRepository, IResponseFeedbackGetter responseFeedbackGetter, ICsvFile<NeglectedModel, NeglectedModel.Map> neglectedCsvFile)
         {
             _logger = logger;
             _imageIndexesGetter = imageIndexesGetter;
@@ -43,37 +44,52 @@ namespace SDCode.Web.Controllers
             _stanfordCsvFile = stanfordCsvFile;
             _stanfordRepository = stanfordRepository;
             _responseFeedbackGetter = responseFeedbackGetter;
-        }
-
-        public IActionResult Stanford(string participantID)
-        {
-            IActionResult result = null;
-            var testSets = _testSetsGetter.Get(participantID);
-            var progress = _progressGetter.Get(participantID);
-            var testName = _testNameGetter.Get(testSets, progress);
-            if (string.Equals(testName, nameof(testSets.Immediate))) {
-                var stanford = _stanfordRepository.Get(participantID, testName);
-                if (string.IsNullOrWhiteSpace(stanford.Immediate)) {
-                    result = View("NotReady", new TestNotReadyViewModel(participantID));
-                } else {
-                    result = View("Index", new TestIndexViewModel(participantID, progress, testName));
-                }
-            } else {
-                result = View("~/Views/Home/Stanford.cshtml", new StanfordViewModel(participantID, $"/{RouteData.Values["controller"]}"));
-            }
-            return result;
+            _neglectedCsvFile = neglectedCsvFile;
         }
 
         [HttpPost]
-        public IActionResult Index(string participantID, string stanford)
+        public IActionResult WelcomeBack(string participantID)
         {
             var testSets = _testSetsGetter.Get(participantID);
             var progress = _progressGetter.Get(participantID);
             var testName = _testNameGetter.Get(testSets, progress);
-            _stanfordRepository.Save(participantID, testName, stanford);
+            TestWelcomeBackAction action;
+            if (string.Equals(testName, nameof(testSets.Immediate))) {
+                var stanford = _stanfordRepository.Get(participantID, testName);
+                if (string.IsNullOrWhiteSpace(stanford.Immediate)) {
+                    action = TestWelcomeBackAction.NewUser;
+                } else {
+                    action = TestWelcomeBackAction.Test;
+                }
+            } else {
+                action = TestWelcomeBackAction.Stanford;
+            }
+            return View(new TestWelcomeBackViewModel(participantID, action, progress, testName));
+        }
+
+        [HttpPost]
+        public IActionResult Index(string participantID, string stanford, string neglectedIndexesCommaDelimited, string neglectedReason)
+        {
+            var neglectedIndexes = neglectedIndexesCommaDelimited?.Split(",").Select(int.Parse) ?? new List<int>();
+            if (neglectedIndexes.Any()) {
+                var neglectedRecords = _neglectedCsvFile.Read().ToList();
+                neglectedRecords.Add(new NeglectedModel{ParticipantID=participantID,Indexes=neglectedIndexes,Reason=neglectedReason});
+                _neglectedCsvFile.Write(neglectedRecords);
+            }
+            var testSets = _testSetsGetter.Get(participantID);
+            var progress = _progressGetter.Get(participantID);
+            var testName = _testNameGetter.Get(testSets, progress);
+            if (stanford != default && stanford != "skip") {
+                _stanfordRepository.Save(participantID, testName, stanford);
+            }
             var viewModel = new TestIndexViewModel(participantID, progress, testName);
             return View(viewModel);
         }
+
+        // todo mlh remove
+        // public IActionResult Answers(string participantID) {
+        //     return RedirectToAction("Index", "Test");
+        // }
 
         [HttpPost]
         public IActionResult GetImage(string participantID, int progress)
@@ -85,6 +101,7 @@ namespace SDCode.Web.Controllers
 
         [HttpPost]
         public IActionResult ResponseData(string participantID, int progress, int judgement, int confidence, long reactionTime) {
+            // todo mlh remove
             // 447_Immediate.csv
             // congruency (1 - congruent, 2 - incongruent), context (1 - no change, 2 - still in context, 3 - decontextualized, 4 - foil)
             // congruency:  1 = "x"    2 = "_I"

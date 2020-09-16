@@ -1,10 +1,8 @@
-using System;
-
 namespace SDCode.Web.Models
 {
-    public class StanfordViewModel
+    public class TestStanfordViewModel
     {
-        public StanfordViewModel(string participantID)
+        public TestStanfordViewModel(string participantID)
         {
             ParticipantID = participantID;
         }

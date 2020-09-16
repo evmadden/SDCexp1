@@ -17,7 +17,7 @@ namespace SDCode.Web.Classes
             {
                 if (progress >= testSets.Immediate.Count() + testSets.Delayed.Count())
                 {
-                    result = nameof(testSets.Followup);
+                    result = progress >= testSets.Immediate.Count() + testSets.Delayed.Count() + testSets.Followup.Count() ? null : nameof(testSets.Followup);
                 }
                 else
                 {

@@ -33,7 +33,7 @@ namespace SDCode.Web.Controllers
             return View(viewModel);
         }
 
-        public IActionResult Finished(string participantID)
+        public IActionResult Finished(string participantID, string neglectedIndexesCommaDelimited)
         {
             // 447_Immediate.csv  testResponseData
             // congruency (1 - congruent, 2 - incongruent), context (1 - no change, 2 - still in context, 3 - decontextualized, 4 - foil), old/new judgment, reaction time, confidence rating
@@ -48,8 +48,8 @@ namespace SDCode.Web.Controllers
 
             // immediate delayed followup
 
-            var viewModel = new EncodingFinishedViewModel(participantID);
-            return View(viewModel);
+            var neglectedIndexes = neglectedIndexesCommaDelimited?.Split(",").Select(int.Parse) ?? new List<int>();
+            return View(new EncodingFinishedViewModel(participantID, neglectedIndexes));
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

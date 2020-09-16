@@ -17,21 +17,17 @@
             }
         }
 
-        //-- usage --//
         preload(@Html.Raw(string.Join(",", Model.ImageUrls.Select(x=>$"\"{x}\""))));
 
         var imageElement = document.getElementById('image');
         var numberElement = document.getElementById('number');
+        var neglectedIndexesElement = document.getElementById('neglectedIndexesCommaDelimited');
         var imageDisplayDurationInMilliseconds = 3000;
         var plusSignDisplayDurationInMilliseconds = 1500;
         var numberDisplayProbabilityPercentage = 10;
         var numberCheckIntervalInMilliseconds = 100;
         var spacebarDetected = false;
-        var numberDisplayThresholdInMilliseconds = 5000;
-
-        var endTheTest = function(reason) {
-            alert('Test finished.\n\nReason:\n\n'+reason);
-        }
+        var numberDisplayThresholdInMilliseconds = 60000;
 
         var showFinishedMessage = function() {
             document.getElementsByTagName('form')[0].submit();
@@ -63,7 +59,8 @@
             var checkOnTheNumber = function() {
                 timeSinceNumberDisplayedInMilliseconds = timeSinceNumberDisplayedInMilliseconds + numberCheckIntervalInMilliseconds;
                 if (timeSinceNumberDisplayedInMilliseconds > numberDisplayThresholdInMilliseconds) {
-                    endTheTest('Number displayed too long');
+                    neglectedIndexesElement.value = neglectedIndexesElement.value + (neglectedIndexesElement.value.length > 0 ? ',' : '') + imageIndex;
+                    showPlusSign();
                 } else if (spacebarDetected) {
                     showPlusSign();
                 } else {
@@ -110,7 +107,8 @@
 
 
 <div id="formDiv">
-    <form action="/Encoding/Finished"> 
+    <form action="/Encoding/Finished" method="POST"> 
         <input type="hidden" name="participantID" value="@Model.ParticipantID" />
+        <input type="hidden" id="neglectedIndexesCommaDelimited" name="neglectedIndexesCommaDelimited" value="" />
     </form>
 </div>

@@ -48,6 +48,7 @@ namespace SDCode.Web
             services.AddScoped<IStanfordRepository, StanfordRepository>();
             services.AddScoped<IResponseFeedbackGetter, ResponseFeedbackGetter>();
             services.AddScoped<ICollectionRandomizer, CollectionRandomizer>();
+            services.AddScoped<ICsvFile<NeglectedModel, NeglectedModel.Map>, CsvFile<NeglectedModel, NeglectedModel.Map>>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

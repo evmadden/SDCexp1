@@ -1,6 +1,6 @@
 ﻿@model EncodingFinishedViewModel
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Finished";
 }
 
 <div class="text-right">
@@ -9,10 +9,26 @@
     </div>
 </div>
 
-<div class="text-align: left">
+    <form action="/Test" method="POST">
+        <input type="hidden" name="participantID" value="@Model.ParticipantID" />
+        <input type="hidden" name="neglectedIndexesCommaDelimited" value="@string.Join(",", Model.NeglectedIndexes)" />
+        <input type="hidden" name="stanford" value="skip" />
+
     <h1 class="display-4; text-center;">Study Phase Finished</h1>
     <br/>
     <p>This completes the STUDY PHASE.</p>
+    @if (Model.NeglectedIndexes.Any()) {
+        <div>
+            <div class="text-align: left">
+                <h1 class="display-4; text-center;">Questions</h1>
+                <br/>
+                <p>QUESTIONS_PLACEHOLDER</p>
+            </div>
+            <div>
+                Why were images neglected? <input type="text" name="neglectedReason" class="longSingleLine" required />
+            </div>
+        </div>
+    }
     <br/>
     <p>Next, we will test your memory for some of the images you saw in the STUDY phase.  In this session, you will see 288 images.
         Your task is to indicate whether each image is "old" or "new".  You will also be asked to rate how confident you are in each response
@@ -33,11 +49,7 @@
     <p>Press the Next" button to start to the TEST PHASE.</p>
 </div>
 </div>
-<div id="formDiv">
-    <form action="/Test/Immediate">
-        <input type="hidden" name="participantID" value="@Model.ParticipantID" />
         <div style="text-align: right;">
             <input style="margin-right: 50px;" type="submit" value="Next"/>
         </div>
     </form>
-</div>
