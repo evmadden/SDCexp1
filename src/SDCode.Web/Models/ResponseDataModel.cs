@@ -1,3 +1,4 @@
+using System;
 using CsvHelper.Configuration;
 using CsvHelper.Configuration.Attributes;
 
@@ -19,6 +20,8 @@ namespace SDCode.Web.Models
         public long ReactionTime { get; set; }
         [Name(nameof(Feedback))]
         public bool Feedback { get; set; }
+        [Name(nameof(WhenUtc))]
+        public DateTime WhenUtc { get; set; }
 
         public sealed class Map : ClassMap<ResponseDataModel>
         {
@@ -31,6 +34,7 @@ namespace SDCode.Web.Models
                 Map(m => m.Confidence).Name(nameof(Confidence));
                 Map(m => m.ReactionTime).Name(nameof(ReactionTime));
                 Map(m => m.Feedback).Name(nameof(Feedback));
+                Map(m => m.WhenUtc).Name(nameof(WhenUtc));
             }
         }
     }

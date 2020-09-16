@@ -43,7 +43,7 @@ namespace SDCode.Web.Classes
             return result;
         }
 
-        // todo mlh check Write references to make sure participants aren't being inappropriately duplicated across multiple records of same CSV
+        // todo mlh check Write references to make sure participants aren't being inappropriately duplicated among the multiple records within same CSV
         public void Write(IEnumerable<T> records)
         {
             using (StreamWriter sw = new StreamWriter(FilePath, false, new UTF8Encoding(true)))

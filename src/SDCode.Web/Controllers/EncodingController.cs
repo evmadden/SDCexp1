@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SDCode.Web.Models;
@@ -15,16 +13,19 @@ namespace SDCode.Web.Controllers
         private readonly ILogger<EncodingController> _logger;
         private readonly IImageIndexesGetter _imageIndexesGetter;
         private readonly IStimuliImageUrlGetter _stimuliImageUrlGetter;
+        private readonly IStanfordRepository _stanfordRepository;
 
-        public EncodingController(ILogger<EncodingController> logger, IImageIndexesGetter encodingPhaseImageIndexesGetter, IStimuliImageUrlGetter stimuliImageUrlGetter)
+        public EncodingController(ILogger<EncodingController> logger, IImageIndexesGetter encodingPhaseImageIndexesGetter, IStimuliImageUrlGetter stimuliImageUrlGetter, IStanfordRepository stanfordRepository)
         {
             _logger = logger;
             _imageIndexesGetter = encodingPhaseImageIndexesGetter;
             _stimuliImageUrlGetter = stimuliImageUrlGetter;
+            _stanfordRepository = stanfordRepository;
         }
 
-        public IActionResult Index(string participantID)
+        public IActionResult Index(string participantID, string stanford)
         {
+            _stanfordRepository.Save(participantID, "Immediate", stanford);
             var imageTypes = new List<string> { "A", "A", "AI", "AI", "B", "BI", "C", "CI", "F", "F", "FI", "FI" };
             var imageIndexesRequests = imageTypes.Select(x=>new ImageIndexesRequest(x, 36));
             var imageIndexes = _imageIndexesGetter.Get(imageIndexesRequests);

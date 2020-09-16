@@ -6,6 +6,7 @@ using SDCode.Web.Models;
 using SDCode.Web.Classes;
 using System.IO;
 using System.Collections.Generic;
+using System;
 
 namespace SDCode.Web.Controllers
 {
@@ -118,7 +119,7 @@ namespace SDCode.Web.Controllers
             var responses = GetResponseDataCsvFile(participantID, seenTestName).Read().ToList();
             var imageName = Path.GetFileNameWithoutExtension(seenViewModel.ImageUrl);
             var feedback = _responseFeedbackGetter.GetJudgementIsCorrect(imageName, judgement);
-            responses.Insert(0, new ResponseDataModel{Image = imageName, Congruency = congruency, Context = context, Judgement = judgement, Confidence = confidence, ReactionTime = reactionTime, Feedback = feedback});
+            responses.Insert(0, new ResponseDataModel{Image = imageName, Congruency = congruency, Context = context, Judgement = judgement, Confidence = confidence, ReactionTime = reactionTime, Feedback = feedback, WhenUtc = DateTime.UtcNow});
             GetResponseDataCsvFile(participantID, seenTestName).Write(responses);
             int nextProgress = progress + 1;
             var nextTestName = _testNameGetter.Get(testSets, nextProgress);
