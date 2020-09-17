@@ -55,6 +55,7 @@ namespace SDCode.Web.Controllers
             var progress = _progressGetter.Get(participantID);
             var testName = _testNameGetter.Get(testSets, progress);
             TestWelcomeBackAction action;
+            DateTime? nextTestWhenUtc = default;
             if (string.Equals(testName, nameof(testSets.Immediate))) {
                 var stanford = _stanfordRepository.Get(participantID, testName);
                 if (string.IsNullOrWhiteSpace(stanford.Immediate)) {
@@ -64,8 +65,20 @@ namespace SDCode.Web.Controllers
                 }
             } else {
                 action = TestWelcomeBackAction.Stanford;
+                var testStartDelayHourThresholds = new Dictionary<string, TimeSpan>() {{nameof(testSets.Delayed), Timespans.OneDay}, {nameof(testSets.Followup), Timespans.OneWeek}};
+                if (testStartDelayHourThresholds.ContainsKey(testName)) {
+                    var priorTestName = _testNameGetter.Get(testSets, progress-1);
+                    var priorTestResponsesCsvFile = GetResponseDataCsvFile(participantID, priorTestName);
+                    var priorTestResponses = priorTestResponsesCsvFile.Read();
+                    var priorTestStartTimeUtc = priorTestResponses.Select(x=>x.WhenUtc).DefaultIfEmpty().Min();
+                    var nextTestStartTimeThresholdUtc = priorTestStartTimeUtc + testStartDelayHourThresholds[testName];
+                    if (nextTestStartTimeThresholdUtc > DateTime.UtcNow) {
+                        action = TestWelcomeBackAction.Wait;
+                        nextTestWhenUtc = nextTestStartTimeThresholdUtc;
+                    }
+                }
             }
-            return View(new TestWelcomeBackViewModel(participantID, action, progress, testName));
+            return View(new TestWelcomeBackViewModel(participantID, action, progress, testName, nextTestWhenUtc));
         }
 
         [HttpPost]

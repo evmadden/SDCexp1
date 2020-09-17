@@ -3,6 +3,7 @@
     public enum TestWelcomeBackAction {
         NewUser,
         Stanford,
-        Test
+        Test,
+        Wait
     }
 }

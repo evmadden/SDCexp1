@@ -14,6 +14,16 @@
             <input style="margin-right: 50px;" type="submit" value="GOTO_NEW_USER_TEXT_PLACEHOLDER"/>
         </div>
     </form>
+} else if (Model.Action == TestWelcomeBackAction.Wait) {
+    <div>
+        MUST_WAIT_BEFORE_TAKING_NEXT_TEST_PLACEHOLDER
+    </div>
+    <div>
+        @{
+            var whenToDisplay = @Model.NextTestWhenUtc?.AddMinutes(1);
+        }
+        Test available at: @whenToDisplay?.ToString("MM/dd/yyyy") @whenToDisplay?.ToString("h:mm tt") UTC
+    </div>
 } else {
     @* todo mlh refactor this to new Partial so it re-uses views/home/stanford.cshtml instead of exactly duplicating it *@
   <form action="/Test/Index" method="POST">
