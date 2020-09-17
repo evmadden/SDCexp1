@@ -33,6 +33,7 @@
             document.getElementsByTagName('form')[0].submit();
         }
 
+        var canShowNumberNext;
         var imageIndex = 0;
         var showNextImage = function() {
             hideBothImageAndNumber();
@@ -41,6 +42,7 @@
             imageElement.style.display = 'block';
             imageIndex = imageIndex + 1;
             var whatToDo = imageIndex === images.length ? showFinishedMessage : showPlusSign;
+            canShowNumberNext = true;
             setTimeout(whatToDo, imageDisplayDurationInMilliseconds);
         };
 
@@ -67,6 +69,7 @@
                     setTimeout(checkOnTheNumber, numberCheckIntervalInMilliseconds);
                 }
             };
+            canShowNumberNext = false;
             setTimeout(checkOnTheNumber, numberCheckIntervalInMilliseconds);
         };
 
@@ -77,7 +80,7 @@
 
         var showNextImageOrNumber = function() {
             var randomNumber = getRandomInt(100);
-            var shouldShowNumber = randomNumber <= (numberDisplayProbabilityPercentage);
+            var shouldShowNumber = canShowNumberNext && randomNumber <= (numberDisplayProbabilityPercentage);
             var whatToDo = shouldShowNumber ? showNextNumber : showNextImage;
             whatToDo();
         };
@@ -93,8 +96,7 @@
             hideBothImageAndNumber();
             numberElement.innerText = '+';
             numberElement.style.display = 'block';
-            var whatToDo = imageIndex === 0 ? showNextImage : showNextImageOrNumber;
-            setTimeout(whatToDo, plusSignDisplayDurationInMilliseconds);
+            setTimeout(showNextImageOrNumber, plusSignDisplayDurationInMilliseconds);
         };
 
         showPlusSign();
