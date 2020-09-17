@@ -70,15 +70,17 @@
             sendResponse();
         };
         document.addEventListener('keyup', function(e) {
-            const callback = {
-                "ArrowLeft"  : function() { onJudgement(@Judgements.Old); },
-                "ArrowRight" : function() { onJudgement(@Judgements.New); },
-                "1" : function() { onConfidence(1); },
-                "2" : function() { onConfidence(2); },
-                "3" : function() { onConfidence(3); },
-                "4" : function() { onConfidence(4); }
-            }[e.key]
-            callback?.();
+            if (!(e.ctrlKey || e.altKey || e.shiftKey || e.metaKey)) {
+                const callback = {
+                    "ArrowLeft"  : function() { onJudgement(@Judgements.Old); },
+                    "ArrowRight" : function() { onJudgement(@Judgements.New); },
+                    "1" : function() { onConfidence(1); },
+                    "2" : function() { onConfidence(2); },
+                    "3" : function() { onConfidence(3); },
+                    "4" : function() { onConfidence(4); }
+                }[e.key];
+                callback?.();
+            }
         });
         var showFirstImage = function() {
             var xhr = new XMLHttpRequest();
