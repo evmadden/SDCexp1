@@ -1,8 +1,8 @@
 ﻿namespace SDCode.Web.Classes
 {
-    public static class Judgements
+    public enum Judgements
     {
-        public static readonly int Old = 0;
-        public static readonly int New = 1;
+        Old = 0,
+        New = 1
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using CsvHelper.Configuration;
 using CsvHelper.Configuration.Attributes;
+using SDCode.Web.Classes;
 
 namespace SDCode.Web.Models
 {
@@ -13,9 +14,9 @@ namespace SDCode.Web.Models
         [Name(nameof(Context))]
         public int Context { get; set; }
         [Name(nameof(Judgement))]
-        public int Judgement { get; set; }
+        public Judgements Judgement { get; set; }
         [Name(nameof(Confidence))]
-        public int Confidence { get; set; }
+        public Confidences Confidence { get; set; }
         [Name(nameof(ReactionTime))]
         public long ReactionTime { get; set; }
         [Name(nameof(Feedback))]
@@ -30,8 +31,8 @@ namespace SDCode.Web.Models
                 Map(m => m.Image).Name(nameof(Image));
                 Map(m => m.Congruency).Name(nameof(Congruency));
                 Map(m => m.Context).Name(nameof(Context));
-                Map(m => m.Judgement).Name(nameof(Judgement));
-                Map(m => m.Confidence).Name(nameof(Confidence));
+                Map(m => m.Judgement).Name(nameof(Judgement)).TypeConverter<CsvJudgementsConverter>();
+                Map(m => m.Confidence).Name(nameof(Confidence)).TypeConverter<CsvConfidencesConverter>();
                 Map(m => m.ReactionTime).Name(nameof(ReactionTime));
                 Map(m => m.Feedback).Name(nameof(Feedback));
                 Map(m => m.WhenUtc).Name(nameof(WhenUtc));

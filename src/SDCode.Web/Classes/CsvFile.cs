@@ -52,6 +52,8 @@ namespace SDCode.Web.Classes
                 cw.Configuration.TypeConverterCache.AddConverter<bool>(new CsvBooleanConverter()); // https://stackoverflow.com/a/63523529
                 cw.Configuration.TypeConverterCache.AddConverter<IEnumerable<string>>(new CsvStringsConverter()); // https://stackoverflow.com/a/63523529
                 cw.Configuration.TypeConverterCache.AddConverter<IEnumerable<int>>(new CsvIntegersConverter()); // https://stackoverflow.com/a/63523529
+                cw.Configuration.TypeConverterCache.AddConverter<Judgements>(new CsvJudgementsConverter()); // https://stackoverflow.com/a/63523529
+                cw.Configuration.TypeConverterCache.AddConverter<Confidences>(new CsvConfidencesConverter()); // https://stackoverflow.com/a/63523529
                 cw.WriteHeader<T>();
                 cw.NextRecord();
                 foreach (T record in records)
@@ -128,6 +130,38 @@ namespace SDCode.Web.Classes
         public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
         {
             return text.Split(",").AsEnumerable<string>().Select(int.Parse);
+        }
+    }
+
+    public class CsvJudgementsConverter : DefaultTypeConverter {
+        public override string ConvertToString(object value, IWriterRow row, MemberMapData memberMapData)
+        {
+            if ( value == null )
+            {
+                return string.Empty;
+            }
+            return $"{(int)(Judgements)value}";
+        }
+
+        public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
+        {
+            return (Judgements) Enum.Parse(typeof(Judgements), text);
+        }
+    }
+
+    public class CsvConfidencesConverter : DefaultTypeConverter {
+        public override string ConvertToString(object value, IWriterRow row, MemberMapData memberMapData)
+        {
+            if ( value == null )
+            {
+                return string.Empty;
+            }
+            return $"{(int)(Confidences)value}";
+        }
+
+        public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
+        {
+            return (Confidences) Enum.Parse(typeof(Confidences), text);
         }
     }
 }

@@ -114,7 +114,7 @@ namespace SDCode.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult ResponseData(string participantID, int progress, int judgement, int confidence, long reactionTime) {
+        public IActionResult ResponseData(string participantID, int progress, Judgements judgement, Confidences confidence, long reactionTime) {
             // todo mlh remove
             // 447_Immediate.csv
             // congruency (1 - congruent, 2 - incongruent), context (1 - no change, 2 - still in context, 3 - decontextualized, 4 - foil)

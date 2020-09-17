@@ -49,7 +49,7 @@
                 }
             }
             var progress = imageElement.getAttribute('data-progress');
-            xhr.send(`participantID=@Model.ParticipantID&progress=${progress}&judgement${imageJudgement}=&confidence=${imageConfidence}&reactionTime=${imageReactionTime}`);
+            xhr.send(`participantID=@Model.ParticipantID&progress=${progress}&judgement=${imageJudgement}&confidence=${imageConfidence}&reactionTime=${imageReactionTime}`);
         };
         imageElement.onload = function() { 
             imageElement.style.display = 'block';
@@ -72,12 +72,12 @@
         document.addEventListener('keyup', function(e) {
             if (!(e.ctrlKey || e.altKey || e.shiftKey || e.metaKey)) {
                 const callback = {
-                    "ArrowLeft"  : function() { onJudgement(@Judgements.Old); },
-                    "ArrowRight" : function() { onJudgement(@Judgements.New); },
-                    "1" : function() { onConfidence(1); },
-                    "2" : function() { onConfidence(2); },
-                    "3" : function() { onConfidence(3); },
-                    "4" : function() { onConfidence(4); }
+                    "ArrowLeft"  : function() { onJudgement(@((int)Judgements.Old)); },
+                    "ArrowRight" : function() { onJudgement(@((int)Judgements.New)); },
+                    "1" : function() { onConfidence(@((int)Confidences.NotConfident)); },
+                    "2" : function() { onConfidence(@((int)Confidences.LessConfident)); },
+                    "3" : function() { onConfidence(@((int)Confidences.MoreConfident)); },
+                    "4" : function() { onConfidence(@((int)Confidences.MostConfident)); }
                 }[e.key];
                 callback?.();
             }
