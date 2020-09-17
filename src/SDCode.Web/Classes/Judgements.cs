@@ -2,7 +2,7 @@
 {
     public static class Judgements
     {
-        public static int Old = 0;
-        public static int New = 1;
+        public static readonly int Old = 0;
+        public static readonly int New = 1;
     }
 }
