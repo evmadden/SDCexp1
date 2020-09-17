@@ -26,7 +26,8 @@
     </div>
 } else {
     @* todo mlh refactor this to new Partial so it re-uses views/home/stanford.cshtml instead of exactly duplicating it *@
-  <form action="/Test/Index" method="POST">
+  <form action="/ImageCheck" method="POST">
+    <input type="hidden" name="nextActionAfterImageCheck" value="@Url.Action("Index")" />
     <input type="hidden" name="participantID" value="@Model.ParticipantID" />
      <fieldset>
          @if (Model.Action == TestWelcomeBackAction.Stanford) {

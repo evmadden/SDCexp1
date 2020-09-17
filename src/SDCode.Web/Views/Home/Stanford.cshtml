@@ -1,6 +1,6 @@
 ﻿@model SDCode.Web.Models.StanfordViewModel
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Stanford";
 }
 
 <div class="text-right">
@@ -12,7 +12,8 @@
 <div class="text-align: left">
     <h1 class="display-4; text-center;">Stanford Sleepiness Scale</h1>
     <br/>
- <form action="/Encoding" method="POST">
+ <form action="/ImageCheck" method="POST">
+    <input type="hidden" name="nextActionAfterImageCheck" value="@Url.Action("Index", "Encoding")" />
     <input type="hidden" name="participantID" value="@Model.ParticipantID" />
      <fieldset>
          <legend>This is a quick way to assess how alert you are feeling CURRENTLY.<br/>

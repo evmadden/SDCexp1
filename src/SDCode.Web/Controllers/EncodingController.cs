@@ -30,7 +30,13 @@ namespace SDCode.Web.Controllers
             var imageIndexesRequests = imageTypes.Select(x=>new ImageIndexesRequest(x, 36));
             var imageIndexes = _imageIndexesGetter.Get(imageIndexesRequests);
             var imageUrls = _stimuliImageUrlGetter.Get(imageIndexes);
-            var viewModel = new EncodingIndexViewModel(participantID, imageUrls);
+            var viewModel = new EncodingIndexViewModel(participantID, imageUrls, stanford);
+            return View(viewModel);
+        }
+
+        // todo mlh remove outOfBoundsImageIndex if we're not going to use it
+        public IActionResult ImageOutOfBounds(string participantID, string stanford, int outOfBoundsImageIndex) {
+            var viewModel = new EncodingImageOutOfBoundsViewModel(participantID, stanford);
             return View(viewModel);
         }
 
