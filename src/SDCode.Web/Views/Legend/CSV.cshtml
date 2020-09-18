@@ -8,13 +8,28 @@
         margin-left: 10px;
     }
     div.codes {
+        margin-left: 30px;
+        color: lightgray;
+    }
+    div.codes:hover {
         color: gray;
     }
     div.codes span {
         margin-left: 5px;
     }
-    div.column {
+    div.columnName {
         margin-top: 7px;
+        margin-left: 5px;
+    }
+    div.columnName span {
+        font-weight: bold;
+    }
+    div.columnDescription {
+        margin-left: 10px;
+    }
+    div.columnDescription span {
+        margin-left: 10px;
+        font-style: italic;
     }
 </style>
 
@@ -32,17 +47,18 @@
             <h2>@file.Name</h2>
             <p><strong>@file.Description</strong></p>
             @foreach (var column in file.Columns) {
-                <div class="row border-top column">
-                    <div class="col-md-2">
-                        @column.Name
-                    </div>
-                    <div class="col-md-10">
-                        @column.Description
+                <div class="row border-top columnName">
+                    <div class="col-md-12">
+                        <span>@column.Name</span>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-1"></div>
-                    <div class="col-md-11 codes">
+                <div class="row columnDescription">
+                    <div class="col-md-12">
+                        <span>@column.Description</span>
+                    </div>
+                </div>
+                <div class="row codes">
+                    <div class="col-md-12">
                         @foreach (var code in column.Codes)
                         {
                             <span title="In @(file.Name), @(column.Name) values of @(code.Value) mean @(code.Meaning).">[@(code.Value):@(code.Meaning)]</span>
