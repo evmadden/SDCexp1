@@ -4,16 +4,16 @@ namespace SDCode.Web.Classes
 {
     public interface IResponseFeedbackGetter
     {
-        bool GetJudgementIsCorrect(string imageName, Judgements judgement);
+        Feedbacks Get(string imageName, Judgements judgement);
     }
 
     public class ResponseFeedbackGetter : IResponseFeedbackGetter
     {
-        public bool GetJudgementIsCorrect(string imageName, Judgements judgement)
+        public Feedbacks Get(string imageName, Judgements judgement)
         {
             imageName = Path.GetFileNameWithoutExtension(imageName);
             var correctJudgement = imageName.Contains('N') ? Judgements.New : Judgements.Old;
-            var result =  correctJudgement == judgement;
+            var result =  correctJudgement == judgement ? Feedbacks.Correct : Feedbacks.Incorrect;
             return result;
         }
     }

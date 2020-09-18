@@ -131,14 +131,14 @@ namespace SDCode.Web.Controllers
             var context = _imageContextGetter.Get(seenViewModel.ImageUrl);
             var responses = GetResponseDataCsvFile(participantID, seenTestName).Read().ToList();
             var imageName = Path.GetFileNameWithoutExtension(seenViewModel.ImageUrl);
-            var feedback = _responseFeedbackGetter.GetJudgementIsCorrect(imageName, judgement);
+            var feedback = _responseFeedbackGetter.Get(imageName, judgement);
             responses.Insert(0, new ResponseDataModel{Image = imageName, Congruency = congruency, Context = context, Judgement = judgement, Confidence = confidence, ReactionTime = reactionTime, Feedback = feedback, WhenUtc = DateTime.UtcNow});
             GetResponseDataCsvFile(participantID, seenTestName).Write(responses);
             int nextProgress = progress + 1;
             var nextTestName = _testNameGetter.Get(testSets, nextProgress);
             var testHasEnded = !string.Equals(seenTestName, nextTestName);
             var nextViewModel = GetViewModel(testSets, nextProgress);
-            return Json(new {TestEnded=testHasEnded ? seenTestName : null, feedback=feedback, ViewModel=nextViewModel});
+            return Json(new {TestEnded=testHasEnded ? seenTestName : null, feedback=((int)feedback), ViewModel=nextViewModel});
         }
 
         private ICsvFile<ResponseDataModel, ResponseDataModel.Map> GetResponseDataCsvFile(string participantID, string testName) {

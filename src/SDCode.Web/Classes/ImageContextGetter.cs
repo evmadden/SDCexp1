@@ -6,16 +6,17 @@ namespace SDCode.Web.Classes
 {
     public interface IImageContextGetter
     {
-        int Get(string imageName);
+        Classes.Contexts Get(string imageName);
     }
 
     public class ImageContextGetter : IImageContextGetter
     {
-        private static readonly IDictionary<string, int> Contexts = new Dictionary<string, int>{{"A", 2}, {"B", 3}, {"C", 3}, {"D", 3}, {"E", 2}, {"F", 1}, {"N", 4}};
-        public int Get(string imageName)
+        
+        private static readonly IDictionary<string, Contexts> ContextsMap = new Dictionary<string, Contexts>{{"A", Contexts.StillInContext}, {"B", Contexts.Decontextualized}, {"C", Contexts.Decontextualized}, {"D", Contexts.Decontextualized}, {"E", Contexts.StillInContext}, {"F", Contexts.NoChange}, {"N", Contexts.Foil}};
+        public Classes.Contexts Get(string imageName)
         {
             imageName = Path.GetFileNameWithoutExtension(imageName);
-            var result = Contexts.First(x=>imageName.Contains(x.Key)).Value;
+            var result = ContextsMap.First(x=>imageName.Contains(x.Key)).Value;
             return result;
         }
     }

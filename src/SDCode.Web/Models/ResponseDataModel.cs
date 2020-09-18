@@ -14,9 +14,9 @@ namespace SDCode.Web.Models
 
         public string Image { get; set; }
         [Name(nameof(Congruency))]
-        public int Congruency { get; set; }
+        public Congruencies Congruency { get; set; }
         [Name(nameof(Context))]
-        public int Context { get; set; }
+        public Contexts Context { get; set; }
         [Name(nameof(Judgement))]
         [Description("How the user judged the image.")]
         public Judgements Judgement { get; set; }
@@ -25,7 +25,7 @@ namespace SDCode.Web.Models
         [Name(nameof(ReactionTime))]
         public long ReactionTime { get; set; }
         [Name(nameof(Feedback))]
-        public bool Feedback { get; set; }
+        public Feedbacks Feedback { get; set; }
         [Name(nameof(WhenUtc))]
         public DateTime WhenUtc { get; set; }
 
@@ -34,12 +34,12 @@ namespace SDCode.Web.Models
             public Map()
             {
                 Map(m => m.Image).Name(nameof(Image));
-                Map(m => m.Congruency).Name(nameof(Congruency));
-                Map(m => m.Context).Name(nameof(Context));
+                Map(m => m.Congruency).Name(nameof(Congruency)).TypeConverter<CsvCongruenciesConverter>();
+                Map(m => m.Context).Name(nameof(Context)).TypeConverter<CsvContextsConverter>();
                 Map(m => m.Judgement).Name(nameof(Judgement)).TypeConverter<CsvJudgementsConverter>();
                 Map(m => m.Confidence).Name(nameof(Confidence)).TypeConverter<CsvConfidencesConverter>();
                 Map(m => m.ReactionTime).Name(nameof(ReactionTime));
-                Map(m => m.Feedback).Name(nameof(Feedback));
+                Map(m => m.Feedback).Name(nameof(Feedback)).TypeConverter<CsvFeedbacksConverter>();;
                 Map(m => m.WhenUtc).Name(nameof(WhenUtc));
             }
         }

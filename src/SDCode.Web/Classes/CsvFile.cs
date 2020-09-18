@@ -54,6 +54,9 @@ namespace SDCode.Web.Classes
                 cw.Configuration.TypeConverterCache.AddConverter<IEnumerable<int>>(new CsvIntegersConverter()); // https://stackoverflow.com/a/63523529
                 cw.Configuration.TypeConverterCache.AddConverter<Judgements>(new CsvJudgementsConverter()); // https://stackoverflow.com/a/63523529
                 cw.Configuration.TypeConverterCache.AddConverter<Confidences>(new CsvConfidencesConverter()); // https://stackoverflow.com/a/63523529
+                cw.Configuration.TypeConverterCache.AddConverter<Congruencies>(new CsvCongruenciesConverter()); // https://stackoverflow.com/a/63523529
+                cw.Configuration.TypeConverterCache.AddConverter<Contexts>(new CsvContextsConverter()); // https://stackoverflow.com/a/63523529
+                cw.Configuration.TypeConverterCache.AddConverter<Feedbacks>(new CsvFeedbacksConverter()); // https://stackoverflow.com/a/63523529
                 cw.WriteHeader<T>();
                 cw.NextRecord();
                 foreach (T record in records)
@@ -162,6 +165,54 @@ namespace SDCode.Web.Classes
         public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
         {
             return (Confidences) Enum.Parse(typeof(Confidences), text);
+        }
+    }
+
+    public class CsvCongruenciesConverter : DefaultTypeConverter {
+        public override string ConvertToString(object value, IWriterRow row, MemberMapData memberMapData)
+        {
+            if ( value == null )
+            {
+                return string.Empty;
+            }
+            return $"{(int)(Congruencies)value}";
+        }
+
+        public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
+        {
+            return (Congruencies) Enum.Parse(typeof(Congruencies), text);
+        }
+    }
+
+    public class CsvContextsConverter : DefaultTypeConverter {
+        public override string ConvertToString(object value, IWriterRow row, MemberMapData memberMapData)
+        {
+            if ( value == null )
+            {
+                return string.Empty;
+            }
+            return $"{(int)(Contexts)value}";
+        }
+
+        public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
+        {
+            return (Contexts) Enum.Parse(typeof(Contexts), text);
+        }
+    }
+
+    public class CsvFeedbacksConverter : DefaultTypeConverter {
+        public override string ConvertToString(object value, IWriterRow row, MemberMapData memberMapData)
+        {
+            if ( value == null )
+            {
+                return string.Empty;
+            }
+            return $"{(int)(Feedbacks)value}";
+        }
+
+        public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
+        {
+            return (Feedbacks) Enum.Parse(typeof(Feedbacks), text);
         }
     }
 }
