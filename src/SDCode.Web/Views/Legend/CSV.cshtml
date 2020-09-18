@@ -18,8 +18,8 @@
         margin-left: 5px;
     }
     div.columnName {
-        margin-top: 7px;
         margin-left: 5px;
+        margin-right: 10px;
     }
     div.columnName span {
         font-weight: bold;
@@ -30,6 +30,13 @@
     div.columnDescription span {
         margin-left: 10px;
         font-style: italic;
+    }
+    fieldset {
+        margin-top: 20px;
+    }
+    legend span {
+        margin-left: 5px;
+        margin-right: 5px;
     }
 </style>
 
@@ -44,27 +51,32 @@
     <p>LEGEND_ORIENTATION_PLACEHOLDER</p>
         @foreach (var file in Model.Files)
         {
-            <h2>@file.Name</h2>
-            <p><strong>@file.Description</strong></p>
-            @foreach (var column in file.Columns) {
-                <div class="row border-top columnName">
-                    <div class="col-md-12">
-                        <span>@column.Name</span>
+            var borderClass = "";
+            <fieldset class="border p-2">
+                <legend  class="w-auto"><span>@file.Name @(string.IsNullOrWhiteSpace(file.Description) ? string.Empty : " - ") @file.Description</span></legend>
+                @foreach (var column in file.Columns) {
+                    <div class="row @borderClass columnName">
+                        <div class="col-md-12">
+                            <span>@column.Name</span>
+                        </div>
                     </div>
-                </div>
-                <div class="row columnDescription">
-                    <div class="col-md-12">
-                        <span>@column.Description</span>
+                    @if (!string.IsNullOrWhiteSpace(column.Description)) {
+                        <div class="row columnDescription">
+                            <div class="col-md-12">
+                                <span>@column.Description</span>
+                            </div>
+                        </div>
+                    }
+                    <div class="row codes">
+                        <div class="col-md-12">
+                            @foreach (var code in column.Codes)
+                            {
+                                <span title="In @(file.Name), @(column.Name) values of @(code.Value) mean @(code.Meaning).">[@(code.Value):@(code.Meaning)]</span>
+                            }
+                        </div>
                     </div>
-                </div>
-                <div class="row codes">
-                    <div class="col-md-12">
-                        @foreach (var code in column.Codes)
-                        {
-                            <span title="In @(file.Name), @(column.Name) values of @(code.Value) mean @(code.Meaning).">[@(code.Value):@(code.Meaning)]</span>
-                        }
-                    </div>
-                </div>
-            }
+                    borderClass = "border-top";
+                }
+            </fieldset>
         }
 </div>

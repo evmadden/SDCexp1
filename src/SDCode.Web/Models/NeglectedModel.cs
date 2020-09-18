@@ -9,10 +9,10 @@ namespace SDCode.Web.Models
     public class NeglectedModel
     {
         [Name(nameof(ParticipantID))]
-        [Description("The ID by which the participant is enrolled.")]
+        [Description("The ID by which the participant is enrolled.")] // todo mlh check all ParticipantID descriptions for consistency
         public string ParticipantID { get; set; }
         [Name(nameof(Indexes))]
-        [Description("The image indexes neglected during Encoding.")]
+        [Description("The image indexes neglected during Encoding. (comma-delimited)")]
         public IEnumerable<int> Indexes { get; set; }
         [Name(nameof(Reason))]
         [Description("The reason provided by the participant.")]

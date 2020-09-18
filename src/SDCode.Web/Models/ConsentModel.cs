@@ -4,6 +4,7 @@ using CsvHelper.Configuration.Attributes;
 
 namespace SDCode.Web.Models
 {
+    [Description("Participant's consent to participate.")]
     public class ConsentModel
     {
         [Name(nameof(ID))]
