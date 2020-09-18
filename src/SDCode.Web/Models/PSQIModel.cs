@@ -1,5 +1,6 @@
 using CsvHelper.Configuration;
 using CsvHelper.Configuration.Attributes;
+using SDCode.Web.Classes;
 
 namespace SDCode.Web.Models
 {
@@ -18,47 +19,47 @@ namespace SDCode.Web.Models
         [Name(nameof(TotalMinutes))]
         public string TotalMinutes{ get; set; } 
         [Name(nameof(No30Min))]
-        public string No30Min{ get; set; }
+        public FrequenciesWeekly No30Min{ get; set; }
         [Name(nameof(WASO))]
-        public string WASO{ get; set; }    
+        public FrequenciesWeekly WASO{ get; set; }    
         [Name(nameof(Bathroom))]
-        public string Bathroom{ get; set; }  
+        public FrequenciesWeekly Bathroom{ get; set; }  
         [Name(nameof(Breathing))]
-        public string Breathing{ get; set; }  
+        public FrequenciesWeekly Breathing{ get; set; }  
         [Name(nameof(Snoring))]
-        public string Snoring{ get; set; }
+        public FrequenciesWeekly Snoring{ get; set; }
         [Name(nameof(Hot))]
-        public string Hot{ get; set; }
+        public FrequenciesWeekly Hot{ get; set; }
         [Name(nameof(Cold))]
-        public string Cold{ get; set; }   
+        public FrequenciesWeekly Cold{ get; set; }   
         [Name(nameof(Dreams))]
-        public string Dreams{ get; set; }  
+        public FrequenciesWeekly Dreams{ get; set; }  
         [Name(nameof(Pain))]
-        public string Pain{ get; set; }    
+        public FrequenciesWeekly Pain{ get; set; }    
         [Name(nameof(OtherFrequency))]
-        public string OtherFrequency{ get; set; }  
+        public FrequenciesWeekly OtherFrequency{ get; set; }  
         [Name(nameof(OtherDescribe))]
         public string OtherDescribe{ get; set; }       
         [Name(nameof(SleepQuality))]
-        public string SleepQuality{ get; set; } 
+        public Qualities SleepQuality{ get; set; } 
         [Name(nameof(Medication))]
-        public string Medication{ get; set; } 
+        public FrequenciesWeekly Medication{ get; set; } 
         [Name(nameof(Sleepiness))]
-        public string Sleepiness{ get; set; } 
+        public FrequenciesWeekly Sleepiness{ get; set; } 
         [Name(nameof(Enthusiasm))]
-        public string Enthusiasm{ get; set; } 
+        public Problems Enthusiasm{ get; set; } 
         [Name(nameof(BedPartner))]
-        public string BedPartner{ get; set; } 
+        public BedPartners BedPartner{ get; set; } 
         [Name(nameof(PartSnore))]
-        public string PartSnore{ get; set; } 
+        public FrequenciesWeekly PartSnore{ get; set; } 
         [Name(nameof(BreathPause))]
-        public string BreathPause{ get; set; } 
+        public FrequenciesWeekly BreathPause{ get; set; } 
         [Name(nameof(Legs))]
-        public string Legs{ get; set; } 
+        public FrequenciesWeekly Legs{ get; set; } 
         [Name(nameof(Disorientation))]
-        public string Disorientation{ get; set; } 
+        public FrequenciesWeekly Disorientation{ get; set; } 
         [Name(nameof(OtherRestless))]
-        public string OtherRestless{ get; set; } 
+        public FrequenciesWeekly OtherRestless{ get; set; } 
         [Name(nameof(OtherRestDescribe))]
         public string OtherRestDescribe{ get; set; } 
     }
@@ -73,27 +74,27 @@ namespace SDCode.Web.Models
             Map(m => m.MonthWake).Name(nameof(PSQIModel.MonthWake));
             Map(m => m.TotalHours).Name(nameof(PSQIModel.TotalHours));
             Map(m => m.TotalMinutes).Name(nameof(PSQIModel.TotalMinutes));
-            Map(m => m.No30Min).Name(nameof(PSQIModel.No30Min));
-            Map(m => m.WASO).Name(nameof(PSQIModel.WASO));
-            Map(m => m.Bathroom).Name(nameof(PSQIModel.Bathroom));
-            Map(m => m.Breathing).Name(nameof(PSQIModel.Breathing));
-            Map(m => m.Snoring).Name(nameof(PSQIModel.Snoring));
-            Map(m => m.Hot).Name(nameof(PSQIModel.Hot));
-            Map(m => m.Cold).Name(nameof(PSQIModel.Cold));
-            Map(m => m.Dreams).Name(nameof(PSQIModel.Dreams));
-            Map(m => m.Pain).Name(nameof(PSQIModel.Pain));
-            Map(m => m.OtherFrequency).Name(nameof(PSQIModel.OtherFrequency));
+            Map(m => m.No30Min).Name(nameof(PSQIModel.No30Min)).TypeConverter<CsvFrequenciesWeeklyConverter>();
+            Map(m => m.WASO).Name(nameof(PSQIModel.WASO)).TypeConverter<CsvFrequenciesWeeklyConverter>();
+            Map(m => m.Bathroom).Name(nameof(PSQIModel.Bathroom)).TypeConverter<CsvFrequenciesWeeklyConverter>();
+            Map(m => m.Breathing).Name(nameof(PSQIModel.Breathing)).TypeConverter<CsvFrequenciesWeeklyConverter>();
+            Map(m => m.Snoring).Name(nameof(PSQIModel.Snoring)).TypeConverter<CsvFrequenciesWeeklyConverter>();
+            Map(m => m.Hot).Name(nameof(PSQIModel.Hot)).TypeConverter<CsvFrequenciesWeeklyConverter>();
+            Map(m => m.Cold).Name(nameof(PSQIModel.Cold)).TypeConverter<CsvFrequenciesWeeklyConverter>();
+            Map(m => m.Dreams).Name(nameof(PSQIModel.Dreams)).TypeConverter<CsvFrequenciesWeeklyConverter>();
+            Map(m => m.Pain).Name(nameof(PSQIModel.Pain)).TypeConverter<CsvFrequenciesWeeklyConverter>();
+            Map(m => m.OtherFrequency).Name(nameof(PSQIModel.OtherFrequency)).TypeConverter<CsvFrequenciesWeeklyConverter>();
             Map(m => m.OtherDescribe).Name(nameof(PSQIModel.OtherDescribe));
-            Map(m => m.SleepQuality).Name(nameof(PSQIModel.SleepQuality));
-            Map(m => m.Medication).Name(nameof(PSQIModel.Medication));
-            Map(m => m.Sleepiness).Name(nameof(PSQIModel.Sleepiness));
-            Map(m => m.Enthusiasm).Name(nameof(PSQIModel.Enthusiasm));
-            Map(m => m.BedPartner).Name(nameof(PSQIModel.BedPartner));
-            Map(m => m.PartSnore).Name(nameof(PSQIModel.PartSnore));
-            Map(m => m.BreathPause).Name(nameof(PSQIModel.BreathPause));
-            Map(m => m.Legs).Name(nameof(PSQIModel.Legs));
-            Map(m => m.Disorientation).Name(nameof(PSQIModel.Disorientation));
-            Map(m => m.OtherRestless).Name(nameof(PSQIModel.OtherRestless));
+            Map(m => m.SleepQuality).Name(nameof(PSQIModel.SleepQuality)).TypeConverter<CsvQualitiesConverter>();
+            Map(m => m.Medication).Name(nameof(PSQIModel.Medication)).TypeConverter<CsvFrequenciesWeeklyConverter>();
+            Map(m => m.Sleepiness).Name(nameof(PSQIModel.Sleepiness)).TypeConverter<CsvFrequenciesWeeklyConverter>();
+            Map(m => m.Enthusiasm).Name(nameof(PSQIModel.Enthusiasm)).TypeConverter<CsvProblemsConverter>();
+            Map(m => m.BedPartner).Name(nameof(PSQIModel.BedPartner)).TypeConverter<CsvBedPartnersConverter>();
+            Map(m => m.PartSnore).Name(nameof(PSQIModel.PartSnore)).TypeConverter<CsvFrequenciesWeeklyConverter>();
+            Map(m => m.BreathPause).Name(nameof(PSQIModel.BreathPause)).TypeConverter<CsvFrequenciesWeeklyConverter>();
+            Map(m => m.Legs).Name(nameof(PSQIModel.Legs)).TypeConverter<CsvFrequenciesWeeklyConverter>();
+            Map(m => m.Disorientation).Name(nameof(PSQIModel.Disorientation)).TypeConverter<CsvFrequenciesWeeklyConverter>();
+            Map(m => m.OtherRestless).Name(nameof(PSQIModel.OtherRestless)).TypeConverter<CsvFrequenciesWeeklyConverter>();
             Map(m => m.OtherRestDescribe).Name(nameof(PSQIModel.OtherRestDescribe));
         }
     }

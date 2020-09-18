@@ -9,7 +9,7 @@ namespace SDCode.Web.Classes
     public interface IStanfordRepository
     {
         StanfordModel Get(string participantID, string testName);
-        void Save(string participantID, string testName, string stanford);
+        void Save(string participantID, string testName, Sleepinesses stanford);
     }
 
     public class StanfordRepository : IStanfordRepository
@@ -28,14 +28,14 @@ namespace SDCode.Web.Classes
             return result;
         }
 
-        public void Save(string participantID, string testName, string stanford)
+        public void Save(string participantID, string testName, Sleepinesses stanford)
         {
             // todo mlh refactor to avoid record removal (which will be a problem once timestamps are part of the record)
             var stanfordModels = _stanfordCsvFile.Read().ToList();
             stanfordModels.RemoveAll(x=>string.Equals(x.ParticipantID, participantID));
             var stanfordModel = new StanfordModel{ParticipantID=participantID};
             PropertyInfo propertyInfo = stanfordModel.GetType().GetProperty(testName);
-            propertyInfo.SetValue(stanfordModel, Convert.ChangeType(stanford, propertyInfo.PropertyType), null);
+            propertyInfo.SetValue(stanfordModel, stanford, null);
             stanfordModels.Add(stanfordModel);
             _stanfordCsvFile.Write(stanfordModels);
         }

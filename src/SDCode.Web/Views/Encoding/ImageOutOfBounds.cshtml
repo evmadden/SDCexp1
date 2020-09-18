@@ -12,7 +12,7 @@
     <form action="@Url.Action("Index", "ImageCheck")" method="POST">
         <input type="hidden" name="participantID" value="@Model.ParticipantID" />
         <input type="hidden" name="nextActionAfterImageCheck" value="@Url.Action("Index")" />
-        <input type="hidden" name="stanford" value="@Model.Stanford" />
+        <input type="hidden" name="stanford" value="@((int)Model.Stanford)" />
 
     <h1 class="display-4; text-center;">Study Phase Interrupted</h1> @* todo mlh throughout entire codebase and user experience (including browser address bar URLs...), choose "Study" or "Encoding" and use it consistently, removing references to the competing, synonymous jargon *@
     <br/>

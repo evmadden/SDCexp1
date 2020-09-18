@@ -57,6 +57,12 @@ namespace SDCode.Web.Classes
                 cw.Configuration.TypeConverterCache.AddConverter<Congruencies>(new CsvCongruenciesConverter()); // https://stackoverflow.com/a/63523529
                 cw.Configuration.TypeConverterCache.AddConverter<Contexts>(new CsvContextsConverter()); // https://stackoverflow.com/a/63523529
                 cw.Configuration.TypeConverterCache.AddConverter<Feedbacks>(new CsvFeedbacksConverter()); // https://stackoverflow.com/a/63523529
+                cw.Configuration.TypeConverterCache.AddConverter<FrequenciesWeekly>(new CsvFrequenciesWeeklyConverter()); // https://stackoverflow.com/a/63523529
+                cw.Configuration.TypeConverterCache.AddConverter<Qualities>(new CsvQualitiesConverter()); // https://stackoverflow.com/a/63523529
+                cw.Configuration.TypeConverterCache.AddConverter<Problems>(new CsvProblemsConverter()); // https://stackoverflow.com/a/63523529
+                cw.Configuration.TypeConverterCache.AddConverter<BedPartners>(new CsvBedPartnersConverter()); // https://stackoverflow.com/a/63523529
+                cw.Configuration.TypeConverterCache.AddConverter<ChancesDozing>(new CsvChancesDozingConverter()); // https://stackoverflow.com/a/63523529
+                cw.Configuration.TypeConverterCache.AddConverter<Sleepinesses>(new CsvSleepinessesConverter()); // https://stackoverflow.com/a/63523529
                 cw.WriteHeader<T>();
                 cw.NextRecord();
                 foreach (T record in records)
@@ -213,6 +219,103 @@ namespace SDCode.Web.Classes
         public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
         {
             return (Feedbacks) Enum.Parse(typeof(Feedbacks), text);
+        }
+    }
+
+    public class CsvFrequenciesWeeklyConverter : DefaultTypeConverter {
+        public override string ConvertToString(object value, IWriterRow row, MemberMapData memberMapData)
+        {
+            if ( value == null )
+            {
+                return string.Empty;
+            }
+            return $"{(int)(FrequenciesWeekly)value}";
+        }
+
+        public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
+        {
+            return (FrequenciesWeekly) Enum.Parse(typeof(FrequenciesWeekly), text);
+        }
+    }
+
+    public class CsvQualitiesConverter : DefaultTypeConverter {
+        public override string ConvertToString(object value, IWriterRow row, MemberMapData memberMapData)
+        {
+            if ( value == null )
+            {
+                return string.Empty;
+            }
+            return $"{(int)(Qualities)value}";
+        }
+
+        public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
+        {
+            return (Qualities) Enum.Parse(typeof(Qualities), text);
+        }
+    }
+
+    public class CsvProblemsConverter : DefaultTypeConverter {
+        public override string ConvertToString(object value, IWriterRow row, MemberMapData memberMapData)
+        {
+            if ( value == null )
+            {
+                return string.Empty;
+            }
+            return $"{(int)(Problems)value}";
+        }
+
+        public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
+        {
+            return (Problems) Enum.Parse(typeof(Problems), text);
+        }
+    }
+
+    public class CsvBedPartnersConverter : DefaultTypeConverter {
+        public override string ConvertToString(object value, IWriterRow row, MemberMapData memberMapData)
+        {
+            if ( value == null )
+            {
+                return string.Empty;
+            }
+            return $"{(int)(BedPartners)value}";
+        }
+
+        public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
+        {
+            return (BedPartners) Enum.Parse(typeof(BedPartners), text);
+        }
+    }
+
+    public class CsvChancesDozingConverter : DefaultTypeConverter {
+        public override string ConvertToString(object value, IWriterRow row, MemberMapData memberMapData)
+        {
+            if ( value == null )
+            {
+                return string.Empty;
+            }
+            return $"{(int)(ChancesDozing)value}";
+        }
+
+        public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
+        {
+            return (ChancesDozing) Enum.Parse(typeof(ChancesDozing), text);
+        }
+    }
+
+    public class CsvSleepinessesConverter : DefaultTypeConverter {
+        public override string ConvertToString(object value, IWriterRow row, MemberMapData memberMapData)
+        {
+            if ( value == null )
+            {
+                return string.Empty;
+            }
+            return $"{(int)(Sleepinesses)value}";
+        }
+
+        public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
+        {
+            var result = string.IsNullOrWhiteSpace(text) ? default : (Sleepinesses) Enum.Parse(typeof(Sleepinesses), text);
+            return result;
         }
     }
 }

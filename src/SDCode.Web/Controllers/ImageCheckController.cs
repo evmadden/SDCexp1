@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using SDCode.Web.Classes;
 using SDCode.Web.Models;
 
 namespace SDCode.Web.Controllers
@@ -14,7 +15,7 @@ namespace SDCode.Web.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index(string participantID, string stanford, string nextActionAfterImageCheck)
+        public IActionResult Index(string participantID, Sleepinesses stanford, string nextActionAfterImageCheck)
         {
             var viewModel = new ImageCheckIndexViewModel(participantID, stanford, nextActionAfterImageCheck);
             return View(viewModel);

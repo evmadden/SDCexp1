@@ -1,10 +1,11 @@
 using System.Collections.Generic;
+using SDCode.Web.Classes;
 
 namespace SDCode.Web.Models
 {
     public class EncodingIndexViewModel
     {
-        public EncodingIndexViewModel(string participantID, IEnumerable<string> imageUrls, string stanford) {
+        public EncodingIndexViewModel(string participantID, IEnumerable<string> imageUrls, Sleepinesses stanford) {
             ParticipantID = participantID;
             
             ImageUrls = imageUrls;
@@ -14,6 +15,6 @@ namespace SDCode.Web.Models
         public string ParticipantID { get; }
         
         public IEnumerable<string> ImageUrls {get;}
-        public string Stanford { get; }
+        public Sleepinesses Stanford { get; }
     }
 }

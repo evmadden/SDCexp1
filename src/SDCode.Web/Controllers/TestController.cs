@@ -58,10 +58,10 @@ namespace SDCode.Web.Controllers
             DateTime? nextTestWhenUtc = default;
             if (string.Equals(testName, nameof(testSets.Immediate))) {
                 var stanford = _stanfordRepository.Get(participantID, testName);
-                if (string.IsNullOrWhiteSpace(stanford.Immediate)) {
-                    action = TestWelcomeBackAction.NewUser;
-                } else {
+                if (stanford.Immediate.HasValue) {
                     action = TestWelcomeBackAction.Test;
+                } else {
+                    action = TestWelcomeBackAction.NewUser;
                 }
             } else {
                 action = TestWelcomeBackAction.Stanford;
@@ -82,7 +82,7 @@ namespace SDCode.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index(string participantID, string stanford, string neglectedIndexesCommaDelimited, string neglectedReason)
+        public IActionResult Index(string participantID, Sleepinesses? stanford, string neglectedIndexesCommaDelimited, string neglectedReason)
         {
             var neglectedIndexes = neglectedIndexesCommaDelimited?.Split(",").Select(int.Parse) ?? new List<int>();
             if (neglectedIndexes.Any()) {
@@ -93,8 +93,8 @@ namespace SDCode.Web.Controllers
             var testSets = _testSetsGetter.Get(participantID);
             var progress = _progressGetter.Get(participantID);
             var testName = _testNameGetter.Get(testSets, progress);
-            if (stanford != default && stanford != "skip") {
-                _stanfordRepository.Save(participantID, testName, stanford);
+            if (stanford != default && stanford.HasValue) {
+                _stanfordRepository.Save(participantID, testName, stanford.Value);
             }
             var viewModel = new TestIndexViewModel(participantID, progress, testName);
             return View(viewModel);

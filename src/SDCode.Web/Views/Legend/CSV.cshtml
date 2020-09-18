@@ -7,6 +7,15 @@
     table.file {
         margin-left: 10px;
     }
+    div.codes {
+        color: gray;
+    }
+    div.codes span {
+        margin-left: 5px;
+    }
+    div.column {
+        margin-top: 7px;
+    }
 </style>
 
 <div class="text-right">
@@ -23,42 +32,23 @@
             <h2>@file.Name</h2>
             <p><strong>@file.Description</strong></p>
             @foreach (var column in file.Columns) {
-                <div class="row border-top">
+                <div class="row border-top column">
                     <div class="col-md-2">
                         @column.Name
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-10">
                         @column.Description
                     </div>
-                    <div class="col-md-4">
-                        @string.Join(" ", column.Codes.Select(x=>$"[{x.Value}:{x.Meaning}]"))
+                </div>
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-11 codes">
+                        @foreach (var code in column.Codes)
+                        {
+                            <span title="In @(file.Name), @(column.Name) values of @(code.Value) mean @(code.Meaning).">[@(code.Value):@(code.Meaning)]</span>
+                        }
                     </div>
                 </div>
             }
-            @* <table class="file table">
-                <tr>
-                    <th>Column</th>
-                    <th>Description</th>
-                    <th>Codes</th>
-                </tr>
-                @foreach (var column in file.Columns)
-                {
-                    <tr>
-                        <td>@column.Name</td>
-                        <td>@column.Description</td>
-                        <td>
-                            <table>
-                                @foreach (var code in column.Codes)
-                                {
-                                    <tr>
-                                        <td>@(code.Value)</td>
-                                        <td>@(code.Meaning)</td>
-                                    </tr>
-                                }
-                            </table>
-                        </td>
-                    </tr>
-                }
-            </table> *@
         }
 </div>

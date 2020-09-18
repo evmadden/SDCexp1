@@ -64,16 +64,16 @@ namespace SDCode.Web.Controllers
             return View(new DemographicsViewModel(participantID));
         }
 
-        public IActionResult PSQI(string participantID, string sex, string age, string yearStudy, string handed, string impairments, string glasses, string langauge, string bilingual, string currentCountry, string bed, string wake, string latency, string tst)
+        public IActionResult PSQI(string participantID, string sex, string age, string yearStudy, string handed, string impairments, string glasses, string language, string bilingual, string currentCountry, string bed, string wake, string latency, string tst)
         {
             var demographicsModels = new List<DemographicsModel>();
-            var demographicsModel = new DemographicsModel{ParticipantID = participantID, Sex = sex, Age = age, YearStudy = yearStudy, Handed = handed, Impairments = impairments, Glasses = glasses, Language = langauge, Bilingual = bilingual, CurrentCountry = currentCountry, Bed = bed, Wake = wake, Latency = latency, TST = tst};
+            var demographicsModel = new DemographicsModel{ParticipantID = participantID, Sex = sex, Age = age, YearStudy = yearStudy, Handed = handed, Impairments = impairments, Glasses = glasses, Language = language, Bilingual = bilingual, CurrentCountry = currentCountry, Bed = bed, Wake = wake, Latency = latency, TST = tst};
             demographicsModels.Add(demographicsModel);
             _demographicsCsvFile.Write(demographicsModels);            
             return View(new PSQIViewModel(participantID));
         }
 
-        public IActionResult Epworth(string participantID, string monthbed, string monthlatency, string monthwake, string totalhours, string totalminutes, string no30min, string waso, string bathroom, string breathing, string snoring, string hot, string cold, string dreams, string pain, string otherfrequency, string otherdescribe, string sleepquality, string medication, string sleepiness, string enthusiasm, string bedpartner, string partsnore, string breathpause, string legs, string disorientation, string otherrestless, string otherrestdescribe)
+        public IActionResult Epworth(string participantID, string monthbed, string monthlatency, string monthwake, string totalhours, string totalminutes, FrequenciesWeekly no30min, FrequenciesWeekly waso, FrequenciesWeekly bathroom, FrequenciesWeekly breathing, FrequenciesWeekly snoring, FrequenciesWeekly hot, FrequenciesWeekly cold, FrequenciesWeekly dreams, FrequenciesWeekly pain, FrequenciesWeekly otherfrequency, string otherdescribe, Qualities sleepquality, FrequenciesWeekly medication, FrequenciesWeekly sleepiness, Problems enthusiasm, BedPartners bedpartner, FrequenciesWeekly partsnore, FrequenciesWeekly breathpause, FrequenciesWeekly legs, FrequenciesWeekly disorientation, FrequenciesWeekly otherrestless, string otherrestdescribe)
         {
             var psqiModels = new List<PSQIModel>();
             var psqiModel = new PSQIModel{ParticipantID = participantID, MonthBed = monthbed, MonthLatency = monthlatency, MonthWake = monthwake, TotalHours = totalhours, TotalMinutes = totalminutes, No30Min = no30min, WASO = waso, Bathroom = bathroom, Breathing = breathing, Snoring = snoring, Hot = hot, Cold = cold, Dreams = dreams, Pain = pain, OtherFrequency = otherfrequency, OtherDescribe = otherdescribe, SleepQuality = sleepquality, Medication = medication, Sleepiness = sleepiness, Enthusiasm = enthusiasm, BedPartner = bedpartner, PartSnore = partsnore, BreathPause = breathpause, Legs = legs, Disorientation = disorientation, OtherRestless = otherrestless, OtherRestDescribe = otherrestdescribe};
@@ -82,7 +82,7 @@ namespace SDCode.Web.Controllers
             return View(new EpworthViewModel(participantID));
         }
 
-        public IActionResult Stanford(string participantID, string reading, string tv, string publicplace, string passengercar, string afternoon, string talking, string lunch, string traffic)
+        public IActionResult Stanford(string participantID, ChancesDozing reading, ChancesDozing tv, ChancesDozing publicplace, ChancesDozing passengercar, ChancesDozing afternoon, ChancesDozing talking, ChancesDozing lunch, ChancesDozing traffic)
         {
             var epworthModels = new List<EpworthModel>();
             var epworthModel = new EpworthModel{ParticipantID = participantID, Reading = reading, TV = tv, PublicPlace = publicplace, PassengerCar = passengercar, Afternoon = afternoon, Talking = talking, Lunch = lunch, Traffic = traffic};
@@ -91,7 +91,7 @@ namespace SDCode.Web.Controllers
             return View(new StanfordViewModel(participantID));
         }
 
-        public IActionResult EncodingInstructions(string participantID, string stanford)
+        public IActionResult EncodingInstructions(string participantID, Sleepinesses stanford)
         {
             var stanfordModels = new List<StanfordModel>();
             var stanfordModel = new StanfordModel{ParticipantID = participantID, Immediate = stanford};

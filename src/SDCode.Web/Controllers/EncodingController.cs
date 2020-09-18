@@ -23,7 +23,7 @@ namespace SDCode.Web.Controllers
             _stanfordRepository = stanfordRepository;
         }
 
-        public IActionResult Index(string participantID, string stanford)
+        public IActionResult Index(string participantID, Sleepinesses stanford)
         {
             _stanfordRepository.Save(participantID, "Immediate", stanford);
             var imageTypes = new List<string> { "A", "A", "AI", "AI", "B", "BI", "C", "CI", "F", "F", "FI", "FI" };
@@ -35,7 +35,7 @@ namespace SDCode.Web.Controllers
         }
 
         // todo mlh remove outOfBoundsImageIndex if we're not going to use it
-        public IActionResult ImageOutOfBounds(string participantID, string stanford, int outOfBoundsImageIndex) {
+        public IActionResult ImageOutOfBounds(string participantID, Sleepinesses stanford, int outOfBoundsImageIndex) {
             var viewModel = new EncodingImageOutOfBoundsViewModel(participantID, stanford);
             return View(viewModel);
         }

@@ -136,7 +136,7 @@
 <div>
     <form id="outOfBoundsForm" action="/Encoding/ImageOutOfBounds" method="POST"> 
         <input type="hidden" name="participantID" value="@Model.ParticipantID" />
-        <input type="hidden" id="stanford" name="@Model.Stanford" />
+        <input type="hidden" id="stanford" name="@((int)Model.Stanford)" />
         <input type="hidden" id="outOfBoundsImageIndex" name="outOfBoundsImageIndex" />
     </form>
 </div>

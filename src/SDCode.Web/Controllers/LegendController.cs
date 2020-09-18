@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -53,14 +52,23 @@ namespace SDCode.Web.Controllers
                             break;
                         }
                     }
+                    var nullablePropertyTypeArgument = Nullable.GetUnderlyingType(pi.PropertyType);
                     if (pi.PropertyType.IsEnum) {
-                        foreach (var enumValue in Enum.GetValues(pi.PropertyType).Cast<int>())
+                        AddColumnCodes(pi.PropertyType);
+                    } else if (nullablePropertyTypeArgument?.IsEnum ?? false) {
+                        AddColumnCodes(nullablePropertyTypeArgument);
+                    } else if (Type.Equals(typeof(bool), pi.PropertyType)) {
+                        columnCodes.Add(new LegendCsvViewModel.Code($"{0}", "No"));
+                        columnCodes.Add(new LegendCsvViewModel.Code($"{1}", "Yes"));
+                    }
+                    columns.Add(new LegendCsvViewModel.Column(columnName, columnDescription, columnCodes));
+                    void AddColumnCodes(Type enumType) {
+                        foreach (var enumValue in Enum.GetValues(enumType).Cast<int>())
                         {
-                            var enumText = Enum.GetName(pi.PropertyType, enumValue);
+                            var enumText = Enum.GetName(enumType, enumValue);
                             columnCodes.Add(new LegendCsvViewModel.Code($"{enumValue}", enumText));
                         }
                     }
-                    columns.Add(new LegendCsvViewModel.Column(columnName, columnDescription, columnCodes));
                 }
                 // todo mlh refactor first "Replace" below so that we're not duplicating how it is that we turn a type name into a filename (see CsvFile.cs)
                 string filename = type.Name.Replace("Model", ".csv");
