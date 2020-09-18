@@ -12,14 +12,14 @@ namespace SDCode.Web.Controllers
     {
         private readonly ILogger<EncodingController> _logger;
         private readonly IImageIndexesGetter _imageIndexesGetter;
-        private readonly IStimuliImageUrlGetter _stimuliImageUrlGetter;
+        private readonly IStimuliImageDataUrlGetter _stimuliImageDataUrlGetter;
         private readonly IStanfordRepository _stanfordRepository;
 
-        public EncodingController(ILogger<EncodingController> logger, IImageIndexesGetter encodingPhaseImageIndexesGetter, IStimuliImageUrlGetter stimuliImageUrlGetter, IStanfordRepository stanfordRepository)
+        public EncodingController(ILogger<EncodingController> logger, IImageIndexesGetter encodingPhaseImageIndexesGetter, IStimuliImageDataUrlGetter stimuliImageDataUrlGetter, IStanfordRepository stanfordRepository)
         {
             _logger = logger;
             _imageIndexesGetter = encodingPhaseImageIndexesGetter;
-            _stimuliImageUrlGetter = stimuliImageUrlGetter;
+            _stimuliImageDataUrlGetter = stimuliImageDataUrlGetter;
             _stanfordRepository = stanfordRepository;
         }
 
@@ -29,7 +29,7 @@ namespace SDCode.Web.Controllers
             var imageTypes = new List<string> { "A", "A", "AI", "AI", "B", "BI", "C", "CI", "F", "F", "FI", "FI" };
             var imageIndexesRequests = imageTypes.Select(x=>new ImageIndexesRequest(x, 36));
             var imageIndexes = _imageIndexesGetter.Get(imageIndexesRequests);
-            var imageUrls = _stimuliImageUrlGetter.Get(imageIndexes);
+            var imageUrls = _stimuliImageDataUrlGetter.Get(imageIndexes);
             var viewModel = new EncodingIndexViewModel(participantID, imageUrls, stanford);
             return View(viewModel);
         }
@@ -42,6 +42,7 @@ namespace SDCode.Web.Controllers
 
         public IActionResult Finished(string participantID, string neglectedIndexesCommaDelimited)
         {
+            // todo mlh remove
             // 447_Immediate.csv  testResponseData
             // congruency (1 - congruent, 2 - incongruent), context (1 - no change, 2 - still in context, 3 - decontextualized, 4 - foil), old/new judgment, reaction time, confidence rating
             // congruency:  1 = "x"    2 = "_I"

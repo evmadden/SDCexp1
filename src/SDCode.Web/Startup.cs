@@ -35,7 +35,7 @@ namespace SDCode.Web
             services.AddScoped<ICsvFile<EpworthModel, EpworthMap>, CsvFile<EpworthModel, EpworthMap>>();
             services.AddScoped<ICsvFile<StanfordModel, StanfordMap>, CsvFile<StanfordModel, StanfordMap>>();
             services.AddScoped<IImageIndexesGetter, ImageIndexesGetter>();
-            services.AddScoped<IStimuliImageUrlGetter, StimuliImageUrlGetter>();
+            services.AddScoped<IStimuliImageDataUrlGetter, StimuliImageDataUrlGetter>();
             services.AddScoped<ICsvFile<TestSetsModel, TestSetsModel.Map>, CsvFile<TestSetsModel, TestSetsModel.Map>>();
             services.AddScoped<ITestSetsGetter, TestSetsGetter>();
             services.AddScoped<INextImageGetter, NextImageGetter>();

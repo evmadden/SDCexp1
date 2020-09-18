@@ -14,7 +14,7 @@ namespace SDCode.Web.Controllers
     {
         private readonly ILogger<TestController> _logger;
         private readonly IImageIndexesGetter _imageIndexesGetter;
-        private readonly IStimuliImageUrlGetter _stimuliImageUrlGetter;
+        private readonly IStimuliImageDataUrlGetter _stimuliImageDataUrlGetter;
         private readonly ICsvFile<TestSetsModel, TestSetsModel.Map> _testSetsCsvFile;
         private readonly ICsvFile<ResponseDataModel, ResponseDataModel.Map> _responseDataCsvFile;
         private readonly ITestSetsGetter _testSetsGetter;
@@ -29,11 +29,11 @@ namespace SDCode.Web.Controllers
         private readonly ICsvFile<NeglectedModel, NeglectedModel.Map> _neglectedCsvFile;
 
 
-        public TestController(ILogger<TestController> logger, IImageIndexesGetter imageIndexesGetter, IStimuliImageUrlGetter stimuliImageUrlGetter, ICsvFile<TestSetsModel, TestSetsModel.Map> testSetsCsvFile, ITestSetsGetter testSetsGetter, INextImageGetter nextImageGetter, IImageCongruencyGetter imageCongruencyGetter, ICsvFile<ResponseDataModel, ResponseDataModel.Map> responseDataCsvFile, ITestNameGetter testNameGetter, IImageContextGetter imageContextGetter, IProgressGetter progressGetter, ICsvFile<StanfordModel, StanfordMap> stanfordCsvFile, IStanfordRepository stanfordRepository, IResponseFeedbackGetter responseFeedbackGetter, ICsvFile<NeglectedModel, NeglectedModel.Map> neglectedCsvFile)
+        public TestController(ILogger<TestController> logger, IImageIndexesGetter imageIndexesGetter, IStimuliImageDataUrlGetter stimuliImageDataUrlGetter, ICsvFile<TestSetsModel, TestSetsModel.Map> testSetsCsvFile, ITestSetsGetter testSetsGetter, INextImageGetter nextImageGetter, IImageCongruencyGetter imageCongruencyGetter, ICsvFile<ResponseDataModel, ResponseDataModel.Map> responseDataCsvFile, ITestNameGetter testNameGetter, IImageContextGetter imageContextGetter, IProgressGetter progressGetter, ICsvFile<StanfordModel, StanfordMap> stanfordCsvFile, IStanfordRepository stanfordRepository, IResponseFeedbackGetter responseFeedbackGetter, ICsvFile<NeglectedModel, NeglectedModel.Map> neglectedCsvFile)
         {
             _logger = logger;
             _imageIndexesGetter = imageIndexesGetter;
-            _stimuliImageUrlGetter = stimuliImageUrlGetter;
+            _stimuliImageDataUrlGetter = stimuliImageDataUrlGetter;
             _testSetsCsvFile = testSetsCsvFile;
             _testSetsGetter = testSetsGetter;
             _nextImageGetter = nextImageGetter;
@@ -149,7 +149,7 @@ namespace SDCode.Web.Controllers
 
         private TestImageViewModel GetViewModel(TestSetsModel testSets, int progress) {
             var imageToDisplay = _nextImageGetter.Get(testSets, progress);
-            var imageUrl = _stimuliImageUrlGetter.Get(imageToDisplay);
+            var imageUrl = _stimuliImageDataUrlGetter.Get(imageToDisplay);
             var result = new TestImageViewModel(testSets.ParticipantID, progress, imageUrl);
             return result;
         }
