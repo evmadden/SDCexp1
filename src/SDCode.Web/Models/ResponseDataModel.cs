@@ -1,19 +1,24 @@
 using System;
+using System.ComponentModel;
 using CsvHelper.Configuration;
 using CsvHelper.Configuration.Attributes;
 using SDCode.Web.Classes;
 
 namespace SDCode.Web.Models
 {
+    [Description("A participant's many responses for a given test.")]
     public class ResponseDataModel
     {
         [Name(nameof(Image))]
+        [Description("The image index viewed.")]
+
         public string Image { get; set; }
         [Name(nameof(Congruency))]
         public int Congruency { get; set; }
         [Name(nameof(Context))]
         public int Context { get; set; }
         [Name(nameof(Judgement))]
+        [Description("How the user judged the image.")]
         public Judgements Judgement { get; set; }
         [Name(nameof(Confidence))]
         public Confidences Confidence { get; set; }

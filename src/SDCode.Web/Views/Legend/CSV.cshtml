@@ -1,0 +1,64 @@
+﻿@model LegendCsvViewModel
+@{
+    ViewData["Title"] = "CSV Legend";
+}
+
+<style>
+    table.file {
+        margin-left: 10px;
+    }
+</style>
+
+<div class="text-right">
+    <div style="background-color: Darkcyan;">  
+        <img src="/img/Logo.png" style="width:200px;height:100px;"/> <!-- https://www.york.ac.uk/staff/external-relations/brand/logo/ -->
+    </div>
+</div>
+
+<div class="text-align: left">
+    <h1 class="display-4; text-center;">CSV Legend</h1>
+    <p>LEGEND_ORIENTATION_PLACEHOLDER</p>
+        @foreach (var file in Model.Files)
+        {
+            <h2>@file.Name</h2>
+            <p><strong>@file.Description</strong></p>
+            @foreach (var column in file.Columns) {
+                <div class="row border-top">
+                    <div class="col-md-2">
+                        @column.Name
+                    </div>
+                    <div class="col-md-6">
+                        @column.Description
+                    </div>
+                    <div class="col-md-4">
+                        @string.Join(" ", column.Codes.Select(x=>$"[{x.Value}:{x.Meaning}]"))
+                    </div>
+                </div>
+            }
+            @* <table class="file table">
+                <tr>
+                    <th>Column</th>
+                    <th>Description</th>
+                    <th>Codes</th>
+                </tr>
+                @foreach (var column in file.Columns)
+                {
+                    <tr>
+                        <td>@column.Name</td>
+                        <td>@column.Description</td>
+                        <td>
+                            <table>
+                                @foreach (var code in column.Codes)
+                                {
+                                    <tr>
+                                        <td>@(code.Value)</td>
+                                        <td>@(code.Meaning)</td>
+                                    </tr>
+                                }
+                            </table>
+                        </td>
+                    </tr>
+                }
+            </table> *@
+        }
+</div>
