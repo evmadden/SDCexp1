@@ -11,11 +11,12 @@ namespace SDCode.Web.Models
     {
         [Name(nameof(Image))]
         [Description("The image index viewed.")]
-
         public string Image { get; set; }
         [Name(nameof(Congruency))]
+        [Description("The image's congruency.")]
         public Congruencies Congruency { get; set; }
         [Name(nameof(Context))]
+        [Description("The image's context.")]
         public Contexts Context { get; set; }
         [Name(nameof(Judgement))]
         [Description("How the user judged the image.")]
@@ -23,6 +24,7 @@ namespace SDCode.Web.Models
         [Name(nameof(Confidence))]
         public Confidences Confidence { get; set; }
         [Name(nameof(ReactionTime))]
+        [Description("Time measured between image presentation and participant judgement. (milliseconds)")]
         public long ReactionTime { get; set; }
         [Name(nameof(Feedback))]
         public Feedbacks Feedback { get; set; }
