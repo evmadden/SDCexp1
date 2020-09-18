@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using SDCode.Web.Classes;
 using SDCode.Web.Models;
 
 namespace SDCode.Web.Controllers
@@ -66,7 +67,9 @@ namespace SDCode.Web.Controllers
                         foreach (var enumValue in Enum.GetValues(enumType).Cast<int>())
                         {
                             var enumText = Enum.GetName(enumType, enumValue);
-                            columnCodes.Add(new LegendCsvViewModel.Code($"{enumValue}", enumText));
+                            var charEnumTypes = new List<Type>{typeof(Hands), typeof(Sexes)};
+                            var value = charEnumTypes.Contains(enumType) ? ((char)enumValue).ToString() : $"{enumValue}";
+                            columnCodes.Add(new LegendCsvViewModel.Code(value, enumText));
                         }
                     }
                 }

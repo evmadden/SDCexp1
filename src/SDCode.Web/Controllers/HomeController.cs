@@ -55,8 +55,8 @@ namespace SDCode.Web.Controllers
 
         public IActionResult Demographics(string participantID, bool infoSheet, bool withdraw, bool npsDisorder, bool adhd, bool headInjury, bool normalVision, bool visionProblems, bool altShifts, bool smoker, bool dataProtection, bool agreeParticipate)
         {
-            Debug.WriteLine("infoSheet"); // todo mlh remove unnecessary debug
-            Debug.WriteLine(infoSheet); // todo mlh remove unnecessary debug
+            //Debug.WriteLine("infoSheet"); // todo mlh remove
+            //Debug.WriteLine(infoSheet); // todo mlh remove
             var consentModels = new List<ConsentModel>();
             var consentModel = new ConsentModel{ID = participantID, InfoSheet = infoSheet, Withdraw = withdraw, NPSDisorder = npsDisorder, ADHD = adhd, HeadInjury = headInjury, NormalVision = normalVision, VisionProblems = visionProblems, AltShifts = altShifts, Smoker = smoker, DataProtection = dataProtection, AgreeParticipate = agreeParticipate};
             consentModels.Add(consentModel);
@@ -64,9 +64,10 @@ namespace SDCode.Web.Controllers
             return View(new DemographicsViewModel(participantID));
         }
 
-        public IActionResult PSQI(string participantID, string sex, string age, string yearStudy, string handed, string impairments, string glasses, string language, string bilingual, string currentCountry, string bed, string wake, string latency, string tst)
+        public IActionResult PSQI(string participantID, Sexes? sex, string age, string yearStudy, Hands? handed, bool impairments, bool glasses, string language, string bilingual, string currentCountry, string bed, string wake, string latency, string tst)
         {
-            var demographicsModels = new List<DemographicsModel>();
+            // todo mlh abstract all csvfile usage into repositories
+            var demographicsModels = _demographicsCsvFile.Read().ToList();
             var demographicsModel = new DemographicsModel{ParticipantID = participantID, Sex = sex, Age = age, YearStudy = yearStudy, Handed = handed, Impairments = impairments, Glasses = glasses, Language = language, Bilingual = bilingual, CurrentCountry = currentCountry, Bed = bed, Wake = wake, Latency = latency, TST = tst};
             demographicsModels.Add(demographicsModel);
             _demographicsCsvFile.Write(demographicsModels);            
@@ -75,7 +76,7 @@ namespace SDCode.Web.Controllers
 
         public IActionResult Epworth(string participantID, string monthbed, string monthlatency, string monthwake, string totalhours, string totalminutes, FrequenciesWeekly no30min, FrequenciesWeekly waso, FrequenciesWeekly bathroom, FrequenciesWeekly breathing, FrequenciesWeekly snoring, FrequenciesWeekly hot, FrequenciesWeekly cold, FrequenciesWeekly dreams, FrequenciesWeekly pain, FrequenciesWeekly otherfrequency, string otherdescribe, Qualities sleepquality, FrequenciesWeekly medication, FrequenciesWeekly sleepiness, Problems enthusiasm, BedPartners bedpartner, FrequenciesWeekly partsnore, FrequenciesWeekly breathpause, FrequenciesWeekly legs, FrequenciesWeekly disorientation, FrequenciesWeekly otherrestless, string otherrestdescribe)
         {
-            var psqiModels = new List<PSQIModel>();
+            var psqiModels = new List<PSQIModel>(); // todo mlh invistigate all CSV writes and make sure reads are preceding them
             var psqiModel = new PSQIModel{ParticipantID = participantID, MonthBed = monthbed, MonthLatency = monthlatency, MonthWake = monthwake, TotalHours = totalhours, TotalMinutes = totalminutes, No30Min = no30min, WASO = waso, Bathroom = bathroom, Breathing = breathing, Snoring = snoring, Hot = hot, Cold = cold, Dreams = dreams, Pain = pain, OtherFrequency = otherfrequency, OtherDescribe = otherdescribe, SleepQuality = sleepquality, Medication = medication, Sleepiness = sleepiness, Enthusiasm = enthusiasm, BedPartner = bedpartner, PartSnore = partsnore, BreathPause = breathpause, Legs = legs, Disorientation = disorientation, OtherRestless = otherrestless, OtherRestDescribe = otherrestdescribe};
             psqiModels.Add(psqiModel);
             _psqiCsvFile.Write(psqiModels);

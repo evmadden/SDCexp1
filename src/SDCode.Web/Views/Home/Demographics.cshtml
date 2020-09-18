@@ -1,5 +1,5 @@
 ﻿@model SDCode.Web.Models.DemographicsViewModel
-
+@using SDCode.Web.Classes
 @{
     ViewData["Title"] = "Demographics";
 }
@@ -39,25 +39,25 @@
         <br/>       
         <div>
             <label for="hand">Right or Left handed:</label><br/>
-            <input type="radio" id="Right" name="handed" value="right">
+            <input type="radio" id="Right" name="handed" value="@((int)Hands.Right)">
             <label for="Right">Right</label><br/>
-            <input type="radio" id="Left" name="handed" value="left">
+            <input type="radio" id="Left" name="handed" value="@((int)Hands.Left)">
             <label for="Left">Left</label><br/>
         </div>
         <br/>
         <div>
             <label for="impairments">Do you have hearing, vision or speech impairments?</label><br/>
-            <input type="radio" id="impairyes" name="impairments" value="yes">
+            <input type="radio" id="impairyes" name="impairments" value="true">
             <label for="impairyes">Yes</label><br/>
-            <input type="radio" id="impairno" name="impairments" value="no">
+            <input type="radio" id="impairno" name="impairments" value="false">
             <label for="impairno">No</label><br/>
         </div>
         <br/>
         <div>
             <label for="glasses">Do you wear glasses or contacts?</label><br/>
-            <input type="radio" id="glassesyes" name="glasses" value="yes">
+            <input type="radio" id="glassesyes" name="glasses" value="true">
             <label for="glassesyes">Yes</label><br/>
-            <input type="radio" id="glassesno" name="glasses" value="no">
+            <input type="radio" id="glassesno" name="glasses" value="false">
             <label for="glassesno">No</label><br/>
         </div>
         <br/>

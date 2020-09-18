@@ -49,20 +49,23 @@ namespace SDCode.Web.Classes
             using (StreamWriter sw = new StreamWriter(FilePath, false, new UTF8Encoding(true)))
             using (CsvWriter cw = new CsvWriter(sw, CultureInfo.CurrentCulture))
             {
-                cw.Configuration.TypeConverterCache.AddConverter<bool>(new CsvBooleanConverter()); // https://stackoverflow.com/a/63523529
-                cw.Configuration.TypeConverterCache.AddConverter<IEnumerable<string>>(new CsvStringsConverter()); // https://stackoverflow.com/a/63523529
-                cw.Configuration.TypeConverterCache.AddConverter<IEnumerable<int>>(new CsvIntegersConverter()); // https://stackoverflow.com/a/63523529
-                cw.Configuration.TypeConverterCache.AddConverter<Judgements>(new CsvJudgementsConverter()); // https://stackoverflow.com/a/63523529
-                cw.Configuration.TypeConverterCache.AddConverter<Confidences>(new CsvConfidencesConverter()); // https://stackoverflow.com/a/63523529
-                cw.Configuration.TypeConverterCache.AddConverter<Congruencies>(new CsvCongruenciesConverter()); // https://stackoverflow.com/a/63523529
-                cw.Configuration.TypeConverterCache.AddConverter<Contexts>(new CsvContextsConverter()); // https://stackoverflow.com/a/63523529
-                cw.Configuration.TypeConverterCache.AddConverter<Feedbacks>(new CsvFeedbacksConverter()); // https://stackoverflow.com/a/63523529
-                cw.Configuration.TypeConverterCache.AddConverter<FrequenciesWeekly>(new CsvFrequenciesWeeklyConverter()); // https://stackoverflow.com/a/63523529
-                cw.Configuration.TypeConverterCache.AddConverter<Qualities>(new CsvQualitiesConverter()); // https://stackoverflow.com/a/63523529
-                cw.Configuration.TypeConverterCache.AddConverter<Problems>(new CsvProblemsConverter()); // https://stackoverflow.com/a/63523529
-                cw.Configuration.TypeConverterCache.AddConverter<BedPartners>(new CsvBedPartnersConverter()); // https://stackoverflow.com/a/63523529
-                cw.Configuration.TypeConverterCache.AddConverter<ChancesDozing>(new CsvChancesDozingConverter()); // https://stackoverflow.com/a/63523529
-                cw.Configuration.TypeConverterCache.AddConverter<Sleepinesses>(new CsvSleepinessesConverter()); // https://stackoverflow.com/a/63523529
+                // https://stackoverflow.com/a/63523529
+                cw.Configuration.TypeConverterCache.AddConverter<bool>(new CsvBooleanConverter());
+                cw.Configuration.TypeConverterCache.AddConverter<IEnumerable<string>>(new CsvStringsConverter());
+                cw.Configuration.TypeConverterCache.AddConverter<IEnumerable<int>>(new CsvIntegersConverter());
+                cw.Configuration.TypeConverterCache.AddConverter<Judgements>(new CsvJudgementsConverter());
+                cw.Configuration.TypeConverterCache.AddConverter<Confidences>(new CsvConfidencesConverter());
+                cw.Configuration.TypeConverterCache.AddConverter<Congruencies>(new CsvCongruenciesConverter());
+                cw.Configuration.TypeConverterCache.AddConverter<Contexts>(new CsvContextsConverter());
+                cw.Configuration.TypeConverterCache.AddConverter<Feedbacks>(new CsvFeedbacksConverter());
+                cw.Configuration.TypeConverterCache.AddConverter<FrequenciesWeekly>(new CsvFrequenciesWeeklyConverter());
+                cw.Configuration.TypeConverterCache.AddConverter<Qualities>(new CsvQualitiesConverter());
+                cw.Configuration.TypeConverterCache.AddConverter<Problems>(new CsvProblemsConverter());
+                cw.Configuration.TypeConverterCache.AddConverter<BedPartners>(new CsvBedPartnersConverter());
+                cw.Configuration.TypeConverterCache.AddConverter<ChancesDozing>(new CsvChancesDozingConverter());
+                cw.Configuration.TypeConverterCache.AddConverter<Sleepinesses>(new CsvSleepinessesConverter());
+                cw.Configuration.TypeConverterCache.AddConverter<Hands>(new CsvHandsConverter());
+                cw.Configuration.TypeConverterCache.AddConverter<Sexes>(new CsvHandsConverter());
                 cw.WriteHeader<T>();
                 cw.NextRecord();
                 foreach (T record in records)
@@ -104,6 +107,11 @@ namespace SDCode.Web.Classes
             }
             var boolValue = (bool)value;
             return boolValue ? "1" : "0";
+        }
+
+        public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
+        {
+            return string.Equals(text, "1");
         }
     }
 
@@ -314,8 +322,43 @@ namespace SDCode.Web.Classes
 
         public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
         {
-            var result = string.IsNullOrWhiteSpace(text) ? default : (Sleepinesses) Enum.Parse(typeof(Sleepinesses), text);
+            var result = string.IsNullOrWhiteSpace(text) ? default(Sleepinesses?) : (Sleepinesses) Enum.Parse(typeof(Sleepinesses), text);
             return result;
         }
     }
+
+    public class CsvHandsConverter : DefaultTypeConverter {
+        public override string ConvertToString(object value, IWriterRow row, MemberMapData memberMapData)
+        {
+            if ( value == null )
+            {
+                return string.Empty;
+            }
+            return $"{(char)(Hands)value}";
+        }
+
+        public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
+        {
+            var result = string.IsNullOrWhiteSpace(text) ? default(Hands?) : (Hands) Enum.Parse(typeof(Hands), $"{(int)text[0]}");
+            return result;
+        }
+    }
+
+    public class CsvSexesConverter : DefaultTypeConverter {
+        public override string ConvertToString(object value, IWriterRow row, MemberMapData memberMapData)
+        {
+            if ( value == null )
+            {
+                return string.Empty;
+            }
+            return $"{(char)(Sexes)value}";
+        }
+
+        public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
+        {
+            var result = string.IsNullOrWhiteSpace(text) ? default(Sexes?) : (Sexes) Enum.Parse(typeof(Sexes), $"{(int)text[0]}");
+            return result;
+        }
+    }
+
 }
