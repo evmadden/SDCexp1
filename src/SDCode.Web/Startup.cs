@@ -28,7 +28,7 @@ namespace SDCode.Web
             services.AddControllersWithViews(options=>{
                 options.Filters.Add<ParticipantVerifyFilter>();
             }).AddRazorRuntimeCompilation();
-            services.AddScoped<ICsvFile<HolidayModel, HolidayMap>, CsvFile<HolidayModel, HolidayMap>>();
+            //services.AddScoped<ICsvFile<HolidayModel, HolidayMap>, CsvFile<HolidayModel, HolidayMap>>(); // todo mlh remove
             services.AddScoped<ICsvFile<ConsentModel, ConsentMap>, CsvFile<ConsentModel, ConsentMap>>();
             services.AddScoped<ICsvFile<DemographicsModel, DemographicsMap>, CsvFile<DemographicsModel, DemographicsMap>>();
             services.AddScoped<ICsvFile<PSQIModel, PSQIMap>, CsvFile<PSQIModel, PSQIMap>>();
