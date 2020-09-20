@@ -6,7 +6,8 @@
 
 @if (Model.Action == TestWelcomeBackAction.NewUser) {
     <div>
-        MUST_COMPLETE_NEW_USER_FLOW_PLACEHOLDER
+        It looks like you are a New User.  Please return to the home page to select "New Participant."
+        If you feel you have reached this page by mistake, please email the researcher at evm517@york.ac.uk
     </div>
     <form action="@Url.Action("Welcome", "Home")">
         <input type="hidden" name="participantID" value="@Model.ParticipantID" />
@@ -16,7 +17,8 @@
     </form>
 } else if (Model.Action == TestWelcomeBackAction.Wait) {
     <div>
-        MUST_WAIT_BEFORE_TAKING_NEXT_TEST_PLACEHOLDER
+        It looks like you are trying to access the study outside of testing hours.  See below for your next session time.
+        If you feel you have reached this page by mistake, please email the researcher at evm517@york.ac.uk
     </div>
     <div>
         @{
@@ -32,7 +34,7 @@
      <fieldset>
          @if (Model.Action == TestWelcomeBackAction.Stanford) {
             <div>
-                PROVIDE_STANFORD_PLACEHOLDER
+                Stanford Sleepiness Scale
             </div>
             <legend>This is a quick way to assess how alert you are feeling CURRENTLY.<br/>
                 <br/>
