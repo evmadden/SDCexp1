@@ -135,7 +135,7 @@ namespace SDCode.Web.Controllers
             var nextTestName = _testNameGetter.Get(testSets, nextProgress);
             var testHasEnded = !string.Equals(seenTestName, nextTestName);
             var nextViewModel = GetViewModel(testSets, nextProgress);
-            return Json(new {TestEnded=testHasEnded ? seenTestName : null, feedback=((int)feedback), ViewModel=nextViewModel});
+            return Json(new {TestEnded=testHasEnded, feedback=((int)feedback), ViewModel=nextViewModel});
         }
 
         private ICsvFile<ResponseDataModel, ResponseDataModel.Map> GetResponseDataCsvFile(string participantID, string testName) {
