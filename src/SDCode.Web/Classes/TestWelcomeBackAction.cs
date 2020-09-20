@@ -4,6 +4,7 @@
         NewUser,
         Stanford,
         Test,
-        Wait
+        Wait,
+        Done
     }
 }

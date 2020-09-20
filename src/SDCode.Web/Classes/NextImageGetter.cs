@@ -13,9 +13,9 @@ namespace SDCode.Web.Classes
         public string Get(TestSetsModel testSets, int progress)
         {
             string result;
-            if (progress >= testSets.Immediate.Count())
+            if (progress > testSets.Immediate.Count() - 1)
             {
-                if (progress >= testSets.Immediate.Count() + testSets.Delayed.Count())
+                if (progress > (testSets.Immediate.Count() + testSets.Delayed.Count()) - 1)
                 {
                     result = testSets.Followup.ElementAt(progress - testSets.Immediate.Count() - testSets.Delayed.Count());
                 }

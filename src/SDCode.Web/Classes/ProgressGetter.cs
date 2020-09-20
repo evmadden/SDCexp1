@@ -35,14 +35,19 @@ namespace SDCode.Web.Classes
                 if (delayedTestComplete) {
                     var followupCsvFile = _responseDataCsvFileGetter.Get(participantID, nameof(testSets.Followup));
                     var followupResponses = followupCsvFile.Read().ToList();
-                    KeepOldResponses(participantID, nameof(testSets.Followup), followupCsvFile, followupResponses);
-                    result = testSets.Immediate.Count() + testSets.Delayed.Count() - 1;
-                    followupResponses.Clear();
-                    followupCsvFile = _responseDataCsvFileGetter.Get(participantID, nameof(testSets.Followup));
-                    followupCsvFile.Write(followupResponses);
+                    bool followupTestComplete = followupResponses.Count == testSets.Followup.Count();
+                    if (followupTestComplete) {
+                        result = testSets.Immediate.Count() + testSets.Delayed.Count() + testSets.Followup.Count();
+                    } else {
+                        KeepOldResponses(participantID, nameof(testSets.Followup), followupCsvFile, followupResponses);
+                        result = testSets.Immediate.Count() + testSets.Delayed.Count();
+                        followupResponses.Clear();
+                        followupCsvFile = _responseDataCsvFileGetter.Get(participantID, nameof(testSets.Followup));
+                        followupCsvFile.Write(followupResponses);
+                    }
                 } else {
                     KeepOldResponses(participantID, nameof(testSets.Delayed), delayedCsvFile, delayedResponses);
-                    result = testSets.Immediate.Count() - 1;
+                    result = testSets.Immediate.Count();
                     delayedResponses.Clear();
                     delayedCsvFile = _responseDataCsvFileGetter.Get(participantID, nameof(testSets.Delayed));
                     delayedCsvFile.Write(delayedResponses);

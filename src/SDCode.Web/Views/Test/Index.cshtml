@@ -9,6 +9,7 @@
     }
 </style>
 <script>
+    var shouldAutomate = @($"{Model.ShouldAutomate}".ToLower());
     document.addEventListener("DOMContentLoaded", function(){
         var imageElement = document.getElementById('image');
         var confidenceElement = document.getElementById('confidence');
@@ -28,6 +29,17 @@
             imageConfidence = null;
             imageShownAt = new Date().getTime();
             imageReactionTime = null;
+
+            if (shouldAutomate) {
+                var possibleJudgementActions = [()=>onArrowLeft(),()=>onArrowRight()];
+                var possibleConfidenceActions = [()=>onNumber1(),()=>onNumber2(),()=>onNumber3(),()=>onNumber4(),];
+                var judgementAction = possibleJudgementActions[Math.floor(Math.random() * possibleJudgementActions.length)];
+                var confidenceAction = possibleConfidenceActions[Math.floor(Math.random() * possibleConfidenceActions.length)];
+                setTimeout(function(){
+                    judgementAction();
+                    setTimeout(confidenceAction, @Model.AutomationDelayInMilliseconds);
+                }, @Model.AutomationDelayInMilliseconds);
+            }
         }
         var sendResponse = function() {
             var xhr = new XMLHttpRequest();
@@ -69,15 +81,21 @@
             imageConfidence = confidence;
             sendResponse();
         };
+        function onArrowLeft() { onJudgement(@((int)Judgements.Old)); }
+        function onArrowRight() { onJudgement(@((int)Judgements.New)); }
+        function onNumber1() { onConfidence(@((int)Confidences.NotConfident)); }
+        function onNumber2() { onConfidence(@((int)Confidences.LessConfident)); }
+        function onNumber3() { onConfidence(@((int)Confidences.MoreConfident)); }
+        function onNumber4() { onConfidence(@((int)Confidences.MostConfident)); }
         document.addEventListener('keyup', function(e) {
             if (!(e.ctrlKey || e.altKey || e.shiftKey || e.metaKey)) {
                 const callback = {
-                    "ArrowLeft"  : function() { onJudgement(@((int)Judgements.Old)); },
-                    "ArrowRight" : function() { onJudgement(@((int)Judgements.New)); },
-                    "1" : function() { onConfidence(@((int)Confidences.NotConfident)); },
-                    "2" : function() { onConfidence(@((int)Confidences.LessConfident)); },
-                    "3" : function() { onConfidence(@((int)Confidences.MoreConfident)); },
-                    "4" : function() { onConfidence(@((int)Confidences.MostConfident)); }
+                    "ArrowLeft"  : onArrowLeft,
+                    "ArrowRight" : onArrowRight,
+                    "1" : onNumber1,
+                    "2" : onNumber2,
+                    "3" : onNumber3,
+                    "4" : onNumber4
                 }[e.key];
                 callback?.();
             }

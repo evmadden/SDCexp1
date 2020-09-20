@@ -57,27 +57,31 @@ namespace SDCode.Web.Controllers
             var testSets = _testSetsGetter.Get(participantID);
             var progress = _progressGetter.Get(participantID);
             var testName = _testNameGetter.Get(testSets, progress);
-            TestWelcomeBackAction action;
             DateTime? nextTestWhenUtc = default;
-            if (string.Equals(testName, nameof(testSets.Immediate))) {
-                var stanford = _stanfordRepository.Get(participantID, testName);
-                if (stanford.Immediate.HasValue) {
-                    action = TestWelcomeBackAction.Test;
-                } else {
-                    action = TestWelcomeBackAction.NewUser;
-                }
+            TestWelcomeBackAction action;
+            if (testName == default) {
+                action = TestWelcomeBackAction.Done;
             } else {
-                action = TestWelcomeBackAction.Stanford;
-                var testStartDelayHourThresholds = new Dictionary<string, TimeSpan>() {{nameof(testSets.Delayed), Timespans.OneDay}, {nameof(testSets.Followup), Timespans.OneWeek}};
-                if (testStartDelayHourThresholds.ContainsKey(testName)) {
-                    var priorTestName = _testNameGetter.Get(testSets, progress-1);
-                    var priorTestResponsesCsvFile = GetResponseDataCsvFile(participantID, priorTestName);
-                    var priorTestResponses = priorTestResponsesCsvFile.Read();
-                    var priorTestStartTimeUtc = priorTestResponses.Select(x=>x.WhenUtc).DefaultIfEmpty().Min();
-                    var nextTestStartTimeThresholdUtc = priorTestStartTimeUtc + testStartDelayHourThresholds[testName];
-                    if (nextTestStartTimeThresholdUtc > DateTime.UtcNow) {
-                        action = TestWelcomeBackAction.Wait;
-                        nextTestWhenUtc = nextTestStartTimeThresholdUtc;
+                if (string.Equals(testName, nameof(testSets.Immediate))) {
+                    var stanford = _stanfordRepository.Get(participantID, testName);
+                    if (stanford.Immediate.HasValue) {
+                        action = TestWelcomeBackAction.Test;
+                    } else {
+                        action = TestWelcomeBackAction.NewUser;
+                    }
+                } else {
+                    action = TestWelcomeBackAction.Stanford;
+                    var testStartDelayHourThresholds = new Dictionary<string, TimeSpan>() {{nameof(testSets.Delayed), new TimeSpan(_config.TestWaitDaysDelayed,0,0,0) }, {nameof(testSets.Followup), new TimeSpan(_config.TestWaitDaysFollowup,0,0,0)}};
+                    if (testStartDelayHourThresholds.ContainsKey(testName)) {
+                        var priorTestName = _testNameGetter.Get(testSets, progress-1);
+                        var priorTestResponsesCsvFile = GetResponseDataCsvFile(participantID, priorTestName);
+                        var priorTestResponses = priorTestResponsesCsvFile.Read();
+                        var priorTestStartTimeUtc = priorTestResponses.Select(x=>x.WhenUtc).DefaultIfEmpty().Min();
+                        var nextTestStartTimeThresholdUtc = priorTestStartTimeUtc + testStartDelayHourThresholds[testName];
+                        if (nextTestStartTimeThresholdUtc > DateTime.UtcNow) {
+                            action = TestWelcomeBackAction.Wait;
+                            nextTestWhenUtc = nextTestStartTimeThresholdUtc;
+                        }
                     }
                 }
             }
@@ -93,7 +97,7 @@ namespace SDCode.Web.Controllers
             if (stanford != default && stanford.HasValue) {
                 _stanfordRepository.Save(participantID, testName, stanford.Value);
             }
-            var viewModel = new TestIndexViewModel(participantID, progress, testName, _config.AttentionResetDisplayDurationInMilliseconds);
+            var viewModel = new TestIndexViewModel(participantID, progress, testName, _config.AttentionResetDisplayDurationInMilliseconds, _config.AutomateTests, _config.TestAutomationDelayInMilliseconds);
             return View(viewModel);
         }
 
@@ -134,7 +138,7 @@ namespace SDCode.Web.Controllers
             int nextProgress = progress + 1;
             var nextTestName = _testNameGetter.Get(testSets, nextProgress);
             var testHasEnded = !string.Equals(seenTestName, nextTestName);
-            var nextViewModel = GetViewModel(testSets, nextProgress);
+            var nextViewModel = testHasEnded ? null : GetViewModel(testSets, nextProgress);
             return Json(new {TestEnded=testHasEnded, feedback=((int)feedback), ViewModel=nextViewModel});
         }
 

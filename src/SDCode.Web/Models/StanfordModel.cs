@@ -13,8 +13,8 @@ namespace SDCode.Web.Models
         public Sleepinesses? Immediate { get; set; }
         [Name(nameof(Delayed))]
         public Sleepinesses? Delayed { get; set; }
-        [Name(nameof(FollowUp))]
-        public Sleepinesses? FollowUp { get; set; }
+        [Name(nameof(Followup))]
+        public Sleepinesses? Followup { get; set; }
     }   
     public sealed class StanfordMap : ClassMap<StanfordModel>
     {
@@ -23,7 +23,7 @@ namespace SDCode.Web.Models
             Map(m => m.ParticipantID).Name(nameof(StanfordModel.ParticipantID));
             Map(m => m.Immediate).Name(nameof(StanfordModel.Immediate)).TypeConverter<CsvSleepinessesConverter>();
             Map(m => m.Delayed).Name(nameof(StanfordModel.Delayed)).TypeConverter<CsvSleepinessesConverter>();
-            Map(m => m.FollowUp).Name(nameof(StanfordModel.FollowUp)).TypeConverter<CsvSleepinessesConverter>();
+            Map(m => m.Followup).Name(nameof(StanfordModel.Followup)).TypeConverter<CsvSleepinessesConverter>();
         }
     }
 }

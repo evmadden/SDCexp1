@@ -26,6 +26,8 @@
         }
         Test available at: @whenToDisplay?.ToString("MM/dd/yyyy") @whenToDisplay?.ToString("h:mm tt") UTC
     </div>
+} else if (Model.Action == TestWelcomeBackAction.Done) {
+    <span>TESTS_DONE_PLACEHOLDER</span>
 } else {
     @* todo mlh refactor this to new Partial so it re-uses views/home/stanford.cshtml instead of exactly duplicating it *@
   <form action="/ImageCheck" method="POST">

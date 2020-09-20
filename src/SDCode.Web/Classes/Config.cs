@@ -6,5 +6,9 @@
             public int NumberDisplayProbabilityPercentage { get; set; }
             public int NumberCheckIntervalInMilliseconds { get; set; }
             public int NumberDisplayThresholdInMilliseconds { get; set; }
+            public bool AutomateTests { get; set; }
+            public int TestAutomationDelayInMilliseconds { get; }
+            public int TestWaitDaysDelayed { get; }
+            public int TestWaitDaysFollowup { get; }
         }
 }

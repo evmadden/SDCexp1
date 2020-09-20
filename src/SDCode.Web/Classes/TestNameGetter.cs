@@ -12,12 +12,14 @@ namespace SDCode.Web.Classes
     {
         public string Get(TestSetsModel testSets, int progress)
         {
-            string result;
+            string result = default;
             if (progress >= testSets.Immediate.Count())
             {
                 if (progress >= testSets.Immediate.Count() + testSets.Delayed.Count())
                 {
-                    result = progress >= testSets.Immediate.Count() + testSets.Delayed.Count() + testSets.Followup.Count() ? null : nameof(testSets.Followup);
+                    if (progress < testSets.Immediate.Count() + testSets.Delayed.Count() + testSets.Followup.Count()) {
+                        result = progress >= testSets.Immediate.Count() + testSets.Delayed.Count() + testSets.Followup.Count() ? null : nameof(testSets.Followup);
+                    }
                 }
                 else
                 {
