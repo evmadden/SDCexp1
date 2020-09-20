@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.Extensions.Hosting
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -35,6 +36,13 @@
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2020 - FOOTER_TEXT_PLACEHOLDER - <a asp-area="" asp-controller="Home" asp-action="LearnMore" target="_blank">Learn More</a>
+            @{
+                var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+                var isDevelopment = environment == Environments.Development;                
+                if (isDevelopment) {
+                    <span style="float: right;">@environment</span>
+                }
+            }
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

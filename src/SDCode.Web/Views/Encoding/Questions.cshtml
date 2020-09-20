@@ -1,0 +1,38 @@
+﻿@model EncodingQuestionsViewModel
+@{
+    ViewData["Title"] = "Questions";
+}
+
+<div class="text-right">
+    <div style="background-color: Darkcyan;">  
+        <img src="/img/Logo.png" style="width:200px;height:100px;"/> <!-- https://www.york.ac.uk/staff/external-relations/brand/logo/ -->
+    </div>
+</div>
+
+    <form action="/Encoding/Finished" method="POST">
+        <input type="hidden" name="participantID" value="@Model.ParticipantID" />
+
+    <h1 class="display-4; text-center;">Study Phase Questions</h1>
+    <br/>
+    <p>This completes the STUDY PHASE.</p>
+    <div>
+        <div class="text-align: left">
+            <h1 class="display-4; text-center;">Questions</h1>
+            <p>QUESTIONS_PLACEHOLDER</p>
+        </div>
+        @if (Model.ShouldQuestionNeglected) {
+            <div>
+                Why were images neglected? <input type="text" name="neglectedReason" class="longSingleLine" required />
+            </div>
+        }
+        @if (Model.ShouldQuestionObscured) {
+            <div>
+                Why were images obscured? <input type="text" name="obscuredReason" class="longSingleLine" required />
+            </div>
+        }
+    </div>
+    <p>Press the "Next" button to finish to the STUDY PHASE.</p>
+<div style="text-align: right;">
+    <input style="margin-right: 50px;" type="submit" value="Next"/>
+</div>
+    </form>

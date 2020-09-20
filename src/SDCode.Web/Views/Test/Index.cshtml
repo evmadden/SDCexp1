@@ -44,7 +44,7 @@
                         feedbackElement.style.display = 'block';
                         setTimeout(function () {
                             showImage(response.viewModel.imageUrl, response.viewModel.progress);
-                        }, 1500); // todo mlh replace with plus sign duration
+                        }, @Model.FeedbackDisplayDurationInMilliseconds);
                     }
                 }
             }

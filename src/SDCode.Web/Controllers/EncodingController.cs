@@ -5,6 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SDCode.Web.Models;
 using SDCode.Web.Classes;
+using Microsoft.Extensions.Configuration;
+using System;
+using Microsoft.Extensions.Options;
+using System.Text.Json;
 
 namespace SDCode.Web.Controllers
 {
@@ -14,15 +18,20 @@ namespace SDCode.Web.Controllers
         private readonly IImageIndexesGetter _imageIndexesGetter;
         private readonly IStimuliImageDataUrlGetter _stimuliImageDataUrlGetter;
         private readonly IStanfordRepository _stanfordRepository;
+        private readonly ICsvFile<SessionMetaModel, SessionMetaModel.Map> _sessionMetaCsvFile;
+        private readonly Config _config;
 
-        public EncodingController(ILogger<EncodingController> logger, IImageIndexesGetter encodingPhaseImageIndexesGetter, IStimuliImageDataUrlGetter stimuliImageDataUrlGetter, IStanfordRepository stanfordRepository)
+        public EncodingController(ILogger<EncodingController> logger, IImageIndexesGetter encodingPhaseImageIndexesGetter, IStimuliImageDataUrlGetter stimuliImageDataUrlGetter, IStanfordRepository stanfordRepository, ICsvFile<SessionMetaModel, SessionMetaModel.Map> sessionMetaCsvFile, IOptions<Config> config)
         {
             _logger = logger;
             _imageIndexesGetter = encodingPhaseImageIndexesGetter;
             _stimuliImageDataUrlGetter = stimuliImageDataUrlGetter;
             _stanfordRepository = stanfordRepository;
+            _sessionMetaCsvFile = sessionMetaCsvFile;
+            _config = config.Value;
         }
 
+        [HttpPost]
         public IActionResult Index(string participantID, Sleepinesses stanford)
         {
             _stanfordRepository.Save(participantID, "Immediate", stanford);
@@ -30,17 +39,52 @@ namespace SDCode.Web.Controllers
             var imageIndexesRequests = imageTypes.Select(x=>new ImageIndexesRequest(x, 36));
             var imageIndexes = _imageIndexesGetter.Get(imageIndexesRequests);
             var imageUrls = _stimuliImageDataUrlGetter.Get(imageIndexes);
-            var viewModel = new EncodingIndexViewModel(participantID, imageUrls, stanford);
+            var viewModel = new EncodingIndexViewModel(participantID, stanford, _config.ImageDisplayDurationInMilliseconds, _config.AttentionResetDisplayDurationInMilliseconds, _config.NumberDisplayProbabilityPercentage, _config.NumberCheckIntervalInMilliseconds, _config.NumberDisplayThresholdInMilliseconds);
             return View(viewModel);
         }
 
-        // todo mlh remove outOfBoundsImageIndex if we're not going to use it
-        public IActionResult ImageOutOfBounds(string participantID, Sleepinesses stanford, int outOfBoundsImageIndex) {
-            var viewModel = new EncodingImageOutOfBoundsViewModel(participantID, stanford);
-            return View(viewModel);
+        public IActionResult GetImageDataUrls(string participantID) {
+            var imageTypes = new List<string> { "A", "A", "AI", "AI", "B", "BI", "C", "CI", "F", "F", "FI", "FI" };
+            var imageIndexesRequests = imageTypes.Select(x=>new ImageIndexesRequest(x, 36));
+            var imageIndexes = _imageIndexesGetter.Get(imageIndexesRequests);
+            var imageDataUrls = _stimuliImageDataUrlGetter.Get(imageIndexes);
+            var json = JsonSerializer.Serialize(imageDataUrls);
+            Response.Headers.Add("Content-Length", $"{json.Length}");
+            return Content(json, "application/json");
         }
 
-        public IActionResult Finished(string participantID, string neglectedIndexesCommaDelimited)
+        public IActionResult RecordResults(string participantID, string neglectedIndexesCommaDelimited, string obscuredIndexesCommaDelimited)
+        {
+            var neglectedIndexes = neglectedIndexesCommaDelimited?.Split(",").Select(int.Parse) ?? new List<int>();
+            var obscuredIndexes = obscuredIndexesCommaDelimited?.Split(",").Select(int.Parse) ?? new List<int>(); // todo mlh create dependency which turns comma-delimited string into IEnumerable
+            if (neglectedIndexes.Any()) {
+                var sessionMetaRecords = _sessionMetaCsvFile.Read().ToList();
+                sessionMetaRecords.Add(new SessionMetaModel{ParticipantID=participantID,NeglectedIndexes=neglectedIndexes,NeglectedReason=string.Empty,ObscuredIndexes=obscuredIndexes,ObscuredReason=string.Empty});
+                _sessionMetaCsvFile.Write(sessionMetaRecords);
+            }
+            return Json(new {success=true});
+        }
+
+        public IActionResult Questions(string participantID, string neglectedIndexesCommaDelimited, string obscuredIndexesCommaDelimited)
+        {
+            var neglectedIndexes = neglectedIndexesCommaDelimited?.Split(",").Select(int.Parse) ?? new List<int>();
+            var obscuredIndexes = obscuredIndexesCommaDelimited?.Split(",").Select(int.Parse) ?? new List<int>(); // todo mlh create dependency which turns comma-delimited string into IEnumerable
+
+            var sessionMeta = _sessionMetaCsvFile.Read().ToList();
+            var participantRecord = sessionMeta.FirstOrDefault(x=>string.Equals(x.ParticipantID, participantID));
+            if (participantRecord == default) {
+                participantRecord = new SessionMetaModel{ParticipantID=participantID};
+                sessionMeta.Add(participantRecord);
+            }
+            participantRecord.NeglectedIndexes = neglectedIndexes;
+            participantRecord.ObscuredIndexes = obscuredIndexes;
+            _sessionMetaCsvFile.Write(sessionMeta);
+
+            return View(new EncodingQuestionsViewModel(participantID, neglectedIndexes.Any(), obscuredIndexes.Any()));
+        }
+
+        // todo mlh evaluate every action on every controller for HttpPost correctness
+        public IActionResult Finished(string participantID, string neglectedReason, string obscuredReason)
         {
             // todo mlh remove
             // 447_Immediate.csv  testResponseData
@@ -55,9 +99,16 @@ namespace SDCode.Web.Controllers
             // 288 TOTAL IMAGES per session
 
             // immediate delayed followup
-
-            var neglectedIndexes = neglectedIndexesCommaDelimited?.Split(",").Select(int.Parse) ?? new List<int>();
-            return View(new EncodingFinishedViewModel(participantID, neglectedIndexes));
+            var sessionMeta = _sessionMetaCsvFile.Read().ToList();
+            var participantRecord = sessionMeta.FirstOrDefault(x=>string.Equals(x.ParticipantID, participantID));
+            if (participantRecord == default) {
+                participantRecord = new SessionMetaModel{ParticipantID=participantID};
+                sessionMeta.Add(participantRecord);
+            }
+            participantRecord.NeglectedReason = neglectedReason;
+            participantRecord.ObscuredReason = obscuredReason;
+            _sessionMetaCsvFile.Write(sessionMeta);
+            return View(new EncodingFinishedViewModel(participantID));
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

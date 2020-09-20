@@ -19,50 +19,40 @@
     }
     document.addEventListener("DOMContentLoaded", function(){
         var images = [];
-        function preload() {
-            for (var i = 0; i < arguments.length; i++) {
-                images[i] = {};
-                images[i].src = preload.arguments[i];
-            }
-        }
-
-        preload(@Html.Raw(string.Join(",", Model.ImageUrls.Select(x=>$"\"{x}\""))));
-
         var imageElement = document.getElementById('image');
         var numberElement = document.getElementById('number');
-        var neglectedIndexesElement = document.getElementById('neglectedIndexesCommaDelimited');
-        var imageDisplayDurationInMilliseconds = 3000;
-        var plusSignDisplayDurationInMilliseconds = 1500;
-        var numberDisplayProbabilityPercentage = 10;
-        var numberCheckIntervalInMilliseconds = 100;
+        var submittingResultsElement = document.getElementById('submittingResults');
+        var submissionErrorElement = document.getElementById('submissionError');
+        var submissionSuccessfulElement = document.getElementById('submissionSuccessful');
+        var neglectedIndexesCommaDelimitedElement = document.getElementById('neglectedIndexesCommaDelimited');
+        var obscuredIndexesCommaDelimitedElement = document.getElementById('obscuredIndexesCommaDelimited');
+        var loadingElement = document.getElementById('loadingDiv');
+        var loadingPercentageElement = document.getElementById('loadingPercentageSpan');
         var spacebarDetected = false;
-        var numberDisplayThresholdInMilliseconds = 60000;
+        
 
-        var showFinishedMessage = function() {
-            document.getElementById('finishedForm').submit();
-        };
-
-        var showOutOfBoundsMessage = function() {
-            document.getElementById('outOfBoundsImageIndex').value = imageIndex;
-            document.getElementById('outOfBoundsForm').submit();
-        };
-
+        var neglectedIndexes = [];
         var canShowNumberNext;
         var imageIndex = 0;
         var showNextImage = function() {
             hideBothImageAndNumber();
-            imageUrl = images[imageIndex].src;
+            imageUrl = images[imageIndex];
             imageElement.src = imageUrl;
             imageElement.style.display = 'block';
             imageIndex = imageIndex + 1;
-            var whatToDo = imageIndex === images.length ? showFinishedMessage : showPlusSign;
+            var whatToDo = imageIndex === images.length ? onLastImageShown : showPlusSign;
             canShowNumberNext = true;
             if (!isInViewport(imageElement)) {
-                showOutOfBoundsMessage();
-            } else {
-            setTimeout(whatToDo, imageDisplayDurationInMilliseconds);
+                obscuredIndexesCommaDelimitedElement.value = obscuredIndexesCommaDelimitedElement.value + (obscuredIndexesCommaDelimitedElement.value.length > 0 ? ',' : '') + imageIndex;
             }
+            setTimeout(whatToDo, @Model.ImageDisplayDurationInMilliseconds);
         };
+
+        function onLastImageShown() {
+            numberElement.style.display = 'none';
+            imageElement.style.display = 'none';
+            submitResults();
+        }
 
         function getRandomInt(max) {
             return Math.floor(Math.random() * Math.floor(max));
@@ -77,18 +67,18 @@
             var timeSinceNumberDisplayedInMilliseconds = 0;
             spacebarDetected = false;
             var checkOnTheNumber = function() {
-                timeSinceNumberDisplayedInMilliseconds = timeSinceNumberDisplayedInMilliseconds + numberCheckIntervalInMilliseconds;
-                if (timeSinceNumberDisplayedInMilliseconds > numberDisplayThresholdInMilliseconds) {
-                    neglectedIndexesElement.value = neglectedIndexesElement.value + (neglectedIndexesElement.value.length > 0 ? ',' : '') + imageIndex;
+                timeSinceNumberDisplayedInMilliseconds = timeSinceNumberDisplayedInMilliseconds + @Model.NumberCheckIntervalInMilliseconds;
+                if (timeSinceNumberDisplayedInMilliseconds > @Model.NumberDisplayThresholdInMilliseconds) {
+                    neglectedIndexes.push(imageIndex);
                     showPlusSign();
                 } else if (spacebarDetected) {
                     showPlusSign();
                 } else {
-                    setTimeout(checkOnTheNumber, numberCheckIntervalInMilliseconds);
+                    setTimeout(checkOnTheNumber, @Model.NumberCheckIntervalInMilliseconds);
                 }
             };
             canShowNumberNext = false;
-            setTimeout(checkOnTheNumber, numberCheckIntervalInMilliseconds);
+            setTimeout(checkOnTheNumber, @Model.NumberCheckIntervalInMilliseconds);
         };
 
         var hideBothImageAndNumber = function() {
@@ -98,7 +88,7 @@
 
         var showNextImageOrNumber = function() {
             var randomNumber = getRandomInt(100);
-            var shouldShowNumber = canShowNumberNext && randomNumber <= (numberDisplayProbabilityPercentage);
+            var shouldShowNumber = canShowNumberNext && randomNumber <= (@Model.NumberDisplayProbabilityPercentage);
             var whatToDo = shouldShowNumber ? showNextNumber : showNextImage;
             whatToDo();
         };
@@ -114,29 +104,95 @@
             hideBothImageAndNumber();
             numberElement.innerText = '+';
             numberElement.style.display = 'block';
-            setTimeout(showNextImageOrNumber, plusSignDisplayDurationInMilliseconds);
+            setTimeout(showNextImageOrNumber, @Model.PlusSignDisplayDurationInMilliseconds);
         };
 
-        showPlusSign();
+        document.getElementById('tryAgainButton').addEventListener('click', function() {
+            submitResults();
+        });
+
+        var submitResults = function() {
+            submissionErrorElement.style.display = 'none';
+            submittingResultsElement.style.display = 'block';
+            setTimeout(function(){
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", '@Url.Action("RecordResults")', true);
+                // xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.onreadystatechange = function() {
+                    submittingResultsElement.style.display = 'none';
+                    var submissionFailed;
+                    if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+                        var response = JSON.parse(this.response);
+                        if (response.success) {
+                            var finishedFormElement = document.getElementById('finishedForm');
+                            var shouldAskQuestions = neglectedIndexesCommaDelimitedElement.value.length > 0 || obscuredIndexesCommaDelimitedElement.value.length > 0;
+                            var formToSubmit = shouldAskQuestions ? 'questionsForm' : 'finishedForm';
+                            document.getElementById(formToSubmit).submit();
+                        } else {
+                            submissionFailed = true;
+                        }
+                    } else {
+                        submissionFailed
+                    }
+                    if (submissionFailed) {
+                        submissionErrorElement.style.display = 'block';
+                    }
+                }
+                neglectedIndexesCommaDelimited = neglectedIndexes.join(',');
+                neglectedIndexesCommaDelimitedElement.value = neglectedIndexesCommaDelimited;
+                xhr.send(`participantID=@Model.ParticipantID&neglectedIndexesCommaDelimited=${neglectedIndexesCommaDelimited}&obscuredIndexesCommaDelimited=${obscuredIndexesCommaDelimitedElement.value}`);
+            }, 1000);
+        };
+
+        function updateProgress(evt) {
+            if (evt.lengthComputable) 
+            {
+                var percentComplete = (evt.loaded / evt.total) * 100;
+                loadingPercentageElement.innerText = parseInt(percentComplete);
+            }
+        }
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", '@Url.Action("GetImageDataUrls")', true);
+        xhr.onprogress = updateProgress;
+        xhr.onreadystatechange = function() {
+            if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+                images = JSON.parse(this.response);
+                loadingElement.style.display = 'none';
+                showPlusSign();
+            } else {
+                // todo mlh what to do if cannot load images?
+            }
+        }
+        xhr.send(`participantID=@Model.ParticipantID`);
     });
 </script>
 <div style="vertical-align: top; text-align: center;">
+    <div id="loadingDiv">
+        <div>LOADING_IMAGES_PLACEHOLDER</div>
+        <span>Loading Images: </span><span id="loadingPercentageSpan">0</span><span>%</span>
+    </div>
     <img id="image" style="display: none; width: 800px; height: 700px;"/>
     <div id="number" style="font-size: 100px; line-height: 600px; display: none; width: 800px; height: 700px;"></div>
+    <div id="submittingResults" style="display: none;">
+        <div>SUBMITTING_RESULTS_PLACEHOLDER</div>
+    </div>
+    <div id="submissionError" style="display: none;">
+        <div>ERROR_SUBMITTING_ENCODING_RESULTS_PLACEHOLDER</div>
+        <div><button id="tryAgainButton">Try Again</button></div>
+    </div>
 </div>
 
-
 <div>
-    <form id="finishedForm" action="/Encoding/Finished" method="POST"> 
+    <form id="questionsForm" action="/Encoding/Questions" method="POST"> 
         <input type="hidden" name="participantID" value="@Model.ParticipantID" />
         <input type="hidden" id="neglectedIndexesCommaDelimited" name="neglectedIndexesCommaDelimited" />
+        <input type="hidden" id="obscuredIndexesCommaDelimited" name="obscuredIndexesCommaDelimited" />
     </form>
 </div>
 
 <div>
-    <form id="outOfBoundsForm" action="/Encoding/ImageOutOfBounds" method="POST"> 
+    <form id="finishedForm" action="/Encoding/Finished" method="POST"> 
         <input type="hidden" name="participantID" value="@Model.ParticipantID" />
-        <input type="hidden" id="stanford" name="@((int)Model.Stanford)" />
-        <input type="hidden" id="outOfBoundsImageIndex" name="outOfBoundsImageIndex" />
     </form>
 </div>

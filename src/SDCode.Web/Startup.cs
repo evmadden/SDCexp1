@@ -25,6 +25,7 @@ namespace SDCode.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<Config>(Configuration.GetSection("Config"));
             services.AddControllersWithViews(options=>{
                 options.Filters.Add<ParticipantVerifyFilter>();
             }).AddRazorRuntimeCompilation();
@@ -48,7 +49,7 @@ namespace SDCode.Web
             services.AddScoped<IStanfordRepository, StanfordRepository>();
             services.AddScoped<IResponseFeedbackGetter, ResponseFeedbackGetter>();
             services.AddScoped<ICollectionRandomizer, CollectionRandomizer>();
-            services.AddScoped<ICsvFile<NeglectedModel, NeglectedModel.Map>, CsvFile<NeglectedModel, NeglectedModel.Map>>();
+            services.AddScoped<ICsvFile<SessionMetaModel, SessionMetaModel.Map>, CsvFile<SessionMetaModel, SessionMetaModel.Map>>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

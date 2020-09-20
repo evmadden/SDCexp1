@@ -11,23 +11,10 @@
 
     <form action="/Test" method="POST">
         <input type="hidden" name="participantID" value="@Model.ParticipantID" />
-        <input type="hidden" name="neglectedIndexesCommaDelimited" value="@string.Join(",", Model.NeglectedIndexes)" />
 
     <h1 class="display-4; text-center;">Study Phase Finished</h1>
     <br/>
     <p>This completes the STUDY PHASE.</p>
-    @if (Model.NeglectedIndexes.Any()) {
-        <div>
-            <div class="text-align: left">
-                <h1 class="display-4; text-center;">Questions</h1>
-                <br/>
-                <p>QUESTIONS_PLACEHOLDER</p>
-            </div>
-            <div>
-                Why were images neglected? <input type="text" name="neglectedReason" class="longSingleLine" required />
-            </div>
-        </div>
-    }
     <br/>
     <p>Next, we will test your memory for some of the images you saw in the STUDY phase.  In this session, you will see 288 images.
         Your task is to indicate whether each image is "old" or "new".  You will also be asked to rate how confident you are in each response
@@ -42,7 +29,7 @@
         <br/>
         <br/>
         This session is mostly self-paced.  The next image will automatically be presented after the confidence rating is provided.
-        Please pay attention and answer as accuratley as possible.
+        Please pay attention and answer as accurately as possible.
     </p>
         <br/>
     <p>Press the "Next" button to start to the TEST PHASE.</p>

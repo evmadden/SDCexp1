@@ -129,7 +129,11 @@ namespace SDCode.Web.Classes
 
         public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
         {
-            return text.Split(",").AsEnumerable<string>();
+            var result = new List<string>();
+            if (!string.IsNullOrWhiteSpace(text)) {
+                result.AddRange(text.Split(",").AsEnumerable<string>());
+            }
+            return result;
         }
     }
 
@@ -146,7 +150,11 @@ namespace SDCode.Web.Classes
 
         public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
         {
-            return text.Split(",").AsEnumerable<string>().Select(int.Parse);
+            var result = new List<int>();
+            if (!string.IsNullOrWhiteSpace(text)) {
+                result.AddRange(text.Split(",").AsEnumerable<string>().Select(int.Parse));
+            }
+            return result;
         }
     }
 
