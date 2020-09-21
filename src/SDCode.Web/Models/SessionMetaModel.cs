@@ -6,7 +6,8 @@ using SDCode.Web.Classes;
 
 namespace SDCode.Web.Models
 {
-    public class SessionMetaModel
+    // todo mlh talk to EM about maybe renaming this to EncodingMetaModel, instead (it regards only Encoding)
+    public class SessionMetaModel : IParticipantModel
     {
         [Name(nameof(ParticipantID))]
         [Description("The ID by which the participant is enrolled.")] // todo mlh check all ParticipantID descriptions for consistency

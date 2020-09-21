@@ -12,7 +12,7 @@ namespace SDCode.Web.Models
         {
             public Map()
             {
-                Map(m => m.ID).Name(nameof(ID));
+                Map(m => m.ParticipantID).Name(nameof(ID));
             }
         }
     }

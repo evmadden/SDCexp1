@@ -5,11 +5,11 @@ using CsvHelper.Configuration.Attributes;
 namespace SDCode.Web.Models
 {
     [Description("Participant's consent to participate.")]
-    public class ConsentModel
+    public class ConsentModel : IParticipantModel
     {
-        [Name(nameof(ID))]
+        [Name(nameof(ParticipantID))]
         [Description("ID of the participant.")]
-        public string ID { get; set; } // todo mlh ask EM if we should rename this to ParticipantID (to match every other model)
+        public string ParticipantID { get; set; }
         [Name(nameof(InfoSheet))]
         [Description("Participant has read study information sheet.")]
         public bool InfoSheet { get; set; }
@@ -49,7 +49,7 @@ namespace SDCode.Web.Models
     {
         public ConsentMap()
         {
-            Map(m => m.ID).Name(nameof(ConsentModel.ID));
+            Map(m => m.ParticipantID).Name(nameof(ConsentModel.ParticipantID));
             Map(m => m.InfoSheet).Name(nameof(ConsentModel.InfoSheet));
             Map(m => m.Withdraw).Name(nameof(ConsentModel.Withdraw));
             Map(m => m.NPSDisorder).Name(nameof(ConsentModel.NPSDisorder));

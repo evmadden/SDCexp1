@@ -4,7 +4,7 @@ using SDCode.Web.Classes;
 
 namespace SDCode.Web.Models
 {
-    public class PSQIModel
+    public class PSQIModel : IParticipantModel
     {
         [Name(nameof(ParticipantID))]
         public string ParticipantID { get; set; }

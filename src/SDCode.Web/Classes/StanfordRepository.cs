@@ -30,10 +30,9 @@ namespace SDCode.Web.Classes
 
         public void Save(string participantID, string testName, Sleepinesses stanford)
         {
-            // todo mlh refactor to avoid record removal (which will be a problem once timestamps are part of the record)
             var stanfordModels = _stanfordCsvFile.Read().ToList();
+            var stanfordModel = stanfordModels.SingleOrDefault(x=>string.Equals(x.ParticipantID, participantID)) ?? new StanfordModel{ParticipantID=participantID};
             stanfordModels.RemoveAll(x=>string.Equals(x.ParticipantID, participantID));
-            var stanfordModel = new StanfordModel{ParticipantID=participantID};
             PropertyInfo propertyInfo = stanfordModel.GetType().GetProperty(testName);
             propertyInfo.SetValue(stanfordModel, stanford, null);
             stanfordModels.Add(stanfordModel);

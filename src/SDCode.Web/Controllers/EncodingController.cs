@@ -18,17 +18,17 @@ namespace SDCode.Web.Controllers
         private readonly IImageIndexesGetter _imageIndexesGetter;
         private readonly IStimuliImageDataUrlGetter _stimuliImageDataUrlGetter;
         private readonly IStanfordRepository _stanfordRepository;
-        private readonly ICsvFile<SessionMetaModel, SessionMetaModel.Map> _sessionMetaCsvFile;
         private readonly Config _config;
+        private readonly IRepository<SessionMetaModel> _sessionMetaRepository;
 
-        public EncodingController(ILogger<EncodingController> logger, IImageIndexesGetter encodingPhaseImageIndexesGetter, IStimuliImageDataUrlGetter stimuliImageDataUrlGetter, IStanfordRepository stanfordRepository, ICsvFile<SessionMetaModel, SessionMetaModel.Map> sessionMetaCsvFile, IOptions<Config> config)
+        public EncodingController(ILogger<EncodingController> logger, IImageIndexesGetter encodingPhaseImageIndexesGetter, IStimuliImageDataUrlGetter stimuliImageDataUrlGetter, IStanfordRepository stanfordRepository, IOptions<Config> config, IRepository<SessionMetaModel> sessionMetaRepository)
         {
             _logger = logger;
             _imageIndexesGetter = encodingPhaseImageIndexesGetter;
             _stimuliImageDataUrlGetter = stimuliImageDataUrlGetter;
             _stanfordRepository = stanfordRepository;
-            _sessionMetaCsvFile = sessionMetaCsvFile;
             _config = config.Value;
+            _sessionMetaRepository = sessionMetaRepository;
         }
 
         [HttpPost]
@@ -58,9 +58,7 @@ namespace SDCode.Web.Controllers
             var neglectedIndexes = neglectedIndexesCommaDelimited?.Split(",").Select(int.Parse) ?? new List<int>();
             var obscuredIndexes = obscuredIndexesCommaDelimited?.Split(",").Select(int.Parse) ?? new List<int>(); // todo mlh create dependency which turns comma-delimited string into IEnumerable
             if (neglectedIndexes.Any()) {
-                var sessionMetaRecords = _sessionMetaCsvFile.Read().ToList();
-                sessionMetaRecords.Add(new SessionMetaModel{ParticipantID=participantID,NeglectedIndexes=neglectedIndexes,NeglectedReason=string.Empty,ObscuredIndexes=obscuredIndexes,ObscuredReason=string.Empty});
-                _sessionMetaCsvFile.Write(sessionMetaRecords);
+                _sessionMetaRepository.Save(new SessionMetaModel{ParticipantID=participantID,NeglectedIndexes=neglectedIndexes,NeglectedReason=string.Empty,ObscuredIndexes=obscuredIndexes,ObscuredReason=string.Empty});
             }
             return Json(new {success=true});
         }
@@ -69,17 +67,10 @@ namespace SDCode.Web.Controllers
         {
             var neglectedIndexes = neglectedIndexesCommaDelimited?.Split(",").Select(int.Parse) ?? new List<int>();
             var obscuredIndexes = obscuredIndexesCommaDelimited?.Split(",").Select(int.Parse) ?? new List<int>(); // todo mlh create dependency which turns comma-delimited string into IEnumerable
-
-            var sessionMeta = _sessionMetaCsvFile.Read().ToList();
-            var participantRecord = sessionMeta.FirstOrDefault(x=>string.Equals(x.ParticipantID, participantID));
-            if (participantRecord == default) {
-                participantRecord = new SessionMetaModel{ParticipantID=participantID};
-                sessionMeta.Add(participantRecord);
-            }
+            var participantRecord = _sessionMetaRepository.Get(participantID);
             participantRecord.NeglectedIndexes = neglectedIndexes;
             participantRecord.ObscuredIndexes = obscuredIndexes;
-            _sessionMetaCsvFile.Write(sessionMeta);
-
+            _sessionMetaRepository.Save(participantRecord);
             return View(new EncodingQuestionsViewModel(participantID, neglectedIndexes.Any(), obscuredIndexes.Any()));
         }
 
@@ -99,15 +90,10 @@ namespace SDCode.Web.Controllers
             // 288 TOTAL IMAGES per session
 
             // immediate delayed followup
-            var sessionMeta = _sessionMetaCsvFile.Read().ToList();
-            var participantRecord = sessionMeta.FirstOrDefault(x=>string.Equals(x.ParticipantID, participantID));
-            if (participantRecord == default) {
-                participantRecord = new SessionMetaModel{ParticipantID=participantID};
-                sessionMeta.Add(participantRecord);
-            }
+            var participantRecord = _sessionMetaRepository.Get(participantID);
             participantRecord.NeglectedReason = neglectedReason;
             participantRecord.ObscuredReason = obscuredReason;
-            _sessionMetaCsvFile.Write(sessionMeta);
+            _sessionMetaRepository.Save(participantRecord);
             return View(new EncodingFinishedViewModel(participantID));
         }
 

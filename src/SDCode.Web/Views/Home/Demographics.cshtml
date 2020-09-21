@@ -10,94 +10,98 @@
     </div>
 </div>
 
-<div class="text-align: left">
-    <h1 class="display-4; text-center;">Demographics</h1>
-    <br/>
- <form action="/Home/PSQI" method="POST">
-    <input type="hidden" name="participantID" value="@Model.ParticipantID" />
-     <fieldset>
-         <legend>Before we get started, we would like to know some basic demographic information.</legend>
-        <div>
-            <label for="sex">Sex:</label><br/>
-            <input type="radio" id="male" name="sex" value="male">
-            <label for="male">Male</label><br/>
-            <input type="radio" id="female" name="sex" value="female">
-            <label for="female">Female</label><br/>
-            <input type="radio" id="other" name="sex" value="other">
-            <label for="other">Other</label>
-        </div>
+@if (Model.TestIsAvailable) {
+    <div class="text-align: left">
+        <h1 class="display-4; text-center;">Demographics</h1>
         <br/>
-        <div>
-            <label for="age">Age:</label><br/>
-            <input type="number" id="age" name="age"><br/>
-        </div>
-        <br/>
-        <div>
-            <label for="year">Year of study (if you are not a student, put your highest degree awarded; e.g., "Master's Awarded"):</label><br/>
-            <input type="text" id="year" name="yearstudy"><br/>
-        </div>
-        <br/>       
-        <div>
-            <label for="hand">Right or Left handed:</label><br/>
-            <input type="radio" id="Right" name="handed" value="@((int)Hands.Right)">
-            <label for="Right">Right</label><br/>
-            <input type="radio" id="Left" name="handed" value="@((int)Hands.Left)">
-            <label for="Left">Left</label><br/>
-        </div>
-        <br/>
-        <div>
-            <label for="impairments">Do you have hearing, vision or speech impairments?</label><br/>
-            <input type="radio" id="impairyes" name="impairments" value="true">
-            <label for="impairyes">Yes</label><br/>
-            <input type="radio" id="impairno" name="impairments" value="false">
-            <label for="impairno">No</label><br/>
-        </div>
-        <br/>
-        <div>
-            <label for="glasses">Do you wear glasses or contacts?</label><br/>
-            <input type="radio" id="glassesyes" name="glasses" value="true">
-            <label for="glassesyes">Yes</label><br/>
-            <input type="radio" id="glassesno" name="glasses" value="false">
-            <label for="glassesno">No</label><br/>
-        </div>
-        <br/>
-        <div>
-            <label for="language">What is your native language?<br/>
-            Please write the language your parents spoke to you as a child.</label><br/>
-            <input type="text" id="language" name="language"><br/>
-        </div>
-        <br/>
-        <div>
-            <label for="bilingual">Please list any other languages you speak fluently.</label><br/>
-            <input type="text" id="bilingual" name="bilingual"><br/>
-        </div>
-        <br/>
-        <div>
-            <label for="currentcountry">In what country do you currently live?</label><br/>
-            <input type="text" id="currentcountry" name="currentcountry"><br/>
-        </div>
-        <br/>
-        <br/>
-        <div>
-            <label for="bed">What time did you go to bed last night? (please enter in 24-hour format; e.g. 2100)</label><br/>
-            <input type="number" id="bed" name="bed"><br/>
-        </div>
-        <div>
-            <label for="wake">What time did you wake up this morning? (please enter in 24-hour format: e.g., 0700</label><br/>
-            <input type="number" id="wake" name="wake"><br/>
-        </div>
-        <div>
-            <label for="latency">Amount of time taken to fall asleep (mins):</label><br/>
-            <input type="number" id="latency" name="latency"><br/>
-        </div>
-        <div>
-            <label for="TST">Total hours of sleep:</label><br/>
-            <input type="text" id="TST" name="tst"><br/>
-        </div>
-        <div style="text-align: right;">
-            <input style="margin-right: 50px;" type="submit" value="Next"/>
-        </div>                              
-  </fieldset>
-</form>
-</div>
-
+    <form action="/Home/PSQI" method="POST">
+        <input type="hidden" name="participantID" value="@Model.ParticipantID" />
+        <fieldset>
+            <legend>Before we get started, we would like to know some basic demographic information.</legend>
+            <div>
+                <label for="sex">Sex:</label><br/>
+                <input type="radio" id="male" name="sex" value="male">
+                <label for="male">Male</label><br/>
+                <input type="radio" id="female" name="sex" value="female">
+                <label for="female">Female</label><br/>
+                <input type="radio" id="other" name="sex" value="other">
+                <label for="other">Other</label>
+            </div>
+            <br/>
+            <div>
+                <label for="age">Age:</label><br/>
+                <input type="number" id="age" name="age"><br/>
+            </div>
+            <br/>
+            <div>
+                <label for="year">Year of study (if you are not a student, put your highest degree awarded; e.g., "Master's Awarded"):</label><br/>
+                <input type="text" id="year" name="yearstudy"><br/>
+            </div>
+            <br/>       
+            <div>
+                <label for="hand">Right or Left handed:</label><br/>
+                <input type="radio" id="Right" name="handed" value="@((int)Hands.Right)">
+                <label for="Right">Right</label><br/>
+                <input type="radio" id="Left" name="handed" value="@((int)Hands.Left)">
+                <label for="Left">Left</label><br/>
+            </div>
+            <br/>
+            <div>
+                <label for="impairments">Do you have hearing, vision or speech impairments?</label><br/>
+                <input type="radio" id="impairyes" name="impairments" value="true">
+                <label for="impairyes">Yes</label><br/>
+                <input type="radio" id="impairno" name="impairments" value="false">
+                <label for="impairno">No</label><br/>
+            </div>
+            <br/>
+            <div>
+                <label for="glasses">Do you wear glasses or contacts?</label><br/>
+                <input type="radio" id="glassesyes" name="glasses" value="true">
+                <label for="glassesyes">Yes</label><br/>
+                <input type="radio" id="glassesno" name="glasses" value="false">
+                <label for="glassesno">No</label><br/>
+            </div>
+            <br/>
+            <div>
+                <label for="language">What is your native language?<br/>
+                Please write the language your parents spoke to you as a child.</label><br/>
+                <input type="text" id="language" name="language"><br/>
+            </div>
+            <br/>
+            <div>
+                <label for="bilingual">Please list any other languages you speak fluently.</label><br/>
+                <input type="text" id="bilingual" name="bilingual"><br/>
+            </div>
+            <br/>
+            <div>
+                <label for="currentcountry">In what country do you currently live?</label><br/>
+                <input type="text" id="currentcountry" name="currentcountry"><br/>
+            </div>
+            <br/>
+            <br/>
+            <div>
+                <label for="bed">What time did you go to bed last night? (please enter in 24-hour format; e.g. 2100)</label><br/>
+                <input type="number" id="bed" name="bed"><br/>
+            </div>
+            <div>
+                <label for="wake">What time did you wake up this morning? (please enter in 24-hour format: e.g., 0700</label><br/>
+                <input type="number" id="wake" name="wake"><br/>
+            </div>
+            <div>
+                <label for="latency">Amount of time taken to fall asleep (mins):</label><br/>
+                <input type="number" id="latency" name="latency"><br/>
+            </div>
+            <div>
+                <label for="TST">Total hours of sleep:</label><br/>
+                <input type="text" id="TST" name="tst"><br/>
+            </div>
+            <div style="text-align: right;">
+                <input style="margin-right: 50px;" type="submit" value="Next"/>
+            </div>                              
+    </fieldset>
+    </form>
+    </div>
+} else {
+    @* this happens because participant is in New User flow despite already having completed all three test phases *@
+    <span>NO_TEST_AVAILABLE_PLACEHOLDER</span>
+}
