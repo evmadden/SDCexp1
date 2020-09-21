@@ -50,6 +50,7 @@ namespace SDCode.Web
             services.AddScoped<IResponseFeedbackGetter, ResponseFeedbackGetter>();
             services.AddScoped<ICollectionRandomizer, CollectionRandomizer>();
             services.AddScoped<ICsvFile<SessionMetaModel, SessionMetaModel.Map>, CsvFile<SessionMetaModel, SessionMetaModel.Map>>();
+            services.AddScoped<ITestResponsesRepository, TestResponsesRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

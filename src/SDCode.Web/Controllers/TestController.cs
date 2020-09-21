@@ -30,8 +30,10 @@ namespace SDCode.Web.Controllers
         private readonly ICsvFile<SessionMetaModel, SessionMetaModel.Map> _SessionMetaCsvFile;
         private readonly Config _config;
 
+        private readonly ITestResponsesRepository _testResponsesRepository;
 
-        public TestController(ILogger<TestController> logger, IImageIndexesGetter imageIndexesGetter, IStimuliImageDataUrlGetter stimuliImageDataUrlGetter, ICsvFile<TestSetsModel, TestSetsModel.Map> testSetsCsvFile, ITestSetsGetter testSetsGetter, INextImageGetter nextImageGetter, IImageCongruencyGetter imageCongruencyGetter, ICsvFile<ResponseDataModel, ResponseDataModel.Map> responseDataCsvFile, ITestNameGetter testNameGetter, IImageContextGetter imageContextGetter, IProgressGetter progressGetter, ICsvFile<StanfordModel, StanfordMap> stanfordCsvFile, IStanfordRepository stanfordRepository, IResponseFeedbackGetter responseFeedbackGetter, ICsvFile<SessionMetaModel, SessionMetaModel.Map> sessionMetaCsvFile, IOptions<Config> config)
+
+        public TestController(ILogger<TestController> logger, IImageIndexesGetter imageIndexesGetter, IStimuliImageDataUrlGetter stimuliImageDataUrlGetter, ICsvFile<TestSetsModel, TestSetsModel.Map> testSetsCsvFile, ITestSetsGetter testSetsGetter, INextImageGetter nextImageGetter, IImageCongruencyGetter imageCongruencyGetter, ICsvFile<ResponseDataModel, ResponseDataModel.Map> responseDataCsvFile, ITestNameGetter testNameGetter, IImageContextGetter imageContextGetter, IProgressGetter progressGetter, ICsvFile<StanfordModel, StanfordMap> stanfordCsvFile, IStanfordRepository stanfordRepository, IResponseFeedbackGetter responseFeedbackGetter, ICsvFile<SessionMetaModel, SessionMetaModel.Map> sessionMetaCsvFile, IOptions<Config> config, ITestResponsesRepository testResponsesRepository)
         {
             _logger = logger;
             _imageIndexesGetter = imageIndexesGetter;
@@ -49,6 +51,7 @@ namespace SDCode.Web.Controllers
             _responseFeedbackGetter = responseFeedbackGetter;
             _SessionMetaCsvFile = sessionMetaCsvFile;
             _config = config.Value;
+            _testResponsesRepository = testResponsesRepository;
         }
 
         [HttpPost]
@@ -65,6 +68,7 @@ namespace SDCode.Web.Controllers
                 if (string.Equals(testName, nameof(testSets.Immediate))) {
                     var stanford = _stanfordRepository.Get(participantID, testName);
                     if (stanford.Immediate.HasValue) {
+                        _testResponsesRepository.Archive(participantID, testName);
                         action = TestWelcomeBackAction.Test;
                     } else {
                         action = TestWelcomeBackAction.NewUser;
@@ -74,8 +78,7 @@ namespace SDCode.Web.Controllers
                     var testStartDelayHourThresholds = new Dictionary<string, TimeSpan>() {{nameof(testSets.Delayed), new TimeSpan(_config.TestWaitDaysDelayed,0,0,0) }, {nameof(testSets.Followup), new TimeSpan(_config.TestWaitDaysFollowup,0,0,0)}};
                     if (testStartDelayHourThresholds.ContainsKey(testName)) {
                         var priorTestName = _testNameGetter.Get(testSets, progress-1);
-                        var priorTestResponsesCsvFile = GetResponseDataCsvFile(participantID, priorTestName);
-                        var priorTestResponses = priorTestResponsesCsvFile.Read();
+                        var priorTestResponses = _testResponsesRepository.Read(participantID, priorTestName);
                         var priorTestStartTimeUtc = priorTestResponses.Select(x=>x.WhenUtc).DefaultIfEmpty().Min();
                         var nextTestStartTimeThresholdUtc = priorTestStartTimeUtc + testStartDelayHourThresholds[testName];
                         if (nextTestStartTimeThresholdUtc > DateTime.UtcNow) {
@@ -130,11 +133,10 @@ namespace SDCode.Web.Controllers
             var seenViewModel = GetViewModel(testSets, progress);
             var congruency = _imageCongruencyGetter.Get(seenViewModel.ImageUrl);
             var context = _imageContextGetter.Get(seenViewModel.ImageUrl);
-            var responses = GetResponseDataCsvFile(participantID, seenTestName).Read().ToList();
             var imageName = Path.GetFileNameWithoutExtension(seenViewModel.ImageUrl);
             var feedback = _responseFeedbackGetter.Get(imageName, judgement);
-            responses.Insert(0, new ResponseDataModel{Image = imageName, Congruency = congruency, Context = context, Judgement = judgement, Confidence = confidence, ReactionTime = reactionTime, Feedback = feedback, WhenUtc = DateTime.UtcNow});
-            GetResponseDataCsvFile(participantID, seenTestName).Write(responses);
+            var imageResponse = new ResponseDataModel{Image = imageName, Congruency = congruency, Context = context, Judgement = judgement, Confidence = confidence, ReactionTime = reactionTime, Feedback = feedback, WhenUtc = DateTime.UtcNow};
+            _testResponsesRepository.Add(participantID, seenTestName, imageResponse);
             int nextProgress = progress + 1;
             var nextTestName = _testNameGetter.Get(testSets, nextProgress);
             var testHasEnded = !string.Equals(seenTestName, nextTestName);
@@ -142,11 +144,12 @@ namespace SDCode.Web.Controllers
             return Json(new {TestEnded=testHasEnded, feedback=((int)feedback), ViewModel=nextViewModel});
         }
 
-        private ICsvFile<ResponseDataModel, ResponseDataModel.Map> GetResponseDataCsvFile(string participantID, string testName) {
-            var csvFilename = $"{participantID}_{testName}";
-            var result = _responseDataCsvFile.WithFilename(csvFilename);
-            return result;
-        }
+        // todo mlh remove
+        // private ICsvFile<ResponseDataModel, ResponseDataModel.Map> GetResponseDataCsvFile(string participantID, string testName) {
+        //     var csvFilename = $"{participantID}_{testName}";
+        //     var result = _responseDataCsvFile.WithFilename(csvFilename);
+        //     return result;
+        // }
 
         private TestImageViewModel GetViewModel(TestSetsModel testSets, int progress) {
             var imageToDisplay = _nextImageGetter.Get(testSets, progress);

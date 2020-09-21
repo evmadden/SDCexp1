@@ -9,7 +9,7 @@
         It looks like you are a New User.  Please return to the home page to select "New Participant."
         If you feel you have reached this page by mistake, please email the researcher at evm517@york.ac.uk
     </div>
-    <form action="@Url.Action("Welcome", "Home")">
+    <form action="@Url.Action("Welcome", "Home")" method="POST">
         <input type="hidden" name="participantID" value="@Model.ParticipantID" />
         <div style="text-align: right;">
             <input style="margin-right: 50px;" type="submit" value="GOTO_NEW_USER_TEXT_PLACEHOLDER"/>
