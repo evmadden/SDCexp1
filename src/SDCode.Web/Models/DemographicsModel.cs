@@ -17,9 +17,9 @@ namespace SDCode.Web.Models
         [Name(nameof(Handed))]
         public Hands? Handed{ get; set; }
         [Name(nameof(Impairments))]
-        public bool Impairments{ get; set; } 
+        public bool? Impairments{ get; set; } 
         [Name(nameof(Glasses))]
-        public bool Glasses{ get; set; }
+        public bool? Glasses{ get; set; }
         [Name(nameof(Language))]
         public string Language{ get; set; }    
         [Name(nameof(Bilingual))]

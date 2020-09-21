@@ -9,21 +9,21 @@ namespace SDCode.Web.Models
         [Name(nameof(ParticipantID))]
         public string ParticipantID { get; set; }
         [Name(nameof(Reading))]
-        public ChancesDozing Reading { get; set; }
+        public ChancesDozing? Reading { get; set; }
         [Name(nameof(TV))]
-        public ChancesDozing TV { get; set; }
+        public ChancesDozing? TV { get; set; }
         [Name(nameof(PublicPlace))]
-        public ChancesDozing PublicPlace { get; set; }
+        public ChancesDozing? PublicPlace { get; set; }
         [Name(nameof(PassengerCar))]
-        public ChancesDozing PassengerCar{ get; set; }
+        public ChancesDozing? PassengerCar{ get; set; }
         [Name(nameof(Afternoon))]
-        public ChancesDozing Afternoon{ get; set; } 
+        public ChancesDozing? Afternoon{ get; set; } 
         [Name(nameof(Talking))]
-        public ChancesDozing Talking{ get; set; }
+        public ChancesDozing? Talking{ get; set; }
         [Name(nameof(Lunch))]
-        public ChancesDozing Lunch{ get; set; }    
+        public ChancesDozing? Lunch{ get; set; }    
         [Name(nameof(Traffic))]
-        public ChancesDozing Traffic{ get; set; }    
+        public ChancesDozing? Traffic{ get; set; }    
     }
 
     public sealed class EpworthMap : ClassMap<EpworthModel>

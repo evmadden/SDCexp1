@@ -157,6 +157,8 @@ namespace SDCode.Web.Classes
         }
     }
 
+    // todo mlh reduce code duplication among Enum converter classes
+
     public class CsvJudgementsConverter : DefaultTypeConverter {
         public override string ConvertToString(object value, IWriterRow row, MemberMapData memberMapData)
         {
@@ -169,7 +171,8 @@ namespace SDCode.Web.Classes
 
         public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
         {
-            return (Judgements) Enum.Parse(typeof(Judgements), text);
+            var result = string.IsNullOrWhiteSpace(text) ? default(Judgements?) : (Judgements) Enum.Parse(typeof(Judgements), text);
+            return result;
         }
     }
 
@@ -185,7 +188,8 @@ namespace SDCode.Web.Classes
 
         public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
         {
-            return (Confidences) Enum.Parse(typeof(Confidences), text);
+            var result = string.IsNullOrWhiteSpace(text) ? default(Confidences?) : (Confidences) Enum.Parse(typeof(Confidences), text);
+            return result;
         }
     }
 
@@ -201,7 +205,8 @@ namespace SDCode.Web.Classes
 
         public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
         {
-            return (Congruencies) Enum.Parse(typeof(Congruencies), text);
+            var result = string.IsNullOrWhiteSpace(text) ? default(Congruencies?) : (Congruencies) Enum.Parse(typeof(Congruencies), text);
+            return result;
         }
     }
 
@@ -217,7 +222,8 @@ namespace SDCode.Web.Classes
 
         public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
         {
-            return (Contexts) Enum.Parse(typeof(Contexts), text);
+            var result = string.IsNullOrWhiteSpace(text) ? default(Contexts?) : (Contexts) Enum.Parse(typeof(Contexts), text);
+            return result;
         }
     }
 
@@ -233,7 +239,8 @@ namespace SDCode.Web.Classes
 
         public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
         {
-            return (Feedbacks) Enum.Parse(typeof(Feedbacks), text);
+            var result = string.IsNullOrWhiteSpace(text) ? default(Feedbacks?) : (Feedbacks) Enum.Parse(typeof(Feedbacks), text);
+            return result;
         }
     }
 
@@ -249,7 +256,8 @@ namespace SDCode.Web.Classes
 
         public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
         {
-            return (FrequenciesWeekly) Enum.Parse(typeof(FrequenciesWeekly), text);
+            var result = string.IsNullOrWhiteSpace(text) ? default(FrequenciesWeekly?) : (FrequenciesWeekly) Enum.Parse(typeof(FrequenciesWeekly), text);
+            return result;
         }
     }
 
@@ -265,7 +273,8 @@ namespace SDCode.Web.Classes
 
         public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
         {
-            return (Qualities) Enum.Parse(typeof(Qualities), text);
+            var result = string.IsNullOrWhiteSpace(text) ? default(Qualities?) : (Qualities) Enum.Parse(typeof(Qualities), text);
+            return result;
         }
     }
 
@@ -281,7 +290,8 @@ namespace SDCode.Web.Classes
 
         public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
         {
-            return (Problems) Enum.Parse(typeof(Problems), text);
+            var result = string.IsNullOrWhiteSpace(text) ? default(Problems?) : (Problems) Enum.Parse(typeof(Problems), text);
+            return result;
         }
     }
 
@@ -297,7 +307,8 @@ namespace SDCode.Web.Classes
 
         public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
         {
-            return (BedPartners) Enum.Parse(typeof(BedPartners), text);
+            var result = string.IsNullOrWhiteSpace(text) ? default(BedPartners?) : (BedPartners) Enum.Parse(typeof(BedPartners), text);
+            return result;
         }
     }
 
@@ -313,7 +324,8 @@ namespace SDCode.Web.Classes
 
         public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
         {
-            return (ChancesDozing) Enum.Parse(typeof(ChancesDozing), text);
+            var result = string.IsNullOrWhiteSpace(text) ? default(ChancesDozing?) : (ChancesDozing) Enum.Parse(typeof(ChancesDozing), text);
+            return result;
         }
     }
 

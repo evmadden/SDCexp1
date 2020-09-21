@@ -19,47 +19,47 @@ namespace SDCode.Web.Models
         [Name(nameof(TotalMinutes))]
         public string TotalMinutes{ get; set; } 
         [Name(nameof(No30Min))]
-        public FrequenciesWeekly No30Min{ get; set; }
+        public FrequenciesWeekly? No30Min{ get; set; }
         [Name(nameof(WASO))]
-        public FrequenciesWeekly WASO{ get; set; }    
+        public FrequenciesWeekly? WASO{ get; set; }    
         [Name(nameof(Bathroom))]
-        public FrequenciesWeekly Bathroom{ get; set; }  
+        public FrequenciesWeekly? Bathroom{ get; set; }  
         [Name(nameof(Breathing))]
-        public FrequenciesWeekly Breathing{ get; set; }  
+        public FrequenciesWeekly? Breathing{ get; set; }  
         [Name(nameof(Snoring))]
-        public FrequenciesWeekly Snoring{ get; set; }
+        public FrequenciesWeekly? Snoring{ get; set; }
         [Name(nameof(Hot))]
-        public FrequenciesWeekly Hot{ get; set; }
+        public FrequenciesWeekly? Hot{ get; set; }
         [Name(nameof(Cold))]
-        public FrequenciesWeekly Cold{ get; set; }   
+        public FrequenciesWeekly? Cold{ get; set; }   
         [Name(nameof(Dreams))]
-        public FrequenciesWeekly Dreams{ get; set; }  
+        public FrequenciesWeekly? Dreams{ get; set; }  
         [Name(nameof(Pain))]
-        public FrequenciesWeekly Pain{ get; set; }    
+        public FrequenciesWeekly? Pain{ get; set; }    
         [Name(nameof(OtherFrequency))]
-        public FrequenciesWeekly OtherFrequency{ get; set; }  
+        public FrequenciesWeekly? OtherFrequency{ get; set; }  
         [Name(nameof(OtherDescribe))]
         public string OtherDescribe{ get; set; }       
         [Name(nameof(SleepQuality))]
-        public Qualities SleepQuality{ get; set; } 
+        public Qualities? SleepQuality{ get; set; } 
         [Name(nameof(Medication))]
-        public FrequenciesWeekly Medication{ get; set; } 
+        public FrequenciesWeekly? Medication{ get; set; } 
         [Name(nameof(Sleepiness))]
-        public FrequenciesWeekly Sleepiness{ get; set; } 
+        public FrequenciesWeekly? Sleepiness{ get; set; } 
         [Name(nameof(Enthusiasm))]
-        public Problems Enthusiasm{ get; set; } 
+        public Problems? Enthusiasm{ get; set; } 
         [Name(nameof(BedPartner))]
-        public BedPartners BedPartner{ get; set; } 
+        public BedPartners? BedPartner{ get; set; } 
         [Name(nameof(PartSnore))]
-        public FrequenciesWeekly PartSnore{ get; set; } 
+        public FrequenciesWeekly? PartSnore{ get; set; } 
         [Name(nameof(BreathPause))]
-        public FrequenciesWeekly BreathPause{ get; set; } 
+        public FrequenciesWeekly? BreathPause{ get; set; } 
         [Name(nameof(Legs))]
-        public FrequenciesWeekly Legs{ get; set; } 
+        public FrequenciesWeekly? Legs{ get; set; } 
         [Name(nameof(Disorientation))]
-        public FrequenciesWeekly Disorientation{ get; set; } 
+        public FrequenciesWeekly? Disorientation{ get; set; } 
         [Name(nameof(OtherRestless))]
-        public FrequenciesWeekly OtherRestless{ get; set; } 
+        public FrequenciesWeekly? OtherRestless{ get; set; } 
         [Name(nameof(OtherRestDescribe))]
         public string OtherRestDescribe{ get; set; } 
     }
