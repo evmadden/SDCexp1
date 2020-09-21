@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -62,7 +63,23 @@ namespace SDCode.Web.Controllers
                         columnCodes.Add(new LegendCsvViewModel.Code($"{0}", "No"));
                         columnCodes.Add(new LegendCsvViewModel.Code($"{1}", "Yes"));
                     }
-                    columns.Add(new LegendCsvViewModel.Column(columnName, columnDescription, columnCodes));
+                    var numberTypes = new List<Type>{typeof(int), typeof(long)};
+                    var dataTypeDescription = numberTypes.Contains(pi.PropertyType) ? "Number" : pi.PropertyType.Name; // todo mlh refactor to avoid duplicating this mapping
+                    var isEnumerable = pi.PropertyType.GetInterface(nameof(IEnumerable)) != null && pi.PropertyType != typeof(string);
+                    if (isEnumerable) {
+                        var listType = pi.PropertyType.GetGenericArguments().SingleOrDefault();
+                        if (listType != null) {
+                            var listTypeName = numberTypes.Contains(listType) ? "Number" : listType.Name;
+                            dataTypeDescription = $"List of {listTypeName} (comma-delimited)";
+                        }
+                    } else {
+                        var underlyingType = Nullable.GetUnderlyingType(pi.PropertyType);
+                        if (underlyingType != null) {
+                            dataTypeDescription = numberTypes.Contains(underlyingType) ? "Number" : underlyingType.Name;
+                        }
+                    }
+                    dataTypeDescription = dataTypeDescription.Replace(typeof(bool).Name, "[1:Yes] [0:No]");
+                    columns.Add(new LegendCsvViewModel.Column(columnName, columnDescription, columnCodes, dataTypeDescription));
                     void AddColumnCodes(Type enumType) {
                         foreach (var enumValue in Enum.GetValues(enumType).Cast<int>())
                         {

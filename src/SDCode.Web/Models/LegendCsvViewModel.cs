@@ -26,16 +26,18 @@ namespace SDCode.Web.Models
             public IEnumerable<Column> Columns { get; }
         }
         public class Column {
-            public Column(string name, string description, IEnumerable<Code> codes)
+            public Column(string name, string description, IEnumerable<Code> codes, string dataTypeDescription)
             {
                 Name = name;
                 Description = description;
                 Codes = codes;
+                DataTypeDescription = dataTypeDescription;
             }
 
             public string Name { get; }
             public string Description { get; }
             public IEnumerable<Code> Codes { get; }
+            public string DataTypeDescription { get; }
         }
 
         public class Code {

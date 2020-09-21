@@ -1,4 +1,5 @@
 ﻿@model LegendCsvViewModel
+@using System.Collections
 @{
     ViewData["Title"] = "CSV Legend";
 }
@@ -69,9 +70,13 @@
                     }
                     <div class="row codes">
                         <div class="col-md-12">
-                            @foreach (var code in column.Codes)
-                            {
-                                <span title="In @(file.Name), @(column.Name) values of @(code.Value) mean @(code.Meaning).">[@(code.Value):@(code.Meaning)]</span>
+                            @if (column.Codes.Any()) {
+                                foreach (var code in column.Codes)
+                                {
+                                    <span title="In @(file.Name), @(column.Name) values of @(code.Value) mean @(code.Meaning).">[@(code.Value):@(code.Meaning)]</span>
+                                }
+                            } else {
+                                <span>@column.DataTypeDescription</span>
                             }
                         </div>
                     </div>
