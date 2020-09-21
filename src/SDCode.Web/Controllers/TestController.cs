@@ -104,11 +104,6 @@ namespace SDCode.Web.Controllers
             return View(viewModel);
         }
 
-        // todo mlh remove
-        // public IActionResult Answers(string participantID) {
-        //     return RedirectToAction("Index", "Test");
-        // }
-
         [HttpPost]
         public IActionResult GetImage(string participantID, int progress)
         {
@@ -143,13 +138,6 @@ namespace SDCode.Web.Controllers
             var nextViewModel = testHasEnded ? null : GetViewModel(testSets, nextProgress);
             return Json(new {TestEnded=testHasEnded, feedback=((int)feedback), ViewModel=nextViewModel});
         }
-
-        // todo mlh remove
-        // private ICsvFile<ResponseDataModel, ResponseDataModel.Map> GetResponseDataCsvFile(string participantID, string testName) {
-        //     var csvFilename = $"{participantID}_{testName}";
-        //     var result = _responseDataCsvFile.WithFilename(csvFilename);
-        //     return result;
-        // }
 
         private TestImageViewModel GetViewModel(TestSetsModel testSets, int progress) {
             var imageToDisplay = _nextImageGetter.Get(testSets, progress);
