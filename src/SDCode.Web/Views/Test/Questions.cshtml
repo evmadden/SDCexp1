@@ -1,4 +1,4 @@
-﻿@model EncodingQuestionsViewModel
+﻿@model TestQuestionsViewModel
 @{
     ViewData["Title"] = "Questions";
 }
@@ -9,29 +9,23 @@
     </div>
 </div>
 
-    <form action="/Encoding/Finished" method="POST">
+    <form action="/Test/End" method="POST">
         <input type="hidden" name="participantID" value="@Model.ParticipantID" />
+        <input type="hidden" name="testName" value="@Model.TestName" />
 
-    <h1 class="display-4; text-center;">Study Phase Questions</h1>
+    <h1 class="display-4; text-center;">Test Phase Questions</h1>
     <br/>
-    <p>This completes the STUDY PHASE.</p>
+    <p>This completes the TEST PHASE.</p>
     <div>
         <div class="text-align: left">
             <h1 class="display-4; text-center;">Questions</h1>
-            <p>Please explain any problems that occurred during the STUDY PHASE.</p>
+            <p>Please explain any problems that occurred during the TEST PHASE.</p>
         </div>
-        @if (Model.ShouldQuestionNeglected) {
-            <div>
-                Why were images neglected? <input type="text" name="neglectedReason" class="longSingleLine" required />
-            </div>
-        }
-        @if (Model.ShouldQuestionObscured) {
             <div>
                 Why were images obscured? <input type="text" name="obscuredReason" class="longSingleLine" required />
             </div>
-        }
     </div>
-    <p>Press the "Next" button to finish to the STUDY PHASE.</p>
+    <p>Press the "Next" button to finish to the TEST PHASE.</p>
 <div style="text-align: right;">
     <input style="margin-right: 50px;" type="submit" value="Next"/>
 </div>

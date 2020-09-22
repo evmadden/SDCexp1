@@ -1,0 +1,8 @@
+﻿@model TestEndedViewModel
+@{
+    ViewData["Title"] = "Test End";
+}
+
+<div class="text-align: left">
+    TEST_ENDED_PLACEHOLDER
+<div>@await Html.PartialAsync($"Ended{Model.TestName}")</div>

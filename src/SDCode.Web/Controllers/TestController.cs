@@ -32,8 +32,9 @@ namespace SDCode.Web.Controllers
 
         private readonly ITestResponsesRepository _testResponsesRepository;
 
+        private readonly ISessionMetaRepository _sessionMetaRepository;
 
-        public TestController(ILogger<TestController> logger, IImageIndexesGetter imageIndexesGetter, IStimuliImageDataUrlGetter stimuliImageDataUrlGetter, ICsvFile<TestSetsModel, TestSetsModel.Map> testSetsCsvFile, ITestSetsGetter testSetsGetter, INextImageGetter nextImageGetter, IImageCongruencyGetter imageCongruencyGetter, ICsvFile<ResponseDataModel, ResponseDataModel.Map> responseDataCsvFile, ITestNameGetter testNameGetter, IImageContextGetter imageContextGetter, IProgressGetter progressGetter, ICsvFile<StanfordModel, StanfordMap> stanfordCsvFile, IStanfordRepository stanfordRepository, IResponseFeedbackGetter responseFeedbackGetter, ICsvFile<SessionMetaModel, SessionMetaModel.Map> sessionMetaCsvFile, IOptions<Config> config, ITestResponsesRepository testResponsesRepository)
+        public TestController(ILogger<TestController> logger, IImageIndexesGetter imageIndexesGetter, IStimuliImageDataUrlGetter stimuliImageDataUrlGetter, ICsvFile<TestSetsModel, TestSetsModel.Map> testSetsCsvFile, ITestSetsGetter testSetsGetter, INextImageGetter nextImageGetter, IImageCongruencyGetter imageCongruencyGetter, ICsvFile<ResponseDataModel, ResponseDataModel.Map> responseDataCsvFile, ITestNameGetter testNameGetter, IImageContextGetter imageContextGetter, IProgressGetter progressGetter, ICsvFile<StanfordModel, StanfordMap> stanfordCsvFile, IStanfordRepository stanfordRepository, IResponseFeedbackGetter responseFeedbackGetter, ICsvFile<SessionMetaModel, SessionMetaModel.Map> sessionMetaCsvFile, IOptions<Config> config, ITestResponsesRepository testResponsesRepository, ISessionMetaRepository sessionMetaRepository)
         {
             _logger = logger;
             _imageIndexesGetter = imageIndexesGetter;
@@ -52,6 +53,7 @@ namespace SDCode.Web.Controllers
             _SessionMetaCsvFile = sessionMetaCsvFile;
             _config = config.Value;
             _testResponsesRepository = testResponsesRepository;
+            _sessionMetaRepository = sessionMetaRepository;
         }
 
         [HttpPost]
@@ -144,6 +146,24 @@ namespace SDCode.Web.Controllers
             var imageUrl = _stimuliImageDataUrlGetter.Get(imageToDisplay);
             var result = new TestImageViewModel(testSets.ParticipantID, progress, imageUrl);
             return result;
+        }
+
+        public IActionResult Questions(string participantID, string testName, string obscuredIndexesCommaDelimited)
+        {
+            var obscuredIndexes = obscuredIndexesCommaDelimited?.Split(",").Select(int.Parse) ?? new List<int>(); // todo mlh create dependency which turns comma-delimited string into IEnumerable
+            var sessionMeta = _sessionMetaRepository.Get(participantID, testName);
+            var testSets = _testSetsGetter.Get(participantID);
+            var testImages = ((IEnumerable<string>)testSets.GetType().GetProperty(testName).GetValue(testSets)).ToList();
+            sessionMeta.ObscuredImages = obscuredIndexes.Select(x=>testImages[x]);
+            _sessionMetaRepository.Save(sessionMeta);
+            return View(new TestQuestionsViewModel(participantID, testName));
+        }
+
+        public IActionResult End(string participantID, string testName, string obscuredReason) {
+            var participantRecord = _sessionMetaRepository.Get(participantID, testName);
+            participantRecord.ObscuredReason = obscuredReason;
+            _sessionMetaRepository.Save(participantRecord);
+            return View(new TestEndedViewModel(participantID, testName));
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

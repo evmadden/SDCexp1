@@ -19,9 +19,10 @@ namespace SDCode.Web.Controllers
         private readonly IStimuliImageDataUrlGetter _stimuliImageDataUrlGetter;
         private readonly IStanfordRepository _stanfordRepository;
         private readonly Config _config;
-        private readonly IRepository<SessionMetaModel> _sessionMetaRepository;
+        private readonly ISessionMetaRepository _sessionMetaRepository;
+        private readonly ITestSetsGetter _testSetsGetter;
 
-        public EncodingController(ILogger<EncodingController> logger, IImageIndexesGetter encodingPhaseImageIndexesGetter, IStimuliImageDataUrlGetter stimuliImageDataUrlGetter, IStanfordRepository stanfordRepository, IOptions<Config> config, IRepository<SessionMetaModel> sessionMetaRepository)
+        public EncodingController(ILogger<EncodingController> logger, IImageIndexesGetter encodingPhaseImageIndexesGetter, IStimuliImageDataUrlGetter stimuliImageDataUrlGetter, IStanfordRepository stanfordRepository, IOptions<Config> config, ISessionMetaRepository sessionMetaRepository, ITestSetsGetter testSetsGetter)
         {
             _logger = logger;
             _imageIndexesGetter = encodingPhaseImageIndexesGetter;
@@ -29,6 +30,7 @@ namespace SDCode.Web.Controllers
             _stanfordRepository = stanfordRepository;
             _config = config.Value;
             _sessionMetaRepository = sessionMetaRepository;
+            _testSetsGetter = testSetsGetter;
         }
 
         [HttpPost]
@@ -44,10 +46,8 @@ namespace SDCode.Web.Controllers
         }
 
         public IActionResult GetImageDataUrls(string participantID) {
-            var imageTypes = new List<string> { "A", "A", "AI", "AI", "B", "BI", "C", "CI", "F", "F", "FI", "FI" };
-            var imageIndexesRequests = imageTypes.Select(x=>new ImageIndexesRequest(x, 36));
-            var imageIndexes = _imageIndexesGetter.Get(imageIndexesRequests);
-            var imageDataUrls = _stimuliImageDataUrlGetter.Get(imageIndexes);
+            var testSets = _testSetsGetter.Get(participantID);
+            var imageDataUrls = _stimuliImageDataUrlGetter.Get(testSets.Encoding);
             var json = JsonSerializer.Serialize(imageDataUrls);
             Response.Headers.Add("Content-Length", $"{json.Length}");
             return Content(json, "application/json");
@@ -57,21 +57,20 @@ namespace SDCode.Web.Controllers
         {
             var neglectedIndexes = neglectedIndexesCommaDelimited?.Split(",").Select(int.Parse) ?? new List<int>();
             var obscuredIndexes = obscuredIndexesCommaDelimited?.Split(",").Select(int.Parse) ?? new List<int>(); // todo mlh create dependency which turns comma-delimited string into IEnumerable
-            if (neglectedIndexes.Any()) {
-                _sessionMetaRepository.Save(new SessionMetaModel{ParticipantID=participantID,NeglectedIndexes=neglectedIndexes,NeglectedReason=string.Empty,ObscuredIndexes=obscuredIndexes,ObscuredReason=string.Empty});
-            }
-            return Json(new {success=true});
+            var sessionMeta = _sessionMetaRepository.Get(participantID, "Encoding");
+            var testSets = _testSetsGetter.Get(participantID);
+            var encoding = testSets.Encoding.ToList();
+            sessionMeta.NeglectedImages = neglectedIndexes.Select(x=>encoding[x]).ToList();
+            sessionMeta.ObscuredImages = obscuredIndexes.Select(x=>encoding[x]).ToList();
+            _sessionMetaRepository.Save(sessionMeta);
+            var nextAction = sessionMeta.NeglectedImages.Any() || sessionMeta.ObscuredImages.Any() ? Url.Action(nameof(Questions)) : Url.Action(nameof(Finished));
+            return Json(new {success=true, nextAction = nextAction});
         }
 
-        public IActionResult Questions(string participantID, string neglectedIndexesCommaDelimited, string obscuredIndexesCommaDelimited)
+        public IActionResult Questions(string participantID)
         {
-            var neglectedIndexes = neglectedIndexesCommaDelimited?.Split(",").Select(int.Parse) ?? new List<int>();
-            var obscuredIndexes = obscuredIndexesCommaDelimited?.Split(",").Select(int.Parse) ?? new List<int>(); // todo mlh create dependency which turns comma-delimited string into IEnumerable
-            var participantRecord = _sessionMetaRepository.Get(participantID);
-            participantRecord.NeglectedIndexes = neglectedIndexes;
-            participantRecord.ObscuredIndexes = obscuredIndexes;
-            _sessionMetaRepository.Save(participantRecord);
-            return View(new EncodingQuestionsViewModel(participantID, neglectedIndexes.Any(), obscuredIndexes.Any()));
+            var sessionMeta = _sessionMetaRepository.Get(participantID, "Encoding");
+            return View(new EncodingQuestionsViewModel(participantID, sessionMeta.NeglectedImages.Any(), sessionMeta.ObscuredImages.Any()));
         }
 
         // todo mlh evaluate every action on every controller for HttpPost correctness
@@ -90,7 +89,7 @@ namespace SDCode.Web.Controllers
             // 288 TOTAL IMAGES per session
 
             // immediate delayed followup
-            var participantRecord = _sessionMetaRepository.Get(participantID);
+            var participantRecord = _sessionMetaRepository.Get(participantID, "Encoding");
             participantRecord.NeglectedReason = neglectedReason;
             participantRecord.ObscuredReason = obscuredReason;
             _sessionMetaRepository.Save(participantRecord);

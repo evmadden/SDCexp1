@@ -51,11 +51,11 @@ namespace SDCode.Web
             services.AddScoped<ICollectionRandomizer, CollectionRandomizer>();
             services.AddScoped<ICsvFile<SessionMetaModel, SessionMetaModel.Map>, CsvFile<SessionMetaModel, SessionMetaModel.Map>>();
             services.AddScoped<ITestResponsesRepository, TestResponsesRepository>();
-            services.AddScoped<IRepository<SessionMetaModel>, Repository<SessionMetaModel, SessionMetaModel.Map>>();
             services.AddScoped<IRepository<ConsentModel>, Repository<ConsentModel, ConsentMap>>();
             services.AddScoped<IRepository<DemographicsModel>, Repository<DemographicsModel, DemographicsMap>>();
             services.AddScoped<IRepository<PSQIModel>, Repository<PSQIModel, PSQIMap>>();
             services.AddScoped<IRepository<EpworthModel>, Repository<EpworthModel, EpworthMap>>();
+            services.AddScoped<ISessionMetaRepository, SessionMetaRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

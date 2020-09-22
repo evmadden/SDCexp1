@@ -31,14 +31,14 @@ namespace SDCode.Web.Classes
             {
                 var testImageCountPerOldType = 12;
                 var testImageCountPerNewType = 36;
-                var oldImageIndexes = GetImageIndexes(testImageCountPerOldType, new List<string>{"A", "AI", "D", "DI", "F", "FI"});
-                var newImageIndexes = GetImageIndexes(testImageCountPerNewType, new List<string>{"N", "NI"});
+                var oldImageIndexes = GetTestImageIndexes(testImageCountPerOldType, new List<string>{"A", "AI", "D", "DI", "F", "FI"});
+                var newImageIndexes = GetTestImageIndexes(testImageCountPerNewType, new List<string>{"N", "NI"});
                 var imagesAllocatedByType = oldImageIndexes.Keys.Union(newImageIndexes.Keys).ToDictionary(x=>x, x=>0);;
                 var imageTypeCounts = new Dictionary<int, Dictionary<string, IEnumerable<string>>>{
                     {testImageCountPerOldType, oldImageIndexes}
                     , {testImageCountPerNewType, newImageIndexes}
                 };
-                Func<IEnumerable<string>> createNewSet = () => {
+                Func<IEnumerable<string>> createTestSet = () => {
                     var result = new List<string>();
                     foreach (var imageCountsKvp in imageTypeCounts)
                     {
@@ -56,16 +56,23 @@ namespace SDCode.Web.Classes
                     result = _collectionRandomizer.Randomize(result).ToList();
                     return result;
                 };
-                var immediate = createNewSet();
-                var delayed = createNewSet();
-                var followup = createNewSet();
-                result = new TestSetsModel { ParticipantID = participantID, Immediate = immediate, Delayed = delayed, Followup = followup };
+                var encoding = CreateEncodingSet();
+                var immediate = createTestSet();
+                var delayed = createTestSet();
+                var followup = createTestSet();
+                result = new TestSetsModel { ParticipantID = participantID, Encoding = encoding, Immediate = immediate, Delayed = delayed, Followup = followup };
                 testSets.Insert(0, result);
                 _testSetsCsvFile.Write(testSets);
             }
             return result;
-            Dictionary<string, IEnumerable<string>> GetImageIndexes(int imageCountPerType, IEnumerable<string> imageTypes) {
+            Dictionary<string, IEnumerable<string>> GetTestImageIndexes(int imageCountPerType, IEnumerable<string> imageTypes) {
                 var result = imageTypes.ToDictionary(x=>x, x=>_imageIndexesGetter.Get(new List<ImageIndexesRequest>{new ImageIndexesRequest(x, imageCountPerType * 3)}));
+                return result;
+            }
+            IEnumerable<string> CreateEncodingSet() {
+                var encodingImageTypes = new List<string> { "A", "A", "AI", "AI", "B", "BI", "C", "CI", "F", "F", "FI", "FI" };
+                var encodingImageIndexesRequests = encodingImageTypes.Select(x=>new ImageIndexesRequest(x, 36));
+                var result = _imageIndexesGetter.Get(encodingImageIndexesRequests);
                 return result;
             }
         }

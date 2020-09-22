@@ -20,6 +20,8 @@
     }
 
     var shouldAutomate = @($"{Model.ShouldAutomate}".ToLower());
+    var obscuredIndexes = [];
+    var imageIndex = 0;
     document.addEventListener("DOMContentLoaded", function(){
         var imageElement = document.getElementById('image');
         var confidenceElement = document.getElementById('confidence');
@@ -60,7 +62,11 @@
                     var response = JSON.parse(this.response);
                     if (response.testEnded) {
                         document.getElementById('imageViewer').style.display = 'none';
-                        document.getElementById('testEnded').style.display = 'block';
+                        document.getElementById('obscuredIndexesCommaDelimited').value = obscuredIndexes.join(',');
+                        var nextAction = obscuredIndexes.length > 0 ? '@Url.Action("Questions")' : '@Url.Action("End")';
+                        var nextActionForm = document.getElementById('nextActionForm');
+                        nextActionForm.action = nextAction;
+                        nextActionForm.submit();
                     } else {
                         feedbackElement.innerText = `FEEDBACK_PLACEHOLDER: ${response.feedback ? '@(Enum.GetName(typeof(Feedbacks), Feedbacks.Correct))' : '@(Enum.GetName(typeof(Feedbacks), Feedbacks.Incorrect))'}`;
                         feedbackElement.style.display = 'block';
@@ -75,6 +81,11 @@
         };
         imageElement.onload = function() { 
             imageElement.style.display = 'block';
+            if (!isInViewport(imageElement)) {
+                obscuredIndexes.push(imageIndex);
+                imageIndex = imageIndex + 1
+            }
+
         };
         var onJudgement = function(judgement) {
             imageJudgement = judgement;
@@ -132,5 +143,9 @@
     <div id="imageMessage"></div>
 </div>
 <div>
-    <div id="testEnded" style="display: none;">@await Html.PartialAsync($"Ended{Model.TestName}")</div>
+    <form id="nextActionForm" method="POST"> 
+        <input type="hidden" name="participantID" value="@Model.ParticipantID" />
+        <input type="hidden" name="testName" value="@Model.TestName" />
+        <input type="hidden" id="obscuredIndexesCommaDelimited" name="obscuredIndexesCommaDelimited" />
+    </form>
 </div>
