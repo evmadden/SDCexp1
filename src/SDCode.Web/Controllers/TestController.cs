@@ -143,7 +143,7 @@ namespace SDCode.Web.Controllers
 
         private TestImageViewModel GetViewModel(PhaseSetsModel phaseSets, int progress) {
             var imageToDisplay = _nextImageGetter.Get(phaseSets, progress);
-            var imageUrl = _stimuliImageDataUrlGetter.Get(imageToDisplay);
+            var imageUrl = _stimuliImageDataUrlGetter.Get(imageToDisplay); // todo mlh fix name (claims to be returning data url, but is returning URL)
             var result = new TestImageViewModel(phaseSets.ParticipantID, progress, imageUrl);
             return result;
         }

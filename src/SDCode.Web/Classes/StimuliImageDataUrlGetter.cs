@@ -26,7 +26,7 @@ namespace SDCode.Web.Classes
             var result = new List<string>();
             foreach (var index in indexes)
             {
-                var fullPath = $@"{_webHostEnvironment.WebRootPath}\img\Stimuli\{index}.jpg";
+                var fullPath = $@"{_webHostEnvironment.WebRootPath}{Path.PathSeparator}img{Path.PathSeparator}Stimuli{Path.PathSeparator}{index}.jpg"; // todo mlh refactor to avoid Path.PathSeparator duplication
                 var bytes = File.ReadAllBytes(fullPath);
                 var base64 = Convert.ToBase64String(bytes);
                 var dataUrl = $"data:image/jpg;base64,{base64}";
