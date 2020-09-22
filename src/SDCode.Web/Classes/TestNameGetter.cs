@@ -5,30 +5,30 @@ namespace SDCode.Web.Classes
 {
     public interface ITestNameGetter
     {
-        string Get(TestSetsModel testSets, int progress);
+        string Get(PhaseSetsModel phaseSets, int progress);
     }
 
     public class TestNameGetter : ITestNameGetter
     {
-        public string Get(TestSetsModel testSets, int progress)
+        public string Get(PhaseSetsModel phaseSets, int progress)
         {
             string result = default;
-            if (progress >= testSets.Immediate.Count())
+            if (progress >= phaseSets.Immediate.Count())
             {
-                if (progress >= testSets.Immediate.Count() + testSets.Delayed.Count())
+                if (progress >= phaseSets.Immediate.Count() + phaseSets.Delayed.Count())
                 {
-                    if (progress < testSets.Immediate.Count() + testSets.Delayed.Count() + testSets.Followup.Count()) {
-                        result = progress >= testSets.Immediate.Count() + testSets.Delayed.Count() + testSets.Followup.Count() ? null : nameof(testSets.Followup);
+                    if (progress < phaseSets.Immediate.Count() + phaseSets.Delayed.Count() + phaseSets.Followup.Count()) {
+                        result = progress >= phaseSets.Immediate.Count() + phaseSets.Delayed.Count() + phaseSets.Followup.Count() ? null : nameof(phaseSets.Followup);
                     }
                 }
                 else
                 {
-                    result = nameof(testSets.Delayed);
+                    result = nameof(phaseSets.Delayed);
                 }
             }
             else
             {
-                result = nameof(testSets.Immediate);
+                result = nameof(phaseSets.Immediate);
             }
             return result;
         }

@@ -37,8 +37,8 @@ namespace SDCode.Web
             services.AddScoped<ICsvFile<StanfordModel, StanfordMap>, CsvFile<StanfordModel, StanfordMap>>();
             services.AddScoped<IImageIndexesGetter, ImageIndexesGetter>();
             services.AddScoped<IStimuliImageDataUrlGetter, StimuliImageDataUrlGetter>();
-            services.AddScoped<ICsvFile<TestSetsModel, TestSetsModel.Map>, CsvFile<TestSetsModel, TestSetsModel.Map>>();
-            services.AddScoped<ITestSetsGetter, TestSetsGetter>();
+            services.AddScoped<ICsvFile<PhaseSetsModel, PhaseSetsModel.Map>, CsvFile<PhaseSetsModel, PhaseSetsModel.Map>>();
+            services.AddScoped<IPhaseSetsGetter, PhaseSetsGetter>();
             services.AddScoped<INextImageGetter, NextImageGetter>();
             services.AddScoped<IImageCongruencyGetter, ImageCongruencyGetter>();
             services.AddScoped<ICsvFile<ResponseDataModel, ResponseDataModel.Map>, CsvFile<ResponseDataModel, ResponseDataModel.Map>>();

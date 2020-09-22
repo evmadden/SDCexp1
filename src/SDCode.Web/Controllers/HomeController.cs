@@ -15,10 +15,10 @@ namespace SDCode.Web.Controllers
         private readonly IRepository<PSQIModel> _psqiRepository;
         private readonly IRepository<EpworthModel> _epworthRepository;
         private readonly ITestNameGetter _testNameGetter;
-        private readonly ITestSetsGetter _testSetsGetter;
+        private readonly IPhaseSetsGetter _phaseSetsGetter;
         private readonly IProgressGetter _progressGetter;
 
-        public HomeController(ILogger<HomeController> logger, IStanfordRepository stanfordRepository, IRepository<ConsentModel> consentRepository, IRepository<PSQIModel> psqiRepository, IRepository<EpworthModel> epworthRepository, IRepository<DemographicsModel> demographicsRepository, ITestNameGetter testNameGetter, ITestSetsGetter testSetsGetter, IProgressGetter progressGetter)
+        public HomeController(ILogger<HomeController> logger, IStanfordRepository stanfordRepository, IRepository<ConsentModel> consentRepository, IRepository<PSQIModel> psqiRepository, IRepository<EpworthModel> epworthRepository, IRepository<DemographicsModel> demographicsRepository, ITestNameGetter testNameGetter, IPhaseSetsGetter phaseSetsGetter, IProgressGetter progressGetter)
         {
             _logger = logger;
             _stanfordRepository = stanfordRepository;
@@ -27,7 +27,7 @@ namespace SDCode.Web.Controllers
             _epworthRepository = epworthRepository;
             _demographicsRepository = demographicsRepository;
             _testNameGetter = testNameGetter;
-            _testSetsGetter = testSetsGetter;
+            _phaseSetsGetter = phaseSetsGetter;
             _progressGetter = progressGetter;
         }
 
@@ -58,10 +58,10 @@ namespace SDCode.Web.Controllers
         public IActionResult Demographics(string participantID, bool infoSheet, bool withdraw, bool npsDisorder, bool adhd, bool headInjury, bool normalVision, bool visionProblems, bool altShifts, bool smoker, bool dataProtection, bool agreeParticipate)
         {
             _consentRepository.Save(new ConsentModel{ParticipantID = participantID, InfoSheet = infoSheet, Withdraw = withdraw, NPSDisorder = npsDisorder, ADHD = adhd, HeadInjury = headInjury, NormalVision = normalVision, VisionProblems = visionProblems, AltShifts = altShifts, Smoker = smoker, DataProtection = dataProtection, AgreeParticipate = agreeParticipate});
-            var testSets = _testSetsGetter.Get(participantID);
+            var phaseSets = _phaseSetsGetter.Get(participantID);
             var progress = _progressGetter.Get(participantID);
-            var testName = _testNameGetter.Get(testSets, progress); // todo mlh create testNameGetter.Get(participantID) overload...
-            var testIsAvailable = string.Equals(testName, nameof(testSets.Immediate));
+            var testName = _testNameGetter.Get(phaseSets, progress); // todo mlh create testNameGetter.Get(participantID) overload...
+            var testIsAvailable = string.Equals(testName, nameof(phaseSets.Immediate));
             return View(new DemographicsViewModel(participantID, testIsAvailable));
         }
 

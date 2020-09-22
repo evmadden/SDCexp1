@@ -5,28 +5,28 @@ using SDCode.Web.Models;
 
 namespace SDCode.Web.Classes
 {
-    public interface ITestSetsGetter
+    public interface IPhaseSetsGetter
     {
-        TestSetsModel Get(string participantID);
+        PhaseSetsModel Get(string participantID);
     }
 
-    public class TestSetsGetter : ITestSetsGetter
+    public class PhaseSetsGetter : IPhaseSetsGetter
     {
-        private readonly ICsvFile<TestSetsModel, TestSetsModel.Map> _testSetsCsvFile;
+        private readonly ICsvFile<PhaseSetsModel, PhaseSetsModel.Map> _phaseSetsCsvFile;
         private readonly IImageIndexesGetter _imageIndexesGetter;
         private readonly ICollectionRandomizer _collectionRandomizer;
 
-        public TestSetsGetter(ICsvFile<TestSetsModel, TestSetsModel.Map> testSetsCsvFile, IImageIndexesGetter imageIndexesGetter, ICollectionRandomizer collectionRandomizer)
+        public PhaseSetsGetter(ICsvFile<PhaseSetsModel, PhaseSetsModel.Map> phaseSetsCsvFile, IImageIndexesGetter imageIndexesGetter, ICollectionRandomizer collectionRandomizer)
         {
-            _testSetsCsvFile = testSetsCsvFile;
+            _phaseSetsCsvFile = phaseSetsCsvFile;
             _imageIndexesGetter = imageIndexesGetter;
             _collectionRandomizer = collectionRandomizer;
         }
 
-        public TestSetsModel Get(string participantID)
+        public PhaseSetsModel Get(string participantID)
         {
-            var testSets = _testSetsCsvFile.Read().ToList();
-            var result = testSets.SingleOrDefault(x => string.Equals(x.ParticipantID, participantID));
+            var phaseSets = _phaseSetsCsvFile.Read().ToList();
+            var result = phaseSets.SingleOrDefault(x => string.Equals(x.ParticipantID, participantID));
             if (result == default)
             {
                 var testImageCountPerOldType = 12;
@@ -60,9 +60,9 @@ namespace SDCode.Web.Classes
                 var immediate = createTestSet();
                 var delayed = createTestSet();
                 var followup = createTestSet();
-                result = new TestSetsModel { ParticipantID = participantID, Encoding = encoding, Immediate = immediate, Delayed = delayed, Followup = followup };
-                testSets.Insert(0, result);
-                _testSetsCsvFile.Write(testSets);
+                result = new PhaseSetsModel { ParticipantID = participantID, Encoding = encoding, Immediate = immediate, Delayed = delayed, Followup = followup };
+                phaseSets.Insert(0, result);
+                _phaseSetsCsvFile.Write(phaseSets);
             }
             return result;
             Dictionary<string, IEnumerable<string>> GetTestImageIndexes(int imageCountPerType, IEnumerable<string> imageTypes) {

@@ -20,9 +20,9 @@ namespace SDCode.Web.Controllers
         private readonly IStanfordRepository _stanfordRepository;
         private readonly Config _config;
         private readonly ISessionMetaRepository _sessionMetaRepository;
-        private readonly ITestSetsGetter _testSetsGetter;
+        private readonly IPhaseSetsGetter _phaseSetsGetter;
 
-        public EncodingController(ILogger<EncodingController> logger, IImageIndexesGetter encodingPhaseImageIndexesGetter, IStimuliImageDataUrlGetter stimuliImageDataUrlGetter, IStanfordRepository stanfordRepository, IOptions<Config> config, ISessionMetaRepository sessionMetaRepository, ITestSetsGetter testSetsGetter)
+        public EncodingController(ILogger<EncodingController> logger, IImageIndexesGetter encodingPhaseImageIndexesGetter, IStimuliImageDataUrlGetter stimuliImageDataUrlGetter, IStanfordRepository stanfordRepository, IOptions<Config> config, ISessionMetaRepository sessionMetaRepository, IPhaseSetsGetter phaseSetsGetter)
         {
             _logger = logger;
             _imageIndexesGetter = encodingPhaseImageIndexesGetter;
@@ -30,7 +30,7 @@ namespace SDCode.Web.Controllers
             _stanfordRepository = stanfordRepository;
             _config = config.Value;
             _sessionMetaRepository = sessionMetaRepository;
-            _testSetsGetter = testSetsGetter;
+            _phaseSetsGetter = phaseSetsGetter;
         }
 
         [HttpPost]
@@ -46,8 +46,8 @@ namespace SDCode.Web.Controllers
         }
 
         public IActionResult GetImageDataUrls(string participantID) {
-            var testSets = _testSetsGetter.Get(participantID);
-            var imageDataUrls = _stimuliImageDataUrlGetter.Get(testSets.Encoding);
+            var phaseSets = _phaseSetsGetter.Get(participantID);
+            var imageDataUrls = _stimuliImageDataUrlGetter.Get(phaseSets.Encoding);
             var json = JsonSerializer.Serialize(imageDataUrls);
             Response.Headers.Add("Content-Length", $"{json.Length}");
             return Content(json, "application/json");
@@ -58,8 +58,8 @@ namespace SDCode.Web.Controllers
             var neglectedIndexes = neglectedIndexesCommaDelimited?.Split(",").Select(int.Parse) ?? new List<int>();
             var obscuredIndexes = obscuredIndexesCommaDelimited?.Split(",").Select(int.Parse) ?? new List<int>(); // todo mlh create dependency which turns comma-delimited string into IEnumerable
             var sessionMeta = _sessionMetaRepository.Get(participantID, "Encoding");
-            var testSets = _testSetsGetter.Get(participantID);
-            var encoding = testSets.Encoding.ToList();
+            var phaseSets = _phaseSetsGetter.Get(participantID);
+            var encoding = phaseSets.Encoding.ToList();
             sessionMeta.NeglectedImages = neglectedIndexes.Select(x=>encoding[x]).ToList();
             sessionMeta.ObscuredImages = obscuredIndexes.Select(x=>encoding[x]).ToList();
             _sessionMetaRepository.Save(sessionMeta);

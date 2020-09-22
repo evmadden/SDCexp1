@@ -12,35 +12,35 @@ namespace SDCode.Web.Classes
     public class ProgressGetter : IProgressGetter
     {
         private readonly IResponseDataCsvFileGetter _responseDataCsvFileGetter;
-        private readonly ITestSetsGetter _testSetsGetter;
+        private readonly IPhaseSetsGetter _phaseSetsGetter;
         private readonly ITestResponsesRepository _testResponsesRepository;
 
-        public ProgressGetter(IResponseDataCsvFileGetter responseDataCsvFileGetter, ITestSetsGetter testSetsGetter, ITestResponsesRepository testResponsesRepository)
+        public ProgressGetter(IResponseDataCsvFileGetter responseDataCsvFileGetter, IPhaseSetsGetter phaseSetsGetter, ITestResponsesRepository testResponsesRepository)
         {
             _responseDataCsvFileGetter = responseDataCsvFileGetter;
-            _testSetsGetter = testSetsGetter;
+            _phaseSetsGetter = phaseSetsGetter;
             _testResponsesRepository = testResponsesRepository;
         }
 
         public int Get(string participantID)
         {
             int result;
-            var testSets = _testSetsGetter.Get(participantID);
-            var immediateResponsesCount = _testResponsesRepository.GetCount(participantID, nameof(testSets.Immediate));
-            bool immediateTestComplete = immediateResponsesCount == testSets.Immediate.Count();
+            var phaseSets = _phaseSetsGetter.Get(participantID);
+            var immediateResponsesCount = _testResponsesRepository.GetCount(participantID, nameof(phaseSets.Immediate));
+            bool immediateTestComplete = immediateResponsesCount == phaseSets.Immediate.Count();
             if (immediateTestComplete) {
-                var delayedResponsesCount = _testResponsesRepository.GetCount(participantID, nameof(testSets.Delayed));
-                bool delayedTestComplete = delayedResponsesCount == testSets.Delayed.Count();
+                var delayedResponsesCount = _testResponsesRepository.GetCount(participantID, nameof(phaseSets.Delayed));
+                bool delayedTestComplete = delayedResponsesCount == phaseSets.Delayed.Count();
                 if (delayedTestComplete) {
-                    var followupResponsesCount = _testResponsesRepository.GetCount(participantID, nameof(testSets.Followup));
-                    bool followupTestComplete = followupResponsesCount == testSets.Followup.Count();
+                    var followupResponsesCount = _testResponsesRepository.GetCount(participantID, nameof(phaseSets.Followup));
+                    bool followupTestComplete = followupResponsesCount == phaseSets.Followup.Count();
                     if (followupTestComplete) {
-                        result = testSets.Immediate.Count() + testSets.Delayed.Count() + testSets.Followup.Count();
+                        result = phaseSets.Immediate.Count() + phaseSets.Delayed.Count() + phaseSets.Followup.Count();
                     } else {
-                        result = testSets.Immediate.Count() + testSets.Delayed.Count();
+                        result = phaseSets.Immediate.Count() + phaseSets.Delayed.Count();
                     }
                 } else {
-                    result = testSets.Immediate.Count();
+                    result = phaseSets.Immediate.Count();
                 }
             } else {
                 result = 0;

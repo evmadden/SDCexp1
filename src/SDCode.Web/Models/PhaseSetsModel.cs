@@ -7,7 +7,7 @@ using SDCode.Web.Classes;
 namespace SDCode.Web.Models
 {
     [Description("Images used in each phase.")]
-    public class TestSetsModel
+    public class PhaseSetsModel
     {
         [Name(nameof(ParticipantID))]
         public string ParticipantID { get; set; }
@@ -20,7 +20,7 @@ namespace SDCode.Web.Models
         [Name(nameof(Followup))]
         public IEnumerable<string> Followup { get; set; }
 
-        public sealed class Map : ClassMap<TestSetsModel> {
+        public sealed class Map : ClassMap<PhaseSetsModel> {
             public Map() {
                 Map(m => m.ParticipantID).Name(nameof(ParticipantID));
                 Map(m => m.Encoding).Name(nameof(Encoding)).TypeConverter<CsvStringsConverter>();

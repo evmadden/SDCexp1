@@ -5,28 +5,28 @@ namespace SDCode.Web.Classes
 {
     public interface INextImageGetter
     {
-        string Get(TestSetsModel testSets, int progress);
+        string Get(PhaseSetsModel phaseSets, int progress);
     }
 
     public class NextImageGetter : INextImageGetter
     {
-        public string Get(TestSetsModel testSets, int progress)
+        public string Get(PhaseSetsModel phaseSets, int progress)
         {
             string result;
-            if (progress > testSets.Immediate.Count() - 1)
+            if (progress > phaseSets.Immediate.Count() - 1)
             {
-                if (progress > (testSets.Immediate.Count() + testSets.Delayed.Count()) - 1)
+                if (progress > (phaseSets.Immediate.Count() + phaseSets.Delayed.Count()) - 1)
                 {
-                    result = testSets.Followup.ElementAt(progress - testSets.Immediate.Count() - testSets.Delayed.Count());
+                    result = phaseSets.Followup.ElementAt(progress - phaseSets.Immediate.Count() - phaseSets.Delayed.Count());
                 }
                 else
                 {
-                    result = testSets.Delayed.ElementAt(progress - testSets.Immediate.Count());
+                    result = phaseSets.Delayed.ElementAt(progress - phaseSets.Immediate.Count());
                 }
             }
             else
             {
-                result = testSets.Immediate.ElementAt(progress);
+                result = phaseSets.Immediate.ElementAt(progress);
             }
             return result;
         }

@@ -16,9 +16,9 @@ namespace SDCode.Web.Controllers
         private readonly ILogger<TestController> _logger;
         private readonly IImageIndexesGetter _imageIndexesGetter;
         private readonly IStimuliImageDataUrlGetter _stimuliImageDataUrlGetter;
-        private readonly ICsvFile<TestSetsModel, TestSetsModel.Map> _testSetsCsvFile;
+        private readonly ICsvFile<PhaseSetsModel, PhaseSetsModel.Map> _phaseSetsCsvFile;
         private readonly ICsvFile<ResponseDataModel, ResponseDataModel.Map> _responseDataCsvFile;
-        private readonly ITestSetsGetter _testSetsGetter;
+        private readonly IPhaseSetsGetter _phaseSetsGetter;
         private readonly INextImageGetter _nextImageGetter;
         private readonly IImageCongruencyGetter _imageCongruencyGetter;
         private readonly ITestNameGetter _testNameGetter;
@@ -34,13 +34,13 @@ namespace SDCode.Web.Controllers
 
         private readonly ISessionMetaRepository _sessionMetaRepository;
 
-        public TestController(ILogger<TestController> logger, IImageIndexesGetter imageIndexesGetter, IStimuliImageDataUrlGetter stimuliImageDataUrlGetter, ICsvFile<TestSetsModel, TestSetsModel.Map> testSetsCsvFile, ITestSetsGetter testSetsGetter, INextImageGetter nextImageGetter, IImageCongruencyGetter imageCongruencyGetter, ICsvFile<ResponseDataModel, ResponseDataModel.Map> responseDataCsvFile, ITestNameGetter testNameGetter, IImageContextGetter imageContextGetter, IProgressGetter progressGetter, ICsvFile<StanfordModel, StanfordMap> stanfordCsvFile, IStanfordRepository stanfordRepository, IResponseFeedbackGetter responseFeedbackGetter, ICsvFile<SessionMetaModel, SessionMetaModel.Map> sessionMetaCsvFile, IOptions<Config> config, ITestResponsesRepository testResponsesRepository, ISessionMetaRepository sessionMetaRepository)
+        public TestController(ILogger<TestController> logger, IImageIndexesGetter imageIndexesGetter, IStimuliImageDataUrlGetter stimuliImageDataUrlGetter, ICsvFile<PhaseSetsModel, PhaseSetsModel.Map> phaseSetsCsvFile, IPhaseSetsGetter phaseSetsGetter, INextImageGetter nextImageGetter, IImageCongruencyGetter imageCongruencyGetter, ICsvFile<ResponseDataModel, ResponseDataModel.Map> responseDataCsvFile, ITestNameGetter testNameGetter, IImageContextGetter imageContextGetter, IProgressGetter progressGetter, ICsvFile<StanfordModel, StanfordMap> stanfordCsvFile, IStanfordRepository stanfordRepository, IResponseFeedbackGetter responseFeedbackGetter, ICsvFile<SessionMetaModel, SessionMetaModel.Map> sessionMetaCsvFile, IOptions<Config> config, ITestResponsesRepository testResponsesRepository, ISessionMetaRepository sessionMetaRepository)
         {
             _logger = logger;
             _imageIndexesGetter = imageIndexesGetter;
             _stimuliImageDataUrlGetter = stimuliImageDataUrlGetter;
-            _testSetsCsvFile = testSetsCsvFile;
-            _testSetsGetter = testSetsGetter;
+            _phaseSetsCsvFile = phaseSetsCsvFile;
+            _phaseSetsGetter = phaseSetsGetter;
             _nextImageGetter = nextImageGetter;
             _imageCongruencyGetter = imageCongruencyGetter;
             _responseDataCsvFile = responseDataCsvFile;
@@ -59,15 +59,15 @@ namespace SDCode.Web.Controllers
         [HttpPost]
         public IActionResult WelcomeBack(string participantID)
         {
-            var testSets = _testSetsGetter.Get(participantID);
+            var phaseSets = _phaseSetsGetter.Get(participantID);
             var progress = _progressGetter.Get(participantID);
-            var testName = _testNameGetter.Get(testSets, progress);
+            var testName = _testNameGetter.Get(phaseSets, progress);
             DateTime? nextTestWhenUtc = default;
             TestWelcomeBackAction action;
             if (testName == default) {
                 action = TestWelcomeBackAction.Done;
             } else {
-                if (string.Equals(testName, nameof(testSets.Immediate))) {
+                if (string.Equals(testName, nameof(phaseSets.Immediate))) {
                     var stanford = _stanfordRepository.Get(participantID, testName);
                     if (stanford.Immediate.HasValue) {
                         _testResponsesRepository.Archive(participantID, testName);
@@ -77,9 +77,9 @@ namespace SDCode.Web.Controllers
                     }
                 } else {
                     action = TestWelcomeBackAction.Stanford;
-                    var testStartDelayHourThresholds = new Dictionary<string, TimeSpan>() {{nameof(testSets.Delayed), new TimeSpan(_config.TestWaitDaysDelayed,0,0,0) }, {nameof(testSets.Followup), new TimeSpan(_config.TestWaitDaysFollowup,0,0,0)}};
+                    var testStartDelayHourThresholds = new Dictionary<string, TimeSpan>() {{nameof(phaseSets.Delayed), new TimeSpan(_config.TestWaitDaysDelayed,0,0,0) }, {nameof(phaseSets.Followup), new TimeSpan(_config.TestWaitDaysFollowup,0,0,0)}};
                     if (testStartDelayHourThresholds.ContainsKey(testName)) {
-                        var priorTestName = _testNameGetter.Get(testSets, progress-1);
+                        var priorTestName = _testNameGetter.Get(phaseSets, progress-1);
                         var priorTestResponses = _testResponsesRepository.Read(participantID, priorTestName);
                         var priorTestStartTimeUtc = priorTestResponses.Select(x=>x.WhenUtc).DefaultIfEmpty().Min();
                         var nextTestStartTimeThresholdUtc = priorTestStartTimeUtc + testStartDelayHourThresholds[testName];
@@ -96,9 +96,9 @@ namespace SDCode.Web.Controllers
         [HttpPost]
         public IActionResult Index(string participantID, Sleepinesses? stanford)
         {
-            var testSets = _testSetsGetter.Get(participantID);
+            var phaseSets = _phaseSetsGetter.Get(participantID);
             var progress = _progressGetter.Get(participantID);
-            var testName = _testNameGetter.Get(testSets, progress);
+            var testName = _testNameGetter.Get(phaseSets, progress);
             if (stanford != default && stanford.HasValue) {
                 _stanfordRepository.Save(participantID, testName, stanford.Value);
             }
@@ -109,8 +109,8 @@ namespace SDCode.Web.Controllers
         [HttpPost]
         public IActionResult GetImage(string participantID, int progress)
         {
-            var testSets = _testSetsGetter.Get(participantID);
-            var viewModel = GetViewModel(testSets, progress);
+            var phaseSets = _phaseSetsGetter.Get(participantID);
+            var viewModel = GetViewModel(phaseSets, progress);
             return Json(new {viewModel});
         }
 
@@ -125,9 +125,9 @@ namespace SDCode.Web.Controllers
             // reaction time: ms from image display to user response
             // confidence rating: 1 not confident and 4 very confident
             // tests show E and EI (instead of A/AI) + D and DI (instead of B/BI/C/CI) + F and FI + N and NI (SINGLE sets all - 288 total images per session)
-            var testSets = _testSetsGetter.Get(participantID);
-            var seenTestName = _testNameGetter.Get(testSets, progress);
-            var seenViewModel = GetViewModel(testSets, progress);
+            var phaseSets = _phaseSetsGetter.Get(participantID);
+            var seenTestName = _testNameGetter.Get(phaseSets, progress);
+            var seenViewModel = GetViewModel(phaseSets, progress);
             var congruency = _imageCongruencyGetter.Get(seenViewModel.ImageUrl);
             var context = _imageContextGetter.Get(seenViewModel.ImageUrl);
             var imageName = Path.GetFileNameWithoutExtension(seenViewModel.ImageUrl);
@@ -135,16 +135,16 @@ namespace SDCode.Web.Controllers
             var imageResponse = new ResponseDataModel{Image = imageName, Congruency = congruency, Context = context, Judgement = judgement, Confidence = confidence, ReactionTime = reactionTime, Feedback = feedback, WhenUtc = DateTime.UtcNow};
             _testResponsesRepository.Add(participantID, seenTestName, imageResponse);
             int nextProgress = progress + 1;
-            var nextTestName = _testNameGetter.Get(testSets, nextProgress);
+            var nextTestName = _testNameGetter.Get(phaseSets, nextProgress);
             var testHasEnded = !string.Equals(seenTestName, nextTestName);
-            var nextViewModel = testHasEnded ? null : GetViewModel(testSets, nextProgress);
+            var nextViewModel = testHasEnded ? null : GetViewModel(phaseSets, nextProgress);
             return Json(new {TestEnded=testHasEnded, feedback=((int)feedback), ViewModel=nextViewModel});
         }
 
-        private TestImageViewModel GetViewModel(TestSetsModel testSets, int progress) {
-            var imageToDisplay = _nextImageGetter.Get(testSets, progress);
+        private TestImageViewModel GetViewModel(PhaseSetsModel phaseSets, int progress) {
+            var imageToDisplay = _nextImageGetter.Get(phaseSets, progress);
             var imageUrl = _stimuliImageDataUrlGetter.Get(imageToDisplay);
-            var result = new TestImageViewModel(testSets.ParticipantID, progress, imageUrl);
+            var result = new TestImageViewModel(phaseSets.ParticipantID, progress, imageUrl);
             return result;
         }
 
@@ -152,8 +152,8 @@ namespace SDCode.Web.Controllers
         {
             var obscuredIndexes = obscuredIndexesCommaDelimited?.Split(",").Select(int.Parse) ?? new List<int>(); // todo mlh create dependency which turns comma-delimited string into IEnumerable
             var sessionMeta = _sessionMetaRepository.Get(participantID, testName);
-            var testSets = _testSetsGetter.Get(participantID);
-            var testImages = ((IEnumerable<string>)testSets.GetType().GetProperty(testName).GetValue(testSets)).ToList();
+            var phaseSets = _phaseSetsGetter.Get(participantID);
+            var testImages = ((IEnumerable<string>)phaseSets.GetType().GetProperty(testName).GetValue(phaseSets)).ToList();
             sessionMeta.ObscuredImages = obscuredIndexes.Select(x=>testImages[x]);
             _sessionMetaRepository.Save(sessionMeta);
             return View(new TestQuestionsViewModel(participantID, testName));
