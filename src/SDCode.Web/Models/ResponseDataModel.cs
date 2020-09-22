@@ -10,7 +10,7 @@ namespace SDCode.Web.Models
     public class ResponseDataModel
     {
         [Name(nameof(Image))]
-        [Description("The image index viewed.")]
+        [Description("The image viewed.")]
         public string Image { get; set; }
         [Name(nameof(Congruency))]
         [Description("The image's congruency.")]

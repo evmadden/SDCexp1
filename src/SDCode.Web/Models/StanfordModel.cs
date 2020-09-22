@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using CsvHelper.Configuration;
 using CsvHelper.Configuration.Attributes;
 using SDCode.Web.Classes;
@@ -7,6 +8,7 @@ namespace SDCode.Web.Models
     public class StanfordModel
     {
         [Name(nameof(ParticipantID))]
+        [Description("ID of the participant.")]
         public string ParticipantID { get; set; }
 
         [Name(nameof (Immediate))] 

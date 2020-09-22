@@ -6,10 +6,11 @@ using SDCode.Web.Classes;
 
 namespace SDCode.Web.Models
 {
+    [Description("Metadata about sessions.")]
     public class SessionMetaModel : IParticipantModel
     {
         [Name(nameof(ParticipantID))]
-        [Description("The ID by which the participant is enrolled.")] // todo mlh check all "ParticipantID" property/column descriptions for consistency
+        [Description("ID of the participant.")]
         public string ParticipantID { get; set; }
         [Name(nameof(SessionName))]
         public string SessionName { get; set; }
