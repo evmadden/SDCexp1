@@ -33,11 +33,16 @@
   <form action="/ImageCheck" method="POST">
     <input type="hidden" name="nextActionAfterImageCheck" value="@Url.Action("Index")" />
     <input type="hidden" name="participantID" value="@Model.ParticipantID" />
-     <fieldset>
          @if (Model.Action == TestWelcomeBackAction.Stanford) {
-            <div>
-                Stanford Sleepiness Scale
-            </div>
+<div class="text-right"> @* todo mlh refactor logo div to partial view so that we can re-use it in sundry views *@
+    <div style="background-color: Darkcyan;">  
+        <img src="/img/Logo.png" style="width:200px;height:100px;"/> <!-- https://www.york.ac.uk/staff/external-relations/brand/logo/ -->
+    </div>
+</div>
+
+    <h1 class="display-4; text-center;">Stanford Sleepiness Scale</h1>
+    <br/>
+         <fieldset>
             <legend>This is a quick way to assess how alert you are feeling CURRENTLY.<br/>
                 <br/>
                 Please select the option that best describes how sleepy you are feeling right now.</legend>
@@ -59,6 +64,7 @@
                 <label for="7">No longer fighting sleep, sleep onset soon; having dream-like thoughts</label><br/>                                
             </div>       
             <br/>
+          </fieldset>
          } else {
              <div>
                 @await Html.PartialAsync($"Welcome{Model.TestName}")
@@ -67,7 +73,6 @@
         <div style="text-align: right;">
             <input style="margin-right: 50px;" type="submit" value="Next"/>
         </div>                                                                 
-  </fieldset>
 </form>
 
 }
