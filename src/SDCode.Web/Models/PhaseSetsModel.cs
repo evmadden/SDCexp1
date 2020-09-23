@@ -10,7 +10,6 @@ namespace SDCode.Web.Models
     public class PhaseSetsModel
     {
         [Name(nameof(ParticipantID))]
-        [Description("ID of the participant.")]
         public string ParticipantID { get; set; }
         [Name(nameof(Encoding))]
         public IEnumerable<string> Encoding { get; set; }

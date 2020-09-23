@@ -17,28 +17,28 @@ namespace SDCode.Web.Models
         [Description("Participant understands withdraw freedom.")]
         public bool Withdraw { get; set; }
         [Name(nameof(NPSDisorder))]
-        [Description(@"Participant understands ""NPS history"" participation stipulation.")]
+        [Description("Participant confirms no neurological, psychiatric or sleep problems.")]
         public bool NPSDisorder{ get; set; }
         [Name(nameof(ADHD))]
-        [Description(@"Participant understands ""additional difficulties history"" participation stipulation.")]
+        [Description("Participant confirms no attentional difficulties.")]
         public bool ADHD{ get; set; } 
         [Name(nameof(HeadInjury))]
-        [Description(@"Participant understands ""serious head injury"" participation stipulation.")]
+        [Description("Participant confirms no serious head injuries.")]
         public bool HeadInjury{ get; set; }
         [Name(nameof(NormalVision))]
-        [Description(@"Participant understands ""normal vision"" participation stipulation.")]
+        [Description("Participant confirms normal vision.")]
         public bool NormalVision{ get; set; }    
         [Name(nameof(VisionProblems))]
-        [Description(@"Participant understands ""special visual"" participation stipulation.")]
+        [Description("Participant confirms no speical visual characteristics.")]
         public bool VisionProblems{ get; set; }   
         [Name(nameof(AltShifts))]
-        [Description(@"Participant understands ""alternate shift patterns"" participation stipulation.")]
+        [Description("Participant confirms they do not work alternating shift patterns.")]
         public bool AltShifts{ get; set; }
         [Name(nameof(Smoker))]
-        [Description(@"Participant understands ""smoker"" participation stipulation.")]
+        [Description("Participant confirms they are not a smoker.")]
         public bool Smoker{ get; set; }
         [Name(nameof(DataProtection))]
-        [Description(@"Participant understands ""anonymised data access"" participation stipulation.")]
+        [Description("Participant understands that data will be anonymised and accessed by researchers.")]
         public bool DataProtection{ get; set; }   
         [Name(nameof(AgreeParticipate))]
         [Description("Participant agrees to take part in the study.")]

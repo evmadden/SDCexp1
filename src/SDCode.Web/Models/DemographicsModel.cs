@@ -8,7 +8,6 @@ namespace SDCode.Web.Models
     public class DemographicsModel : IParticipantModel
     {
         [Name(nameof(ParticipantID))]
-        [Description("ID of the participant.")]
         public string ParticipantID { get; set; }
         [Name(nameof(Sex))]
         public Sexes? Sex { get; set; }
@@ -17,24 +16,32 @@ namespace SDCode.Web.Models
         [Name(nameof(YearStudy))]
         public string YearStudy { get; set; }
         [Name(nameof(Handed))]
-        public Hands? Handed{ get; set; }
+        [Description("Participant notes whether they are right or left handed.")]
+        public Hands? Handed{ get; set; } 
         [Name(nameof(Impairments))]
+        [Description("Participant notes whether they have any visual impairments.")]
         public bool? Impairments{ get; set; } 
         [Name(nameof(Glasses))]
         public bool? Glasses{ get; set; }
         [Name(nameof(Language))]
-        public string Language{ get; set; }    
+        [Description("Participant notes what their native language is.")]
+        public string Language{ get; set; }     
         [Name(nameof(Bilingual))]
-        public string Bilingual{ get; set; }   
+        [Description("Participant notes whether they speak any other languages.")]
+        public string Bilingual{ get; set; }    
         [Name(nameof(CurrentCountry))]
         public string CurrentCountry{ get; set; }
         [Name(nameof(Bed))]
+        [Description("Participant notes what time they went to bed the previous night.")] 
         public string Bed{ get; set; }
         [Name(nameof(Wake))]
-        public string Wake{ get; set; }   
+        [Description("Participant notes what time they woke the day of the study.")]
+        public string Wake{ get; set; }    
         [Name(nameof(Latency))]
-        public string Latency{ get; set; }  
+        [Description("Participant notes how long it took them to fall asleep the previous night.")]
+        public string Latency{ get; set; }   
         [Name(nameof(TST))]
+        [Description("Participant notes their total sleep time for the previous night.")]
         public string TST{ get; set; }           
     }
 
