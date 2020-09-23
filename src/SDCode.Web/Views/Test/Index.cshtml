@@ -26,7 +26,7 @@
         var imageElement = document.getElementById('image');
         var confidenceElement = document.getElementById('confidence');
         var feedbackElement = document.getElementById('feedback');
-        var imageMessageElement = document.getElementById('imageMessage');
+        var feedbackMessageElement = document.getElementById('feedbackMessage');
         var imageJudgement;
         var imageConfidence;
         var imageShownAt;
@@ -35,8 +35,6 @@
             feedbackElement.style.display = 'none';
             imageElement.setAttribute('data-progress', progress);
             imageElement.src = url;
-            imageMessageElement.innerText = 'REACT_HOWTO_PLACEHOLDER_TEXT';
-            imageMessageElement.style.display = 'block';
             imageJudgement = null;
             imageConfidence = null;
             imageShownAt = new Date().getTime();
@@ -68,8 +66,8 @@
                         nextActionForm.action = nextAction;
                         nextActionForm.submit();
                     } else {
-                        feedbackElement.innerText = `FEEDBACK_PLACEHOLDER: ${response.feedback ? '@(Enum.GetName(typeof(Feedbacks), Feedbacks.Correct))' : '@(Enum.GetName(typeof(Feedbacks), Feedbacks.Incorrect))'}`;
-                        feedbackElement.style.display = 'block';
+                        feedbackMessageElement.innerText = `FEEDBACK_PLACEHOLDER: ${response.feedback ? '@(Enum.GetName(typeof(Feedbacks), Feedbacks.Correct))' : '@(Enum.GetName(typeof(Feedbacks), Feedbacks.Incorrect))'}`;
+                        feedbackElement.style.display = 'table';
                         setTimeout(function () {
                             showImage(response.viewModel.imageUrl, response.viewModel.progress);
                         }, @Model.FeedbackDisplayDurationInMilliseconds);
@@ -90,15 +88,11 @@
         var onJudgement = function(judgement) {
             imageJudgement = judgement;
             imageReactionTime = new Date().getTime() - imageShownAt;
-            imageMessageElement.innerText = 'CONFIDENCE_HOWTO_PLACEHOLDER_TEXT'; // todo mlh replace image visual with confidence prompt
-            imageMessageElement.style.display = 'block';
             imageElement.style.display = 'none';
-            confidenceElement.style.display = 'block';
+            confidenceElement.style.display = 'table';
         };
         var onConfidence = function(confidence) {
             confidenceElement.style.display = 'none';
-            imageMessageElement.style.display = 'none';
-            imageMessageElement.innerText = '';
             imageConfidence = confidence;
             sendResponse();
         };
@@ -138,9 +132,20 @@
 </script>
 <div id="imageViewer" style="vertical-align: top; text-align: center;">
     <img id="image" style="display: none; width: 800px; height: 700px;"/>
-    <div id="confidence" style="display: none; width: 800px; height: 700px;">How confident are you in your answer?</div>
-    <div id="feedback" style="display: none; width: 800px; height: 700px;">FEEDBACK_PLACEHOLDER</div>
-    <div id="imageMessage"></div>
+    <div id="confidence" style="display: none; width: 800px; height: 700px; overflow: hidden;">
+        <div style="display: table-cell; vertical-align: middle;">
+            <div>
+            How confident are you in your answer?
+            </div>
+        </div>
+    </div>
+    <div id="feedback" style="display: none; width: 800px; height: 700px; overflow: hidden;"> @* todo mlh refactor these DIVs/etc so that height/width is only defined once *@
+        <div style="display: table-cell; vertical-align: middle;">
+            <div id="feedbackMessage">
+            FEEDBACK_PLACEHOLDER
+            </div>
+        </div>
+    </div>
 </div>
 <div>
     <form id="nextActionForm" method="POST"> 
