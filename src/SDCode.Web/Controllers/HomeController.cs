@@ -83,7 +83,7 @@ namespace SDCode.Web.Controllers
             return View(new StanfordViewModel(participantID));
         }
 
-        public IActionResult EncodingInstructions(string participantID, Sleepinesses stanford)
+        public IActionResult EncodingInstructions(string participantID, Sleepinesses? stanford)
         {
             _stanfordRepository.Save(participantID, "Immediate", stanford);
             return View(new EncodingInstructionsViewModel(participantID));

@@ -34,7 +34,7 @@ namespace SDCode.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index(string participantID, Sleepinesses stanford)
+        public IActionResult Index(string participantID, Sleepinesses? stanford)
         {
             _stanfordRepository.Save(participantID, "Immediate", stanford);
             var imageTypes = new List<string> { "A", "A", "AI", "AI", "B", "BI", "C", "CI", "F", "F", "FI", "FI" };

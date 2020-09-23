@@ -39,7 +39,7 @@
     
     <form action="@Model.NextActionAfterImageCheck" method="POST">
         <input type="hidden" name="participantID" value="@Model.ParticipantID" />
-        <input type="hidden" name="stanford" value="@((int)Model.Stanford)" />
+        <input type="hidden" name="stanford" value="@(Model.Stanford.HasValue ? (((int)Model.Stanford).ToString()) : (string.Empty))" />
 
     <h1 class="display-4; text-center;">Preparing to View Images</h1> @* todo mlh throughout entire codebase and user experience (including browser address bar URLs...), choose "Study" or "Encoding" and use it consistently, removing references to the competing, synonymous jargon *@
     <p>IMAGES_PLACEMENT_ORIENTATION_PLACEHOLDER</p>

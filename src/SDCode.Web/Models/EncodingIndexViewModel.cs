@@ -4,7 +4,7 @@ namespace SDCode.Web.Models
 {
     public class EncodingIndexViewModel
     {
-        public EncodingIndexViewModel(string participantID, Sleepinesses stanford, int imageDisplayDurationInMilliseconds, int plusSignDisplayDurationInMilliseconds, int numberDisplayProbabilityPercentage, int numberCheckIntervalInMilliseconds, int numberDisplayThresholdInMilliseconds) {
+        public EncodingIndexViewModel(string participantID, Sleepinesses? stanford, int imageDisplayDurationInMilliseconds, int plusSignDisplayDurationInMilliseconds, int numberDisplayProbabilityPercentage, int numberCheckIntervalInMilliseconds, int numberDisplayThresholdInMilliseconds) {
             ParticipantID = participantID;
             Stanford = stanford;
             ImageDisplayDurationInMilliseconds = imageDisplayDurationInMilliseconds;
@@ -15,7 +15,7 @@ namespace SDCode.Web.Models
         }
 
         public string ParticipantID { get; }
-        public Sleepinesses Stanford { get; }
+        public Sleepinesses? Stanford { get; }
         public int ImageDisplayDurationInMilliseconds { get; }
         public int PlusSignDisplayDurationInMilliseconds { get; }
         public int NumberDisplayProbabilityPercentage { get; }

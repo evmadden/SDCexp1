@@ -4,7 +4,7 @@ namespace SDCode.Web.Models
 {
     public class ImageCheckIndexViewModel
     {
-        public ImageCheckIndexViewModel(string participantID, Sleepinesses stanford, string nextActionAfterImageCheck)
+        public ImageCheckIndexViewModel(string participantID, Sleepinesses? stanford, string nextActionAfterImageCheck)
         {
             ParticipantID = participantID;
             Stanford = stanford;
@@ -12,7 +12,7 @@ namespace SDCode.Web.Models
         }
 
         public string ParticipantID {get;}
-        public Sleepinesses Stanford { get; }
+        public Sleepinesses? Stanford { get; }
         public string NextActionAfterImageCheck { get; }
     }
 }

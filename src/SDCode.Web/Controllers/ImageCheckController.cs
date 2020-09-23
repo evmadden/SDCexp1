@@ -15,7 +15,7 @@ namespace SDCode.Web.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index(string participantID, Sleepinesses stanford, string nextActionAfterImageCheck)
+        public IActionResult Index(string participantID, Sleepinesses? stanford, string nextActionAfterImageCheck)
         {
             var viewModel = new ImageCheckIndexViewModel(participantID, stanford, nextActionAfterImageCheck);
             return View(viewModel);

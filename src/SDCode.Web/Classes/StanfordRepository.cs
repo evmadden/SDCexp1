@@ -9,7 +9,7 @@ namespace SDCode.Web.Classes
     public interface IStanfordRepository
     {
         StanfordModel Get(string participantID, string testName);
-        void Save(string participantID, string testName, Sleepinesses stanford);
+        void Save(string participantID, string testName, Sleepinesses? stanford);
     }
 
     public class StanfordRepository : IStanfordRepository
@@ -28,7 +28,7 @@ namespace SDCode.Web.Classes
             return result;
         }
 
-        public void Save(string participantID, string testName, Sleepinesses stanford)
+        public void Save(string participantID, string testName, Sleepinesses? stanford)
         {
             var stanfordModels = _stanfordCsvFile.Read().ToList();
             var stanfordModel = stanfordModels.SingleOrDefault(x=>string.Equals(x.ParticipantID, participantID)) ?? new StanfordModel{ParticipantID=participantID};
