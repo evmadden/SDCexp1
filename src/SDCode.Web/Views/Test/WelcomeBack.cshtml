@@ -7,7 +7,7 @@
 @if (Model.Action == TestWelcomeBackAction.NewUser) {
     <div>
         It looks like you are a New User.  Please return to the home page to select "New Participant."
-        If you feel you have reached this page by mistake, please email the researcher at evm517@york.ac.uk
+        If you feel you have reached this page by mistake, please email the researcher at <a href="mailto:evm517@york.ac.uk">evm517@york.ac.uk</a>.
     </div>
     <form action="@Url.Action("Welcome", "Home")" method="POST">
         <input type="hidden" name="participantID" value="@Model.ParticipantID" />
