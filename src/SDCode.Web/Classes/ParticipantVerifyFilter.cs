@@ -16,7 +16,7 @@ namespace SDCode.Web.Classes
             if (context.ActionArguments.TryGetValue("participantID", out object value)) {
                 var participantID = (string)value;
                 if (!string.IsNullOrWhiteSpace(participantID)) {
-                    var participantCsvFile = new CsvFile<ParticipantModel, ParticipantModel.Map>();
+                    var participantCsvFile = new CsvFile<ParticipantModel, ParticipantModel.Map>(new ModelTypeCsvFilenameGetter());
                     var isVerified = participantCsvFile.Read().Any(x=>string.Equals(x.ID, participantID));
                     if (!isVerified) {
                         context.Result = new RedirectToRouteResult(new RouteValueDictionary {{ "controller", "Participant" }, { "action", "NotEnrolled" }, {"id", participantID}});

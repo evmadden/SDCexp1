@@ -15,11 +15,13 @@ namespace SDCode.Web.Controllers
     {
         private readonly ILogger<LegendController> _logger;
         private readonly IDataTypeDescriptionGetter _dataTypeDescriptionGetter;
+        private readonly IModelTypeCsvFilenameGetter _modelTypeCsvFilenameGetter;
 
-        public LegendController(ILogger<LegendController> logger, IDataTypeDescriptionGetter dataTypeDescriptionGetter)
+        public LegendController(ILogger<LegendController> logger, IDataTypeDescriptionGetter dataTypeDescriptionGetter, IModelTypeCsvFilenameGetter modelTypeCsvFilenameGetter)
         {
             _logger = logger;
             _dataTypeDescriptionGetter = dataTypeDescriptionGetter;
+            _modelTypeCsvFilenameGetter = modelTypeCsvFilenameGetter;
         }
 
         public IActionResult CSV()
@@ -77,9 +79,8 @@ namespace SDCode.Web.Controllers
                         }
                     }
                 }
-                // todo mlh refactor first "Replace" below so that we're not duplicating how it is that we turn a type name into a filename (see CsvFile.cs)
-                string filename = type.Name.Replace("Model", ".csv");
-                filename = filename.Replace("ResponseData", "<ID>_<TestName>");
+                string filename = _modelTypeCsvFilenameGetter.Get(type);
+                filename = filename.Replace("ResponseDataRecords", "<ID>_<TestName>");
                 files.Add(new LegendCsvViewModel.File(filename, fileDescription, columns.Any() ? columns : default));
             }
 

@@ -22,6 +22,13 @@ namespace SDCode.Web.Classes
     public class CsvFile<T, TMap> : ICsvFile<T, TMap> where TMap : CsvHelper.Configuration.ClassMap
     {
         private string _filename;
+        private readonly IModelTypeCsvFilenameGetter _modelTypeCsvFilenameGetter;
+
+        public CsvFile(IModelTypeCsvFilenameGetter modelTypeCsvFilenameGetter)
+        {
+            _modelTypeCsvFilenameGetter = modelTypeCsvFilenameGetter;
+        }
+
         public ICsvFile<T, TMap> WithFilename(string filename) {
             _filename = filename?.Replace(".csv", "", StringComparison.InvariantCultureIgnoreCase);
             return this;
@@ -91,7 +98,7 @@ namespace SDCode.Web.Classes
 
         private string FileName {
             get {
-                return $"{_filename ?? $"{typeof(T).Name.Replace("Model", "Records")}"}.csv";
+                return string.IsNullOrWhiteSpace(_filename) ? _modelTypeCsvFilenameGetter.Get(typeof(T)) : $"{_filename}.csv";
             }
         }
     }
