@@ -8,7 +8,7 @@ namespace SDCode.Web.Models
     public class ParticipantModel
     {
         [Name(nameof(ID))]
-        [Description("List of Participant ID's for ALL participants in the study.")]
+        [Description("Set of Participant ID's for ALL participants in the study.")]
         public string ID { get; set; }
 
         public sealed class Map : ClassMap<ConsentModel>

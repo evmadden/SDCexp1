@@ -27,7 +27,7 @@
         Test available at: @whenToDisplay?.ToString("MM/dd/yyyy") @whenToDisplay?.ToString("h:mm tt") UTC
     </div>
 } else if (Model.Action == TestWelcomeBackAction.Done) {
-    <span>TESTS_DONE_PLACEHOLDER</span>
+    <span>You have completed the experiment.  Thank you for participating in our study.</span>
 } else {
          if (Model.Action == TestWelcomeBackAction.Stanford) {
             @await Html.PartialAsync("~/Views/Home/LogoBanner.cshtml")
