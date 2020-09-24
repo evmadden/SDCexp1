@@ -8,7 +8,9 @@
             public int NumberDisplayThresholdInMilliseconds { get; set; }
             public bool AutomateTests { get; set; }
             public int TestAutomationDelayInMilliseconds { get; set; }
-            public int TestWaitDaysDelayed { get; set; }
-            public int TestWaitDaysFollowup { get; set; }
+            public int TestWaitDelayedDays { get; set; }
+            public string TestWaitDelayedDescription { get; set; }
+            public int TestWaitFollowupDays { get; set; }
+            public string TestWaitFollowupDescription { get; set; }
         }
 }

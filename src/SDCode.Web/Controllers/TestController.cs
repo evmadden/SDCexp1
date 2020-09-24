@@ -81,7 +81,7 @@ namespace SDCode.Web.Controllers
                     }
                 } else {
                     action = TestWelcomeBackAction.Stanford;
-                    var testStartDelayHourThresholds = new Dictionary<string, TimeSpan>() {{nameof(phaseSets.Delayed), new TimeSpan(_config.TestWaitDaysDelayed,0,0,0) }, {nameof(phaseSets.Followup), new TimeSpan(_config.TestWaitDaysFollowup,0,0,0)}};
+                    var testStartDelayHourThresholds = new Dictionary<string, TimeSpan>() {{nameof(phaseSets.Delayed), new TimeSpan(_config.TestWaitDelayedDays,0,0,0) }, {nameof(phaseSets.Followup), new TimeSpan(_config.TestWaitFollowupDays,0,0,0)}};
                     if (testStartDelayHourThresholds.ContainsKey(testName)) {
                         var priorTestName = _testNameGetter.Get(phaseSets, progress-1);
                         var priorTestResponses = _testResponsesRepository.Read(participantID, priorTestName);
@@ -157,7 +157,7 @@ namespace SDCode.Web.Controllers
             var participantRecord = _sessionMetaRepository.Get(participantID, testName);
             participantRecord.ObscuredReason = obscuredReason;
             _sessionMetaRepository.Save(participantRecord);
-            return View(new TestEndedViewModel(participantID, testName));
+            return View(new TestEndedViewModel(participantID, testName, _config.TestWaitDelayedDescription, _config.TestWaitFollowupDescription));
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
