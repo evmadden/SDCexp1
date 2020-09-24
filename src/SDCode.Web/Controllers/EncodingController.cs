@@ -21,8 +21,9 @@ namespace SDCode.Web.Controllers
         private readonly Config _config;
         private readonly ISessionMetaRepository _sessionMetaRepository;
         private readonly IPhaseSetsGetter _phaseSetsGetter;
+        private readonly ICommaDelimitedIntegersCollector _commaDelimitedIntegersCollector;
 
-        public EncodingController(ILogger<EncodingController> logger, IImageIndexesGetter encodingPhaseImageIndexesGetter, IStimuliImageDataUrlGetter stimuliImageDataUrlGetter, IStanfordRepository stanfordRepository, IOptions<Config> config, ISessionMetaRepository sessionMetaRepository, IPhaseSetsGetter phaseSetsGetter)
+        public EncodingController(ILogger<EncodingController> logger, IImageIndexesGetter encodingPhaseImageIndexesGetter, IStimuliImageDataUrlGetter stimuliImageDataUrlGetter, IStanfordRepository stanfordRepository, IOptions<Config> config, ISessionMetaRepository sessionMetaRepository, IPhaseSetsGetter phaseSetsGetter, ICommaDelimitedIntegersCollector commaDelimitedIntegersCollector)
         {
             _logger = logger;
             _imageIndexesGetter = encodingPhaseImageIndexesGetter;
@@ -31,6 +32,7 @@ namespace SDCode.Web.Controllers
             _config = config.Value;
             _sessionMetaRepository = sessionMetaRepository;
             _phaseSetsGetter = phaseSetsGetter;
+            _commaDelimitedIntegersCollector = commaDelimitedIntegersCollector;
         }
 
         [HttpPost]
@@ -55,8 +57,8 @@ namespace SDCode.Web.Controllers
 
         public IActionResult RecordResults(string participantID, string neglectedIndexesCommaDelimited, string obscuredIndexesCommaDelimited)
         {
-            var neglectedIndexes = neglectedIndexesCommaDelimited?.Split(",").Select(int.Parse) ?? new List<int>();
-            var obscuredIndexes = obscuredIndexesCommaDelimited?.Split(",").Select(int.Parse) ?? new List<int>(); // todo mlh create dependency which turns comma-delimited string into IEnumerable
+            var neglectedIndexes = _commaDelimitedIntegersCollector.Collect(neglectedIndexesCommaDelimited);
+            var obscuredIndexes = _commaDelimitedIntegersCollector.Collect(obscuredIndexesCommaDelimited);
             var sessionMeta = _sessionMetaRepository.Get(participantID, "Encoding");
             var phaseSets = _phaseSetsGetter.Get(participantID);
             var encoding = phaseSets.Encoding.ToList();

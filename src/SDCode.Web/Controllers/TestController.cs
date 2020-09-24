@@ -33,8 +33,9 @@ namespace SDCode.Web.Controllers
         private readonly ITestResponsesRepository _testResponsesRepository;
 
         private readonly ISessionMetaRepository _sessionMetaRepository;
+        private readonly ICommaDelimitedIntegersCollector _commaDelimitedIntegersCollector;
 
-        public TestController(ILogger<TestController> logger, IImageIndexesGetter imageIndexesGetter, IStimuliImageDataUrlGetter stimuliImageDataUrlGetter, ICsvFile<PhaseSetsModel, PhaseSetsModel.Map> phaseSetsCsvFile, IPhaseSetsGetter phaseSetsGetter, INextImageGetter nextImageGetter, IImageCongruencyGetter imageCongruencyGetter, ICsvFile<ResponseDataModel, ResponseDataModel.Map> responseDataCsvFile, ITestNameGetter testNameGetter, IImageContextGetter imageContextGetter, IProgressGetter progressGetter, ICsvFile<StanfordModel, StanfordMap> stanfordCsvFile, IStanfordRepository stanfordRepository, IResponseFeedbackGetter responseFeedbackGetter, ICsvFile<SessionMetaModel, SessionMetaModel.Map> sessionMetaCsvFile, IOptions<Config> config, ITestResponsesRepository testResponsesRepository, ISessionMetaRepository sessionMetaRepository)
+        public TestController(ILogger<TestController> logger, IImageIndexesGetter imageIndexesGetter, IStimuliImageDataUrlGetter stimuliImageDataUrlGetter, ICsvFile<PhaseSetsModel, PhaseSetsModel.Map> phaseSetsCsvFile, IPhaseSetsGetter phaseSetsGetter, INextImageGetter nextImageGetter, IImageCongruencyGetter imageCongruencyGetter, ICsvFile<ResponseDataModel, ResponseDataModel.Map> responseDataCsvFile, ITestNameGetter testNameGetter, IImageContextGetter imageContextGetter, IProgressGetter progressGetter, ICsvFile<StanfordModel, StanfordMap> stanfordCsvFile, IStanfordRepository stanfordRepository, IResponseFeedbackGetter responseFeedbackGetter, ICsvFile<SessionMetaModel, SessionMetaModel.Map> sessionMetaCsvFile, IOptions<Config> config, ITestResponsesRepository testResponsesRepository, ISessionMetaRepository sessionMetaRepository, ICommaDelimitedIntegersCollector commaDelimitedIntegersCollector)
         {
             _logger = logger;
             _imageIndexesGetter = imageIndexesGetter;
@@ -54,6 +55,7 @@ namespace SDCode.Web.Controllers
             _config = config.Value;
             _testResponsesRepository = testResponsesRepository;
             _sessionMetaRepository = sessionMetaRepository;
+            _commaDelimitedIntegersCollector = commaDelimitedIntegersCollector;
         }
 
         [HttpPost]
@@ -150,7 +152,7 @@ namespace SDCode.Web.Controllers
 
         public IActionResult Questions(string participantID, string testName, string obscuredIndexesCommaDelimited)
         {
-            var obscuredIndexes = obscuredIndexesCommaDelimited?.Split(",").Select(int.Parse) ?? new List<int>(); // todo mlh create dependency which turns comma-delimited string into IEnumerable
+            var obscuredIndexes = _commaDelimitedIntegersCollector.Collect(obscuredIndexesCommaDelimited);
             var sessionMeta = _sessionMetaRepository.Get(participantID, testName);
             var phaseSets = _phaseSetsGetter.Get(participantID);
             var testImages = ((IEnumerable<string>)phaseSets.GetType().GetProperty(testName).GetValue(phaseSets)).ToList();
