@@ -82,15 +82,19 @@
 
         };
         var onJudgement = function(judgement) {
-            imageJudgement = judgement;
-            imageReactionTime = new Date().getTime() - imageShownAt;
-            imageElement.style.display = 'none';
-            confidenceElement.style.display = 'table';
+            if (isVisible(imageElement)) {
+                imageJudgement = judgement;
+                imageReactionTime = new Date().getTime() - imageShownAt;
+                imageElement.style.display = 'none';
+                confidenceElement.style.display = 'table';
+            }
         };
         var onConfidence = function(confidence) {
-            confidenceElement.style.display = 'none';
-            imageConfidence = confidence;
-            sendResponse();
+            if (isVisible(confidenceElement)) {
+                confidenceElement.style.display = 'none';
+                imageConfidence = confidence;
+                sendResponse();
+            }
         };
         function onArrowLeft() { onJudgement(@((int)Judgements.Old)); }
         function onArrowRight() { onJudgement(@((int)Judgements.New)); }

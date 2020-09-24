@@ -12,3 +12,12 @@ function isInViewport(element) { // https://www.javascripttutorial.net/dom/css/c
         rect.right <= (window.innerWidth || document.documentElement.clientWidth)
     );
 }
+
+function isVisible(element) {
+    return !isHidden(element);
+}
+
+function isHidden(element) {
+    var style = window.getComputedStyle(element);
+    return (style.display === 'none')
+}
