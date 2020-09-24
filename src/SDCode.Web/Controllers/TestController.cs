@@ -159,7 +159,7 @@ namespace SDCode.Web.Controllers
             var participantRecord = _sessionMetaRepository.Get(participantID, testName);
             participantRecord.ObscuredReason = obscuredReason;
             _sessionMetaRepository.Save(participantRecord);
-            return View(new TestEndedViewModel(participantID, testName, _config.TestWaitDelayedDescription, _config.TestWaitFollowupDescription));
+            return View(new TestEndedViewModel(participantID, testName));
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
