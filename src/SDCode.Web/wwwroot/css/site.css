@@ -94,3 +94,14 @@ input[type="radio"] {
 .longSingleLine {
   width: 300px;
 }
+
+.testBox {
+  display: table;
+  width: 800px;
+  height: 700px;
+}
+
+.testBox > div {
+  display: table-cell;
+  vertical-align: middle;
+}

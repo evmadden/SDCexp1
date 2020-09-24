@@ -142,26 +142,20 @@
     });
 </script>
 <div id="imageViewer" style="vertical-align: top; text-align: center;">
-    <img id="image" style="display: none; width: 800px; height: 700px;"/>
-    <div id="confidence" style="display: none; width: 800px; height: 700px; overflow: hidden;">
-        <div style="display: table-cell; vertical-align: middle;">
-            <div>
+    <img id="image" class="testBox" style="display: none;"/>
+    <div id="confidence" class="testBox" style="display: none;">
+        <div>
             How confident are you in your answer?
-            </div>
         </div>
     </div>
-    <div id="feedback" style="display: none; width: 800px; height: 700px; overflow: hidden;"> @* todo mlh refactor these DIVs/etc so that height/width is only defined once *@
-        <div style="display: table-cell; vertical-align: middle;">
-            <div id="feedbackMessage">
+    <div id="feedback" class="testBox" style="display: none;">
+        <div id="feedbackMessage">
             FEEDBACK_PLACEHOLDER
-            </div>
         </div>
     </div>
-    <div id="wait" style="display: none; width: 800px; height: 700px; overflow: hidden;"> @* todo mlh refactor these DIVs/etc so that height/width is only defined once *@
-        <div style="display: table-cell; vertical-align: middle;">
-            <div id="waitMessage">
+    <div id="wait" class="testBox" style="display: none;">
+        <div>
             Please wait.
-            </div>
         </div>
     </div>
 </div>
