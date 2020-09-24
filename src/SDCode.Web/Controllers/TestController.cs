@@ -98,9 +98,8 @@ namespace SDCode.Web.Controllers
         [HttpPost]
         public IActionResult Index(string participantID, Sleepinesses? stanford)
         {
-            var phaseSets = _phaseSetsGetter.Get(participantID);
             var progress = _progressGetter.Get(participantID);
-            var testName = _testNameGetter.Get(phaseSets, progress);
+            var testName = _testNameGetter.Get(participantID);
             if (stanford != default && stanford.HasValue) {
                 _stanfordRepository.Save(participantID, testName, stanford.Value);
             }

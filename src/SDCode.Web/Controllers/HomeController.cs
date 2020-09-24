@@ -60,7 +60,7 @@ namespace SDCode.Web.Controllers
             _consentRepository.Save(new ConsentModel{ParticipantID = participantID, InfoSheet = infoSheet, Withdraw = withdraw, NPSDisorder = npsDisorder, ADHD = adhd, HeadInjury = headInjury, NormalVision = normalVision, VisionProblems = visionProblems, AltShifts = altShifts, Smoker = smoker, DataProtection = dataProtection, AgreeParticipate = agreeParticipate});
             var phaseSets = _phaseSetsGetter.Get(participantID);
             var progress = _progressGetter.Get(participantID);
-            var testName = _testNameGetter.Get(phaseSets, progress); // todo mlh create testNameGetter.Get(participantID) overload...
+            var testName = _testNameGetter.Get(phaseSets, progress);
             var testIsAvailable = string.Equals(testName, nameof(phaseSets.Immediate));
             return View(new DemographicsViewModel(participantID, testIsAvailable));
         }
