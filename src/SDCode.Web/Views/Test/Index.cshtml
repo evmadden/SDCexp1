@@ -52,7 +52,7 @@
                             nextActionForm.action = nextAction;
                             nextActionForm.submit();
                         } else {
-                            feedbackMessageElement.innerText = `FEEDBACK_PLACEHOLDER: ${response.feedback ? '@(Enum.GetName(typeof(Feedbacks), Feedbacks.Correct))' : '@(Enum.GetName(typeof(Feedbacks), Feedbacks.Incorrect))'}`;
+                            feedbackMessageElement.innerText = `${response.feedback ? '@(Enum.GetName(typeof(Feedbacks), Feedbacks.Correct))' : '@(Enum.GetName(typeof(Feedbacks), Feedbacks.Incorrect))'}`;
                             feedbackElement.style.display = 'table';
                             setTimeout(function () {
                                 showImage(response.viewModel.imageUrl, response.viewModel.progress);
@@ -149,9 +149,7 @@
         </div>
     </div>
     <div id="feedback" class="testBox" style="display: none;">
-        <div id="feedbackMessage">
-            FEEDBACK_PLACEHOLDER
-        </div>
+        <div id="feedbackMessage"></div>
     </div>
     <div id="wait" class="testBox" style="display: none;">
         <div>
