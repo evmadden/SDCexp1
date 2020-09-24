@@ -6,10 +6,10 @@
 
 @await Html.PartialAsync("~/Views/Home/LogoBanner.cshtml")
 
-<div class="text-align: left">
+<div>
     <h1 class="display-4; text-center;">Pittsburgh Sleep Quality Index</h1>
     <br/>
- <form action="/Home/Epworth" method="POST">
+ <form action="@Url.Action("Epworth", "Home")" method="POST">
   <input type="hidden" name="participantID" value="@Model.ParticipantID" />
      <fieldset>
          <legend>The following questions relate to your usual sleep habits during the past month only. 
@@ -46,7 +46,7 @@
       <legend>For each of the remaining questions, check the one best response. Please answer all questions.<br/>
       During the past month, how often have you had trouble sleeping because you...</legend>
         <div>
-          <label for="q5">5. Cannot get to sleep within 30 minutes.</label><br/>
+          <label>5. Cannot get to sleep within 30 minutes.</label><br/>
           <input type="radio" id="q5.never" name="no30min" value="@((int)FrequenciesWeekly.NeverDuringLastMonth)">
           <label for="q5.never">Never during the last month</label>
           <input type="radio" id="q5.lessthan" name="no30min" value="@((int)FrequenciesWeekly.LessThanOnceAWeek)">
@@ -58,7 +58,7 @@
         </div>
         <br/>
         <div>
-          <label for="q6">6. Wake up in the middle of the night or early morning.</label><br/>
+          <label>6. Wake up in the middle of the night or early morning.</label><br/>
           <input type="radio" id="q6.never" name="waso" value="@((int)FrequenciesWeekly.NeverDuringLastMonth)">
           <label for="q6.never">Never during the last month</label>
           <input type="radio" id="q6.lessthan" name="waso" value="@((int)FrequenciesWeekly.LessThanOnceAWeek)">
@@ -70,7 +70,7 @@
         </div>
         <br/> 
         <div>
-          <label for="q7">7. Have to get up to use the bathroom.</label><br/>
+          <label>7. Have to get up to use the bathroom.</label><br/>
           <input type="radio" id="q7.never" name="bathroom" value="@((int)FrequenciesWeekly.NeverDuringLastMonth)">
           <label for="q7.never">Never during the last month</label>
           <input type="radio" id="q7.lessthan" name="bathroom" value="@((int)FrequenciesWeekly.LessThanOnceAWeek)">
@@ -82,7 +82,7 @@
         </div>
         <br/>
         <div>
-          <label for="q8">8. Cannot breathe comfortably.</label><br/>
+          <label>8. Cannot breathe comfortably.</label><br/>
           <input type="radio" id="q8.never" name="breathing" value="@((int)FrequenciesWeekly.NeverDuringLastMonth)">
           <label for="q8.never">Never during the last month</label>
           <input type="radio" id="q8.lessthan" name="breathing" value="@((int)FrequenciesWeekly.LessThanOnceAWeek)">
@@ -94,7 +94,7 @@
         </div>
         <br/>
         <div>
-          <label for="q9">9. Cough or snore loudly.</label><br/>
+          <label>9. Cough or snore loudly.</label><br/>
           <input type="radio" id="q9.never" name="snoring" value="@((int)FrequenciesWeekly.NeverDuringLastMonth)">
           <label for="q9.never">Never during the last month</label>
           <input type="radio" id="q9.lessthan" name="snoring" value="@((int)FrequenciesWeekly.LessThanOnceAWeek)">
@@ -106,7 +106,7 @@
         </div>
         <br/>
         <div>
-          <label for="q10">10. Feel too hot.</label><br/>
+          <label>10. Feel too hot.</label><br/>
           <input type="radio" id="q10.never" name="hot" value="@((int)FrequenciesWeekly.NeverDuringLastMonth)">
           <label for="q10.never">Never during the last month</label>
           <input type="radio" id="q10.lessthan" name="hot" value="@((int)FrequenciesWeekly.LessThanOnceAWeek)">
@@ -118,7 +118,7 @@
         </div>
         <br/>     
         <div>
-          <label for="q11">11. Feel too cold.</label><br/>
+          <label>11. Feel too cold.</label><br/>
           <input type="radio" id="q11.never" name="cold" value="@((int)FrequenciesWeekly.NeverDuringLastMonth)">
           <label for="q11.never">Never during the last month</label>
           <input type="radio" id="q11.lessthan" name="cold" value="@((int)FrequenciesWeekly.LessThanOnceAWeek)">
@@ -130,7 +130,7 @@
         </div>
         <br/>
         <div>
-          <label for="q12">12. Had bad dreams.</label><br/>
+          <label>12. Had bad dreams.</label><br/>
           <input type="radio" id="q12.never" name="dreams" value="@((int)FrequenciesWeekly.NeverDuringLastMonth)">
           <label for="q12.never">Never during the last month</label>
           <input type="radio" id="q12.lessthan" name="dreams" value="@((int)FrequenciesWeekly.LessThanOnceAWeek)">
@@ -142,7 +142,7 @@
         </div>
         <br/> 
         <div>
-          <label for="q13">13. Have pain.</label><br/>
+          <label>13. Have pain.</label><br/>
           <input type="radio" id="q13.never" name="pain" value="@((int)FrequenciesWeekly.NeverDuringLastMonth)">
           <label for="q13.never">Never during the last month</label>
           <input type="radio" id="q13.lessthan" name="pain" value="@((int)FrequenciesWeekly.LessThanOnceAWeek)">
@@ -154,7 +154,7 @@
         </div>
         <br/>
         <div>
-          <label for="q14">14. Other reason(s).</label><br/>
+          <label>14. Other reason(s).</label><br/>
           <input type="radio" id="q14.never" name="otherfrequency" value="@((int)FrequenciesWeekly.NeverDuringLastMonth)">
           <label for="q14.never">Never during the last month</label>
           <input type="radio" id="q14.lessthan" name="otherfrequency" value="@((int)FrequenciesWeekly.LessThanOnceAWeek)">
@@ -168,7 +168,7 @@
         </div>
         <br/>                              
         <div>
-          <label for="q15">15. During the past month, how would you rate your sleep quality overall?</label><br/>
+          <label>15. During the past month, how would you rate your sleep quality overall?</label><br/>
           <input type="radio" id="q15.vgood" name="sleepquality" value="@((int)Qualities.VeryGood)">
           <label for="q15.vgood">Very Good</label>
           <input type="radio" id="q15.fgood" name="sleepquality" value="@((int)Qualities.FairlyGood)">
@@ -180,7 +180,7 @@
         </div>
         <br/>
         <div>
-          <label for="q16">6. During the past month, how often have you taken medicine (prescribed 
+          <label>6. During the past month, how often have you taken medicine (prescribed 
                   or "over the counter") to help you sleep?</label><br/>
           <input type="radio" id="q16.never" name="medication" value="@((int)FrequenciesWeekly.NeverDuringLastMonth)">
           <label for="q16.never">Never during the last month</label>
@@ -193,7 +193,7 @@
         </div>
         <br/> 
         <div>
-          <label for="q17">17. During the past month, how often have you had trouble staying awake
+          <label>17. During the past month, how often have you had trouble staying awake
                   while driving, eating meals, or engaging in social activity?</label><br/>
           <input type="radio" id="q17.never" name="sleepiness" value="@((int)FrequenciesWeekly.NeverDuringLastMonth)">
           <label for="q17.never">Never during the last month</label>
@@ -206,7 +206,7 @@
         </div>
         <br/> 
         <div>
-          <label for="q18">18. During the past month, how much of a problem has it been for you 
+          <label>18. During the past month, how much of a problem has it been for you 
                   to keep up enough enthusiasm to get things done?</label><br/>
           <input type="radio" id="q18.not" name="enthusiasm" value="@((int)Problems.NoneAtAll)">
           <label for="q18.not">No problem at all.</label>
@@ -219,7 +219,7 @@
         </div>
         <br/>
         <div>
-          <label for="q19">19. Do you have a bed partner or roommate? (If the answer is no, do not 
+          <label>19. Do you have a bed partner or roommate? (If the answer is no, do not 
                   finish question #20 and simply click next).</label><br/>
           <input type="radio" id="q19.nopart" name="bedpartner" value="@((int)BedPartners.None)">
           <label for="q19.nopart">No bed partner or roommate.</label>
@@ -234,7 +234,7 @@
         <legend>20. If you have a roommate or bed partner, how often would they say that YOU 
                   have done each of the following in the past month?<br></legend>
           <div>
-              <label for="q20a">a. Loud snoring</label><br/>
+              <label>a. Loud snoring</label><br/>
               <input type="radio" id="q20a.never" name="partsnore" value="@((int)FrequenciesWeekly.NeverDuringLastMonth)">
               <label for="q20a.never">Never during the last month</label>
               <input type="radio" id="q20a.lessthan" name="partsnore" value="@((int)FrequenciesWeekly.LessThanOnceAWeek)">
@@ -246,7 +246,7 @@
           </div>
           <br/>
           <div>
-              <label for="q20b">b. Long pauses between breaths while asleep</label><br/>
+              <label>b. Long pauses between breaths while asleep</label><br/>
               <input type="radio" id="q20b.never" name="breathpause" value="@((int)FrequenciesWeekly.NeverDuringLastMonth)">
               <label for="q20b.never">Never during the last month</label>
               <input type="radio" id="q20b.lessthan" name="breathpause" value="@((int)FrequenciesWeekly.LessThanOnceAWeek)">
@@ -258,7 +258,7 @@
           </div>
           <br/>
           <div>
-              <label for="q20c">c. Legs twitching or jerking while you sleep</label><br/>
+              <label>c. Legs twitching or jerking while you sleep</label><br/>
               <input type="radio" id="q20c.never" name="legs" value="@((int)FrequenciesWeekly.NeverDuringLastMonth)">
               <label for="q20c.never">Never during the last month</label>
               <input type="radio" id="q20c.lessthan" name="legs" value="@((int)FrequenciesWeekly.LessThanOnceAWeek)">
@@ -270,7 +270,7 @@
           </div>
           <br/>
           <div>
-              <label for="q20d">d. Episodes of disorientation or confusion during sleep</label><br/>
+              <label>d. Episodes of disorientation or confusion during sleep</label><br/>
               <input type="radio" id="q20d.never" name="disorientation" value="@((int)FrequenciesWeekly.NeverDuringLastMonth)">
               <label for="q20d.never">Never during the last month</label>
               <input type="radio" id="q20d.lessthan" name="disorientation" value="@((int)FrequenciesWeekly.LessThanOnceAWeek)">

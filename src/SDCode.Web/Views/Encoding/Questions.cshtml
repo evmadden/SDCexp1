@@ -5,14 +5,14 @@
 
 @await Html.PartialAsync("~/Views/Home/LogoBanner.cshtml")
 
-    <form action="/Encoding/Finished" method="POST">
+    <form action="@Url.Action("Finished", "Encoding")" method="POST">
         <input type="hidden" name="participantID" value="@Model.ParticipantID" />
 
     <h1 class="display-4; text-center;">Study Phase Questions</h1>
     <br/>
     <p>This completes the STUDY PHASE.</p>
     <div>
-        <div class="text-align: left">
+        <div>
             <h1 class="display-4; text-center;">Questions</h1>
             <p>Please explain any problems that occurred during the STUDY PHASE.</p>
         </div>

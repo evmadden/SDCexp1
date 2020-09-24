@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using SDCode.Web.Models;
+﻿using System.Linq;
 
 namespace SDCode.Web.Classes
 {
@@ -11,13 +9,11 @@ namespace SDCode.Web.Classes
 
     public class ProgressGetter : IProgressGetter
     {
-        private readonly IResponseDataCsvFileGetter _responseDataCsvFileGetter;
         private readonly IPhaseSetsGetter _phaseSetsGetter;
         private readonly ITestResponsesRepository _testResponsesRepository;
 
-        public ProgressGetter(IResponseDataCsvFileGetter responseDataCsvFileGetter, IPhaseSetsGetter phaseSetsGetter, ITestResponsesRepository testResponsesRepository)
+        public ProgressGetter(IPhaseSetsGetter phaseSetsGetter, ITestResponsesRepository testResponsesRepository)
         {
-            _responseDataCsvFileGetter = responseDataCsvFileGetter;
             _phaseSetsGetter = phaseSetsGetter;
             _testResponsesRepository = testResponsesRepository;
         }
@@ -27,13 +23,13 @@ namespace SDCode.Web.Classes
             int result;
             var phaseSets = _phaseSetsGetter.Get(participantID);
             var immediateResponsesCount = _testResponsesRepository.GetCount(participantID, nameof(phaseSets.Immediate));
-            bool immediateTestComplete = immediateResponsesCount == phaseSets.Immediate.Count();
+            var immediateTestComplete = immediateResponsesCount == phaseSets.Immediate.Count();
             if (immediateTestComplete) {
                 var delayedResponsesCount = _testResponsesRepository.GetCount(participantID, nameof(phaseSets.Delayed));
-                bool delayedTestComplete = delayedResponsesCount == phaseSets.Delayed.Count();
+                var delayedTestComplete = delayedResponsesCount == phaseSets.Delayed.Count();
                 if (delayedTestComplete) {
                     var followupResponsesCount = _testResponsesRepository.GetCount(participantID, nameof(phaseSets.Followup));
-                    bool followupTestComplete = followupResponsesCount == phaseSets.Followup.Count();
+                    var followupTestComplete = followupResponsesCount == phaseSets.Followup.Count();
                     if (followupTestComplete) {
                         result = phaseSets.Immediate.Count() + phaseSets.Delayed.Count() + phaseSets.Followup.Count();
                     } else {

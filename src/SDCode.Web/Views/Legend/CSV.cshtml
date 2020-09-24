@@ -1,5 +1,4 @@
 ﻿@model LegendCsvViewModel
-@using System.Collections
 @{
     ViewData["Title"] = "CSV Legend";
 }
@@ -45,7 +44,7 @@
 
 @await Html.PartialAsync("~/Views/Home/LogoBanner.cshtml")
 
-<div class="text-align: left">
+<div>
     <h1 class="display-4; text-center;">CSV Legend</h1>
     <p>Guide to CSV data file fields.</p>
         @foreach (var file in Model.Files)

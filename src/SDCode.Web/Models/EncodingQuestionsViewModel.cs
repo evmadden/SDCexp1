@@ -1,5 +1,3 @@
-using System;
-
 namespace SDCode.Web.Models
 {
     public class EncodingQuestionsViewModel

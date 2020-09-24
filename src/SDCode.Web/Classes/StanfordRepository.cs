@@ -1,7 +1,5 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using SDCode.Web.Models;
 
 namespace SDCode.Web.Classes
@@ -33,7 +31,7 @@ namespace SDCode.Web.Classes
             var stanfordModels = _stanfordCsvFile.Read().ToList();
             var stanfordModel = stanfordModels.SingleOrDefault(x=>string.Equals(x.ParticipantID, participantID)) ?? new StanfordModel{ParticipantID=participantID};
             stanfordModels.RemoveAll(x=>string.Equals(x.ParticipantID, participantID));
-            PropertyInfo propertyInfo = stanfordModel.GetType().GetProperty(testName);
+            var propertyInfo = stanfordModel.GetType().GetProperty(testName) ?? throw new Exception($"Unexpected test name.");
             propertyInfo.SetValue(stanfordModel, stanford, null);
             stanfordModels.Add(stanfordModel);
             _stanfordCsvFile.Write(stanfordModels);

@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Routing;
@@ -13,7 +12,7 @@ namespace SDCode.Web.Classes
 
         public void OnActionExecuting(ActionExecutingContext context)
         {
-            if (context.ActionArguments.TryGetValue("participantID", out object value)) {
+            if (context.ActionArguments.TryGetValue("participantID", out var value)) {
                 var participantID = (string)value;
                 if (!string.IsNullOrWhiteSpace(participantID)) {
                     var participantCsvFile = new CsvFile<ParticipantModel, ParticipantModel.Map>(new ModelTypeCsvFilenameGetter());

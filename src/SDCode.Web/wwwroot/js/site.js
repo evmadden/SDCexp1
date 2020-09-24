@@ -19,5 +19,5 @@ function isVisible(element) {
 
 function isHidden(element) {
     var style = window.getComputedStyle(element);
-    return (style.display === 'none')
+    return (style.display === 'none');
 }

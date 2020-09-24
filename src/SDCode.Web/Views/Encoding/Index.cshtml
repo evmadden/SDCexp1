@@ -14,7 +14,6 @@
         var numberElement = document.getElementById('number');
         var submittingResultsElement = document.getElementById('submittingResults');
         var submissionErrorElement = document.getElementById('submissionError');
-        var submissionSuccessfulElement = document.getElementById('submissionSuccessful');
         var loadingElement = document.getElementById('loadingDiv');
         var loadingPercentageElement = document.getElementById('loadingPercentageSpan');
         var spacebarDetected = false;
@@ -26,7 +25,7 @@
         var imageIndex = 0;
         var showNextImage = function() {
             hideBothImageAndNumber();
-            imageUrl = images[imageIndex];
+            var imageUrl = images[imageIndex];
             imageElement.src = imageUrl;
             imageElement.style.display = 'block';
             imageIndex = imageIndex + 1;
@@ -84,7 +83,7 @@
         };
 
         document.body.onkeyup = function(e){
-            var spacebarWasPressed = e.key == ' ';
+            var spacebarWasPressed = e.key === ' ';
             if (spacebarWasPressed) {
                 spacebarDetected = true;
             }

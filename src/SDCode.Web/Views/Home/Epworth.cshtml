@@ -22,7 +22,7 @@
 
 <p>It's important that you answer each question as best you can.</p>
 
-    <form action="/Home/Stanford" method="POST">
+    <form action="@Url.Action("Stanford", "Home")" method="POST">
     <input type="hidden" name="participantID" value="@Model.ParticipantID" />
       <table class="table-calculator  js-table-calculator" data-results-explainer-id="epworth-calculator-results"><thead><tr><th scope="col">Situation</th>
           <th scope="col">Chance of dozing (@((int)ChancesDozing.NoChance) = low, @((int)ChancesDozing.HighChance) = high)</th>
@@ -50,7 +50,7 @@
         </tr><tr><td><label for="q8">In a car or bus while stopped for a few minutes in traffic</label></td>
           <td>
             <select class="js-table-calculator-select" id="q8" name="traffic"><option selected="selected" disabled="disabled">Chance:</option><option value="@((int)ChancesDozing.NoChance)">@((int)ChancesDozing.NoChance) (would never doze)</option><option value="@((int)ChancesDozing.SlightChance)">@((int)ChancesDozing.SlightChance) (slight chance)</option><option value="@((int)ChancesDozing.ModerateChance)">@((int)ChancesDozing.ModerateChance) (moderate chance)</option><option value="@((int)ChancesDozing.HighChance)">@((int)ChancesDozing.HighChance) (high chance)</option></select></td>
-        </tr></tfoot></table>
+        </tr></tbody></table>
         <div style="text-align: right;">
             <input style="margin-right: 50px;" type="submit" value="Next"/>
         </div>

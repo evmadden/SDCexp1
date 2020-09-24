@@ -1,12 +1,9 @@
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SDCode.Web.Models;
 using SDCode.Web.Classes;
-using Microsoft.Extensions.Configuration;
-using System;
 using Microsoft.Extensions.Options;
 using System.Text.Json;
 
@@ -15,7 +12,6 @@ namespace SDCode.Web.Controllers
     public class EncodingController : Controller
     {
         private readonly ILogger<EncodingController> _logger;
-        private readonly IImageIndexesGetter _imageIndexesGetter;
         private readonly IStimuliImageDataUrlGetter _stimuliImageDataUrlGetter;
         private readonly IStanfordRepository _stanfordRepository;
         private readonly Config _config;
@@ -23,10 +19,9 @@ namespace SDCode.Web.Controllers
         private readonly IPhaseSetsGetter _phaseSetsGetter;
         private readonly ICommaDelimitedIntegersCollector _commaDelimitedIntegersCollector;
 
-        public EncodingController(ILogger<EncodingController> logger, IImageIndexesGetter encodingPhaseImageIndexesGetter, IStimuliImageDataUrlGetter stimuliImageDataUrlGetter, IStanfordRepository stanfordRepository, IOptions<Config> config, ISessionMetaRepository sessionMetaRepository, IPhaseSetsGetter phaseSetsGetter, ICommaDelimitedIntegersCollector commaDelimitedIntegersCollector)
+        public EncodingController(ILogger<EncodingController> logger, IStimuliImageDataUrlGetter stimuliImageDataUrlGetter, IStanfordRepository stanfordRepository, IOptions<Config> config, ISessionMetaRepository sessionMetaRepository, IPhaseSetsGetter phaseSetsGetter, ICommaDelimitedIntegersCollector commaDelimitedIntegersCollector)
         {
             _logger = logger;
-            _imageIndexesGetter = encodingPhaseImageIndexesGetter;
             _stimuliImageDataUrlGetter = stimuliImageDataUrlGetter;
             _stanfordRepository = stanfordRepository;
             _config = config.Value;
@@ -39,10 +34,6 @@ namespace SDCode.Web.Controllers
         public IActionResult Index(string participantID, Sleepinesses? stanford)
         {
             _stanfordRepository.Save(participantID, "Immediate", stanford);
-            var imageTypes = new List<string> { "A", "A", "AI", "AI", "B", "BI", "C", "CI", "F", "F", "FI", "FI" };
-            var imageIndexesRequests = imageTypes.Select(x=>new ImageIndexesRequest(x, 36));
-            var imageIndexes = _imageIndexesGetter.Get(imageIndexesRequests);
-            var imageUrls = _stimuliImageDataUrlGetter.Get(imageIndexes);
             var viewModel = new EncodingIndexViewModel(participantID, stanford, _config.ImageDisplayDurationInMilliseconds, _config.AttentionResetDisplayDurationInMilliseconds, _config.NumberDisplayProbabilityPercentage, _config.NumberCheckIntervalInMilliseconds, _config.NumberDisplayThresholdInMilliseconds);
             return View(viewModel);
         }
@@ -68,7 +59,7 @@ namespace SDCode.Web.Controllers
             sessionMeta.ObscuredImages = obscuredIndexes.Select(x=>encoding[x]).ToList();
             _sessionMetaRepository.Save(sessionMeta);
             var nextAction = sessionMeta.NeglectedImages.Any() || sessionMeta.ObscuredImages.Any() ? Url.Action(nameof(Questions)) : Url.Action(nameof(Finished));
-            return Json(new {success=true, nextAction = nextAction});
+            return Json(new {success=true, nextAction});
         }
 
         [HttpPost]

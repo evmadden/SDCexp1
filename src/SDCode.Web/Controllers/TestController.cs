@@ -14,20 +14,14 @@ namespace SDCode.Web.Controllers
     public class TestController : Controller
     {
         private readonly ILogger<TestController> _logger;
-        private readonly IImageIndexesGetter _imageIndexesGetter;
-        private readonly IStimuliImageDataUrlGetter _stimuliImageDataUrlGetter;
-        private readonly ICsvFile<PhaseSetsModel, PhaseSetsModel.Map> _phaseSetsCsvFile;
-        private readonly ICsvFile<ResponseDataModel, ResponseDataModel.Map> _responseDataCsvFile;
         private readonly IPhaseSetsGetter _phaseSetsGetter;
         private readonly INextImageGetter _nextImageGetter;
         private readonly IImageCongruencyGetter _imageCongruencyGetter;
         private readonly ITestNameGetter _testNameGetter;
         private readonly IImageContextGetter _imageContextGetter;
         private readonly IProgressGetter _progressGetter;
-        private readonly ICsvFile<StanfordModel, StanfordMap> _stanfordCsvFile;
         private readonly IStanfordRepository _stanfordRepository;
         private readonly IResponseFeedbackGetter _responseFeedbackGetter;
-        private readonly ICsvFile<SessionMetaModel, SessionMetaModel.Map> _SessionMetaCsvFile;
         private readonly Config _config;
 
         private readonly ITestResponsesRepository _testResponsesRepository;
@@ -36,23 +30,17 @@ namespace SDCode.Web.Controllers
         private readonly ICommaDelimitedIntegersCollector _commaDelimitedIntegersCollector;
         private readonly IStimuliImageUrlGetter _stimuliImageUrlGetter;
 
-        public TestController(ILogger<TestController> logger, IImageIndexesGetter imageIndexesGetter, IStimuliImageDataUrlGetter stimuliImageDataUrlGetter, ICsvFile<PhaseSetsModel, PhaseSetsModel.Map> phaseSetsCsvFile, IPhaseSetsGetter phaseSetsGetter, INextImageGetter nextImageGetter, IImageCongruencyGetter imageCongruencyGetter, ICsvFile<ResponseDataModel, ResponseDataModel.Map> responseDataCsvFile, ITestNameGetter testNameGetter, IImageContextGetter imageContextGetter, IProgressGetter progressGetter, ICsvFile<StanfordModel, StanfordMap> stanfordCsvFile, IStanfordRepository stanfordRepository, IResponseFeedbackGetter responseFeedbackGetter, ICsvFile<SessionMetaModel, SessionMetaModel.Map> sessionMetaCsvFile, IOptions<Config> config, ITestResponsesRepository testResponsesRepository, ISessionMetaRepository sessionMetaRepository, ICommaDelimitedIntegersCollector commaDelimitedIntegersCollector, IStimuliImageUrlGetter stimuliImageUrlGetter)
+        public TestController(ILogger<TestController> logger, IPhaseSetsGetter phaseSetsGetter, INextImageGetter nextImageGetter, IImageCongruencyGetter imageCongruencyGetter, ITestNameGetter testNameGetter, IImageContextGetter imageContextGetter, IProgressGetter progressGetter, IStanfordRepository stanfordRepository, IResponseFeedbackGetter responseFeedbackGetter, IOptions<Config> config, ITestResponsesRepository testResponsesRepository, ISessionMetaRepository sessionMetaRepository, ICommaDelimitedIntegersCollector commaDelimitedIntegersCollector, IStimuliImageUrlGetter stimuliImageUrlGetter)
         {
             _logger = logger;
-            _imageIndexesGetter = imageIndexesGetter;
-            _stimuliImageDataUrlGetter = stimuliImageDataUrlGetter;
-            _phaseSetsCsvFile = phaseSetsCsvFile;
             _phaseSetsGetter = phaseSetsGetter;
             _nextImageGetter = nextImageGetter;
             _imageCongruencyGetter = imageCongruencyGetter;
-            _responseDataCsvFile = responseDataCsvFile;
             _testNameGetter = testNameGetter;
             _imageContextGetter = imageContextGetter;
             _progressGetter = progressGetter;
-            _stanfordCsvFile = stanfordCsvFile;
             _stanfordRepository = stanfordRepository;
             _responseFeedbackGetter = responseFeedbackGetter;
-            _SessionMetaCsvFile = sessionMetaCsvFile;
             _config = config.Value;
             _testResponsesRepository = testResponsesRepository;
             _sessionMetaRepository = sessionMetaRepository;
@@ -102,7 +90,7 @@ namespace SDCode.Web.Controllers
         {
             var progress = _progressGetter.Get(participantID);
             var testName = _testNameGetter.Get(participantID);
-            if (stanford != default && stanford.HasValue) {
+            if (stanford.HasValue) {
                 _stanfordRepository.Save(participantID, testName, stanford.Value);
             }
             var viewModel = new TestIndexViewModel(participantID, progress, testName, _config.AttentionResetDisplayDurationInMilliseconds, _config.AutomateTests, _config.TestAutomationDelayInMilliseconds);
@@ -128,7 +116,7 @@ namespace SDCode.Web.Controllers
             var feedback = _responseFeedbackGetter.Get(imageName, judgement);
             var imageResponse = new ResponseDataModel{Image = imageName, Congruency = congruency, Context = context, Judgement = judgement, Confidence = confidence, ReactionTime = reactionTime, Feedback = feedback, WhenUtc = DateTime.UtcNow};
             _testResponsesRepository.Add(participantID, seenTestName, imageResponse);
-            int nextProgress = progress + 1;
+            var nextProgress = progress + 1;
             var nextTestName = _testNameGetter.Get(phaseSets, nextProgress);
             var testHasEnded = !string.Equals(seenTestName, nextTestName);
             var nextViewModel = testHasEnded ? null : GetViewModel(phaseSets, nextProgress);
@@ -148,7 +136,7 @@ namespace SDCode.Web.Controllers
             var obscuredIndexes = _commaDelimitedIntegersCollector.Collect(obscuredIndexesCommaDelimited);
             var sessionMeta = _sessionMetaRepository.Get(participantID, testName);
             var phaseSets = _phaseSetsGetter.Get(participantID);
-            var testImages = ((IEnumerable<string>)phaseSets.GetType().GetProperty(testName).GetValue(phaseSets)).ToList();
+            var testImages = ((IEnumerable<string>)(phaseSets.GetType().GetProperty(testName) ?? throw new Exception("Unexpected phase name.")).GetValue(phaseSets)).ToList();
             sessionMeta.ObscuredImages = obscuredIndexes.Select(x=>testImages[x]);
             _sessionMetaRepository.Save(sessionMeta);
             return View(new TestQuestionsViewModel(participantID, testName));

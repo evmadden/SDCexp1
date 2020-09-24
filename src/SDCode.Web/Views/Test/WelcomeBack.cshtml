@@ -33,7 +33,7 @@
             @await Html.PartialAsync("~/Views/Home/LogoBanner.cshtml")
             @await Html.PartialAsync("~/Views/ImageCheck/StanfordForm.cshtml", new StanfordFormViewModel(Model.ParticipantID, Url.Action("Index")))
          } else {
-            <form action="/ImageCheck" method="POST">
+            <form action="@Url.Action("Index", "ImageCheck")" method="POST">
                 <input type="hidden" name="nextActionAfterImageCheck" value="@Url.Action("Index")" />
                 <input type="hidden" name="participantID" value="@Model.ParticipantID" />
                 <div>

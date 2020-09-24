@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Reflection;
+﻿using System.Linq;
 using SDCode.Web.Models;
 
 namespace SDCode.Web.Classes

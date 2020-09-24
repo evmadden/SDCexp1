@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace SDCode.Web.Models
 {
     public class EncodingFinishedViewModel

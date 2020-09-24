@@ -41,7 +41,7 @@ namespace SDCode.Web.Models
                 Map(m => m.Judgement).Name(nameof(Judgement)).TypeConverter<CsvJudgementsConverter>();
                 Map(m => m.Confidence).Name(nameof(Confidence)).TypeConverter<CsvConfidencesConverter>();
                 Map(m => m.ReactionTime).Name(nameof(ReactionTime));
-                Map(m => m.Feedback).Name(nameof(Feedback)).TypeConverter<CsvFeedbacksConverter>();;
+                Map(m => m.Feedback).Name(nameof(Feedback)).TypeConverter<CsvFeedbacksConverter>();
                 Map(m => m.WhenUtc).Name(nameof(WhenUtc));
             }
         }

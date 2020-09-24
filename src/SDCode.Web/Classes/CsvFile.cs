@@ -19,7 +19,7 @@ namespace SDCode.Web.Classes
         ICsvFile<T, TMap> WithFilename(string filename);
     }
 
-    public class CsvFile<T, TMap> : ICsvFile<T, TMap> where TMap : CsvHelper.Configuration.ClassMap
+    public class CsvFile<T, TMap> : ICsvFile<T, TMap> where TMap : ClassMap
     {
         private string _filename;
         private readonly IModelTypeCsvFilenameGetter _modelTypeCsvFilenameGetter;
@@ -52,8 +52,8 @@ namespace SDCode.Web.Classes
 
         public void Write(IEnumerable<T> records)
         {
-            using (StreamWriter sw = new StreamWriter(FilePath, false, new UTF8Encoding(true)))
-            using (CsvWriter cw = new CsvWriter(sw, CultureInfo.CurrentCulture))
+            using (var sw = new StreamWriter(FilePath, false, new UTF8Encoding(true)))
+            using (var cw = new CsvWriter(sw, CultureInfo.CurrentCulture))
             {
                 // https://stackoverflow.com/a/63523529
                 cw.Configuration.TypeConverterCache.AddConverter<bool>(new CsvBooleanConverter());
@@ -74,9 +74,9 @@ namespace SDCode.Web.Classes
                 cw.Configuration.TypeConverterCache.AddConverter<Sexes>(new CsvHandsConverter());
                 cw.WriteHeader<T>();
                 cw.NextRecord();
-                foreach (T record in records)
+                foreach (var record in records)
                 {
-                    cw.WriteRecord<T>(record);
+                    cw.WriteRecord(record);
                     cw.NextRecord();
                 }
             }
@@ -84,7 +84,7 @@ namespace SDCode.Web.Classes
         }
 
         public (IEnumerable<byte> Bytes, string ContentType, string FileName) GetDownload() {
-            IEnumerable<byte> bytes = File.Exists(FilePath) ? File.ReadAllBytes(FilePath) : Enumerable.Empty<byte>();
+            var bytes = File.Exists(FilePath) ? File.ReadAllBytes(FilePath) : Enumerable.Empty<byte>();
             return (bytes, "text/csv", FileName);
         }
 
@@ -137,7 +137,7 @@ namespace SDCode.Web.Classes
         {
             var result = new List<string>();
             if (!string.IsNullOrWhiteSpace(text)) {
-                result.AddRange(text.Split(",").AsEnumerable<string>());
+                result.AddRange(text.Split(",").AsEnumerable());
             }
             return result;
         }
@@ -158,7 +158,7 @@ namespace SDCode.Web.Classes
         {
             var result = new List<int>();
             if (!string.IsNullOrWhiteSpace(text)) {
-                result.AddRange(text.Split(",").AsEnumerable<string>().Select(int.Parse));
+                result.AddRange((text.Split(",").AsEnumerable() ?? throw new InvalidOperationException()).Select(int.Parse));
             }
             return result;
         }

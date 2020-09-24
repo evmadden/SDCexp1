@@ -5,7 +5,7 @@
 
 @await Html.PartialAsync("~/Views/Home/LogoBanner.cshtml")
 
-<div class="text-align: left">
+<div>
     <h1 class="display-4; text-center;">Part 1 Instructions</h1>
     <br/>
     <p>This is the STUDY PHASE.</p>
@@ -16,7 +16,7 @@
     <p>Press the "Next" button to start the Study Phase.</p>
 </div>
 <div id="formDiv">
-    <form action="/Encoding" method="POST">
+    <form action="@Url.Action("Index", "Encoding")" method="POST">
         <input type="hidden" name="participantID" value="@Model.ParticipantID" />
         <div style="text-align: right;">
             <input style="margin-right: 50px;" type="submit" value="Next"/>

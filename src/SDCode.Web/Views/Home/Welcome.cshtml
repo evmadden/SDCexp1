@@ -10,7 +10,7 @@
 </div>
 
 <div class="text-left">
-    <div style="alight-justify">
+    <div>
         <p>Thank you for your interest in our study.<br/>
         <br/>
         In this experiment, we are looking at memory for objects within scenes.  
@@ -29,7 +29,7 @@
 </div>
 
 <div id="formDiv">
-    <form action="/Home/ConsentInfo" method="POST"> 
+    <form action="@Url.Action("ConsentInfo", "Home")" method="POST"> 
         <input type="hidden" name="participantID" value="@Model.ParticipantID" />
         <div style="text-align: right;">
             <input style="margin-right: 50px;" type="submit" value="Next"/>

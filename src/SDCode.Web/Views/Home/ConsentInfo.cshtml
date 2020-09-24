@@ -5,7 +5,7 @@
 
 @await Html.PartialAsync("~/Views/Home/LogoBanner.cshtml")
 
-<div class="text-align: left">
+<div>
     <h1 class="display-4; text-center;">Informed Consent Information</h1>
     <br/>
     <p>Before agreeing to take part, please read this information sheet carefully 
@@ -71,7 +71,7 @@
     <p>If you wish to take part in the study, please click the button below to view the informed consent form and to continue.</p>
 </div>
 <div id="formDiv">
-    <form action="/Home/ConsentAgreed" method="POST"> 
+    <form action="@Url.Action("ConsentAgreed", "Home")" method="POST"> 
         <input type="hidden" name="participantID" value="@Model.ParticipantID" />
         <div style="text-align: right;">
             <input style="margin-right: 50px;" type="submit" value="Next"/>

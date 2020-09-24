@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -31,10 +30,10 @@ namespace SDCode.Web.Controllers
             foreach (var type in types)
             {
                 var fileDescription = default(string);
-                object[] fileAttrs = type.GetCustomAttributes(true);
-                foreach (object fileAttr in fileAttrs)
+                var fileAttrs = type.GetCustomAttributes(true);
+                foreach (var fileAttr in fileAttrs)
                 {
-                    System.ComponentModel.DescriptionAttribute fileDescAttr = fileAttr as System.ComponentModel.DescriptionAttribute;
+                    var fileDescAttr = fileAttr as System.ComponentModel.DescriptionAttribute;
                     if (fileDescAttr != null)
                     {
                         fileDescription = fileDescAttr.Description;
@@ -42,32 +41,32 @@ namespace SDCode.Web.Controllers
                     }
                 }
                 var columns = new List<LegendCsvViewModel.Column>();
-                var properties = type.GetProperties();
-                foreach (System.Reflection.PropertyInfo pi in properties)
+                var propertyInfos = type.GetProperties();
+                foreach (var propertyInfo in propertyInfos)
                 {
-                    var columnName = pi.Name;
+                    var columnName = propertyInfo.Name;
                     var columnDescription = default(string);
                     var columnCodes = new List<LegendCsvViewModel.Code>();
-                    object[] columnAttrs = pi.GetCustomAttributes(true);
-                    foreach (object columnAttr in columnAttrs)
+                    var columnAttrs = propertyInfo.GetCustomAttributes(true);
+                    foreach (var columnAttr in columnAttrs)
                     {
-                        System.ComponentModel.DescriptionAttribute columnDescAttr = columnAttr as System.ComponentModel.DescriptionAttribute;
+                        var columnDescAttr = columnAttr as System.ComponentModel.DescriptionAttribute;
                         if (columnDescAttr != null)
                         {
                             columnDescription = columnDescAttr.Description;
                             break;
                         }
                     }
-                    var nullablePropertyTypeArgument = Nullable.GetUnderlyingType(pi.PropertyType);
-                    if (pi.PropertyType.IsEnum) {
-                        AddColumnCodes(pi.PropertyType);
+                    var nullablePropertyTypeArgument = Nullable.GetUnderlyingType(propertyInfo.PropertyType);
+                    if (propertyInfo.PropertyType.IsEnum) {
+                        AddColumnCodes(propertyInfo.PropertyType);
                     } else if (nullablePropertyTypeArgument?.IsEnum ?? false) {
                         AddColumnCodes(nullablePropertyTypeArgument);
-                    } else if (Type.Equals(typeof(bool), pi.PropertyType)) {
-                        columnCodes.Add(new LegendCsvViewModel.Code($"{0}", "No"));
-                        columnCodes.Add(new LegendCsvViewModel.Code($"{1}", "Yes"));
+                    } else if (Type.Equals(typeof(bool), propertyInfo.PropertyType)) {
+                        columnCodes.Add(new LegendCsvViewModel.Code("0", "No"));
+                        columnCodes.Add(new LegendCsvViewModel.Code("1", "Yes"));
                     }
-                    var dataTypeDescription = _dataTypeDescriptionGetter.Get(pi.PropertyType);
+                    var dataTypeDescription = _dataTypeDescriptionGetter.Get(propertyInfo.PropertyType);
                     columns.Add(new LegendCsvViewModel.Column(columnName, columnDescription, columnCodes, dataTypeDescription));
                     void AddColumnCodes(Type enumType) {
                         foreach (var enumValue in Enum.GetValues(enumType).Cast<int>())
@@ -79,7 +78,7 @@ namespace SDCode.Web.Controllers
                         }
                     }
                 }
-                string filename = _modelTypeCsvFilenameGetter.Get(type);
+                var filename = _modelTypeCsvFilenameGetter.Get(type);
                 filename = filename.Replace("ResponseDataRecords", "<ID>_<TestName>");
                 files.Add(new LegendCsvViewModel.File(filename, fileDescription, columns.Any() ? columns : default));
             }

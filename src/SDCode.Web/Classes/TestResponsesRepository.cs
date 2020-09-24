@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using SDCode.Web.Models;
 
@@ -33,7 +32,7 @@ namespace SDCode.Web.Classes
         public void Archive(string participantID, string testName)
         {
             var csvFile = GetResponseDataCsvFile(participantID, testName);
-            var responses = csvFile.Read();
+            var responses = csvFile.Read().ToList();
             if (responses.Any()) {
                 var firstResponseWhenUtc = responses.Select(x=>x.WhenUtc).Min().ToString("yyyyMMddHHmmss");
                 csvFile = _responseDataCsvFile.WithFilename($"{participantID}_{testName}_{firstResponseWhenUtc}");
