@@ -30,17 +30,6 @@
             imageConfidence = null;
             imageShownAt = new Date().getTime();
             imageReactionTime = null;
-
-            if (shouldAutomate) {
-                var possibleJudgementActions = [()=>onArrowLeft(),()=>onArrowRight()];
-                var possibleConfidenceActions = [()=>onNumber1(),()=>onNumber2(),()=>onNumber3(),()=>onNumber4(),];
-                var judgementAction = possibleJudgementActions[Math.floor(Math.random() * possibleJudgementActions.length)];
-                var confidenceAction = possibleConfidenceActions[Math.floor(Math.random() * possibleConfidenceActions.length)];
-                setTimeout(function(){
-                    judgementAction();
-                    setTimeout(confidenceAction, @Model.AutomationDelayInMilliseconds);
-                }, @Model.AutomationDelayInMilliseconds);
-            }
         }
         var sendResponse = function() {
             var waitId = setTimeout(function() {
@@ -81,7 +70,16 @@
                 obscuredIndexes.push(imageIndex);
                 imageIndex = imageIndex + 1
             }
-
+            if (shouldAutomate) {
+                var possibleJudgementActions = [()=>onArrowLeft(),()=>onArrowRight()];
+                var possibleConfidenceActions = [()=>onNumber1(),()=>onNumber2(),()=>onNumber3(),()=>onNumber4(),];
+                var judgementAction = possibleJudgementActions[Math.floor(Math.random() * possibleJudgementActions.length)];
+                var confidenceAction = possibleConfidenceActions[Math.floor(Math.random() * possibleConfidenceActions.length)];
+                setTimeout(function(){
+                    judgementAction();
+                    setTimeout(confidenceAction, @Model.AutomationDelayInMilliseconds);
+                }, @Model.AutomationDelayInMilliseconds);
+            }
         };
         var onJudgement = function(judgement) {
             if (isVisible(imageElement)) {
