@@ -4,11 +4,7 @@
     ViewData["Title"] = "Epworth";
 }
 
-<div class="text-right">
-    <div style="background-color: Darkcyan;">  
-        <img src="/img/Logo.png" style="width:200px;height:100px;"/> <!-- https://www.york.ac.uk/staff/external-relations/brand/logo/ -->
-    </div>
-</div>
+@await Html.PartialAsync("~/Views/Home/LogoBanner.cshtml")
 
 <div class="wrap-content"> <!-- view-source:https://www.blf.org.uk/support-for-you/obstructive-sleep-apnoea-osa/diagnosis/epworth-sleepiness-scale -->
 	<h1>Epworth Sleepiness Scale</h1>	  <p class="intro">The Epworth Sleepiness Scale is used to assess general sleepiness throughout the day.</p>

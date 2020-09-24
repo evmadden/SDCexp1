@@ -3,11 +3,7 @@
     ViewData["Title"] = "Finished";
 }
 
-<div class="text-right">
-    <div style="background-color: Darkcyan;">  
-        <img src="/img/Logo.png" style="width:200px;height:100px;"/> <!-- https://www.york.ac.uk/staff/external-relations/brand/logo/ -->
-    </div>
-</div>
+@await Html.PartialAsync("~/Views/Home/LogoBanner.cshtml")
 
     <form action="/Test" method="POST">
         <input type="hidden" name="participantID" value="@Model.ParticipantID" />

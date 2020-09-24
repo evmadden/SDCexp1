@@ -1,9 +1,5 @@
 @model SDCode.Web.Models.TestWelcomeBackViewModel
-<div class="text-center">
-    <div style="background-color: Darkcyan;">  
-        <img src="/img/Logo.png"style="width:300px;height:150px;"/> <!-- https://www.york.ac.uk/staff/external-relations/brand/logo/ -->
-    </div>
-</div>
+@await Html.PartialAsync("~/Views/Home/LogoMasthead.cshtml")
 <h1 class="display-4; text-left;">Final TEST Phase</h1><br/>
 <div class="text-align: left">
     <p>In this session, we will be testing your memory of the images you saw in the STUDY PHASE.
