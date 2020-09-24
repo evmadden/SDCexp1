@@ -28,7 +28,6 @@ namespace SDCode.Web.Classes
             return result;
         }
 
-        // todo mlh add timestamps to writes
         public void Save(TModel record)
         {
             var records = _csvFile.Read().ToList();
