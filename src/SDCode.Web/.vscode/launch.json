@@ -20,7 +20,7 @@
                 "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
             },
             "env": {
-                "ASPNETCORE_ENVIRONMENT": "Development"
+                "ASPNETCORE_ENVIRONMENT": "Development" // relevant when debugging, use launchsettings.json to change for dotnet run
             },
             "sourceFileMap": {
                 "/Views": "${workspaceFolder}/Views"
