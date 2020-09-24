@@ -17,6 +17,7 @@
         var confidenceElement = document.getElementById('confidence');
         var feedbackElement = document.getElementById('feedback');
         var feedbackMessageElement = document.getElementById('feedbackMessage');
+        var waitElement = document.getElementById('wait');
         var imageJudgement;
         var imageConfidence;
         var imageShownAt;
@@ -42,10 +43,15 @@
             }
         }
         var sendResponse = function() {
+            var waitId = setTimeout(function() {
+                waitElement.style.display = 'table';
+            }, 500);
             var xhr = new XMLHttpRequest();
             xhr.open("POST", '@Url.Action("ResponseData")', true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.onreadystatechange = function() { // todo mlh what to show to user during network latency?
+            xhr.onreadystatechange = function() {
+                clearTimeout(waitId);
+                waitElement.style.display = 'none';
                 if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
                     var response = JSON.parse(this.response);
                     if (response.testEnded) {
@@ -133,6 +139,13 @@
         <div style="display: table-cell; vertical-align: middle;">
             <div id="feedbackMessage">
             FEEDBACK_PLACEHOLDER
+            </div>
+        </div>
+    </div>
+    <div id="wait" style="display: none; width: 800px; height: 700px; overflow: hidden;"> @* todo mlh refactor these DIVs/etc so that height/width is only defined once *@
+        <div style="display: table-cell; vertical-align: middle;">
+            <div id="feedbackMessage">
+            Please wait.
             </div>
         </div>
     </div>
