@@ -35,26 +35,30 @@ namespace SDCode.Web.Controllers
         {
             return View();
         }
+
         public IActionResult Welcome(string participantId)
         {
             return View(new HomeWelcomeViewModel(participantId));
         }
-       
+
         public IActionResult WelcomeBack()
         {
             return View();
         }
        
+        [HttpPost]
         public IActionResult ConsentInfo(string participantID)
         {
             return View(new HomeConsentInfoViewModel(participantID));
         }
 
+        [HttpPost]
         public IActionResult ConsentAgreed(string participantID)
         {
             return View(new HomeConsentAgreedViewModel(participantID));
         }
 
+        [HttpPost]
         public IActionResult Demographics(string participantID, bool infoSheet, bool withdraw, bool npsDisorder, bool adhd, bool headInjury, bool normalVision, bool visionProblems, bool altShifts, bool smoker, bool dataProtection, bool agreeParticipate)
         {
             _consentRepository.Save(new ConsentModel{ParticipantID = participantID, InfoSheet = infoSheet, Withdraw = withdraw, NPSDisorder = npsDisorder, ADHD = adhd, HeadInjury = headInjury, NormalVision = normalVision, VisionProblems = visionProblems, AltShifts = altShifts, Smoker = smoker, DataProtection = dataProtection, AgreeParticipate = agreeParticipate});
@@ -65,24 +69,28 @@ namespace SDCode.Web.Controllers
             return View(new DemographicsViewModel(participantID, testIsAvailable));
         }
 
+        [HttpPost]
         public IActionResult PSQI(string participantID, Sexes? sex, string age, string yearStudy, Hands? handed, bool? impairments, bool? glasses, string language, string bilingual, string currentCountry, string bed, string wake, string latency, string tst)
         {
             _demographicsRepository.Save(new DemographicsModel{ParticipantID = participantID, Sex = sex, Age = age, YearStudy = yearStudy, Handed = handed, Impairments = impairments, Glasses = glasses, Language = language, Bilingual = bilingual, CurrentCountry = currentCountry, Bed = bed, Wake = wake, Latency = latency, TST = tst});
             return View(new PSQIViewModel(participantID));
         }
 
+        [HttpPost]
         public IActionResult Epworth(string participantID, string monthbed, string monthlatency, string monthwake, string totalhours, string totalminutes, FrequenciesWeekly? no30min, FrequenciesWeekly? waso, FrequenciesWeekly? bathroom, FrequenciesWeekly? breathing, FrequenciesWeekly? snoring, FrequenciesWeekly? hot, FrequenciesWeekly? cold, FrequenciesWeekly? dreams, FrequenciesWeekly? pain, FrequenciesWeekly? otherfrequency, string otherdescribe, Qualities? sleepquality, FrequenciesWeekly? medication, FrequenciesWeekly? sleepiness, Problems? enthusiasm, BedPartners? bedpartner, FrequenciesWeekly? partsnore, FrequenciesWeekly? breathpause, FrequenciesWeekly? legs, FrequenciesWeekly? disorientation, FrequenciesWeekly? otherrestless, string otherrestdescribe)
         {
             _psqiRepository.Save(new PSQIModel{ParticipantID = participantID, MonthBed = monthbed, MonthLatency = monthlatency, MonthWake = monthwake, TotalHours = totalhours, TotalMinutes = totalminutes, No30Min = no30min, WASO = waso, Bathroom = bathroom, Breathing = breathing, Snoring = snoring, Hot = hot, Cold = cold, Dreams = dreams, Pain = pain, OtherFrequency = otherfrequency, OtherDescribe = otherdescribe, SleepQuality = sleepquality, Medication = medication, Sleepiness = sleepiness, Enthusiasm = enthusiasm, BedPartner = bedpartner, PartSnore = partsnore, BreathPause = breathpause, Legs = legs, Disorientation = disorientation, OtherRestless = otherrestless, OtherRestDescribe = otherrestdescribe});
             return View(new EpworthViewModel(participantID));
         }
 
+        [HttpPost]
         public IActionResult Stanford(string participantID, ChancesDozing? reading, ChancesDozing? tv, ChancesDozing? publicplace, ChancesDozing? passengercar, ChancesDozing? afternoon, ChancesDozing? talking, ChancesDozing? lunch, ChancesDozing? traffic)
         {
             _epworthRepository.Save(new EpworthModel{ParticipantID = participantID, Reading = reading, TV = tv, PublicPlace = publicplace, PassengerCar = passengercar, Afternoon = afternoon, Talking = talking, Lunch = lunch, Traffic = traffic});
             return View(new StanfordViewModel(participantID));
         }
 
+        [HttpPost]
         public IActionResult EncodingInstructions(string participantID, Sleepinesses? stanford)
         {
             _stanfordRepository.Save(participantID, "Immediate", stanford);

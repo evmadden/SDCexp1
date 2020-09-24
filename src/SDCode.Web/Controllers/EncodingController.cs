@@ -47,6 +47,7 @@ namespace SDCode.Web.Controllers
             return View(viewModel);
         }
 
+        [HttpPost]
         public IActionResult GetImageDataUrls(string participantID) {
             var phaseSets = _phaseSetsGetter.Get(participantID);
             var imageDataUrls = _stimuliImageDataUrlGetter.Get(phaseSets.Encoding);
@@ -55,6 +56,7 @@ namespace SDCode.Web.Controllers
             return Content(json, "application/json");
         }
 
+        [HttpPost]
         public IActionResult RecordResults(string participantID, string neglectedIndexesCommaDelimited, string obscuredIndexesCommaDelimited)
         {
             var neglectedIndexes = _commaDelimitedIntegersCollector.Collect(neglectedIndexesCommaDelimited);
@@ -69,13 +71,14 @@ namespace SDCode.Web.Controllers
             return Json(new {success=true, nextAction = nextAction});
         }
 
+        [HttpPost]
         public IActionResult Questions(string participantID)
         {
             var sessionMeta = _sessionMetaRepository.Get(participantID, "Encoding");
             return View(new EncodingQuestionsViewModel(participantID, sessionMeta.NeglectedImages.Any(), sessionMeta.ObscuredImages.Any()));
         }
 
-        // todo mlh evaluate every action on every controller for HttpPost correctness
+        [HttpPost]
         public IActionResult Finished(string participantID, string neglectedReason, string obscuredReason)
         {
             var participantRecord = _sessionMetaRepository.Get(participantID, "Encoding");

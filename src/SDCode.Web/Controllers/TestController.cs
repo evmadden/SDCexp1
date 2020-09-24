@@ -142,6 +142,7 @@ namespace SDCode.Web.Controllers
             return result;
         }
 
+        [HttpPost]
         public IActionResult Questions(string participantID, string testName, string obscuredIndexesCommaDelimited)
         {
             var obscuredIndexes = _commaDelimitedIntegersCollector.Collect(obscuredIndexesCommaDelimited);
@@ -153,6 +154,7 @@ namespace SDCode.Web.Controllers
             return View(new TestQuestionsViewModel(participantID, testName));
         }
 
+        [HttpPost]
         public IActionResult End(string participantID, string testName, string obscuredReason) {
             var participantRecord = _sessionMetaRepository.Get(participantID, testName);
             participantRecord.ObscuredReason = obscuredReason;
