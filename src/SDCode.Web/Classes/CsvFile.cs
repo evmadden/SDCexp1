@@ -164,8 +164,6 @@ namespace SDCode.Web.Classes
         }
     }
 
-    // todo mlh reduce code duplication among Enum converter classes
-
     public class CsvJudgementsConverter : DefaultTypeConverter {
         public override string ConvertToString(object value, IWriterRow row, MemberMapData memberMapData)
         {
