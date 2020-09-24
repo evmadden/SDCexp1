@@ -56,6 +56,7 @@ namespace SDCode.Web
             services.AddScoped<IRepository<EpworthModel>, Repository<EpworthModel, EpworthMap>>();
             services.AddScoped<ISessionMetaRepository, SessionMetaRepository>();
             services.AddScoped<ICommaDelimitedIntegersCollector, CommaDelimitedIntegersCollector>();
+            services.AddScoped<IDataTypeDescriptionGetter, DataTypeDescriptionGetter>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
