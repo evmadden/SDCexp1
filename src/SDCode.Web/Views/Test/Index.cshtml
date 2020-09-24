@@ -9,16 +9,6 @@
     }
 </style>
 <script>
-    function isInViewport(element) { @* todo mlh refactor to avoid duplication of same method in other view *@
-        const rect = element.getBoundingClientRect();
-        return (
-            rect.top >= 0 &&
-            rect.left >= 0 &&
-            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-        );
-    }
-
     var shouldAutomate = @($"{Model.ShouldAutomate}".ToLower());
     var obscuredIndexes = [];
     var imageIndex = 0;
