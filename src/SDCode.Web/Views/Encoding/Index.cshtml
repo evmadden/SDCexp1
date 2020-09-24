@@ -111,17 +111,19 @@
                 xhr.onreadystatechange = function() {
                     submittingResultsElement.style.display = 'none';
                     var submissionFailed;
-                    if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-                        var response = JSON.parse(this.response);
-                        if (response.success) {
-                            var nextActionFormElement = document.getElementById('nextActionForm');
-                            nextActionFormElement.action = response.nextAction;
-                            nextActionFormElement.submit();
+                    if (this.readyState === XMLHttpRequest.DONE) {
+                        if (this.status === 200) {
+                            var response = JSON.parse(this.response);
+                            if (response.success) {
+                                var nextActionFormElement = document.getElementById('nextActionForm');
+                                nextActionFormElement.action = response.nextAction;
+                                nextActionFormElement.submit();
+                            } else {
+                                submissionFailed = true;
+                            }
                         } else {
                             submissionFailed = true;
                         }
-                    } else {
-                        submissionFailed
                     }
                     if (submissionFailed) {
                         submissionErrorElement.style.display = 'block';
@@ -146,14 +148,17 @@
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         xhr.onprogress = updateProgress;
         xhr.onreadystatechange = function() {
-            if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-                images = JSON.parse(this.response);
+            if (this.readyState === XMLHttpRequest.DONE) {
                 loadingElement.style.display = 'none';
-                showPlusSign();
-            } else {
-                // todo mlh what to do if cannot load images?
+                if (this.status === 200) {
+                    images = JSON.parse(this.response);
+                    showPlusSign();
+                } else {
+                    document.getElementById('unableToLoadImages').style.display = 'block';
+                }
             }
         }
+        debugger;
         xhr.send(`participantID=@Model.ParticipantID`);
     });
 </script>
@@ -166,6 +171,9 @@
     <div id="number" style="font-size: 100px; line-height: 600px; display: none; width: 800px; height: 700px;"></div>
     <div id="submittingResults" style="display: none;">
         <div>SUBMITTING_RESULTS_PLACEHOLDER</div>
+    </div>
+    <div id="unableToLoadImages" style="display: none;">
+        <div>UNABLE_TO_LOAD_IMAGES_PLACEHOLDER</div>
     </div>
     <div id="submissionError" style="display: none;">
         <div>ERROR_SUBMITTING_ENCODING_RESULTS_PLACEHOLDER</div>
