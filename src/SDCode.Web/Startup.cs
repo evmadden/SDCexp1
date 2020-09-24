@@ -58,6 +58,7 @@ namespace SDCode.Web
             services.AddScoped<ICommaDelimitedIntegersCollector, CommaDelimitedIntegersCollector>();
             services.AddScoped<IDataTypeDescriptionGetter, DataTypeDescriptionGetter>();
             services.AddScoped<IModelTypeCsvFilenameGetter, ModelTypeCsvFilenameGetter>();
+            services.AddScoped<IStimuliImageUrlGetter, StimuliImageUrlGetter>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

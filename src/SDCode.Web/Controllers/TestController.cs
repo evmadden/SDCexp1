@@ -34,8 +34,9 @@ namespace SDCode.Web.Controllers
 
         private readonly ISessionMetaRepository _sessionMetaRepository;
         private readonly ICommaDelimitedIntegersCollector _commaDelimitedIntegersCollector;
+        private readonly IStimuliImageUrlGetter _stimuliImageUrlGetter;
 
-        public TestController(ILogger<TestController> logger, IImageIndexesGetter imageIndexesGetter, IStimuliImageDataUrlGetter stimuliImageDataUrlGetter, ICsvFile<PhaseSetsModel, PhaseSetsModel.Map> phaseSetsCsvFile, IPhaseSetsGetter phaseSetsGetter, INextImageGetter nextImageGetter, IImageCongruencyGetter imageCongruencyGetter, ICsvFile<ResponseDataModel, ResponseDataModel.Map> responseDataCsvFile, ITestNameGetter testNameGetter, IImageContextGetter imageContextGetter, IProgressGetter progressGetter, ICsvFile<StanfordModel, StanfordMap> stanfordCsvFile, IStanfordRepository stanfordRepository, IResponseFeedbackGetter responseFeedbackGetter, ICsvFile<SessionMetaModel, SessionMetaModel.Map> sessionMetaCsvFile, IOptions<Config> config, ITestResponsesRepository testResponsesRepository, ISessionMetaRepository sessionMetaRepository, ICommaDelimitedIntegersCollector commaDelimitedIntegersCollector)
+        public TestController(ILogger<TestController> logger, IImageIndexesGetter imageIndexesGetter, IStimuliImageDataUrlGetter stimuliImageDataUrlGetter, ICsvFile<PhaseSetsModel, PhaseSetsModel.Map> phaseSetsCsvFile, IPhaseSetsGetter phaseSetsGetter, INextImageGetter nextImageGetter, IImageCongruencyGetter imageCongruencyGetter, ICsvFile<ResponseDataModel, ResponseDataModel.Map> responseDataCsvFile, ITestNameGetter testNameGetter, IImageContextGetter imageContextGetter, IProgressGetter progressGetter, ICsvFile<StanfordModel, StanfordMap> stanfordCsvFile, IStanfordRepository stanfordRepository, IResponseFeedbackGetter responseFeedbackGetter, ICsvFile<SessionMetaModel, SessionMetaModel.Map> sessionMetaCsvFile, IOptions<Config> config, ITestResponsesRepository testResponsesRepository, ISessionMetaRepository sessionMetaRepository, ICommaDelimitedIntegersCollector commaDelimitedIntegersCollector, IStimuliImageUrlGetter stimuliImageUrlGetter)
         {
             _logger = logger;
             _imageIndexesGetter = imageIndexesGetter;
@@ -56,6 +57,7 @@ namespace SDCode.Web.Controllers
             _testResponsesRepository = testResponsesRepository;
             _sessionMetaRepository = sessionMetaRepository;
             _commaDelimitedIntegersCollector = commaDelimitedIntegersCollector;
+            _stimuliImageUrlGetter = stimuliImageUrlGetter;
         }
 
         [HttpPost]
@@ -144,7 +146,7 @@ namespace SDCode.Web.Controllers
 
         private TestImageViewModel GetViewModel(PhaseSetsModel phaseSets, int progress) {
             var imageToDisplay = _nextImageGetter.Get(phaseSets, progress);
-            var imageUrl = _stimuliImageDataUrlGetter.Get(imageToDisplay); // todo mlh fix name (claims to be returning data url, but is returning URL)
+            var imageUrl = _stimuliImageUrlGetter.Get(imageToDisplay);
             var result = new TestImageViewModel(phaseSets.ParticipantID, progress, imageUrl);
             return result;
         }
