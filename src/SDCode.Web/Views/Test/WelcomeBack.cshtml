@@ -29,19 +29,16 @@
 } else if (Model.Action == TestWelcomeBackAction.Done) {
     <span>You have completed the experiment.  Thank you for participating in our study.</span>
 } else {
-         if (Model.Action == TestWelcomeBackAction.Stanford) {
-            @await Html.PartialAsync("~/Views/Home/LogoBanner.cshtml")
-            @await Html.PartialAsync("~/Views/ImageCheck/StanfordForm.cshtml", new StanfordFormViewModel(Model.ParticipantID, Url.Action("Index")))
-         } else {
-            <form action="@Url.Action("Index", "ImageCheck")" method="POST">
-                <input type="hidden" name="nextActionAfterImageCheck" value="@Url.Action("Index")" />
-                <input type="hidden" name="participantID" value="@Model.ParticipantID" />
-                <div>
-                    @await Html.PartialAsync($"Welcome{Model.TestName}")
-                </div>
-                <div style="text-align: right;">
-                    <input style="margin-right: 50px;" type="submit" value="Next"/>
-                </div> 
-            </form>
-         }                                                                
+    if (Model.Action == TestWelcomeBackAction.Stanford) {
+        @await Html.PartialAsync("~/Views/Home/LogoBanner.cshtml")
+        @await Html.PartialAsync("~/Views/ImageCheck/StanfordForm.cshtml", new StanfordFormViewModel(Model.ParticipantID, Url.Action("Index")))
+    } else {
+        <form action="@Url.Action("Index", "ImageCheck")" method="POST">
+            <input type="hidden" name="nextActionAfterImageCheck" value="@Url.Action("Index")" />
+            <input type="hidden" name="participantID" value="@Model.ParticipantID" />
+        </form>
+        <script>
+            document.getElementsByTagName('form')[0].submit();
+        </script>
+    }                                                                
 }
