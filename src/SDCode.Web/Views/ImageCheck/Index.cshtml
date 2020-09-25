@@ -6,44 +6,49 @@
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         var imageElement = document.getElementById('image');
+        var imagePrepElement = document.getElementById('imagePrep');
+        var submitButtonElement = document.getElementById('submitButton');
         var updateScreen = function() {
-            var browserIsReady = isInViewport(imageElement);
+            var browserIsReady = isInViewport(imagePrepElement);
             var divToShow = browserIsReady ? 'Ready' : 'NotReady';
             if (document.getElementById(divToShow).style.display === 'none') {
                 var divToHide = divToShow === 'Ready' ? 'NotReady' : 'Ready';
                 document.getElementById(divToHide).style.display = 'none';
                 document.getElementById(divToShow).style.display = 'block';
-                imageElement.src = `/img/800x700_${divToShow}.png`;
-                imageElement.style.borderColor = browserIsReady ? 'green' : 'red';
+                imagePrepElement.style.borderColor = browserIsReady ? 'green' : 'red';
             }
             setTimeout(updateScreen, 10);
         };
         updateScreen();
+
+        submitButtonElement.addEventListener("click", function(){
+            document.getElementsByTagName('form')[0].submit();
+        });
     });
 </script>
 
 <div style="vertical-align: top; text-align: center;">
-    <img id="image" style="width: 800px; height: 700px; border: solid 3px black;" />
-</div>
-<div style="display: block;">
-    
-    <form action="@Model.NextActionAfterImageCheck" method="POST">
-        <input type="hidden" name="participantID" value="@Model.ParticipantID" />
-        <input type="hidden" name="stanford" value="@(Model.Stanford.HasValue ? (((int)Model.Stanford).ToString()) : (string.Empty))" />
-
-    <h1 class="display-4; text-center;">Preparing to View Images</h1> @* todo mlh throughout entire codebase and user experience (including browser address bar URLs...), choose "Study" or "Encoding" and use it consistently, removing references to the competing, synonymous jargon *@
-    <p>IMAGES_PLACEMENT_ORIENTATION_PLACEHOLDER</p>
-    <div id="NotReady" style="display: none;">
-        <p>Your browser is not ready.</p>
-        <p><strong>Resize your browser until the 800x700 image above is fully visible.</strong></p>
-    </div>
-    <div id="Ready" style="display: none;">
-        <p><strong>IMPORTANT: Keep your browser window sized such that images remain visible at all times.</strong></p>
-        <p>Press the "Next" button to begin.</p>
-        <div style="text-align: right;">
-            <input style="margin-right: 50px;" type="submit" value="Next"/>
+    <div id="imagePrep" style="display: table; width: 800px; height: 700px; border: 3px solid black; margin: auto;">
+        <div style="display: table-cell; vertical-align: middle; text-align: center; padding-bottom: 300px;">
+            <h1 class="display-4; text-center;">Preparing to View Images</h1> @* todo mlh throughout entire codebase and user experience (including browser address bar URLs...), choose "Study" or "Encoding" and use it consistently, removing references to the competing, synonymous jargon *@
+            <div id="NotReady" style="display: none;">
+                <p style="margin-top: 50px;"><strong>Resize your browser until you see all four sides of this bordered area.</strong></p>
+                <p>Change your browser's window size or zoom setting to make it fit.</p>
+                <hr style="margin-left: 200px; margin-right: 200px; border: 2px solid black;" />
+                <p>It is critically important during this phase<br/>that you are able to see every image unobstructed.</p>
+            </div>
+            <div id="Ready" style="display: none;">
+                <p style="margin-top: 50px;"><strong>IMPORTANT: During this phase, keep your browser window<br/>this size so that images remain fully visible at all times.</strong></p>
+                <p>Press the "Next" button to begin.</p>
+                <input id="submitButton" type="button" value="Next"/>
+            </div>
         </div>
     </div>
-    </form>
 
+    <img id="image" style="width: 800px; height: 700px; display: none;" />
 </div>
+
+<form action="@Model.NextActionAfterImageCheck" method="POST">
+    <input type="hidden" name="participantID" value="@Model.ParticipantID" />
+    <input type="hidden" name="stanford" value="@(Model.Stanford.HasValue ? (((int)Model.Stanford).ToString()) : (string.Empty))" />
+</form>

@@ -157,13 +157,12 @@
                 }
             }
         }
-        debugger;
         xhr.send(`participantID=@Model.ParticipantID`);
     });
 </script>
 <div style="vertical-align: top; text-align: center;">
     <div id="loadingDiv">
-        <div>LOADING_IMAGES_PLACEHOLDER</div>
+        <div>Images are loading. Please do not resize your browser.</div>
         <span>Loading Images: </span><span id="loadingPercentageSpan">0</span><span>%</span>
     </div>
     <img id="image" style="display: none; width: 800px; height: 700px;"/>
