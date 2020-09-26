@@ -99,9 +99,9 @@
         function onArrowLeft() { onJudgement(@((int)Judgements.Old)); }
         function onArrowRight() { onJudgement(@((int)Judgements.New)); }
         function onNumber1() { onConfidence(@((int)Confidences.NotConfident)); }
-        function onNumber2() { onConfidence(@((int)Confidences.LessConfident)); }
-        function onNumber3() { onConfidence(@((int)Confidences.MoreConfident)); }
-        function onNumber4() { onConfidence(@((int)Confidences.MostConfident)); }
+        function onNumber2() { onConfidence(@((int)Confidences.SomewhatConfident)); }
+        function onNumber3() { onConfidence(@((int)Confidences.Confident)); }
+        function onNumber4() { onConfidence(@((int)Confidences.VeryConfident)); }
         document.addEventListener('keyup', function(e) {
             if (!(e.ctrlKey || e.altKey || e.shiftKey || e.metaKey)) {
                 const callback = {
