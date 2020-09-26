@@ -1,10 +1,11 @@
 ﻿namespace SDCode.Web.Classes
 {
-    public enum TestWelcomeBackAction {
+    public enum ReturningUserAction {
         NewUser,
         Stanford,
         Test,
         Wait,
+        TooLate,
         Done
     }
 }

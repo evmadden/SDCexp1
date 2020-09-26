@@ -10,5 +10,6 @@
             public int TestAutomationDelayInMilliseconds { get; set; }
             public int TestWaitDelayedDays { get; set; }
             public int TestWaitFollowupDays { get; set; }
+            public int TestTooLateDays { get; set; }
         }
 }

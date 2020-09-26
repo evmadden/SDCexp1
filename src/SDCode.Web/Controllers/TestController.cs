@@ -29,8 +29,10 @@ namespace SDCode.Web.Controllers
         private readonly ISessionMetaRepository _sessionMetaRepository;
         private readonly ICommaDelimitedIntegersCollector _commaDelimitedIntegersCollector;
         private readonly IStimuliImageUrlGetter _stimuliImageUrlGetter;
+        private readonly ITestStartTimeGetter _testStartTimeGetter;
+        private readonly IReturningUserPhaseDataGetter _returningUserPhaseDataGetter;
 
-        public TestController(ILogger<TestController> logger, IPhaseSetsGetter phaseSetsGetter, INextImageGetter nextImageGetter, IImageCongruencyGetter imageCongruencyGetter, ITestNameGetter testNameGetter, IImageContextGetter imageContextGetter, IProgressGetter progressGetter, IStanfordRepository stanfordRepository, IResponseFeedbackGetter responseFeedbackGetter, IOptions<Config> config, ITestResponsesRepository testResponsesRepository, ISessionMetaRepository sessionMetaRepository, ICommaDelimitedIntegersCollector commaDelimitedIntegersCollector, IStimuliImageUrlGetter stimuliImageUrlGetter)
+        public TestController(ILogger<TestController> logger, IPhaseSetsGetter phaseSetsGetter, INextImageGetter nextImageGetter, IImageCongruencyGetter imageCongruencyGetter, ITestNameGetter testNameGetter, IImageContextGetter imageContextGetter, IProgressGetter progressGetter, IStanfordRepository stanfordRepository, IResponseFeedbackGetter responseFeedbackGetter, IOptions<Config> config, ITestResponsesRepository testResponsesRepository, ISessionMetaRepository sessionMetaRepository, ICommaDelimitedIntegersCollector commaDelimitedIntegersCollector, IStimuliImageUrlGetter stimuliImageUrlGetter, ITestStartTimeGetter testStartTimeGetter, IReturningUserPhaseDataGetter returningUserPhaseDataGetter)
         {
             _logger = logger;
             _phaseSetsGetter = phaseSetsGetter;
@@ -46,43 +48,15 @@ namespace SDCode.Web.Controllers
             _sessionMetaRepository = sessionMetaRepository;
             _commaDelimitedIntegersCollector = commaDelimitedIntegersCollector;
             _stimuliImageUrlGetter = stimuliImageUrlGetter;
+            _testStartTimeGetter = testStartTimeGetter;
+            _returningUserPhaseDataGetter = returningUserPhaseDataGetter;
         }
 
         [HttpPost]
         public IActionResult WelcomeBack(string participantID)
         {
-            var phaseSets = _phaseSetsGetter.Get(participantID);
-            var progress = _progressGetter.Get(participantID);
-            var testName = _testNameGetter.Get(phaseSets, progress);
-            DateTime? nextTestWhenUtc = default;
-            TestWelcomeBackAction action;
-            if (testName == default) {
-                action = TestWelcomeBackAction.Done;
-            } else {
-                if (string.Equals(testName, nameof(phaseSets.Immediate))) {
-                    var stanford = _stanfordRepository.Get(participantID, testName);
-                    if (stanford.Immediate.HasValue) {
-                        _testResponsesRepository.Archive(participantID, testName);
-                        action = TestWelcomeBackAction.Test;
-                    } else {
-                        action = TestWelcomeBackAction.NewUser;
-                    }
-                } else {
-                    action = TestWelcomeBackAction.Stanford;
-                    var testStartDelayHourThresholds = new Dictionary<string, TimeSpan>() {{nameof(phaseSets.Delayed), new TimeSpan(_config.TestWaitDelayedDays,0,0,0) }, {nameof(phaseSets.Followup), new TimeSpan(_config.TestWaitFollowupDays,0,0,0)}};
-                    if (testStartDelayHourThresholds.ContainsKey(testName)) {
-                        var priorTestName = _testNameGetter.Get(phaseSets, progress-1);
-                        var priorTestResponses = _testResponsesRepository.Read(participantID, priorTestName);
-                        var priorTestStartTimeUtc = priorTestResponses.Select(x=>x.WhenUtc).DefaultIfEmpty().Min();
-                        var nextTestStartTimeThresholdUtc = priorTestStartTimeUtc + testStartDelayHourThresholds[testName];
-                        if (nextTestStartTimeThresholdUtc > DateTime.UtcNow) {
-                            action = TestWelcomeBackAction.Wait;
-                            nextTestWhenUtc = nextTestStartTimeThresholdUtc;
-                        }
-                    }
-                }
-            }
-            return View(new TestWelcomeBackViewModel(participantID, action, progress, testName, nextTestWhenUtc));
+            IReturningUserPhaseData phaseData = _returningUserPhaseDataGetter.Get(participantID);
+            return View(new TestWelcomeBackViewModel(participantID, phaseData.Action, phaseData.Progress, phaseData.TestName, phaseData.NextTestWhenUtc));
         }
 
         [HttpPost]
@@ -93,6 +67,7 @@ namespace SDCode.Web.Controllers
             if (stanford.HasValue) {
                 _stanfordRepository.Save(participantID, testName, stanford.Value);
             }
+            _testResponsesRepository.Archive(participantID, testName);
             var viewModel = new TestIndexViewModel(participantID, progress, testName, _config.AttentionResetDisplayDurationInMilliseconds, _config.AutomateTests, _config.TestAutomationDelayInMilliseconds);
             return View(viewModel);
         }

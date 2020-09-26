@@ -32,8 +32,8 @@ namespace SDCode.Web.Classes
         public void Archive(string participantID, string testName)
         {
             var csvFile = GetResponseDataCsvFile(participantID, testName);
-            var responses = csvFile.Read().ToList();
-            if (responses.Any()) {
+            var responses = csvFile?.Read().ToList();
+            if (responses?.Any() ?? false) {
                 var firstResponseWhenUtc = responses.Select(x=>x.WhenUtc).Min().ToString("yyyyMMddHHmmss");
                 csvFile = _responseDataCsvFile.WithFilename($"{participantID}_{testName}_{firstResponseWhenUtc}");
                 csvFile.Write(responses);

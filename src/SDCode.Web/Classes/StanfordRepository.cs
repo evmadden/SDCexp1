@@ -6,7 +6,7 @@ namespace SDCode.Web.Classes
 {
     public interface IStanfordRepository
     {
-        StanfordModel Get(string participantID, string testName);
+        StanfordModel Get(string participantID);
         void Save(string participantID, string testName, Sleepinesses? stanford);
     }
 
@@ -19,7 +19,7 @@ namespace SDCode.Web.Classes
             _stanfordCsvFile = stanfordCsvFile;
         }
 
-        public StanfordModel Get(string participantID, string testName)
+        public StanfordModel Get(string participantID)
         {
             var stanfordModels = _stanfordCsvFile.Read().ToList();
             var result = stanfordModels.SingleOrDefault(x=>string.Equals(x.ParticipantID, participantID)) ?? new StanfordModel{ParticipantID=participantID};
@@ -31,8 +31,10 @@ namespace SDCode.Web.Classes
             var stanfordModels = _stanfordCsvFile.Read().ToList();
             var stanfordModel = stanfordModels.SingleOrDefault(x=>string.Equals(x.ParticipantID, participantID)) ?? new StanfordModel{ParticipantID=participantID};
             stanfordModels.RemoveAll(x=>string.Equals(x.ParticipantID, participantID));
-            var propertyInfo = stanfordModel.GetType().GetProperty(testName) ?? throw new Exception($"Unexpected test name.");
-            propertyInfo.SetValue(stanfordModel, stanford, null);
+            var testNameProperty = stanfordModel.GetType().GetProperty(testName) ?? throw new Exception($"Unexpected test name.");
+            testNameProperty.SetValue(stanfordModel, stanford, null);
+            var utcProperty = stanfordModel.GetType().GetProperty($"{testName}Utc") ?? throw new Exception($"Unexpected test name.");
+            utcProperty.SetValue(stanfordModel, DateTime.UtcNow, null);
             stanfordModels.Add(stanfordModel);
             _stanfordCsvFile.Write(stanfordModels);
         }

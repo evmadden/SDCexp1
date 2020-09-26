@@ -5,7 +5,7 @@ namespace SDCode.Web.Models
 {
     public class TestWelcomeBackViewModel
     {
-        public TestWelcomeBackViewModel(string participantID, TestWelcomeBackAction action, int progress, string testName, DateTime? nextTestWhenUtc)
+        public TestWelcomeBackViewModel(string participantID, ReturningUserAction action, int progress, string testName, DateTime? nextTestWhenUtc)
         {
             ParticipantID = participantID;
             Action = action;
@@ -15,7 +15,7 @@ namespace SDCode.Web.Models
         }
 
         public string ParticipantID {get;}
-        public TestWelcomeBackAction Action { get; }
+        public ReturningUserAction Action { get; }
         public int Progress { get; }
         public string TestName { get; }
         public DateTime? NextTestWhenUtc { get; }
