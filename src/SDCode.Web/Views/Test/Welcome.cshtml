@@ -1,0 +1,17 @@
+﻿@model TestWelcomeViewModel
+@{
+    ViewData["Title"] = "Test Phase";
+}
+
+@await Html.PartialAsync("~/Views/Shared/LogoBanner.cshtml")
+
+    <form action="@Url.Action("Index", "Test")" method="POST">
+        <input type="hidden" name="participantID" value="@Model.ParticipantID" />
+    <h1 class="display-4; text-center;">Test Phase</h1>
+    <p>Next, we will test your memory for some of the images you saw in the STUDY phase.  In this session, you will see 144 images.</p>
+    @await Html.PartialAsync("~/Views/Shared/TestInstructions.cshtml")
+    <p>Press the "Next" button to begin.</p>
+    <div style="text-align: right;">
+        <input style="margin-right: 50px;" type="submit" value="Next"/>
+    </div>
+</form>

@@ -53,6 +53,12 @@ namespace SDCode.Web.Controllers
         }
 
         [HttpPost]
+        public IActionResult Welcome(string participantID)
+        {
+            return View(new TestWelcomeViewModel(participantID));
+        }
+
+        [HttpPost]
         public IActionResult WelcomeBack(string participantID)
         {
             IReturningUserPhaseData phaseData = _returningUserPhaseDataGetter.Get(participantID);

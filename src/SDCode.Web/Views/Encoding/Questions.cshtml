@@ -17,14 +17,14 @@
             <p>Please explain any problems that occurred during the STUDY PHASE.</p>
         </div>
         @if (Model.ShouldQuestionNeglected) {
-            <div>
+            <p>
                 Why were images neglected? <input type="text" name="neglectedReason" class="longSingleLine" required />
-            </div>
+            </p>
         }
         @if (Model.ShouldQuestionObscured) {
-            <div>
+            <p>
                 Why were images obscured? <input type="text" name="obscuredReason" class="longSingleLine" required />
-            </div>
+            </p>
         }
     </div>
     <p>Press the "Next" button to finish to the STUDY PHASE.</p>
