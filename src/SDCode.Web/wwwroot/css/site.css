@@ -106,8 +106,14 @@ input[type="radio"] {
   vertical-align: middle;
 }
 
-.logoMasthead, .logoBanner {
+.logoContainer {
   margin-bottom: 10px;
+  background-color: #00627d; /* https://www.york.ac.uk/staff/external-relations/brand/colours/ https://www.york.ac.uk/media/staffhome/marketing/brand/visualidentity/colours/uoy-colour-values-guide-130320.pdf */
+  padding: 5px;
+}
+
+.logoContainer img {
+  margin: 0 10px 0 10px;
 }
 
 .keysRow > div {
@@ -118,4 +124,35 @@ input[type="radio"] {
 .keysContainer {
   margin-bottom: 20px;
   word-spacing: 100vw; /* https://stackoverflow.com/a/23889196/116895 */
+}
+
+#mustMustNotContainer {
+  margin-left: 25px;
+}
+
+.questionContainer {
+  margin-top: 20px;
+  margin-bottom: 5px;
+}
+
+.subQuestionContainer {
+  margin-left: 20px;
+}
+
+.questionsOrientationContainer {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: gainsboro;
+}
+
+.questionsOrientationContainer p:last-of-type {
+  margin-bottom: 0;
+}
+
+.actionBar {
+  margin-top: 5px;
+  padding: 5px 50px 5px 5px;
+  text-align: right;
+  background-color: gainsboro;
 }

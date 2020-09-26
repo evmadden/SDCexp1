@@ -6,53 +6,72 @@
 
 @await Html.PartialAsync("~/Views/Shared/LogoBanner.cshtml")
 
-<div class="wrap-content"> <!-- view-source:https://www.blf.org.uk/support-for-you/obstructive-sleep-apnoea-osa/diagnosis/epworth-sleepiness-scale -->
-	<h1>Epworth Sleepiness Scale</h1>	  <p class="intro">The Epworth Sleepiness Scale is used to assess general sleepiness throughout the day.</p>
-
-<p>How likely are you to doze off or fall asleep in the following situations, in comparison to feeling just tired? This refers to your usual way of life in recent times.</p>
-
-<p>Even if you haven't done some of these things recently, try to work out how they would have affected you.</p>
-
-<p>Use the following scale to choose the most appropriate number for each situation:</p>
-
-<p>@((int)ChancesDozing.NoChance) = would never doze<br />
-@((int)ChancesDozing.SlightChance) = slight chance of dozing<br />
-@((int)ChancesDozing.ModerateChance) = moderate chance of dozing<br />
-@((int)ChancesDozing.HighChance) = high chance of dozing</p>
-
-<p>It's important that you answer each question as best you can.</p>
-
-    <form action="@Url.Action("Stanford", "Home")" method="POST">
+<div> <!-- view-source:https://www.blf.org.uk/support-for-you/obstructive-sleep-apnoea-osa/diagnosis/epworth-sleepiness-scale -->
+  <h1 class="display-4">Epworth Sleepiness Scale</h1>
+  <div class="questionsOrientationContainer">
+    <p>The Epworth Sleepiness Scale is used to assess general sleepiness throughout the day.</p>
+    <p>How likely are you to doze off or fall asleep in the following situations, in comparison to feeling just tired? This refers to your usual way of life in recent times.</p>
+    <p>Even if you haven't done some of these things recently, try to work out how they would have affected you.</p>
+    <p>For each situation below, answer each question as best you can.</p>
+  </div>
+  <form action="@Url.Action("Stanford", "Home")" method="POST">
     <input type="hidden" name="participantID" value="@Model.ParticipantID" />
-      <table class="table-calculator  js-table-calculator" data-results-explainer-id="epworth-calculator-results"><thead><tr><th scope="col">Situation</th>
-          <th scope="col">Chance of dozing (@((int)ChancesDozing.NoChance) = low, @((int)ChancesDozing.HighChance) = high)</th>
-        </tr></thead><tbody><tr><td><label for="q1">Sitting and reading</label></td>
-          <td>
-            <select class="js-table-calculator-select" id="q1" name="reading"><option selected="selected" disabled="disabled">Chance:</option><option value="@((int)ChancesDozing.NoChance)">@((int)ChancesDozing.NoChance) (would never doze)</option><option value="@((int)ChancesDozing.SlightChance)">@((int)ChancesDozing.SlightChance) (slight chance)</option><option value="@((int)ChancesDozing.ModerateChance)">@((int)ChancesDozing.ModerateChance) (moderate chance)</option><option value="@((int)ChancesDozing.HighChance)">@((int)ChancesDozing.HighChance) (high chance)</option></select></td>
-        </tr><tr><td><label for="q2">Watching TV</label></td>
-          <td>
-            <select class="js-table-calculator-select" id="q2" name="tv"><option selected="selected" disabled="disabled">Chance:</option><option value="@((int)ChancesDozing.NoChance)">@((int)ChancesDozing.NoChance) (would never doze)</option><option value="@((int)ChancesDozing.SlightChance)">@((int)ChancesDozing.SlightChance) (slight chance)</option><option value="@((int)ChancesDozing.ModerateChance)">@((int)ChancesDozing.ModerateChance) (moderate chance)</option><option value="@((int)ChancesDozing.HighChance)">@((int)ChancesDozing.HighChance) (high chance)</option></select></td>
-        </tr><tr><td><label for="q3">Sitting still in a public place (e.g. a theatre, a cinema or a meeting)</label></td>
-          <td>
-            <select class="js-table-calculator-select" id="q3" name="publicplace"><option selected="selected" disabled="disabled">Chance:</option><option value="@((int)ChancesDozing.NoChance)">@((int)ChancesDozing.NoChance) (would never doze)</option><option value="@((int)ChancesDozing.SlightChance)">@((int)ChancesDozing.SlightChance) (slight chance)</option><option value="@((int)ChancesDozing.ModerateChance)">@((int)ChancesDozing.ModerateChance) (moderate chance)</option><option value="@((int)ChancesDozing.HighChance)">@((int)ChancesDozing.HighChance) (high chance)</option></select></td>
-        </tr><tr><td><label for="q4">As a passenger in a car for an hour without a break</label></td>
-          <td>
-            <select class="js-table-calculator-select" id="q4" name="passengercar"><option selected="selected" disabled="disabled">Chance:</option><option value="@((int)ChancesDozing.NoChance)">@((int)ChancesDozing.NoChance) (would never doze)</option><option value="@((int)ChancesDozing.SlightChance)">@((int)ChancesDozing.SlightChance) (slight chance)</option><option value="@((int)ChancesDozing.ModerateChance)">@((int)ChancesDozing.ModerateChance) (moderate chance)</option><option value="@((int)ChancesDozing.HighChance)">@((int)ChancesDozing.HighChance) (high chance)</option></select></td>
-        </tr><tr><td><label for="q5">Lying down to rest in the afternoon when the circumstances allow</label></td>
-          <td>
-            <select class="js-table-calculator-select" id="q5" name="afternoon"><option selected="selected" disabled="disabled">Chance:</option><option value="@((int)ChancesDozing.NoChance)">@((int)ChancesDozing.NoChance) (would never doze)</option><option value="@((int)ChancesDozing.SlightChance)">@((int)ChancesDozing.SlightChance) (slight chance)</option><option value="@((int)ChancesDozing.ModerateChance)">@((int)ChancesDozing.ModerateChance) (moderate chance)</option><option value="@((int)ChancesDozing.HighChance)">@((int)ChancesDozing.HighChance) (high chance)</option></select></td>
-        </tr><tr><td><label for="q6">Sitting and talking to someone</label></td>
-          <td>
-            <select class="js-table-calculator-select" id="q6" name="talking"><option selected="selected" disabled="disabled">Chance:</option><option value="@((int)ChancesDozing.NoChance)">@((int)ChancesDozing.NoChance) (would never doze)</option><option value="@((int)ChancesDozing.SlightChance)">@((int)ChancesDozing.SlightChance) (slight chance)</option><option value="@((int)ChancesDozing.ModerateChance)">@((int)ChancesDozing.ModerateChance) (moderate chance)</option><option value="@((int)ChancesDozing.HighChance)">@((int)ChancesDozing.HighChance) (high chance)</option></select></td>
-        </tr><tr><td><label for="q7">Sitting quietly after lunch without having drunk alcohol</label></td>
-          <td>
-            <select class="js-table-calculator-select" id="q7" name="lunch"><option selected="selected" disabled="disabled">Chance:</option><option value="@((int)ChancesDozing.NoChance)">@((int)ChancesDozing.NoChance) (would never doze)</option><option value="@((int)ChancesDozing.SlightChance)">@((int)ChancesDozing.SlightChance) (slight chance)</option><option value="@((int)ChancesDozing.ModerateChance)">@((int)ChancesDozing.ModerateChance) (moderate chance)</option><option value="@((int)ChancesDozing.HighChance)">@((int)ChancesDozing.HighChance) (high chance)</option></select></td>
-        </tr><tr><td><label for="q8">In a car or bus while stopped for a few minutes in traffic</label></td>
-          <td>
-            <select class="js-table-calculator-select" id="q8" name="traffic"><option selected="selected" disabled="disabled">Chance:</option><option value="@((int)ChancesDozing.NoChance)">@((int)ChancesDozing.NoChance) (would never doze)</option><option value="@((int)ChancesDozing.SlightChance)">@((int)ChancesDozing.SlightChance) (slight chance)</option><option value="@((int)ChancesDozing.ModerateChance)">@((int)ChancesDozing.ModerateChance) (moderate chance)</option><option value="@((int)ChancesDozing.HighChance)">@((int)ChancesDozing.HighChance) (high chance)</option></select></td>
-        </tr></tbody></table>
-        <div style="text-align: right;">
-            <input style="margin-right: 50px;" type="submit" value="Next"/>
-        </div>
-      </form>
+    <div class="questionContainer">
+      <label>Sitting and reading</label><br/>
+      <input type="radio" id="q1.@((int)ChancesDozing.NoChance)" name="reading" value="@((int)ChancesDozing.NoChance)"> <label for="q1.@((int)ChancesDozing.NoChance)">Would never doze</label>
+      <input type="radio" id="q1.@((int)ChancesDozing.SlightChance)" name="reading" value="@((int)ChancesDozing.SlightChance)"> <label for="q1.@((int)ChancesDozing.SlightChance)">Slight chance</label>
+      <input type="radio" id="q1.@((int)ChancesDozing.ModerateChance)" name="reading" value="@((int)ChancesDozing.ModerateChance)"> <label for="q1.@((int)ChancesDozing.ModerateChance)">Moderate chance</label>
+      <input type="radio" id="q1.@((int)ChancesDozing.HighChance)" name="reading" value="@((int)ChancesDozing.HighChance)"> <label for="q1.@((int)ChancesDozing.HighChance)">High chance</label>
+    </div>
+    <div class="questionContainer">
+      <label>Watching TV</label><br/>
+      <input type="radio" id="q2.@((int)ChancesDozing.NoChance)" name="tv" value="@((int)ChancesDozing.NoChance)"> <label for="q2.@((int)ChancesDozing.NoChance)">Would never doze</label>
+      <input type="radio" id="q2.@((int)ChancesDozing.SlightChance)" name="tv" value="@((int)ChancesDozing.SlightChance)"> <label for="q2.@((int)ChancesDozing.SlightChance)">Slight chance</label>
+      <input type="radio" id="q2.@((int)ChancesDozing.ModerateChance)" name="tv" value="@((int)ChancesDozing.ModerateChance)"> <label for="q2.@((int)ChancesDozing.ModerateChance)">Moderate chance</label>
+      <input type="radio" id="q2.@((int)ChancesDozing.HighChance)" name="tv" value="@((int)ChancesDozing.HighChance)"> <label for="q2.@((int)ChancesDozing.HighChance)">High chance</label>
+    </div>
+    <div class="questionContainer">
+      <label>Sitting still in a public place (e.g. a theatre, a cinema, or a meeting)</label><br/>
+      <input type="radio" id="q3.@((int)ChancesDozing.NoChance)" name="publicplace" value="@((int)ChancesDozing.NoChance)"> <label for="q3.@((int)ChancesDozing.NoChance)">Would never doze</label>
+      <input type="radio" id="q3.@((int)ChancesDozing.SlightChance)" name="publicplace" value="@((int)ChancesDozing.SlightChance)"> <label for="q3.@((int)ChancesDozing.SlightChance)">Slight chance</label>
+      <input type="radio" id="q3.@((int)ChancesDozing.ModerateChance)" name="publicplace" value="@((int)ChancesDozing.ModerateChance)"> <label for="q3.@((int)ChancesDozing.ModerateChance)">Moderate chance</label>
+      <input type="radio" id="q3.@((int)ChancesDozing.HighChance)" name="publicplace" value="@((int)ChancesDozing.HighChance)"> <label for="q3.@((int)ChancesDozing.HighChance)">High chance</label>
+    </div>
+    <div class="questionContainer">
+      <label>As a passenger in a car for an hour without a break</label><br/>
+      <input type="radio" id="q4.@((int)ChancesDozing.NoChance)" name="passengercar" value="@((int)ChancesDozing.NoChance)"> <label for="q4.@((int)ChancesDozing.NoChance)">Would never doze</label>
+      <input type="radio" id="q4.@((int)ChancesDozing.SlightChance)" name="passengercar" value="@((int)ChancesDozing.SlightChance)"> <label for="q4.@((int)ChancesDozing.SlightChance)">Slight chance</label>
+      <input type="radio" id="q4.@((int)ChancesDozing.ModerateChance)" name="passengercar" value="@((int)ChancesDozing.ModerateChance)"> <label for="q4.@((int)ChancesDozing.ModerateChance)">Moderate chance</label>
+      <input type="radio" id="q4.@((int)ChancesDozing.HighChance)" name="passengercar" value="@((int)ChancesDozing.HighChance)"> <label for="q4.@((int)ChancesDozing.HighChance)">High chance</label>
+    </div>
+    <div class="questionContainer">
+      <label>Lying down to rest in the afternoon when the circumstances allow</label><br/>
+      <input type="radio" id="q5.@((int)ChancesDozing.NoChance)" name="afternoon" value="@((int)ChancesDozing.NoChance)"> <label for="q5.@((int)ChancesDozing.NoChance)">Would never doze</label>
+      <input type="radio" id="q5.@((int)ChancesDozing.SlightChance)" name="afternoon" value="@((int)ChancesDozing.SlightChance)"> <label for="q5.@((int)ChancesDozing.SlightChance)">Slight chance</label>
+      <input type="radio" id="q5.@((int)ChancesDozing.ModerateChance)" name="afternoon" value="@((int)ChancesDozing.ModerateChance)"> <label for="q5.@((int)ChancesDozing.ModerateChance)">Moderate chance</label>
+      <input type="radio" id="q5.@((int)ChancesDozing.HighChance)" name="afternoon" value="@((int)ChancesDozing.HighChance)"> <label for="q5.@((int)ChancesDozing.HighChance)">High chance</label>
+    </div>
+    <div class="questionContainer">
+      <label>Sitting and talking to someone</label><br/>
+      <input type="radio" id="q6.@((int)ChancesDozing.NoChance)" name="talking" value="@((int)ChancesDozing.NoChance)"> <label for="q6.@((int)ChancesDozing.NoChance)">Would never doze</label>
+      <input type="radio" id="q6.@((int)ChancesDozing.SlightChance)" name="talking" value="@((int)ChancesDozing.SlightChance)"> <label for="q6.@((int)ChancesDozing.SlightChance)">Slight chance</label>
+      <input type="radio" id="q6.@((int)ChancesDozing.ModerateChance)" name="talking" value="@((int)ChancesDozing.ModerateChance)"> <label for="q6.@((int)ChancesDozing.ModerateChance)">Moderate chance</label>
+      <input type="radio" id="q6.@((int)ChancesDozing.HighChance)" name="talking" value="@((int)ChancesDozing.HighChance)"> <label for="q6.@((int)ChancesDozing.HighChance)">High chance</label>
+    </div>
+    <div class="questionContainer">
+      <label>Sitting quietly after lunch without having drunk alcohol</label><br/>
+      <input type="radio" id="q7.@((int)ChancesDozing.NoChance)" name="lunch" value="@((int)ChancesDozing.NoChance)"> <label for="q7.@((int)ChancesDozing.NoChance)">Would never doze</label>
+      <input type="radio" id="q7.@((int)ChancesDozing.SlightChance)" name="lunch" value="@((int)ChancesDozing.SlightChance)"> <label for="q7.@((int)ChancesDozing.SlightChance)">Slight chance</label>
+      <input type="radio" id="q7.@((int)ChancesDozing.ModerateChance)" name="lunch" value="@((int)ChancesDozing.ModerateChance)"> <label for="q7.@((int)ChancesDozing.ModerateChance)">Moderate chance</label>
+      <input type="radio" id="q7.@((int)ChancesDozing.HighChance)" name="lunch" value="@((int)ChancesDozing.HighChance)"> <label for="q7.@((int)ChancesDozing.HighChance)">High chance</label>
+    </div>
+    <div class="questionContainer">
+      <label>In a car or bus while stopped for a few minutes in traffic</label><br/>
+      <input type="radio" id="q8.@((int)ChancesDozing.NoChance)" name="traffic" value="@((int)ChancesDozing.NoChance)"> <label for="q8.@((int)ChancesDozing.NoChance)">Would never doze</label>
+      <input type="radio" id="q8.@((int)ChancesDozing.SlightChance)" name="traffic" value="@((int)ChancesDozing.SlightChance)"> <label for="q8.@((int)ChancesDozing.SlightChance)">Slight chance</label>
+      <input type="radio" id="q8.@((int)ChancesDozing.ModerateChance)" name="traffic" value="@((int)ChancesDozing.ModerateChance)"> <label for="q8.@((int)ChancesDozing.ModerateChance)">Moderate chance</label>
+      <input type="radio" id="q8.@((int)ChancesDozing.HighChance)" name="traffic" value="@((int)ChancesDozing.HighChance)"> <label for="q8.@((int)ChancesDozing.HighChance)">High chance</label>
+    </div>
+    @await Html.PartialAsync("~/Views/Shared/ActionBar.cshtml", new ActionBarViewModel("Next"))
+  </form>
 </div>

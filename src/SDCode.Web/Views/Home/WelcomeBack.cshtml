@@ -4,22 +4,22 @@
 
 @await Html.PartialAsync("~/Views/Shared/LogoMasthead.cshtml")
 <div class="text-center">
-    <h1 class="display-4">Welcome back to the @await Html.PartialAsync("~/Views/Shared/StudyTitle.cshtml")</h1>
+    <h1 class="display-4">@await Html.PartialAsync("~/Views/Shared/StudyTitle.cshtml")</h1>
 </div>
-<br/>
-<div>
+<div class="questionsOrientationContainer">
     <p>In this session, we will be testing your memory of the images you saw in the STUDY PHASE.
         This testing session will follow the same format as the previous one.</p>
     <p>First, you will be asked to rate your CURRENT sleepiness.  Then, like before, you will see 144 images.</p>
-    @await Html.PartialAsync("~/Views/Shared/TestInstructions.cshtml")
-    <p>Please enter your Participant ID in the box and press the "Next" button to rate your sleepiness and start the next TEST PHASE.</p>
 </div>
-
 <div>
+    @await Html.PartialAsync("~/Views/Shared/TestInstructions.cshtml")
+</div>
+<div>
+    <p>Please enter your Participant ID and press the "Next" button to rate your sleepiness and start the next TEST PHASE.</p>
     <form action="@Url.Action("WelcomeBack", "Test")" method="POST">
-        <div>Participant ID: <input type="text" name="participantID" required /></div>
-        <div style="text-align: right;">
-            <input style="margin-right: 50px;" type="submit" value="Next"/>
+        <div class="questionContainer">
+            Participant ID: <input type="text" name="participantID" required />
         </div>
+        @await Html.PartialAsync("~/Views/Shared/ActionBar.cshtml", new ActionBarViewModel("Next"))
     </form>
 </div>

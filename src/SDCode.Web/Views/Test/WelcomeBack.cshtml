@@ -6,30 +6,28 @@
 
 @if (Model.Action == ReturningUserAction.NewUser) {
     @await Html.PartialAsync("~/Views/Shared/LogoBanner.cshtml")
-    <div>
-        It looks like you are a New User.  Please return to the home page to select "New Participant."
-        If you feel you have reached this page by mistake, please email the researcher at <a href="mailto:evm517@york.ac.uk">evm517@york.ac.uk</a>.
+    <div class="questionsOrientationContainer">
+        <p>It looks like you are a New Participant. Please proceed by clicking "New Participant" below.</p>
     </div>
+    <p>If you feel you have reached this page by mistake, please email the researcher at <a href="mailto:evm517@york.ac.uk">evm517@york.ac.uk</a>.</p>
     <form action="@Url.Action("Welcome", "Home")" method="POST">
         <input type="hidden" name="participantID" value="@Model.ParticipantID" />
-        <div style="text-align: right;">
-            <input style="margin-right: 50px;" type="submit" value="New Participant"/>
-        </div>
+        @await Html.PartialAsync("~/Views/Shared/ActionBar.cshtml", new ActionBarViewModel("New Participant"))
     </form>
 } else if (Model.Action == ReturningUserAction.Wait) {
     @await Html.PartialAsync("~/Views/Shared/LogoBanner.cshtml")
-    <p>
-        It looks like you are trying to access the next session too soon.  See below for your next session time.
-        If you feel you have reached this page by mistake, please email the researcher at <a href="mailto:evm517@york.ac.uk">evm517@york.ac.uk</a>.
-    </p>
+    <div class="questionsOrientationContainer">
+        <p>It looks like you are trying to access the next session too soon.  See below for your next session time.</p>
+    </div>
     var whenToDisplay = @Model.NextTestWhenUtc?.AddMinutes(1);
     <p>Next session available at: @whenToDisplay?.ToString("MM/dd/yyyy") @whenToDisplay?.ToString("h:mm tt") UTC</p>
+    <p>If you feel you have reached this page by mistake, please email the researcher at <a href="mailto:evm517@york.ac.uk">evm517@york.ac.uk</a>.</p>
 } else if (Model.Action == ReturningUserAction.TooLate) {
     @await Html.PartialAsync("~/Views/Shared/LogoBanner.cshtml")
-    <span>It looks like too much time has passed since your last session. Please email the researcher at <a href="mailto:evm517@york.ac.uk">evm517@york.ac.uk</a>.</span> @* todo mlh refactor email address to re-use *@
-} else if (Model.Action == ReturningUserAction.Done) {
-    @await Html.PartialAsync("~/Views/Shared/LogoBanner.cshtml")
-    <span>You have completed the experiment.  Thank you for participating in our study.</span>
+    <div class="questionsOrientationContainer">
+        <p>It looks like too much time has passed since your last session.</p>
+    </div>
+    <p>Please email the researcher at <a href="mailto:evm517@york.ac.uk">evm517@york.ac.uk</a>.</p> @* todo mlh refactor email address to re-use *@
 } else {
     if (Model.Action == ReturningUserAction.Stanford) {
         @await Html.PartialAsync("~/Views/Shared/LogoBanner.cshtml")

@@ -22,7 +22,5 @@
             </p>
     </div>
     <p>Press the "Next" button to finish to the TEST PHASE.</p>
-<div style="text-align: right;">
-    <input style="margin-right: 50px;" type="submit" value="Next"/>
-</div>
+    @await Html.PartialAsync("~/Views/Shared/ActionBar.cshtml", new ActionBarViewModel("Next"))
     </form>

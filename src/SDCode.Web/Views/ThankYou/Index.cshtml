@@ -1,0 +1,14 @@
+@model SDCode.Web.Models.TestIndexViewModel
+@{
+    ViewData["Title"] = "Thank You";
+}
+
+@await Html.PartialAsync("~/Views/Shared/LogoBanner.cshtml")
+
+<div class="questionsOrientationContainer">
+    <p>You have completed all of the experimental sessions.</p>
+</div>
+<div class="questionContainer">
+    <p>Thank you for your time.</p>
+    <p>You may close this browser tab.</p>
+</div>

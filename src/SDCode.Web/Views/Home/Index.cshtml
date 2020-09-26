@@ -17,10 +17,10 @@
 
 @await Html.PartialAsync("~/Views/Shared/LogoMasthead.cshtml")
 <div class="text-center">
-    <h1 class="display-4">Welcome to the @await Html.PartialAsync("~/Views/Shared/StudyTitle.cshtml")</h1>
+    <h1 class="display-4">@await Html.PartialAsync("~/Views/Shared/StudyTitle.cshtml")</h1>
     <br/>
     <p>If this is your first session, please select New Participant.<br/>
-    If you are returning to continue the study, please choose Returning participant.</p>
+    If you are returning to continue the study, please choose Returning Participant.</p>
 </div>
 
 <div id="buttonsRow" class="row">
@@ -31,4 +31,3 @@
         <div>Returning Participant</div>
     </div>
 </div>
-

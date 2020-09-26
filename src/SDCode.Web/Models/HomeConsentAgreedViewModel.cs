@@ -1,8 +1,8 @@
 namespace SDCode.Web.Models
 {
-    public class HomeConsentAgreedViewModel
+    public class HomeConsentFormViewModel
     {
-        public HomeConsentAgreedViewModel(string participantID)
+        public HomeConsentFormViewModel(string participantID)
         {
             ParticipantID = participantID;
         }

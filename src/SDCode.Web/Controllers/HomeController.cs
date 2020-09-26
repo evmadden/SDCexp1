@@ -53,9 +53,9 @@ namespace SDCode.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult ConsentAgreed(string participantID)
+        public IActionResult ConsentForm(string participantID)
         {
-            return View(new HomeConsentAgreedViewModel(participantID));
+            return View(new HomeConsentFormViewModel(participantID));
         }
 
         [HttpPost]
@@ -66,7 +66,11 @@ namespace SDCode.Web.Controllers
             var progress = _progressGetter.Get(participantID);
             var testName = _testNameGetter.Get(phaseSets, progress);
             var testIsAvailable = string.Equals(testName, nameof(phaseSets.Immediate));
-            return View(new DemographicsViewModel(participantID, testIsAvailable));
+            if (testIsAvailable) {
+                return View(new DemographicsViewModel(participantID));
+            } else {
+                return RedirectToAction("Index", "ThankYou");
+            }
         }
 
         [HttpPost]

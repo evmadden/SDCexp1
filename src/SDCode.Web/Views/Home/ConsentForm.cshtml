@@ -1,0 +1,120 @@
+﻿@model HomeConsentFormViewModel
+@{
+    ViewData["Title"] = "Consent Form";
+}
+
+@await Html.PartialAsync("~/Views/Shared/LogoBanner.cshtml")
+
+<div>
+    <h1 class="display-4">Informed Consent Form</h1>
+    <form action="@Url.Action("Demographics", "Home")" method="POST">
+            <div class="questionsOrientationContainer">
+                <p>Please read the following carefully and check the box next to each statement.</p>
+            </div>
+            <div>
+                <table>
+                    <tr>
+                        <td style="vertical-align: middle;"><input type="checkbox" id="q1" name="InfoSheet" value="true" required></td>
+                        <td style="vertical-align: middle; padding-left: 6px; padding-top: 6px;"><label for="q1">I have carefully read the study information sheet and understand what is required.</label></td>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <table>
+                    <tr>
+                        <td style="vertical-align: middle;"><input type="checkbox" id="q2" name="Withdraw" value="true" required></td>
+                        <td style="vertical-align: middle; padding-left: 6px; padding-top: 6px;"><label for="q2">I understand that I am free to withdraw from this study AT ANY TIME and WITHOUT HAVING TO GIVE A REASON.</label></td>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <table>
+                    <tr>
+                        <td style="vertical-align: middle;"><input type="checkbox" id="q3" name="NPSDisorder" value="true" required></td>
+                        <td style="vertical-align: middle; padding-left: 6px; padding-top: 6px;"><label for="q3">I understand that I should not take part if I have any history of neurological, psychiatric or sleep disorders.</label></td>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <table>
+                    <tr>
+                        <td style="vertical-align: middle;"><input type="checkbox" id="q4" name="ADHD" value="true" required></td>
+                        <td style="vertical-align: middle; padding-left: 6px; padding-top: 6px;"><label for="q4">I understand that I should not take part if I have any history of attentional difficulties (e.g. ADHD).</label></td>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <table>
+                    <tr>
+                        <td style="vertical-align: middle;"><input type="checkbox" id="q5" name="HeadInjury" value="true" required></td>
+                        <td style="vertical-align: middle; padding-left: 6px; padding-top: 6px;"><label for="q5">I understand that I should not take part if I have ever had a serious head injury.</label></td>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <table>
+                    <tr>
+                        <td style="vertical-align: middle;"><input type="checkbox" id="q6" name="NormalVision" value="true" required></td>
+                        <td style="vertical-align: middle; padding-left: 6px; padding-top: 6px;"><label for="q6">I understand that I should not take part if I do not have normal or corrected-to-normal vision (e.g., glasses or contacts).</label></td>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <table>
+                    <tr>
+                        <td style="vertical-align: middle;"><input type="checkbox" id="q7" name="VisionProblems" value="true" required></td>
+                        <td style="vertical-align: middle; padding-left: 6px; padding-top: 6px;"><label for="q7">I understand that I should not take part if I have any history of special visual characteristics (e.g., colour blindness or astigmatism).</label></td>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <table>
+                    <tr>
+                        <td style="vertical-align: middle;"><input type="checkbox" id="q8" name="AltShifts" value="true" required></td>
+                        <td style="vertical-align: middle; padding-left: 6px; padding-top: 6px;"><label for="q8">I understand that I should not take part if I have a job that involves alternating shift patterns (i.e., night and day shifts).</label></td>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <table>
+                    <tr>
+                        <td style="vertical-align: middle;"><input type="checkbox" id="q9" name="Smoker" value="true" required></td>
+                        <td style="vertical-align: middle; padding-left: 6px; padding-top: 6px;"><label for="q9">I understand that I should not take part if I am a smoker.</label></td>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <table>
+                    <tr>
+                        <td style="vertical-align: top; padding-top: 7px;"><input type="checkbox" id="q10" name="DataProtection" value="true" required></td>
+                        <td style="vertical-align: middle; padding-left: 6px; padding-top: 6px;"><label for="q10">I agree that the anonymised data will be made publicly available via an online data repository.
+                As such, your data may be re-used and analysed by anyone in the world and may also be presented at conferences and scientific journals, as approved by the Research Ethics 
+                Committee of the Department of Psychology at the University of York. </label></td>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <table>
+                    <tr>
+                        <td style="vertical-align: middle;"><input type="checkbox" id="q11" name="AgreeParticipate" value="true" required></td>
+                        <td style="vertical-align: middle; padding-left: 6px; padding-top: 6px;"><label for="q11">I agree to take part in the study.</label></td>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                @if (string.IsNullOrWhiteSpace(Model.ParticipantID)) {
+                    <table>
+                        <tr>
+                            <td style="vertical-align: middle;"></td>
+                            <td style="vertical-align: middle; padding-left: 6px; padding-top: 6px;"></td>
+                        </tr>
+                    </table>
+                    <label for="pID">Participant ID:</label>
+                    <input type="number" id="pID" name="ParticipantID" required><br/>
+                } else {
+                    <input type="hidden" name="participantID" value="@Model.ParticipantID" />
+                }
+            </div>
+        @await Html.PartialAsync("~/Views/Shared/ActionBar.cshtml", new ActionBarViewModel("Next"))
+    </form>
+</div>

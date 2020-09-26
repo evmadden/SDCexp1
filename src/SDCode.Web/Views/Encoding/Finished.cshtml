@@ -8,9 +8,9 @@
 <form action="@Url.Action("Welcome", "Test")" method="POST">
     <input type="hidden" name="participantID" value="@Model.ParticipantID" />
     <h1 class="display-4; text-center;">Study Phase Finished</h1>
-    <p>This completes the STUDY PHASE.</p>
-    <p>Press the "Next" button to start to the TEST PHASE.</p>
-    <div style="text-align: right;">
-        <input style="margin-right: 50px;" type="submit" value="Next"/>
+    <div class="questionsOrientationContainer">
+        <p>This completes the STUDY PHASE.</p>
     </div>
+    <p>Press the "Next" button to start to the TEST PHASE.</p>
+    @await Html.PartialAsync("~/Views/Shared/ActionBar.cshtml", new ActionBarViewModel("Next"))
 </form>

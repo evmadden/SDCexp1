@@ -44,10 +44,12 @@ namespace SDCode.Web.Classes
                 var nextTestStartTimeBeginUtc = _testStartTimeGetter.GetUtc(participantID);
                 var nextTestStartTimeEndUtc = nextTestStartTimeBeginUtc.AddDays(_config.TestTooLateDays);
                 DateTime utcNow = DateTime.UtcNow;
-                if (nextTestStartTimeBeginUtc > utcNow) {
+                bool mustWait = nextTestStartTimeBeginUtc > utcNow;
+                bool tooLate = nextTestStartTimeEndUtc < utcNow;
+                if (mustWait) {
                     action = ReturningUserAction.Wait;
                     nextTestWhenUtc = nextTestStartTimeBeginUtc;
-                } else if (nextTestStartTimeEndUtc < utcNow) {
+                } else if (tooLate) {
                     action = ReturningUserAction.TooLate;
                 } else {
                     action = testNameIsImmediate ? ReturningUserAction.Test : ReturningUserAction.Stanford;
