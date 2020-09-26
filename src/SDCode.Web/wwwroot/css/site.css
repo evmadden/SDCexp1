@@ -117,4 +117,5 @@ input[type="radio"] {
 
 .keysContainer {
   margin-bottom: 20px;
+  word-spacing: 100vw; /* https://stackoverflow.com/a/23889196/116895 */
 }

@@ -1,4 +1,11 @@
-﻿<p>
+﻿@using System.Text.RegularExpressions
+@using SDCode.Web.Classes
+@functions {
+    public string GetDescription(Confidences confidence) { // https://stackoverflow.com/a/5796427/116895
+        return Regex.Replace(Enum.GetName(typeof(Confidences), confidence), "(\\B[A-Z])", " $1");
+    }
+}
+<p>
     Your task is to indicate whether each image is "old" or "new".  You will also be asked to rate how confident you are in each response
     on a scale of 1 to 4 with 1 being "Not very confident" and 4 being "Very confident". 
 </p>
@@ -12,12 +19,12 @@
         <div class="col-md-2"><img src="/img/keys/4.webp"></div>
     </div>
     <div class="row keysRow">
-        <div class="col-md-2">Old</div> @* todo mlh use/show Enum values *@
-        <div class="col-md-2">New</div>
-        <div class="col-md-2">Not<br/>Confident</div>
-        <div class="col-md-2">Somewhat<br/>Confident</div>
-        <div class="col-md-2">Confident</div>
-        <div class="col-md-2">Very<br/>Confident</div>
+        <div class="col-md-2">@(Enum.GetName(typeof(Judgements), Judgements.Old))</div>
+        <div class="col-md-2">@(Enum.GetName(typeof(Judgements), Judgements.New))</div>
+        <div class="col-md-2">@(GetDescription(Confidences.NotConfident))</div>
+        <div class="col-md-2">@(GetDescription(Confidences.SomewhatConfident))</div>
+        <div class="col-md-2">@(GetDescription(Confidences.Confident))</div>
+        <div class="col-md-2">@(GetDescription(Confidences.VeryConfident))</div>
     </div>    
 </div>
 <p>
