@@ -1,7 +1,7 @@
 @model TestEndedViewModel
 <div>
     <h1 class="display-4;">Debrief Information</h1><br/>
-    <p>Thank you for your participation in our Decontextualization Over Time Study.<br/>
+    <p>Thank you for your participation in our @await Html.PartialAsync("~/Views/Shared/StudyTitle.cshtml").<br/>
     <br/>
     We are examining the effects of context, congruency and time on episodic memory.  
     Specifically, we are looking at whether changing the background of a target item influences how well an observer is able to recognise the item as having been previously seen.  
