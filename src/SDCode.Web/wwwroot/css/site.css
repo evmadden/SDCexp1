@@ -109,3 +109,12 @@ input[type="radio"] {
 .logoMasthead, .logoBanner {
   margin-bottom: 10px;
 }
+
+.keysRow > div {
+  font-weight: bold;
+  text-align: center;
+}
+
+.keysContainer {
+  margin-bottom: 20px;
+}
