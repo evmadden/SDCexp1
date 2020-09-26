@@ -105,3 +105,7 @@ input[type="radio"] {
   display: table-cell;
   vertical-align: middle;
 }
+
+.logoMasthead, .logoBanner {
+  margin-bottom: 10px;
+}
