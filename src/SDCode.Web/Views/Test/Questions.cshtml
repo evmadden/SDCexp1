@@ -3,7 +3,7 @@
     ViewData["Title"] = "Questions";
 }
 
-@await Html.PartialAsync("~/Views/Home/LogoBanner.cshtml")
+@await Html.PartialAsync("~/Views/Shared/LogoBanner.cshtml")
 
     <form action="@Url.Action("End", "Test")" method="POST">
         <input type="hidden" name="participantID" value="@Model.ParticipantID" />

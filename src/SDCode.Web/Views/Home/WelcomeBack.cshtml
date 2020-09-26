@@ -2,7 +2,7 @@
     ViewData["Title"] = "Welcome Back";
 }
 
-@await Html.PartialAsync("~/Views/Home/LogoMasthead.cshtml")
+@await Html.PartialAsync("~/Views/Shared/LogoMasthead.cshtml")
 <div class="text-center">
     <h1 class="display-4">Welcome back to the Decontextualization Over Time Study</h1>
 </div>
@@ -11,7 +11,7 @@
     <p>In this session, we will be testing your memory of the images you saw in the STUDY PHASE.
         This testing session will follow the same format as the previous one.</p>
     <p>First, you will be asked to rate your CURRENT sleepiness.  Then, like before, you will see 144 images.</p>
-    @await Html.PartialAsync("~/Views/Test/Instructions.cshtml")
+    @await Html.PartialAsync("~/Views/Shared/TestInstructions.cshtml")
     <p>Please enter your Participant ID in the box and press the "Next" button to rate your sleepiness and start the next TEST PHASE.</p>
 </div>
 

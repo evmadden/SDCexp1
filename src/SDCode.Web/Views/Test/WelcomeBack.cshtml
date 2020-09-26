@@ -5,7 +5,7 @@
 }
 
 @if (Model.Action == ReturningUserAction.NewUser) {
-    @await Html.PartialAsync("~/Views/Home/LogoBanner.cshtml")
+    @await Html.PartialAsync("~/Views/Shared/LogoBanner.cshtml")
     <div>
         It looks like you are a New User.  Please return to the home page to select "New Participant."
         If you feel you have reached this page by mistake, please email the researcher at <a href="mailto:evm517@york.ac.uk">evm517@york.ac.uk</a>.
@@ -17,7 +17,7 @@
         </div>
     </form>
 } else if (Model.Action == ReturningUserAction.Wait) {
-    @await Html.PartialAsync("~/Views/Home/LogoBanner.cshtml")
+    @await Html.PartialAsync("~/Views/Shared/LogoBanner.cshtml")
     <p>
         It looks like you are trying to access the next session too soon.  See below for your next session time.
         If you feel you have reached this page by mistake, please email the researcher at <a href="mailto:evm517@york.ac.uk">evm517@york.ac.uk</a>.
@@ -25,14 +25,14 @@
     var whenToDisplay = @Model.NextTestWhenUtc?.AddMinutes(1);
     <p>Next session available at: @whenToDisplay?.ToString("MM/dd/yyyy") @whenToDisplay?.ToString("h:mm tt") UTC</p>
 } else if (Model.Action == ReturningUserAction.TooLate) {
-    @await Html.PartialAsync("~/Views/Home/LogoBanner.cshtml")
+    @await Html.PartialAsync("~/Views/Shared/LogoBanner.cshtml")
     <span>It looks like too much time has passed since your last session. Please email the researcher at <a href="mailto:evm517@york.ac.uk">evm517@york.ac.uk</a>.</span> @* todo mlh refactor email address to re-use *@
 } else if (Model.Action == ReturningUserAction.Done) {
-    @await Html.PartialAsync("~/Views/Home/LogoBanner.cshtml")
+    @await Html.PartialAsync("~/Views/Shared/LogoBanner.cshtml")
     <span>You have completed the experiment.  Thank you for participating in our study.</span>
 } else {
     if (Model.Action == ReturningUserAction.Stanford) {
-        @await Html.PartialAsync("~/Views/Home/LogoBanner.cshtml")
+        @await Html.PartialAsync("~/Views/Shared/LogoBanner.cshtml")
         @await Html.PartialAsync("~/Views/ImageCheck/StanfordForm.cshtml", new StanfordFormViewModel(Model.ParticipantID, Url.Action("Index")))
     } else {
         <form action="@Url.Action("Index", "ImageCheck")" method="POST">
