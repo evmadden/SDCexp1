@@ -1,0 +1,14 @@
+﻿@{
+    ViewData["Title"] = "Returning";
+}
+
+@await Html.PartialAsync("~/Views/Shared/LogoBanner.cshtml")
+
+<div>
+    <h1 class="display-4">Returning</h1>
+    <div class="questionsOrientationContainer">
+        You are a Returning Participant.
+    </div>
+    <p>For the duration of your participation, please begin at @Html.ActionLink("the homepage", "Index", "Home") and choose "Returning Participant" to continue.</p>
+    <p>@await Html.PartialAsync("~/Views/Shared/Mistake.cshtml")</p>
+</div>

@@ -17,8 +17,9 @@ namespace SDCode.Web.Controllers
         private readonly ITestNameGetter _testNameGetter;
         private readonly IPhaseSetsGetter _phaseSetsGetter;
         private readonly IProgressGetter _progressGetter;
+        private readonly IEncodingFinishedChecker _encodingFinishedChecker;
 
-        public HomeController(ILogger<HomeController> logger, IStanfordRepository stanfordRepository, IRepository<ConsentModel> consentRepository, IRepository<PSQIModel> psqiRepository, IRepository<EpworthModel> epworthRepository, IRepository<DemographicsModel> demographicsRepository, ITestNameGetter testNameGetter, IPhaseSetsGetter phaseSetsGetter, IProgressGetter progressGetter)
+        public HomeController(ILogger<HomeController> logger, IStanfordRepository stanfordRepository, IRepository<ConsentModel> consentRepository, IRepository<PSQIModel> psqiRepository, IRepository<EpworthModel> epworthRepository, IRepository<DemographicsModel> demographicsRepository, ITestNameGetter testNameGetter, IPhaseSetsGetter phaseSetsGetter, IProgressGetter progressGetter, IEncodingFinishedChecker encodingFinishedChecker)
         {
             _logger = logger;
             _stanfordRepository = stanfordRepository;
@@ -29,6 +30,7 @@ namespace SDCode.Web.Controllers
             _testNameGetter = testNameGetter;
             _phaseSetsGetter = phaseSetsGetter;
             _progressGetter = progressGetter;
+            _encodingFinishedChecker = encodingFinishedChecker;
         }
 
         public IActionResult Index()
@@ -61,15 +63,12 @@ namespace SDCode.Web.Controllers
         [HttpPost]
         public IActionResult Demographics(string participantID, bool infoSheet, bool withdraw, bool npsDisorder, bool adhd, bool headInjury, bool normalVision, bool visionProblems, bool altShifts, bool smoker, bool dataProtection, bool agreeParticipate)
         {
-            _consentRepository.Save(new ConsentModel{ParticipantID = participantID, InfoSheet = infoSheet, Withdraw = withdraw, NPSDisorder = npsDisorder, ADHD = adhd, HeadInjury = headInjury, NormalVision = normalVision, VisionProblems = visionProblems, AltShifts = altShifts, Smoker = smoker, DataProtection = dataProtection, AgreeParticipate = agreeParticipate});
-            var phaseSets = _phaseSetsGetter.Get(participantID);
-            var progress = _progressGetter.Get(participantID);
-            var testName = _testNameGetter.Get(phaseSets, progress);
-            var testIsAvailable = string.Equals(testName, nameof(phaseSets.Immediate));
-            if (testIsAvailable) {
-                return View(new DemographicsViewModel(participantID));
+            var encodingFinished = _encodingFinishedChecker.IsFinished(participantID);
+            if (encodingFinished) {
+                return RedirectToAction("Returning", "Home");
             } else {
-                return RedirectToAction("Index", "ThankYou");
+                _consentRepository.Save(new ConsentModel{ParticipantID = participantID, InfoSheet = infoSheet, Withdraw = withdraw, NPSDisorder = npsDisorder, ADHD = adhd, HeadInjury = headInjury, NormalVision = normalVision, VisionProblems = visionProblems, AltShifts = altShifts, Smoker = smoker, DataProtection = dataProtection, AgreeParticipate = agreeParticipate});
+                return View(new DemographicsViewModel(participantID));
             }
         }
 
@@ -95,13 +94,18 @@ namespace SDCode.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult EncodingInstructions(string participantID, Sleepinesses? stanford)
+        public IActionResult EncodingInstructions(string participantID, Sleepinesses? stanford) // todo mlh is EncodingInstructions unused at this point?
         {
             _stanfordRepository.Save(participantID, "Immediate", stanford);
             return View(new EncodingInstructionsViewModel(participantID));
         }
 
         public IActionResult Privacy() 
+        {
+            return View();
+        }
+
+        public IActionResult Returning() 
         {
             return View();
         }
