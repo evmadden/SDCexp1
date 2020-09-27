@@ -38,7 +38,10 @@
                 <p>It is critically important during this phase<br/>that you are able to see every image unobstructed.</p>
             </div>
             <div id="Ready" style="display: none;">
-                <p style="margin-top: 50px;"><strong>IMPORTANT: During this phase, keep your browser window<br/>this size so that images remain fully visible at all times.</strong></p>
+                <p style="margin-top: 50px;"><strong>IMPORTANT: Keep your browser window <em>this size</em><br/>so that images remain fully visible at <em>all times</em>.</strong></p>
+                @if (Model.ShowSpacebarOrientation) {
+                    <p><strong>Any time you see a NUMBER, press <em>Spacebar</em>.</strong></p>
+                }
                 <p>Press the "Next" button to begin.</p>
                 <input id="submitButton" type="button" value="Next"/>
             </div>

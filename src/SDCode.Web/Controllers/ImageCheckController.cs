@@ -16,9 +16,9 @@ namespace SDCode.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index(string participantID, Sleepinesses? stanford, string nextActionAfterImageCheck)
+        public IActionResult Index(string participantID, Sleepinesses? stanford, string nextActionAfterImageCheck, bool showSpacebarOrientation)
         {
-            var viewModel = new ImageCheckIndexViewModel(participantID, stanford, nextActionAfterImageCheck);
+            var viewModel = new ImageCheckIndexViewModel(participantID, stanford, nextActionAfterImageCheck, showSpacebarOrientation);
             return View(viewModel);
         }
 

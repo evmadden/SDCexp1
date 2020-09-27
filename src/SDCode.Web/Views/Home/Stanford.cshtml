@@ -4,4 +4,4 @@
 }
 
 @await Html.PartialAsync("~/Views/Shared/LogoBanner.cshtml")
-@await Html.PartialAsync("~/Views/ImageCheck/StanfordForm.cshtml", new StanfordFormViewModel(Model.ParticipantID, Url.Action("Index", "Encoding")))
+@await Html.PartialAsync("~/Views/ImageCheck/StanfordForm.cshtml", new StanfordFormViewModel(Model.ParticipantID, Url.Action("Index", "Encoding"), Model.IsEncoding))

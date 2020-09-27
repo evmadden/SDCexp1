@@ -31,7 +31,7 @@
 } else {
     if (Model.Action == ReturningUserAction.Stanford) {
         @await Html.PartialAsync("~/Views/Shared/LogoBanner.cshtml")
-        @await Html.PartialAsync("~/Views/ImageCheck/StanfordForm.cshtml", new StanfordFormViewModel(Model.ParticipantID, Url.Action("Index")))
+        @await Html.PartialAsync("~/Views/ImageCheck/StanfordForm.cshtml", new StanfordFormViewModel(Model.ParticipantID, Url.Action("Index"), false))
     } else {
         <form action="@Url.Action("Index", "ImageCheck")" method="POST">
             <input type="hidden" name="nextActionAfterImageCheck" value="@Url.Action("Index")" />

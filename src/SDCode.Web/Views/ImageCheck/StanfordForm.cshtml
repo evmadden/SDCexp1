@@ -5,6 +5,7 @@
     <form action="@Url.Action("Index", "ImageCheck")" method="POST">
         <input type="hidden" name="nextActionAfterImageCheck" value="@Model.NextAction" />
         <input type="hidden" name="participantID" value="@Model.ParticipantID" />
+        <input type="hidden" name="showSpacebarOrientation" value="@($"{Model.IsEncoding}".ToLower())" />
         <div class="questionsOrientationContainer">
             <p>This is a quick way to assess how alert you are feeling CURRENTLY.</p>
             <p>Please select the option that best describes how sleepy you are feeling RIGHT NOW.</p>

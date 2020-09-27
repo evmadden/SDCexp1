@@ -90,7 +90,7 @@ namespace SDCode.Web.Controllers
         public IActionResult Stanford(string participantID, ChancesDozing? reading, ChancesDozing? tv, ChancesDozing? publicplace, ChancesDozing? passengercar, ChancesDozing? afternoon, ChancesDozing? talking, ChancesDozing? lunch, ChancesDozing? traffic)
         {
             _epworthRepository.Save(new EpworthModel{ParticipantID = participantID, Reading = reading, TV = tv, PublicPlace = publicplace, PassengerCar = passengercar, Afternoon = afternoon, Talking = talking, Lunch = lunch, Traffic = traffic});
-            return View(new StanfordViewModel(participantID));
+            return View(new StanfordViewModel(participantID, true));
         }
 
         [HttpPost]
