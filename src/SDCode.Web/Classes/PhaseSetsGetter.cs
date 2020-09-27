@@ -15,7 +15,7 @@ namespace SDCode.Web.Classes
         private readonly ICsvFile<PhaseSetsModel, PhaseSetsModel.Map> _phaseSetsCsvFile;
         private readonly IImageIndexesGetter _imageIndexesGetter;
         private readonly ICollectionRandomizer _collectionRandomizer;
-        private readonly Config _config;
+        private readonly IConfig _config;
 
         public PhaseSetsGetter(ICsvFile<PhaseSetsModel, PhaseSetsModel.Map> phaseSetsCsvFile, IImageIndexesGetter imageIndexesGetter, ICollectionRandomizer collectionRandomizer, IOptions<Config> config)
         {

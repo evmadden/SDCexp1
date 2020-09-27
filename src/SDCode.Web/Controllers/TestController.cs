@@ -22,7 +22,7 @@ namespace SDCode.Web.Controllers
         private readonly IProgressGetter _progressGetter;
         private readonly IStanfordRepository _stanfordRepository;
         private readonly IResponseFeedbackGetter _responseFeedbackGetter;
-        private readonly Config _config;
+        private readonly IConfig _config;
 
         private readonly ITestResponsesRepository _testResponsesRepository;
 

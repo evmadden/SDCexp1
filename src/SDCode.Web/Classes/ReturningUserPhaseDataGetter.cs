@@ -15,7 +15,7 @@ namespace SDCode.Web.Classes
         private readonly IProgressGetter _progressGetter;
         private readonly IStanfordRepository _stanfordRepository;
         private readonly ITestStartTimeGetter _testStartTimeGetter;
-        private readonly Config _config;
+        private readonly IConfig _config;
         private IEncodingFinishedChecker _encodingFinishedChecker;
 
         public ReturningUserPhaseDataGetter(IPhaseSetsGetter phaseSetsGetter, ITestNameGetter testNameGetter, IProgressGetter progressGetter, IStanfordRepository stanfordRepository, ITestStartTimeGetter testStartTimeGetter, IOptions<Config> config, IEncodingFinishedChecker encodingFinishedChecker)

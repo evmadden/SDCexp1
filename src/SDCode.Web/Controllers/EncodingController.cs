@@ -15,7 +15,7 @@ namespace SDCode.Web.Controllers
         private readonly ILogger<EncodingController> _logger;
         private readonly IStimuliImageDataUrlGetter _stimuliImageDataUrlGetter;
         private readonly IStanfordRepository _stanfordRepository;
-        private readonly Config _config;
+        private readonly IConfig _config;
         private readonly ISessionMetaRepository _sessionMetaRepository;
         private readonly IPhaseSetsGetter _phaseSetsGetter;
         private readonly ICommaDelimitedIntegersCollector _commaDelimitedIntegersCollector;
