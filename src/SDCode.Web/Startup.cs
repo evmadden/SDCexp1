@@ -24,11 +24,11 @@ namespace SDCode.Web
             services.AddControllersWithViews(options=>{
                 options.Filters.Add<ParticipantVerifyFilter>();
             }).AddRazorRuntimeCompilation();
-            services.AddScoped<ICsvFile<ConsentModel, ConsentMap>, CsvFile<ConsentModel, ConsentMap>>();
-            services.AddScoped<ICsvFile<DemographicsModel, DemographicsMap>, CsvFile<DemographicsModel, DemographicsMap>>();
-            services.AddScoped<ICsvFile<PSQIModel, PSQIMap>, CsvFile<PSQIModel, PSQIMap>>();
-            services.AddScoped<ICsvFile<EpworthModel, EpworthMap>, CsvFile<EpworthModel, EpworthMap>>();
-            services.AddScoped<ICsvFile<StanfordModel, StanfordMap>, CsvFile<StanfordModel, StanfordMap>>();
+            services.AddScoped<ICsvFile<ConsentModel, ConsentModel.Map>, CsvFile<ConsentModel, ConsentModel.Map>>();
+            services.AddScoped<ICsvFile<DemographicsModel, DemographicsModel.Map>, CsvFile<DemographicsModel, DemographicsModel.Map>>();
+            services.AddScoped<ICsvFile<PSQIModel, PSQIModel.Map>, CsvFile<PSQIModel, PSQIModel.Map>>();
+            services.AddScoped<ICsvFile<EpworthModel, EpworthModel.Map>, CsvFile<EpworthModel, EpworthModel.Map>>();
+            services.AddScoped<ICsvFile<StanfordModel, StanfordModel.Map>, CsvFile<StanfordModel, StanfordModel.Map>>();
             services.AddScoped<IImageIndexesGetter, ImageIndexesGetter>();
             services.AddScoped<IStimuliImageDataUrlGetter, StimuliImageDataUrlGetter>();
             services.AddScoped<ICsvFile<PhaseSetsModel, PhaseSetsModel.Map>, CsvFile<PhaseSetsModel, PhaseSetsModel.Map>>();
@@ -45,10 +45,10 @@ namespace SDCode.Web
             services.AddScoped<ICollectionRandomizer, CollectionRandomizer>();
             services.AddScoped<ICsvFile<SessionMetaModel, SessionMetaModel.Map>, CsvFile<SessionMetaModel, SessionMetaModel.Map>>();
             services.AddScoped<ITestResponsesRepository, TestResponsesRepository>();
-            services.AddScoped<IRepository<ConsentModel>, Repository<ConsentModel, ConsentMap>>();
-            services.AddScoped<IRepository<DemographicsModel>, Repository<DemographicsModel, DemographicsMap>>();
-            services.AddScoped<IRepository<PSQIModel>, Repository<PSQIModel, PSQIMap>>();
-            services.AddScoped<IRepository<EpworthModel>, Repository<EpworthModel, EpworthMap>>();
+            services.AddScoped<IRepository<ConsentModel>, Repository<ConsentModel, ConsentModel.Map>>();
+            services.AddScoped<IRepository<DemographicsModel>, Repository<DemographicsModel, DemographicsModel.Map>>();
+            services.AddScoped<IRepository<PSQIModel>, Repository<PSQIModel, PSQIModel.Map>>();
+            services.AddScoped<IRepository<EpworthModel>, Repository<EpworthModel, EpworthModel.Map>>();
             services.AddScoped<ISessionMetaRepository, SessionMetaRepository>();
             services.AddScoped<ICommaDelimitedIntegersCollector, CommaDelimitedIntegersCollector>();
             services.AddScoped<IDataTypeDescriptionGetter, DataTypeDescriptionGetter>();

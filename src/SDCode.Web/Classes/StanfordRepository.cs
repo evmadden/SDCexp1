@@ -12,9 +12,9 @@ namespace SDCode.Web.Classes
 
     public class StanfordRepository : IStanfordRepository
     {
-        private readonly ICsvFile<StanfordModel, StanfordMap> _stanfordCsvFile;
+        private readonly ICsvFile<StanfordModel, StanfordModel.Map> _stanfordCsvFile;
 
-        public StanfordRepository(ICsvFile<StanfordModel, StanfordMap> stanfordCsvFile)
+        public StanfordRepository(ICsvFile<StanfordModel, StanfordModel.Map> stanfordCsvFile)
         {
             _stanfordCsvFile = stanfordCsvFile;
         }

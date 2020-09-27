@@ -29,21 +29,20 @@ namespace SDCode.Web.Models
                 return !Immediate.HasValue;
             }
         }
-    }
 
-    // todo mlh move all Map classes inside Model classes
-    public sealed class StanfordMap : ClassMap<StanfordModel>
-    {
-        public StanfordMap()
+        public sealed class Map : ClassMap<StanfordModel>
         {
-            Map(m => m.ParticipantID).Name(nameof(StanfordModel.ParticipantID)).Index(0);
-            Map(m => m.Immediate).Name(nameof(StanfordModel.Immediate)).TypeConverter<CsvSleepinessesConverter>().Index(1);
-            Map(m => m.ImmediateUtc).Name(nameof(StanfordModel.ImmediateUtc)).Index(2);
-            Map(m => m.Delayed).Name(nameof(StanfordModel.Delayed)).TypeConverter<CsvSleepinessesConverter>().Index(3);
-            Map(m => m.DelayedUtc).Name(nameof(StanfordModel.DelayedUtc)).Index(4);
-            Map(m => m.Followup).Name(nameof(StanfordModel.Followup)).TypeConverter<CsvSleepinessesConverter>().Index(5);
-            Map(m => m.FollowupUtc).Name(nameof(StanfordModel.FollowupUtc)).Index(6);
-            Map(m => m.LacksImmediate).Ignore();
+            public Map()
+            {
+                Map(m => m.ParticipantID).Name(nameof(StanfordModel.ParticipantID)).Index(0);
+                Map(m => m.Immediate).Name(nameof(StanfordModel.Immediate)).TypeConverter<CsvSleepinessesConverter>().Index(1);
+                Map(m => m.ImmediateUtc).Name(nameof(StanfordModel.ImmediateUtc)).Index(2);
+                Map(m => m.Delayed).Name(nameof(StanfordModel.Delayed)).TypeConverter<CsvSleepinessesConverter>().Index(3);
+                Map(m => m.DelayedUtc).Name(nameof(StanfordModel.DelayedUtc)).Index(4);
+                Map(m => m.Followup).Name(nameof(StanfordModel.Followup)).TypeConverter<CsvSleepinessesConverter>().Index(5);
+                Map(m => m.FollowupUtc).Name(nameof(StanfordModel.FollowupUtc)).Index(6);
+                Map(m => m.LacksImmediate).Ignore();
+            }
         }
     }
 }

@@ -33,21 +33,21 @@ namespace SDCode.Web.Models
         [Name(nameof(Traffic))]
         [Description("Chance of falling asleep when in a car or bus while stopped for a few minutes in traffic.")]
         public ChancesDozing? Traffic{ get; set; }    
-    }
 
-    public sealed class EpworthMap : ClassMap<EpworthModel>
-    {
-        public EpworthMap()
+        public sealed class Map : ClassMap<EpworthModel>
         {
-            Map(m => m.ParticipantID).Name(nameof(EpworthModel.ParticipantID));
-            Map(m => m.Reading).Name(nameof(EpworthModel.Reading)).TypeConverter<CsvChancesDozingConverter>();
-            Map(m => m.TV).Name(nameof(EpworthModel.TV)).TypeConverter<CsvChancesDozingConverter>();
-            Map(m => m.PublicPlace).Name(nameof(EpworthModel.PublicPlace)).TypeConverter<CsvChancesDozingConverter>();
-            Map(m => m.PassengerCar).Name(nameof(EpworthModel.PassengerCar)).TypeConverter<CsvChancesDozingConverter>();
-            Map(m => m.Afternoon).Name(nameof(EpworthModel.Afternoon)).TypeConverter<CsvChancesDozingConverter>();
-            Map(m => m.Talking).Name(nameof(EpworthModel.Talking)).TypeConverter<CsvChancesDozingConverter>();
-            Map(m => m.Lunch).Name(nameof(EpworthModel.Lunch)).TypeConverter<CsvChancesDozingConverter>();
-            Map(m => m.Traffic).Name(nameof(EpworthModel.Traffic)).TypeConverter<CsvChancesDozingConverter>();
+            public Map()
+            {
+                Map(m => m.ParticipantID).Name(nameof(EpworthModel.ParticipantID));
+                Map(m => m.Reading).Name(nameof(EpworthModel.Reading)).TypeConverter<CsvChancesDozingConverter>();
+                Map(m => m.TV).Name(nameof(EpworthModel.TV)).TypeConverter<CsvChancesDozingConverter>();
+                Map(m => m.PublicPlace).Name(nameof(EpworthModel.PublicPlace)).TypeConverter<CsvChancesDozingConverter>();
+                Map(m => m.PassengerCar).Name(nameof(EpworthModel.PassengerCar)).TypeConverter<CsvChancesDozingConverter>();
+                Map(m => m.Afternoon).Name(nameof(EpworthModel.Afternoon)).TypeConverter<CsvChancesDozingConverter>();
+                Map(m => m.Talking).Name(nameof(EpworthModel.Talking)).TypeConverter<CsvChancesDozingConverter>();
+                Map(m => m.Lunch).Name(nameof(EpworthModel.Lunch)).TypeConverter<CsvChancesDozingConverter>();
+                Map(m => m.Traffic).Name(nameof(EpworthModel.Traffic)).TypeConverter<CsvChancesDozingConverter>();
+            }
         }
     }
 }
