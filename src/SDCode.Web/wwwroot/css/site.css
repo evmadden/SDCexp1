@@ -139,7 +139,7 @@ input[type="radio"] {
   margin-left: 20px;
 }
 
-.questionsOrientationContainer {
+.questionsOrientationContainer { /* todo mlh rename to orientationContainer */
   margin-top: 10px;
   margin-bottom: 10px;
   padding: 10px;

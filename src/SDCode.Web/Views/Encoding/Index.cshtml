@@ -82,10 +82,19 @@
             whatToDo();
         };
 
+        function keyIsSpacebar(key) {
+            return key === ' ';
+        }
+
         document.body.onkeyup = function(e){
-            var spacebarWasPressed = e.key === ' ';
-            if (spacebarWasPressed) {
+            if (keyIsSpacebar(e.key)) {
                 spacebarDetected = true;
+            }
+        }
+
+        document.body.onkeydown = function(e){
+            if (keyIsSpacebar(e.key)) { @* prevent the browser from scrolling the webpage *@
+                e.preventDefault();
             }
         }
 
