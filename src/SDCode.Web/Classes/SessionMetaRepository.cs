@@ -5,7 +5,7 @@ namespace SDCode.Web.Classes
 {
     public interface ISessionMetaRepository
     {
-        SessionMetaModel Get(string participantID, string testName);
+        SessionMetaModel Get(string participantID, string sessionName);
         void Save(SessionMetaModel sessionMeta);
     }
 
@@ -18,10 +18,10 @@ namespace SDCode.Web.Classes
             _csvFile = csvFile;
         }
 
-        public SessionMetaModel Get(string participantID, string testName)
+        public SessionMetaModel Get(string participantID, string sessionName)
         {
             var records = _csvFile.Read().ToList();
-            var result = records.SingleOrDefault(x=>string.Equals(x.ParticipantID, participantID) && string.Equals(x.SessionName, testName)) ?? new SessionMetaModel{ParticipantID=participantID, SessionName=testName};
+            var result = records.SingleOrDefault(x=>string.Equals(x.ParticipantID, participantID) && string.Equals(x.SessionName, sessionName)) ?? new SessionMetaModel{ParticipantID=participantID, SessionName=sessionName};
             return result;
         }
 

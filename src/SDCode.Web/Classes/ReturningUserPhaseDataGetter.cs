@@ -16,8 +16,9 @@ namespace SDCode.Web.Classes
         private readonly IStanfordRepository _stanfordRepository;
         private readonly ITestStartTimeGetter _testStartTimeGetter;
         private readonly Config _config;
+        private IEncodingFinishedChecker _encodingFinishedChecker;
 
-        public ReturningUserPhaseDataGetter(IPhaseSetsGetter phaseSetsGetter, ITestNameGetter testNameGetter, IProgressGetter progressGetter, IStanfordRepository stanfordRepository, ITestStartTimeGetter testStartTimeGetter, IOptions<Config> config)
+        public ReturningUserPhaseDataGetter(IPhaseSetsGetter phaseSetsGetter, ITestNameGetter testNameGetter, IProgressGetter progressGetter, IStanfordRepository stanfordRepository, ITestStartTimeGetter testStartTimeGetter, IOptions<Config> config, IEncodingFinishedChecker encodingFinishedChecker)
         {
             _phaseSetsGetter = phaseSetsGetter;
             _testNameGetter = testNameGetter;
@@ -25,6 +26,7 @@ namespace SDCode.Web.Classes
             _stanfordRepository = stanfordRepository;
             _testStartTimeGetter = testStartTimeGetter;
             _config = config.Value;
+            _encodingFinishedChecker = encodingFinishedChecker;
         }
 
         public IReturningUserPhaseData Get(string participantID)
@@ -35,8 +37,9 @@ namespace SDCode.Web.Classes
             var stanford = _stanfordRepository.Get(participantID);
             DateTime? nextTestWhenUtc = default;
             ReturningUserAction action;
-            bool testNameIsImmediate = string.Equals(testName, nameof(phaseSets.Immediate));
-            if (testNameIsImmediate && stanford.LacksImmediate) {
+            var testNameIsImmediate = string.Equals(testName, nameof(phaseSets.Immediate));
+            var encodingRequired = !_encodingFinishedChecker.IsFinished(participantID); 
+            if (encodingRequired) {
                 action = ReturningUserAction.NewUser;
             } else if (testName == default) {
                 action = ReturningUserAction.Done;
@@ -52,7 +55,11 @@ namespace SDCode.Web.Classes
                 } else if (tooLate) {
                     action = ReturningUserAction.TooLate;
                 } else {
-                    action = testNameIsImmediate ? ReturningUserAction.Test : ReturningUserAction.Stanford;
+                    if (testNameIsImmediate) {
+                        action = stanford.LacksImmediate ? ReturningUserAction.Stanford : ReturningUserAction.Test;
+                    } else {
+                        action = ReturningUserAction.Test;
+                    }
                 }
             }
             var result = new ReturningUserPhaseData(action, progress, testName, nextTestWhenUtc);

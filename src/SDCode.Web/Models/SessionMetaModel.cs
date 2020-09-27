@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using CsvHelper.Configuration;
@@ -26,6 +27,9 @@ namespace SDCode.Web.Models
         [Name(nameof(ObscuredReason))]
         [Description("The participant-provided reason for obscured image(s).")]
         public string ObscuredReason { get; set; }
+        [Name(nameof(FinishedWhenUtc))]
+        [Description("The moment the participant finished the phase.")]
+        public DateTime? FinishedWhenUtc { get; set; }
 
         public sealed class Map : ClassMap<SessionMetaModel> {
             public Map() {
@@ -35,6 +39,7 @@ namespace SDCode.Web.Models
                 Map(m => m.NeglectedReason).Name(nameof(NeglectedReason));
                 Map(m => m.ObscuredImages).Name(nameof(ObscuredImages)).TypeConverter<CsvStringsConverter>();
                 Map(m => m.ObscuredReason).Name(nameof(ObscuredReason));
+                Map(m => m.FinishedWhenUtc).Name(nameof(FinishedWhenUtc));
             }
         }
     }

@@ -56,6 +56,7 @@ namespace SDCode.Web
             services.AddScoped<IStimuliImageUrlGetter, StimuliImageUrlGetter>();
             services.AddScoped<ITestStartTimeGetter, TestStartTimeGetter>();
             services.AddScoped<IReturningUserPhaseDataGetter, ReturningUserPhaseDataGetter>();
+            services.AddScoped<IEncodingFinishedChecker, EncodingFinishedChecker>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

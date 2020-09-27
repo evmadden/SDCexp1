@@ -6,6 +6,7 @@ using SDCode.Web.Models;
 using SDCode.Web.Classes;
 using Microsoft.Extensions.Options;
 using System.Text.Json;
+using System;
 
 namespace SDCode.Web.Controllers
 {
@@ -75,6 +76,7 @@ namespace SDCode.Web.Controllers
             var participantRecord = _sessionMetaRepository.Get(participantID, "Encoding");
             participantRecord.NeglectedReason = neglectedReason;
             participantRecord.ObscuredReason = obscuredReason;
+            participantRecord.FinishedWhenUtc = DateTime.UtcNow;
             _sessionMetaRepository.Save(participantRecord);
             return View(new EncodingFinishedViewModel(participantID));
         }
