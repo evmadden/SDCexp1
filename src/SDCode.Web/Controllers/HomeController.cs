@@ -106,6 +106,11 @@ namespace SDCode.Web.Controllers
             return View();
         }
 
+        public IActionResult Contact() 
+        {
+            return View();
+        }
+
         public IActionResult LearnMore() 
         {
             return View();
