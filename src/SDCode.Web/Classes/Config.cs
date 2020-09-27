@@ -11,5 +11,8 @@
             public int TestWaitDelayedDays { get; set; }
             public int TestWaitFollowupDays { get; set; }
             public int TestTooLateDays { get; set; }
+            public int EncodingImageCountPerSubset { get; set; }
+            public int TestImageCountPerOldSubset { get; set; }
+            public int TestImageCountPerNewSubset { get; set; }
         }
 }
