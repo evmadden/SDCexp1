@@ -131,6 +131,7 @@ namespace SDCode.Web.Controllers
         public IActionResult End(string participantID, string testName, string obscuredReason) {
             var participantRecord = _sessionMetaRepository.Get(participantID, testName);
             participantRecord.ObscuredReason = obscuredReason;
+            participantRecord.FinishedWhenUtc = DateTime.UtcNow;
             _sessionMetaRepository.Save(participantRecord);
             return View(new TestEndedViewModel(participantID, testName));
         }
