@@ -143,12 +143,13 @@
     <img id="image" class="testBox" style="display: none;"/>
     <div id="confidence" class="testBox" style="display: none;">
         <div>
-            How confident are you in your answer? <br/>
-            <br/>
-            1 - @(Views_Shared_TestInstructions.GetDescription(Confidences.NotConfident))
-            2 - @(Views_Shared_TestInstructions.GetDescription(Confidences.SomewhatConfident))
-            3 - @(Views_Shared_TestInstructions.GetDescription(Confidences.Confident))
-            4 - @(Views_Shared_TestInstructions.GetDescription(Confidences.VeryConfident))
+            <p>How confident are you in your answer?</p>
+            <div>
+                1 - @(Views_Shared_TestInstructions.GetDescription(Confidences.NotConfident))
+                2 - @(Views_Shared_TestInstructions.GetDescription(Confidences.SomewhatConfident))
+                3 - @(Views_Shared_TestInstructions.GetDescription(Confidences.Confident))
+                4 - @(Views_Shared_TestInstructions.GetDescription(Confidences.VeryConfident))
+            </div>
         </div>
     </div>
     <div id="feedback" class="testBox" style="display: none;">
