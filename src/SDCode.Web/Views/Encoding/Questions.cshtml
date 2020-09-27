@@ -8,12 +8,12 @@
     <form action="@Url.Action("Finished", "Encoding")" method="POST">
         <input type="hidden" name="participantID" value="@Model.ParticipantID" />
 
-    <h1 class="display-4; text-center;">Study Phase Questions</h1>
+    <h1 class="display-4">Study Phase Questions</h1>
     <br/>
     <p>This completes the STUDY PHASE.</p>
     <div>
         <div>
-            <h1 class="display-4; text-center;">Questions</h1>
+            <h1 class="display-4">Questions</h1>
             <p>Please explain any problems that occurred during the STUDY PHASE.</p>
         </div>
         @if (Model.ShouldQuestionNeglected) {
