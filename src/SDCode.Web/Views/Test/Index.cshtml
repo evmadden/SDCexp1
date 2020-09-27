@@ -145,7 +145,10 @@
         <div>
             How confident are you in your answer? <br/>
             <br/>
-            1 - Not Confident  2 - Somewhat Confident  3 - Confident  4 - Very Confident
+            1 - @(Views_Shared_TestInstructions.GetDescription(Confidences.NotConfident))
+            2 - @(Views_Shared_TestInstructions.GetDescription(Confidences.SomewhatConfident))
+            3 - @(Views_Shared_TestInstructions.GetDescription(Confidences.Confident))
+            4 - @(Views_Shared_TestInstructions.GetDescription(Confidences.VeryConfident))
         </div>
     </div>
     <div id="feedback" class="testBox" style="display: none;">

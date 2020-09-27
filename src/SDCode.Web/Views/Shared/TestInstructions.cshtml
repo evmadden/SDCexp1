@@ -1,7 +1,7 @@
 ﻿@using System.Text.RegularExpressions
 @using SDCode.Web.Classes
 @functions {
-    public string GetDescription(Confidences confidence) { // https://stackoverflow.com/a/5796427/116895
+    public static string GetDescription(Confidences confidence) { // https://stackoverflow.com/a/5796427/116895
         return Regex.Replace(Enum.GetName(typeof(Confidences), confidence), "(\\B[A-Z])", " $1");
     }
 }
