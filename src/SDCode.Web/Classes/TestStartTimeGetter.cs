@@ -16,7 +16,7 @@ namespace SDCode.Web.Classes
         private readonly IProgressGetter _progressGetter;
         private readonly ITestNameGetter _testNameGetter;
         private readonly ITestResponsesRepository _testResponsesRepository;
-        private readonly Config _config; // todo mlh create and propagate IConfig
+        private readonly Config _config;
         private readonly IStanfordRepository _stanfordRepository;
 
         public TestStartTimeGetter(IPhaseSetsGetter phaseSetsGetter, IProgressGetter progressGetter, ITestNameGetter testNameGetter, ITestResponsesRepository testResponsesRepository, IOptions<Config> config, IStanfordRepository stanfordRepository)
