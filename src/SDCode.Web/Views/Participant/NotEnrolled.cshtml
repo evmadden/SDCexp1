@@ -8,7 +8,7 @@
     <p>Oops!  It looks like you are using a Participant ID that does not exist yet.</p>
 </div>
 <p>Please check the ID and @Html.ActionLink("try again", "Index", "Home").<br/>
-<p>If you feel that you have reached this message by mistake, please contact the researcher at <a href="mailto:evm517@york.ac.uk">evm517@york.ac.uk</a></p>
+<p>@await Html.PartialAsync("~/Views/Shared/Mistake.cshtml")</p>
 <div>
     Participant ID Not Found: @Model.ParticipantID
 </div>

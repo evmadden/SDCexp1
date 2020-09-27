@@ -9,7 +9,7 @@
     <div class="questionsOrientationContainer">
         <p>It looks like you are a New Participant. Please proceed by clicking "New Participant" below.</p>
     </div>
-    <p>If you feel you have reached this page by mistake, please email the researcher at <a href="mailto:evm517@york.ac.uk">evm517@york.ac.uk</a>.</p>
+    <p>@await Html.PartialAsync("~/Views/Shared/Mistake.cshtml")</p>
     <form action="@Url.Action("Welcome", "Home")" method="POST">
         <input type="hidden" name="participantID" value="@Model.ParticipantID" />
         @await Html.PartialAsync("~/Views/Shared/ActionBar.cshtml", new ActionBarViewModel("New Participant"))
@@ -21,7 +21,7 @@
     </div>
     var whenToDisplay = @Model.NextTestWhenUtc?.AddMinutes(1);
     <p>Next session available at: @whenToDisplay?.ToString("MM/dd/yyyy") @whenToDisplay?.ToString("h:mm tt") UTC</p>
-    <p>If you feel you have reached this page by mistake, please email the researcher at <a href="mailto:evm517@york.ac.uk">evm517@york.ac.uk</a>.</p>
+    <p>@await Html.PartialAsync("~/Views/Shared/Mistake.cshtml")</p>
 } else if (Model.Action == ReturningUserAction.TooLate) {
     @await Html.PartialAsync("~/Views/Shared/LogoBanner.cshtml")
     <div class="questionsOrientationContainer">
