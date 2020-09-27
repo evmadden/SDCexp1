@@ -156,3 +156,21 @@ input[type="radio"] {
   text-align: right;
   background-color: gainsboro;
 }
+
+.deviceTooSmallContainer {
+  text-align: center;
+  display: none;
+}
+
+.deviceTooSmallContainer > div {
+  font-weight: bold;
+}
+
+@media only screen and (max-device-width: 1024px) {
+  .container {
+    display: none;
+  }
+  .deviceTooSmallContainer {
+    display: block;
+  }
+}
