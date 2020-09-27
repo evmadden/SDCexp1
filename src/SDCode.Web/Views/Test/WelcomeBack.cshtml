@@ -6,7 +6,7 @@
 
 @if (Model.Action == ReturningUserAction.NewUser) {
     @await Html.PartialAsync("~/Views/Shared/LogoBanner.cshtml")
-    <div class="questionsOrientationContainer">
+    <div class="orientationContainer">
         <p>It looks like you are a New Participant. Please proceed by clicking "New Participant" below.</p>
     </div>
     <p>@await Html.PartialAsync("~/Views/Shared/Mistake.cshtml")</p>
@@ -16,7 +16,7 @@
     </form>
 } else if (Model.Action == ReturningUserAction.Wait) {
     @await Html.PartialAsync("~/Views/Shared/LogoBanner.cshtml")
-    <div class="questionsOrientationContainer">
+    <div class="orientationContainer">
         <p>It looks like you are trying to access the next session too soon.  See below for your next session time.</p>
     </div>
     var whenToDisplay = @Model.NextTestWhenUtc?.AddMinutes(1);
@@ -24,7 +24,7 @@
     <p>@await Html.PartialAsync("~/Views/Shared/Mistake.cshtml")</p>
 } else if (Model.Action == ReturningUserAction.TooLate) {
     @await Html.PartialAsync("~/Views/Shared/LogoBanner.cshtml")
-    <div class="questionsOrientationContainer">
+    <div class="orientationContainer">
         <p>It looks like too much time has passed since your last session.</p>
     </div>
     <p>Please email the researcher at <a href="mailto:evm517@york.ac.uk">evm517@york.ac.uk</a>.</p> @* todo mlh refactor email address to re-use *@

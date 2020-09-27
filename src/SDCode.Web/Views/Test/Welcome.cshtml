@@ -8,7 +8,7 @@
     <form action="@Url.Action("Index", "Test")" method="POST">
         <input type="hidden" name="participantID" value="@Model.ParticipantID" />
     <h1 class="display-4">Test Phase</h1>
-    <div class="questionsOrientationContainer">
+    <div class="orientationContainer">
         <p>Next, we will test your memory for some of the images you saw in the STUDY phase.  In this session, you will see 144 images.</p>
     </div>
     @await Html.PartialAsync("~/Views/Shared/TestInstructions.cshtml")
