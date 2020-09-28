@@ -17,16 +17,16 @@ namespace SDCode.Web.Classes
         private readonly ITestNameGetter _testNameGetter;
         private readonly ITestResponsesRepository _testResponsesRepository;
         private readonly Config _config;
-        private readonly IStanfordRepository _stanfordRepository;
+        private readonly ISessionMetaRepository _sessionMetaRepository;
 
-        public TestStartTimeGetter(IPhaseSetsGetter phaseSetsGetter, IProgressGetter progressGetter, ITestNameGetter testNameGetter, ITestResponsesRepository testResponsesRepository, IOptions<Config> config, IStanfordRepository stanfordRepository)
+        public TestStartTimeGetter(IPhaseSetsGetter phaseSetsGetter, IProgressGetter progressGetter, ITestNameGetter testNameGetter, ITestResponsesRepository testResponsesRepository, IOptions<Config> config, ISessionMetaRepository sessionMetaRepository)
         {
             _phaseSetsGetter = phaseSetsGetter;
             _progressGetter = progressGetter;
             _testNameGetter = testNameGetter;
             _testResponsesRepository = testResponsesRepository;
             _config = config.Value;
-            _stanfordRepository = stanfordRepository;
+            _sessionMetaRepository = sessionMetaRepository;
         }
 
         public DateTime GetUtc(string participantID)
@@ -39,8 +39,8 @@ namespace SDCode.Web.Classes
             bool testNameIsImmediate = string.Equals(testName, nameof(phaseSets.Immediate));
             DateTime priorPhaseStartTimeUtc;
             if (testNameIsImmediate) {
-                var stanford = _stanfordRepository.Get(participantID);
-                priorPhaseStartTimeUtc = stanford.ImmediateUtc.HasValue ? stanford.ImmediateUtc.Value : throw new Exception("Stanford (Immediate) missing unexpectedly.");
+                var encodingSessionMeta = _sessionMetaRepository.Get(participantID, "Encoding");
+                priorPhaseStartTimeUtc = encodingSessionMeta.FinishedWhenUtc.HasValue ? encodingSessionMeta.FinishedWhenUtc.Value : throw new Exception("Encoding's FinishedWhenUtc missing unexpectedly.");
             } else {
                 var priorTestName = _testNameGetter.Get(phaseSets, progress-1);
                 var priorTestResponses = _testResponsesRepository.Read(participantID, priorTestName);
