@@ -31,6 +31,12 @@ namespace SDCode.Web.Classes
             var result = phaseSets.SingleOrDefault(x => string.Equals(x.ParticipantID, participantID));
             if (result == default)
             {
+                // todo mlh remove notes:
+                // images average 73K each
+                // each participant views 864 images (432 during encoding and 432 combined during testing)
+                // that's roughly 60MB (864 * 73K) worth of outbound traffic images per participant
+                // -- ~30MB during encoding
+                // -- ~10MB during each test
                 var testImageCountPerOldType = _config.TestImageCountPerOldSubset;
                 var testImageCountPerNewType = _config.TestImageCountPerNewSubset;
                 var oldImageIndexes = GetTestImageIndexes(testImageCountPerOldType, new List<string>{"A", "AI", "D", "DI", "F", "FI"});
