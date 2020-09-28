@@ -19,7 +19,7 @@
         var feedbackMessageElement = document.getElementById('feedbackMessage');
         var waitElement = document.getElementById('wait');
         var retryFirstImageContainerElement = document.getElementById('retryFirstImageContainer');
-        var retryFirstImageButtonElement = document.getElementById('retryFirstImageButtonElement');
+        var retryFirstImageButtonElement = document.getElementById('retryFirstImageButton');
         var imageJudgement;
         var imageConfidence;
         var imageShownAt;
@@ -140,6 +140,11 @@
             xhr.send(`participantID=@Model.ParticipantID&progress=@Model.Progress`);            
         };
 
+        retryFirstImageButtonElement.addEventListener("click", function(){
+            retryFirstImageContainerElement.style.display = 'none';
+            setTimeout(showFirstImage, 500);
+        });
+
         showFirstImage();
     });
 </script>
@@ -166,8 +171,8 @@
     </div>
     <div id="retryFirstImageContainer" class="testBox" style="display: none;">
         <div>
-            <p>First image failed to load.</p>
-            <button id="retryFirstImageButton">Try again.</button>
+            <p>Image failed to load.</p>
+            <button id="retryFirstImageButton">Try again</button>
         </div>
     </div>
 </div>
