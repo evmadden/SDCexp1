@@ -1,0 +1,14 @@
+﻿@{
+    ViewData["Title"] = "Previously Interrupted";
+}
+
+@await Html.PartialAsync("~/Views/Shared/LogoBanner.cshtml")
+
+<div>
+    <h1 class="display-4">Interrupted</h1>
+    <div class="orientationContainer">
+        Your study phase was previously interrupted.
+    </div>
+    <p>Please contact the researcher (@await Html.PartialAsync("~/Views/Shared/ResearcherEmailLink.cshtml")) for further guidance.</p>
+    <p>@await Html.PartialAsync("~/Views/Shared/Mistake.cshtml")</p>
+</div>

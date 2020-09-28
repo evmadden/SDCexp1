@@ -67,9 +67,18 @@ namespace SDCode.Web.Controllers
             if (encodingFinished) {
                 return RedirectToAction("Returning", "Home");
             } else {
-                _consentRepository.Save(new ConsentModel{ParticipantID = participantID, InfoSheet = infoSheet, Withdraw = withdraw, NPSDisorder = npsDisorder, ADHD = adhd, HeadInjury = headInjury, NormalVision = normalVision, VisionProblems = visionProblems, AltShifts = altShifts, Smoker = smoker, DataProtection = dataProtection, AgreeParticipate = agreeParticipate});
-                return View(new DemographicsViewModel(participantID));
+                var stanford = _stanfordRepository.Get(participantID);
+                if (stanford.Immediate.HasValue) {
+                    return RedirectToAction("PreviouslyInterrupted", "Home");
+                } else {
+                    _consentRepository.Save(new ConsentModel{ParticipantID = participantID, InfoSheet = infoSheet, Withdraw = withdraw, NPSDisorder = npsDisorder, ADHD = adhd, HeadInjury = headInjury, NormalVision = normalVision, VisionProblems = visionProblems, AltShifts = altShifts, Smoker = smoker, DataProtection = dataProtection, AgreeParticipate = agreeParticipate});
+                    return View(new DemographicsViewModel(participantID));
+                }
             }
+        }
+
+        public IActionResult PreviouslyInterrupted() {
+            return View();
         }
 
         [HttpPost]

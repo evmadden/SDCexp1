@@ -27,7 +27,7 @@
     <div class="orientationContainer">
         <p>It looks like too much time has passed since your last session.</p>
     </div>
-    <p>Please email the researcher at <a href="mailto:evm517@york.ac.uk">evm517@york.ac.uk</a>.</p> @* todo mlh refactor email address to re-use *@
+    <p>Please email the researcher at @await Html.PartialAsync("~/Views/Shared/ResearcherEmailLink.cshtml").</p> @* todo mlh refactor email address to re-use *@
 } else {
     if (Model.Action == ReturningUserAction.Stanford) {
         @await Html.PartialAsync("~/Views/Shared/LogoBanner.cshtml")
