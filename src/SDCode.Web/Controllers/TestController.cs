@@ -81,12 +81,6 @@ namespace SDCode.Web.Controllers
             return View();
         }
 
-        // todo mlh remove
-        // [HttpPost]
-        // public IActionResult Stanford(string participantID) { 
-        //     return View(new StanfordViewModel(participantID, false));
-        // }
-
         [HttpPost]
         public IActionResult Index(string participantID, Sleepinesses? stanford)
         {
