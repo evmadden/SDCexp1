@@ -58,6 +58,7 @@ namespace SDCode.Web.Controllers
             var encoding = phaseSets.Encoding.ToList();
             sessionMeta.NeglectedImages = neglectedIndexes.Select(x=>encoding[x]).ToList();
             sessionMeta.ObscuredImages = obscuredIndexes.Select(x=>encoding[x]).ToList();
+            sessionMeta.FinishedWhenUtc = DateTime.UtcNow;
             _sessionMetaRepository.Save(sessionMeta);
             var nextAction = sessionMeta.NeglectedImages.Any() || sessionMeta.ObscuredImages.Any() ? Url.Action(nameof(Questions)) : Url.Action(nameof(Finished));
             return Json(new {success=true, nextAction});
@@ -73,11 +74,10 @@ namespace SDCode.Web.Controllers
         [HttpPost]
         public IActionResult Finished(string participantID, string neglectedReason, string obscuredReason)
         {
-            var participantRecord = _sessionMetaRepository.Get(participantID, "Encoding");
-            participantRecord.NeglectedReason = neglectedReason;
-            participantRecord.ObscuredReason = obscuredReason;
-            participantRecord.FinishedWhenUtc = DateTime.UtcNow;
-            _sessionMetaRepository.Save(participantRecord);
+            var sessionMeta = _sessionMetaRepository.Get(participantID, "Encoding");
+            sessionMeta.NeglectedReason = neglectedReason;
+            sessionMeta.ObscuredReason = obscuredReason;
+            _sessionMetaRepository.Save(sessionMeta);
             return View(new EncodingFinishedViewModel(participantID));
         }
 
