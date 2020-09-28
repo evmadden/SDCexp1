@@ -18,6 +18,8 @@
         var feedbackElement = document.getElementById('feedback');
         var feedbackMessageElement = document.getElementById('feedbackMessage');
         var waitElement = document.getElementById('wait');
+        var retryFirstImageContainerElement = document.getElementById('retryFirstImageContainer');
+        var retryFirstImageButtonElement = document.getElementById('retryFirstImageButtonElement');
         var imageJudgement;
         var imageConfidence;
         var imageShownAt;
@@ -124,18 +126,20 @@
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             xhr.onreadystatechange = function() {
                 if (this.readyState === XMLHttpRequest.DONE) {
+                    clearTimeout(waitId);
+                    waitElement.style.display = 'none';
                     if (this.status === 200) {
-                        clearTimeout(waitId);
-                        waitElement.style.display = 'none';
+                        retryFirstImageContainerElement.style.display = 'none';
                         var response = JSON.parse(this.response);
                         showImage(response.viewModel.imageUrl, response.viewModel.progress);
                     } else {
-                        // todo mlh what to do if image fails to load?
+                        retryFirstImageContainerElement.style.display = 'table';
                     }
                 }
             }
             xhr.send(`participantID=@Model.ParticipantID&progress=@Model.Progress`);            
         };
+
         showFirstImage();
     });
 </script>
@@ -145,7 +149,7 @@
         <div>
             <p>How confident are you in your answer?</p>
             <div>
-                1 - @(Views_Shared_TestInstructions.GetDescription(Confidences.NotConfident))
+                1 - @(Views_Shared_TestInstructions.GetDescription(Confidences.NotConfident)) @* todo mlh refactor away from this method use, which requires hard recompile to load View source modifications *@
                 2 - @(Views_Shared_TestInstructions.GetDescription(Confidences.SomewhatConfident))
                 3 - @(Views_Shared_TestInstructions.GetDescription(Confidences.Confident))
                 4 - @(Views_Shared_TestInstructions.GetDescription(Confidences.VeryConfident))
@@ -158,6 +162,12 @@
     <div id="wait" class="testBox" style="display: none;">
         <div>
             Please wait.
+        </div>
+    </div>
+    <div id="retryFirstImageContainer" class="testBox" style="display: none;">
+        <div>
+            <p>First image failed to load.</p>
+            <button id="retryFirstImageButton">Try again.</button>
         </div>
     </div>
 </div>
