@@ -1,23 +1,14 @@
-using System;
-using SDCode.Web.Classes;
-
 namespace SDCode.Web.Models
 {
     public class TestWelcomeBackViewModel
     {
-        public TestWelcomeBackViewModel(string participantID, ReturningUserAction action, int progress, string testName, DateTime? nextTestWhenUtc)
+        public TestWelcomeBackViewModel(string participantID, bool stanfordNeeded)
         {
             ParticipantID = participantID;
-            Action = action;
-            Progress = progress;
-            TestName = testName;
-            NextTestWhenUtc = nextTestWhenUtc;
+            StanfordNeeded = stanfordNeeded;
         }
 
         public string ParticipantID {get;}
-        public ReturningUserAction Action { get; }
-        public int Progress { get; }
-        public string TestName { get; }
-        public DateTime? NextTestWhenUtc { get; }
+        public bool StanfordNeeded { get; }
     }
 }

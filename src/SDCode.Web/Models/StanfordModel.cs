@@ -24,13 +24,7 @@ namespace SDCode.Web.Models
         public Sleepinesses? Followup { get; set; }
         [Name(nameof (FollowupUtc))] 
         public DateTime? FollowupUtc { get; set; }
-        [Ignore]
-        public bool LacksImmediate { // note: no need to Name/Description this property, as it is ignored for CSV (see Map below)
-            get {
-                return !Immediate.HasValue;
-            }
-        }
-
+        
         public sealed class Map : ClassMap<StanfordModel>
         {
             public Map()

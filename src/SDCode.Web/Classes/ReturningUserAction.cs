@@ -2,7 +2,6 @@
 {
     public enum ReturningUserAction {
         NewUser,
-        Stanford,
         Test,
         Wait,
         TooLate,

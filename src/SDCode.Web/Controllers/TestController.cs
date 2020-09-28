@@ -58,12 +58,34 @@ namespace SDCode.Web.Controllers
             return View(new TestWelcomeViewModel(participantID));
         }
 
-        [HttpPost]
         public IActionResult WelcomeBack(string participantID)
         {
-            IReturningUserPhaseData phaseData = _returningUserPhaseDataGetter.Get(participantID);
-            return View(new TestWelcomeBackViewModel(participantID, phaseData.Action, phaseData.Progress, phaseData.TestName, phaseData.NextTestWhenUtc));
+            var testName = _testNameGetter.Get(participantID);
+            var stanfordNeeded = !string.Equals(testName, "Immediate");
+            return View(new TestWelcomeBackViewModel(participantID, stanfordNeeded));
         }
+       
+        [HttpPost]
+        public IActionResult Stanford(string participantID)
+        {
+            return View(new StanfordViewModel(participantID, false));
+        }
+
+        [HttpPost]
+        public IActionResult Wait(string participantID, string whenToReturn) {
+            return View(new TestWaitViewModel(participantID, whenToReturn));
+        }
+
+        [HttpPost]
+        public IActionResult Expired() {
+            return View();
+        }
+
+        // todo mlh remove
+        // [HttpPost]
+        // public IActionResult Stanford(string participantID) { 
+        //     return View(new StanfordViewModel(participantID, false));
+        // }
 
         [HttpPost]
         public IActionResult Index(string participantID, Sleepinesses? stanford)

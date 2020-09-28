@@ -55,11 +55,7 @@ namespace SDCode.Web.Classes
                 } else if (tooLate) {
                     action = ReturningUserAction.TooLate;
                 } else {
-                    if (testNameIsImmediate) {
-                        action = stanford.LacksImmediate ? ReturningUserAction.Stanford : ReturningUserAction.Test;
-                    } else {
-                        action = ReturningUserAction.Test;
-                    }
+                    action = ReturningUserAction.Test;
                 }
             }
             var result = new ReturningUserPhaseData(action, progress, testName, nextTestWhenUtc);

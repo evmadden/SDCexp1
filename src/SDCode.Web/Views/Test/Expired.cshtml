@@ -1,0 +1,10 @@
+﻿@{
+    ViewData["Title"] = "Wait";
+}
+
+@await Html.PartialAsync("~/Views/Shared/LogoBanner.cshtml")
+<h1 class="display-4">Expired</h1>
+<div class="orientationContainer">
+    <p>It looks like too much time has passed since your last session.</p>
+</div>
+<p>Please email the researcher at @await Html.PartialAsync("~/Views/Shared/ResearcherEmailLink.cshtml").</p>

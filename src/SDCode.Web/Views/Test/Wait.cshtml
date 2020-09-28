@@ -1,0 +1,16 @@
+﻿@model TestWaitViewModel
+@{
+    ViewData["Title"] = "Wait";
+}
+
+@await Html.PartialAsync("~/Views/Shared/LogoBanner.cshtml")
+
+<h1 class="display-4">Wait</h1>
+
+<div class="orientationContainer">
+    <p>It looks like you are trying to access the next session too soon.  See below for your next session time.</p>
+</div>
+
+<p>Next session available at: @Model.WhenToReturn</p>
+
+<p>@await Html.PartialAsync("~/Views/Shared/Mistake.cshtml")</p>

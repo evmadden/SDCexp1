@@ -2,17 +2,10 @@
     ViewData["Title"] = "Home";
 }
 
+@* todo mlh move javascript to .js file(s) *@
+
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        @* var buttons = document.getElementsByClassName('firstPageButton');
-        for (var i=0;i<buttons.length; i++) {
-            buttons[i].addEventListener('click', function(){
-                var button = this;
-                var url = button.getAttribute('data-url');
-                location.href = url;
-            });
-        } *@
-
         var loginFormElement = document.getElementById('loginForm');
         var loginButtonElement = document.getElementById('actionBarSubmitButton');
         var participantIdInputElement = document.getElementById('participantId')
@@ -33,8 +26,10 @@
                         if (response.success) {
                             var nextFormElement = document.getElementById('nextForm');
                             var nextParticipantIdElement = document.getElementById('nextParticipantID');
+                            var nextWhenToReturnElement = document.getElementById('nextWhenToReturn');
                             nextFormElement.action = response.action;
                             nextParticipantIdElement.value = response.participantID;
+                            nextWhenToReturnElement.value = response.whenToReturn;
                             nextFormElement.submit();
                         } else {
                             errorMessage = "There was an unexpected error."
@@ -90,7 +85,7 @@
 
 <div id="formDiv">
     <form id="loginForm" action="" method="POST">
-        Participant ID: <input type="text" id="participantId" name="participantID" />
+        <label for="participantId">Participant ID:</label> <input type="text" id="participantId" name="participantID" />
         @await Html.PartialAsync("~/Views/Shared/ActionBar.cshtml", new ActionBarViewModel("Login"))
     </form>
 </div>
@@ -98,15 +93,6 @@
 <div style="display: none;">
     <form id="nextForm" method="POST">
         <input id="nextParticipantID" name="participantID" type="hidden" />
+        <input id="nextWhenToReturn" name="whenToReturn" type="hidden" />
     </form>
 </div>
-
-
-@* <div id="buttonsRow" class="row">
-    <div class="col-md firstPageButton" data-url="@Url.Action("Welcome")">
-        <div>New Participant</div>
-    </div>
-    <div class="col-md firstPageButton" data-url="@Url.Action("WelcomeBack")">
-        <div>Returning Participant</div>
-    </div>
-</div> *@

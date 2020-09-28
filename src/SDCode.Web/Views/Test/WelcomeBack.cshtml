@@ -1,44 +1,33 @@
-@model SDCode.Web.Models.TestWelcomeBackViewModel
-@using SDCode.Web.Classes;
+﻿@model TestWelcomeBackViewModel
 @{
     ViewData["Title"] = "Welcome Back";
 }
 
-@if (Model.Action == ReturningUserAction.NewUser) { @* todo mlh remove this now-unnecessary scenario *@
-    @await Html.PartialAsync("~/Views/Shared/LogoBanner.cshtml")
-    <div class="orientationContainer">
-        <p>It looks like you are a New Participant. Please proceed by clicking "New Participant" below.</p>
-    </div>
-    <p>@await Html.PartialAsync("~/Views/Shared/Mistake.cshtml")</p>
-    <form action="@Url.Action("Welcome", "Home")" method="POST">
-        <input type="hidden" name="participantID" value="@Model.ParticipantID" />
-        @await Html.PartialAsync("~/Views/Shared/ActionBar.cshtml", new ActionBarViewModel("New Participant"))
-    </form>
-} else if (Model.Action == ReturningUserAction.Wait) { @* todo mlh move this scenario to Login *@
-    @await Html.PartialAsync("~/Views/Shared/LogoBanner.cshtml")
-    <div class="orientationContainer">
-        <p>It looks like you are trying to access the next session too soon.  See below for your next session time.</p>
-    </div>
-    var whenToDisplay = @Model.NextTestWhenUtc?.AddMinutes(1);
-    <p>Next session available at: @whenToDisplay?.ToString("MM/dd/yyyy") @whenToDisplay?.ToString("h:mm tt") UTC</p>
-    <p>@await Html.PartialAsync("~/Views/Shared/Mistake.cshtml")</p>
-} else if (Model.Action == ReturningUserAction.TooLate) { @* todo mlh move this scenario to Login *@
-    @await Html.PartialAsync("~/Views/Shared/LogoBanner.cshtml")
-    <div class="orientationContainer">
-        <p>It looks like too much time has passed since your last session.</p>
-    </div>
-    <p>Please email the researcher at @await Html.PartialAsync("~/Views/Shared/ResearcherEmailLink.cshtml").</p> @* todo mlh refactor email address to re-use *@
-} else {
-    if (Model.Action == ReturningUserAction.Stanford) { @* todo mlh move this scenario to Login *@
-        @await Html.PartialAsync("~/Views/Shared/LogoBanner.cshtml")
-        @await Html.PartialAsync("~/Views/ImageCheck/StanfordForm.cshtml", new StanfordFormViewModel(Model.ParticipantID, Url.Action("Index", "ImageCheck"), Url.Action("Index"), false))
-    } else { @* todo mlh move this scenario to Login *@
-        <form action="@Url.Action("Index", "ImageCheck")" method="POST">
-            <input type="hidden" name="nextActionAfterImageCheck" value="@Url.Action("Index")" />
+@await Html.PartialAsync("~/Views/Shared/LogoMasthead.cshtml")
+<div class="text-center">
+    <h1 class="display-4">@await Html.PartialAsync("~/Views/Shared/StudyTitle.cshtml")</h1>
+</div>
+<div class="orientationContainer">
+    <p>In this session, we will be testing your memory of the images you saw in the STUDY PHASE.
+        This testing session will follow the same format as the previous one.</p>
+    <p>First, you will be asked to rate your CURRENT sleepiness.  Then, like before, you will see 144 images.</p>
+</div>
+<div>
+    @await Html.PartialAsync("~/Views/Shared/TestInstructions.cshtml")
+</div>
+<div>
+    <p>Press the "Next" button to rate your sleepiness and start the next TEST PHASE.</p>
+    @if (Model.StanfordNeeded) {
+        <form action="@Url.Action("Stanford")" method="POST">
             <input type="hidden" name="participantID" value="@Model.ParticipantID" />
+            @await Html.PartialAsync("~/Views/Shared/ActionBar.cshtml", new ActionBarViewModel("Next"))
         </form>
-        <script>
-            document.getElementsByTagName('form')[0].submit();
-        </script>
-    }                                                                
-}
+    } else {
+        <form action="@Url.Action("Index", "ImageCheck")" method="POST">
+            <input type="hidden" name="participantID" value="@Model.ParticipantID" />
+            <input type="hidden" name="nextActionAfterImageCheck" value="@Url.Action("Index")" />
+            <input type="hidden" name="showSpacebarOrientation" value="false" />
+            @await Html.PartialAsync("~/Views/Shared/ActionBar.cshtml", new ActionBarViewModel("Next"))
+        </form>
+    }
+</div>

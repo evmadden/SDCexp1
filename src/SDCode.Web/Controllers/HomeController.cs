@@ -40,11 +40,6 @@ namespace SDCode.Web.Controllers
             return View();
         }
 
-        public IActionResult WelcomeBack(string participantID)
-        {
-            return View(new HomeWelcomeBackViewModel(participantID));
-        }
-       
         [HttpPost]
         public IActionResult ConsentInfo(string participantID)
         {
@@ -115,17 +110,23 @@ namespace SDCode.Web.Controllers
         public IActionResult Login(string participantID) 
         {
             string action;
+            string whenToReturn = null;
             IReturningUserPhaseData phaseData = _returningUserPhaseDataGetter.Get(participantID);
-            var encodingFinished = _encodingFinishedChecker.IsFinished(participantID);
             if (phaseData.Action == ReturningUserAction.Done) {
                 action = Url.Action("Index", "ThankYou");
-            } else if (encodingFinished) {
-                action = Url.Action("WelcomeBack");
+            } else if (phaseData.Action == ReturningUserAction.Wait) {
+                var nextTestWhenUtc = phaseData.NextTestWhenUtc.Value.AddMinutes(1);
+                whenToReturn = $"{nextTestWhenUtc.ToShortDateString()} {(nextTestWhenUtc.ToString("h:mm tt"))} UTC";
+                action = Url.Action("Wait", "Test");
+            } else if (phaseData.Action == ReturningUserAction.TooLate) {
+                action = Url.Action("Expired", "Test");
+            } else if (phaseData.Action == ReturningUserAction.Test) {
+                action = Url.Action("WelcomeBack", "Test");
             } else {
                 var stanford = _stanfordRepository.Get(participantID);
                 action = stanford.Immediate.HasValue ? Url.Action("PreviouslyInterrupted", "Home") : Url.Action("ConsentInfo", "Home");
             }
-            return Json(new {success=true, action, participantID});
+            return Json(new {success=true, action, participantID, whenToReturn});
         }
 
         public IActionResult Contact() 
