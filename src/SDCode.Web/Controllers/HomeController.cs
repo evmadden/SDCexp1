@@ -103,10 +103,10 @@ namespace SDCode.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult EncodingInstructions(string participantID, Sleepinesses? stanford) // todo mlh is EncodingInstructions unused at this point?
+        public IActionResult EncodingInstructions(string participantID, Sleepinesses? stanford, string nextActionAfterImageCheck, bool showSpacebarOrientation)
         {
             _stanfordRepository.Save(participantID, "Immediate", stanford);
-            return View(new EncodingInstructionsViewModel(participantID));
+            return View(new EncodingInstructionsViewModel(participantID, nextActionAfterImageCheck, showSpacebarOrientation));
         }
 
         public IActionResult Privacy() 

@@ -1,23 +1,25 @@
 ﻿@model EncodingInstructionsViewModel;
 @{
-    ViewData["Title"] = "Encoding Instructions";
+    ViewData["Title"] = "Part 1 Instructions";
 }
 
 @await Html.PartialAsync("~/Views/Shared/LogoBanner.cshtml")
 
 <div>
     <h1 class="display-4">Part 1 Instructions</h1>
-    <br/>
-    <p>This is the STUDY PHASE.</p>
+    <div class="orientationContainer">
+        <p>This is the STUDY PHASE.</p>
+    </div>
     <p>You will see 432 images with 288 marked objects.  Please pay attention and try to memorize only the marked objects in the scene.  
         Each image will be presented for 3 seconds.  Throughout the STUDY phase, numbers will randomly appear on the screen.
         Any time you see a number, press the SPACE bar.</p>
-        <br/>
     <p>Press the "Next" button to start the Study Phase.</p>
 </div>
 <div id="formDiv">
-    <form action="@Url.Action("Index", "Encoding")" method="POST">
+    <form action="@Url.Action("Index", "ImageCheck")" method="POST">
         <input type="hidden" name="participantID" value="@Model.ParticipantID" />
+        <input type="hidden" name="nextActionAfterImageCheck" value="@Model.NextActionAfterImageCheck" />
+        <input type="hidden" name="showSpacebarOrientation" value="@($"{Model.ShowSpacebarOrientation}".ToLower())" />
         @await Html.PartialAsync("~/Views/Shared/ActionBar.cshtml", new ActionBarViewModel("Next"))
     </form>
 </div>
