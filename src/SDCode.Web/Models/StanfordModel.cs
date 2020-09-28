@@ -24,6 +24,7 @@ namespace SDCode.Web.Models
         public Sleepinesses? Followup { get; set; }
         [Name(nameof (FollowupUtc))] 
         public DateTime? FollowupUtc { get; set; }
+        [Ignore]
         public bool LacksImmediate { // note: no need to Name/Description this property, as it is ignored for CSV (see Map below)
             get {
                 return !Immediate.HasValue;
@@ -41,7 +42,6 @@ namespace SDCode.Web.Models
                 Map(m => m.DelayedUtc).Name(nameof(StanfordModel.DelayedUtc)).Index(4);
                 Map(m => m.Followup).Name(nameof(StanfordModel.Followup)).TypeConverter<CsvSleepinessesConverter>().Index(5);
                 Map(m => m.FollowupUtc).Name(nameof(StanfordModel.FollowupUtc)).Index(6);
-                Map(m => m.LacksImmediate).Ignore();
             }
         }
     }
