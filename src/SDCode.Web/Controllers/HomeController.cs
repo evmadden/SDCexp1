@@ -18,8 +18,9 @@ namespace SDCode.Web.Controllers
         private readonly IPhaseSetsGetter _phaseSetsGetter;
         private readonly IProgressGetter _progressGetter;
         private readonly IEncodingFinishedChecker _encodingFinishedChecker;
+        private readonly IReturningUserPhaseDataGetter _returningUserPhaseDataGetter;
 
-        public HomeController(ILogger<HomeController> logger, IStanfordRepository stanfordRepository, IRepository<ConsentModel> consentRepository, IRepository<PSQIModel> psqiRepository, IRepository<EpworthModel> epworthRepository, IRepository<DemographicsModel> demographicsRepository, ITestNameGetter testNameGetter, IPhaseSetsGetter phaseSetsGetter, IProgressGetter progressGetter, IEncodingFinishedChecker encodingFinishedChecker)
+        public HomeController(ILogger<HomeController> logger, IStanfordRepository stanfordRepository, IRepository<ConsentModel> consentRepository, IRepository<PSQIModel> psqiRepository, IRepository<EpworthModel> epworthRepository, IRepository<DemographicsModel> demographicsRepository, ITestNameGetter testNameGetter, IPhaseSetsGetter phaseSetsGetter, IProgressGetter progressGetter, IEncodingFinishedChecker encodingFinishedChecker, IReturningUserPhaseDataGetter returningUserPhaseDataGetter)
         {
             _logger = logger;
             _stanfordRepository = stanfordRepository;
@@ -31,6 +32,7 @@ namespace SDCode.Web.Controllers
             _phaseSetsGetter = phaseSetsGetter;
             _progressGetter = progressGetter;
             _encodingFinishedChecker = encodingFinishedChecker;
+            _returningUserPhaseDataGetter = returningUserPhaseDataGetter;
         }
 
         public IActionResult Index()
@@ -38,14 +40,9 @@ namespace SDCode.Web.Controllers
             return View();
         }
 
-        public IActionResult Welcome(string participantId)
+        public IActionResult WelcomeBack(string participantID)
         {
-            return View(new HomeWelcomeViewModel(participantId));
-        }
-
-        public IActionResult WelcomeBack()
-        {
-            return View();
+            return View(new HomeWelcomeBackViewModel(participantID));
         }
        
         [HttpPost]
@@ -114,9 +111,21 @@ namespace SDCode.Web.Controllers
             return View();
         }
 
-        public IActionResult Returning() 
+        [HttpPost]
+        public IActionResult Login(string participantID) 
         {
-            return View();
+            string action;
+            IReturningUserPhaseData phaseData = _returningUserPhaseDataGetter.Get(participantID);
+            var encodingFinished = _encodingFinishedChecker.IsFinished(participantID);
+            if (phaseData.Action == ReturningUserAction.Done) {
+                action = Url.Action("Index", "ThankYou");
+            } else if (encodingFinished) {
+                action = Url.Action("WelcomeBack");
+            } else {
+                var stanford = _stanfordRepository.Get(participantID);
+                action = stanford.Immediate.HasValue ? Url.Action("PreviouslyInterrupted", "Home") : Url.Action("ConsentInfo", "Home");
+            }
+            return Json(new {success=true, action, participantID});
         }
 
         public IActionResult Contact() 

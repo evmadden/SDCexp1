@@ -62,11 +62,7 @@ namespace SDCode.Web.Controllers
         public IActionResult WelcomeBack(string participantID)
         {
             IReturningUserPhaseData phaseData = _returningUserPhaseDataGetter.Get(participantID);
-            if (phaseData.Action == ReturningUserAction.Done) {
-                return RedirectToAction("Index", "ThankYou");
-            } else {
-                return View(new TestWelcomeBackViewModel(participantID, phaseData.Action, phaseData.Progress, phaseData.TestName, phaseData.NextTestWhenUtc));
-            }
+            return View(new TestWelcomeBackViewModel(participantID, phaseData.Action, phaseData.Progress, phaseData.TestName, phaseData.NextTestWhenUtc));
         }
 
         [HttpPost]

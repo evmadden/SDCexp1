@@ -4,30 +4,109 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        var buttons = document.getElementsByClassName('firstPageButton');
+        @* var buttons = document.getElementsByClassName('firstPageButton');
         for (var i=0;i<buttons.length; i++) {
             buttons[i].addEventListener('click', function(){
                 var button = this;
                 var url = button.getAttribute('data-url');
                 location.href = url;
             });
-        }
+        } *@
+
+        var loginFormElement = document.getElementById('loginForm');
+        var loginButtonElement = document.getElementById('actionBarSubmitButton');
+        var participantIdInputElement = document.getElementById('participantId')
+        loginFormElement.addEventListener("submit", function(e){
+            e.preventDefault();
+            var participantID = participantIdInputElement.value;
+            loginButtonElement.setAttribute('disabled', 'disabled');
+            var originalLoginButtonText = loginButtonElement.value;
+            loginButtonElement.value = 'Wait...';
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", '@Url.Action("Login")', true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function() {
+                if (this.readyState === XMLHttpRequest.DONE) {
+                    var errorMessage;
+                    if (this.status === 200) {
+                        var response = JSON.parse(this.response);
+                        if (response.success) {
+                            var nextFormElement = document.getElementById('nextForm');
+                            var nextParticipantIdElement = document.getElementById('nextParticipantID');
+                            nextFormElement.action = response.action;
+                            nextParticipantIdElement.value = response.participantID;
+                            nextFormElement.submit();
+                        } else {
+                            errorMessage = "There was an unexpected error."
+                        }
+                    } else {
+                        errorMessage = "There was an unexpected error."
+                    }
+                    if (errorMessage) {
+                        setTimeout(function() {
+                            alert(errorMessage);
+                        },25);
+                        loginButtonElement.value = originalLoginButtonText;
+                        loginButtonElement.removeAttribute('disabled');
+                    }
+                }
+            }
+            xhr.send(`participantID=${participantID}`);
+        });
     });
 </script>
 
 @await Html.PartialAsync("~/Views/Shared/LogoMasthead.cshtml")
 <div class="text-center">
     <h1 class="display-4">@await Html.PartialAsync("~/Views/Shared/StudyTitle.cshtml")</h1>
-    <br/>
-    <p>If this is your first session, please select New Participant.<br/>
-    If you are returning to continue the study, please choose Returning Participant.</p>
+</div>
+<div class="text-left">
+    <div class="orientationContainer">
+        <p>Welcome, and thank you for your interest in our study.</p>
+    </div>
+    <div>
+        <p>In this experiment, we are looking at memory for objects within scenes.</p>
+        <p>There are four (4) parts to this experiment:  a study phase and three (3) testing phases.  
+        In the study phase, you will see a series of images.  In the test phases,
+        you will be asked to indicate whether the image being shown is old or new.</p>
+        <p>At the study and initial test session, you will be asked to complete basic demographic questions 
+            as well as questionnaires pertaining to your sleep habits. Following the questionnaires, you will
+            be asked to view a series of images.  Memory for the images will be tested immediately following 
+            the study phase and you will be asked to indicate whether the images presented in the test are old 
+            or new.  This session should last no longer than an hour and half (1.5 hours).  24-hours after the 
+            study/initial test session, you will be asked to complete another memory test.  This will follow the 
+            same procedure as the initial test.  Again, you will be shown a set of images and asked to indicate 
+            whether they are old or new.  You will receive a reminder the day before this session is scheduled 
+            to take place.  The final test will follow the same procedure as the previous two tests.  You will 
+            be shown images and asked to indicate whether they are old or new.  You will receive a reminder email 
+            the day before the session.</p>
+        <p>Please note, this study requires participation across MULTIPLE days (today's session, one session tomorrow, 
+        and one final session 1-week from today).  Each session should last roughly one (1) hour. 
+        Please only agree to take part if you are prepared to fully commit to all of the 
+        experimental sessions.</p>
+        <p>Please login below. If you need a login, contact the researcher (@await Html.PartialAsync("~/Views/Shared/ResearcherEmailLink.cshtml")).</p>
+    </div>
 </div>
 
-<div id="buttonsRow" class="row">
+<div id="formDiv">
+    <form id="loginForm" action="" method="POST">
+        Participant ID: <input type="text" id="participantId" name="participantID" />
+        @await Html.PartialAsync("~/Views/Shared/ActionBar.cshtml", new ActionBarViewModel("Login"))
+    </form>
+</div>
+
+<div style="display: none;">
+    <form id="nextForm" method="POST">
+        <input id="nextParticipantID" name="participantID" type="hidden" />
+    </form>
+</div>
+
+
+@* <div id="buttonsRow" class="row">
     <div class="col-md firstPageButton" data-url="@Url.Action("Welcome")">
         <div>New Participant</div>
     </div>
     <div class="col-md firstPageButton" data-url="@Url.Action("WelcomeBack")">
         <div>Returning Participant</div>
     </div>
-</div>
+</div> *@

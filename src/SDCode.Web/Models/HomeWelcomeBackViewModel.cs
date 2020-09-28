@@ -1,8 +1,8 @@
 namespace SDCode.Web.Models
 {
-    public class HomeWelcomeViewModel
+    public class HomeWelcomeBackViewModel
     {
-        public HomeWelcomeViewModel(string participantID)
+        public HomeWelcomeBackViewModel(string participantID)
         {
             ParticipantID = participantID;
         }

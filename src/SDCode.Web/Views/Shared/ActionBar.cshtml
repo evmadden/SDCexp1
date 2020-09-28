@@ -1,6 +1,6 @@
 ﻿@model ActionBarViewModel
 <div class="actionBar">
-    <input type="submit" value="@Model.ButtonName"/>
+    <input id="actionBarSubmitButton" type="submit" value="@Model.ButtonName"/>
 </div>@* Don't copy this HTML to other files. Instead, re-use this HTML in other files, with this syntax:
 
 @await Html.PartialAsync("~/Views/Shared/ActionBar.cshtml", new ActionBarViewModel("Next"))

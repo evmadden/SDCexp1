@@ -1,4 +1,5 @@
-﻿@{
+﻿@model HomeWelcomeBackViewModel
+@{
     ViewData["Title"] = "Welcome Back";
 }
 
@@ -15,11 +16,9 @@
     @await Html.PartialAsync("~/Views/Shared/TestInstructions.cshtml")
 </div>
 <div>
-    <p>Please enter your Participant ID and press the "Next" button to rate your sleepiness and start the next TEST PHASE.</p>
+    <p>Press the "Next" button to rate your sleepiness and start the next TEST PHASE.</p>
     <form action="@Url.Action("WelcomeBack", "Test")" method="POST">
-        <div class="questionContainer">
-            Participant ID: <input type="text" name="participantID" required />
-        </div>
+        <input type="hidden" name="participantID" value="@Model.ParticipantID" />
         @await Html.PartialAsync("~/Views/Shared/ActionBar.cshtml", new ActionBarViewModel("Next"))
     </form>
 </div>
