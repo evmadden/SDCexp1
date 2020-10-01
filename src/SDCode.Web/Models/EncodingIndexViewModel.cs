@@ -1,10 +1,11 @@
+using System.Collections.Generic;
 using SDCode.Web.Classes;
 
 namespace SDCode.Web.Models
 {
     public class EncodingIndexViewModel
     {
-        public EncodingIndexViewModel(string participantID, Sleepinesses? stanford, int imageDisplayDurationInMilliseconds, int plusSignDisplayDurationInMilliseconds, int numberDisplayProbabilityPercentage, int numberCheckIntervalInMilliseconds, int numberDisplayThresholdInMilliseconds) {
+        public EncodingIndexViewModel(string participantID, Sleepinesses? stanford, int imageDisplayDurationInMilliseconds, int plusSignDisplayDurationInMilliseconds, int numberDisplayProbabilityPercentage, int numberCheckIntervalInMilliseconds, int numberDisplayThresholdInMilliseconds, IEnumerable<string> imageTypesToPreload) {
             ParticipantID = participantID;
             Stanford = stanford;
             ImageDisplayDurationInMilliseconds = imageDisplayDurationInMilliseconds;
@@ -12,6 +13,7 @@ namespace SDCode.Web.Models
             NumberDisplayProbabilityPercentage = numberDisplayProbabilityPercentage;
             NumberCheckIntervalInMilliseconds = numberCheckIntervalInMilliseconds;
             NumberDisplayThresholdInMilliseconds = numberDisplayThresholdInMilliseconds;
+            ImageTypesToPreload = imageTypesToPreload;
         }
 
         public string ParticipantID { get; }
@@ -21,5 +23,6 @@ namespace SDCode.Web.Models
         public int NumberDisplayProbabilityPercentage { get; }
         public int NumberCheckIntervalInMilliseconds { get; }
         public int NumberDisplayThresholdInMilliseconds { get; }
+        public IEnumerable<string> ImageTypesToPreload { get; }
     }
 }

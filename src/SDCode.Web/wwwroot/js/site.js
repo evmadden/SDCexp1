@@ -21,3 +21,76 @@ function isHidden(element) {
     var style = window.getComputedStyle(element);
     return (style.display === 'none');
 }
+
+function allProgress(proms, progress_cb) { // <3 https://stackoverflow.com/a/42342373/116895
+    let d = 0;
+    progress_cb(0);
+    for (const p of proms) {
+      p.then(()=> {    
+        d ++;
+        progress_cb( (d * 100) / proms.length );
+      });
+    }
+    return Promise.all(proms);
+  }
+
+
+function getDataUrls(fetchUrls, progressCallback, completedCallback, errorCallback) { // todo mlh refactor to Promise
+    debugger;
+    var dataUrls = {};
+
+    async function getHashes(urls) {
+        var hashes = [];
+        var operationsCompleted = 0;
+        var operationsTotal = fetchUrls.length * 2;
+        function advanceProgress() {
+            operationsCompleted = operationsCompleted + 1;
+            var percentComplete = (operationsCompleted / operationsTotal) * 100;
+            progressCallback(percentComplete);
+        }
+        for (let url of urls) {
+            advanceProgress();
+            let response = await fetch(url);
+            if (response.ok) {
+                let hash = await response.json();
+                hashes.push(hash);
+                advanceProgress();
+            } else {
+                throw `Unable to fetch image data (url:'${url}';responseStatus: '${response.status}').`;
+            }
+        }
+        return hashes;
+    }
+    getHashes(fetchUrls).then(hashes => {
+        hashes.forEach(hash=>{ Object.assign(dataUrls, hash); });
+        completedCallback(dataUrls);
+    }).catch(err => {
+        errorCallback(err);
+    });
+}
+
+function getImageTypesToFetch(imageTypes) {
+    var result = [];
+    imageTypes.forEach(imageType=>{
+        if (imageType.startsWith('N')) { // N files are split to avoid data download files being too large
+            [1,2,3].forEach(splitNumber=>{
+                result.push(`${imageType}${splitNumber}`);
+            });
+        } else {
+            result.push(imageType);
+        }
+    });
+    return result;
+}
+
+function loadImagesInterface(imageTypes, progressBarElementId, loadingPercentageElementId, completedCallback, errorCallback) {
+    var progressBarElement = document.getElementById(progressBarElementId);
+    var loadingPercentageElement = document.getElementById(loadingPercentageElementId);
+    var imageTypesToFetch = getImageTypesToFetch(imageTypes);
+    var fetchUrls = imageTypesToFetch.map(x=>`https://cdn.jsdelivr.net/gh/lancehilliard/temp@70601f506fb04c5e378cc4fb686fa9ceb593f187/${x}.json`); // todo mlh store base URL elsewhere
+    debugger;
+    getDataUrls(fetchUrls, function(percentComplete){
+        progressBarElement.value = percentComplete;
+        loadingPercentageElement.innerHTML = parseInt(percentComplete);
+    }, completedCallback, errorCallback); // todo mlh refactor to Promise
+}

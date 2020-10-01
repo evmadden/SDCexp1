@@ -17,6 +17,10 @@ namespace SDCode.Web.Classes
         private readonly ICollectionRandomizer _collectionRandomizer;
         private readonly IConfig _config;
 
+        public static readonly IEnumerable<string> TestOldImageTypes = new List<string>{"A", "AI", "D", "DI", "F", "FI"};
+        public static readonly IEnumerable<string> TestNewImageTypes = new List<string>{"N", "NI"};
+        public static readonly IEnumerable<string> EncodingImageTypes = new List<string> { "A", "A", "AI", "AI", "B", "BI", "C", "CI", "F", "F", "FI", "FI" };
+
         public PhaseSetsGetter(ICsvFile<PhaseSetsModel, PhaseSetsModel.Map> phaseSetsCsvFile, IImageIndexesGetter imageIndexesGetter, ICollectionRandomizer collectionRandomizer, IOptions<Config> config)
         {
             _phaseSetsCsvFile = phaseSetsCsvFile;
@@ -39,8 +43,8 @@ namespace SDCode.Web.Classes
                 // -- ~10MB during each test
                 var testImageCountPerOldType = _config.TestImageCountPerOldSubset;
                 var testImageCountPerNewType = _config.TestImageCountPerNewSubset;
-                var oldImageIndexes = GetTestImageIndexes(testImageCountPerOldType, new List<string>{"A", "AI", "D", "DI", "F", "FI"});
-                var newImageIndexes = GetTestImageIndexes(testImageCountPerNewType, new List<string>{"N", "NI"});
+                var oldImageIndexes = GetTestImageIndexes(testImageCountPerOldType, TestOldImageTypes);
+                var newImageIndexes = GetTestImageIndexes(testImageCountPerNewType, TestNewImageTypes);
                 var imagesAllocatedByType = oldImageIndexes.Keys.Union(newImageIndexes.Keys).ToDictionary(x=>x, x=>0);
                 var imageTypeCounts = new Dictionary<int, Dictionary<string, IEnumerable<string>>>{
                     {testImageCountPerOldType, oldImageIndexes}
@@ -76,7 +80,7 @@ namespace SDCode.Web.Classes
                 return testImageIndexes;
             }
             IEnumerable<string> CreateEncodingSet() {
-                var encodingImageTypes = new List<string> { "A", "A", "AI", "AI", "B", "BI", "C", "CI", "F", "F", "FI", "FI" };
+                var encodingImageTypes = EncodingImageTypes;
                 var encodingImageIndexesRequests = encodingImageTypes.Select(x=>new ImageIndexesRequest(x, _config.EncodingImageCountPerSubset));
                 var encodingSet = _imageIndexesGetter.Get(encodingImageIndexesRequests);
                 return encodingSet;

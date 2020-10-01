@@ -11,7 +11,6 @@ namespace SDCode.Web.Classes
     {
         public Congruencies Get(string imageName)
         {
-            imageName = Path.GetFileNameWithoutExtension(imageName);
             var result = imageName.Contains('I') ? Congruencies.Incongruent : Congruencies.Congruent;
             return result;
         }

@@ -8,147 +8,32 @@
         max-width: 830px;
     }
 </style>
-<script>
-    var shouldAutomate = @($"{Model.ShouldAutomate}".ToLower());
-    var obscuredIndexes = [];
-    var imageIndex = 0;
-    document.addEventListener("DOMContentLoaded", function(){
-        var imageElement = document.getElementById('image');
-        var confidenceElement = document.getElementById('confidence');
-        var feedbackElement = document.getElementById('feedback');
-        var feedbackMessageElement = document.getElementById('feedbackMessage');
-        var waitElement = document.getElementById('wait');
-        var retryFirstImageContainerElement = document.getElementById('retryFirstImageContainer');
-        var retryFirstImageButtonElement = document.getElementById('retryFirstImageButton');
-        var imageJudgement;
-        var imageConfidence;
-        var imageShownAt;
-        var imageShownDuration;
-        var showImage = function(url, progress) {
-            feedbackElement.style.display = 'none';
-            imageElement.setAttribute('data-progress', progress);
-            imageElement.src = url;
-            imageJudgement = null;
-            imageConfidence = null;
-            imageShownAt = new Date().getTime();
-            imageReactionTime = null;
-        }
-        var sendResponse = function() {
-            var waitId = setTimeout(function() {
-                waitElement.style.display = 'table';
-            }, 500);
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", '@Url.Action("ResponseData")', true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.onreadystatechange = function() {
-                if (this.readyState === XMLHttpRequest.DONE) {
-                    if (this.status === 200) {
-                        clearTimeout(waitId);
-                        waitElement.style.display = 'none';
-                        var response = JSON.parse(this.response);
-                        if (response.testEnded) {
-                            document.getElementById('imageViewer').style.display = 'none';
-                            document.getElementById('obscuredIndexesCommaDelimited').value = obscuredIndexes.join(',');
-                            var nextAction = obscuredIndexes.length > 0 ? '@Url.Action("Questions")' : '@Url.Action("End")';
-                            var nextActionForm = document.getElementById('nextActionForm');
-                            nextActionForm.action = nextAction;
-                            nextActionForm.submit();
-                        } else {
-                            feedbackMessageElement.innerText = `${response.feedback ? '@(Enum.GetName(typeof(Feedbacks), Feedbacks.Correct))' : '@(Enum.GetName(typeof(Feedbacks), Feedbacks.Incorrect))'}`;
-                            feedbackElement.style.display = 'table';
-                            setTimeout(function () {
-                                showImage(response.viewModel.imageUrl, response.viewModel.progress);
-                            }, @Model.FeedbackDisplayDurationInMilliseconds);
-                        }
-                    }
-                }
-            }
-            var progress = imageElement.getAttribute('data-progress');
-            xhr.send(`participantID=@Model.ParticipantID&progress=${progress}&judgement=${imageJudgement}&confidence=${imageConfidence}&reactionTime=${imageReactionTime}`);
-        };
-        imageElement.onload = function() { 
-            imageElement.style.display = 'block';
-            if (!isInViewport(imageElement)) {
-                obscuredIndexes.push(imageIndex);
-                imageIndex = imageIndex + 1
-            }
-            if (shouldAutomate) {
-                var possibleJudgementActions = [()=>onArrowLeft(),()=>onArrowRight()];
-                var possibleConfidenceActions = [()=>onNumber1(),()=>onNumber2(),()=>onNumber3(),()=>onNumber4(),];
-                var judgementAction = possibleJudgementActions[Math.floor(Math.random() * possibleJudgementActions.length)];
-                var confidenceAction = possibleConfidenceActions[Math.floor(Math.random() * possibleConfidenceActions.length)];
-                setTimeout(function(){
-                    judgementAction();
-                    setTimeout(confidenceAction, @Model.AutomationDelayInMilliseconds);
-                }, @Model.AutomationDelayInMilliseconds);
-            }
-        };
-        var onJudgement = function(judgement) {
-            if (isVisible(imageElement)) {
-                imageJudgement = judgement;
-                imageReactionTime = new Date().getTime() - imageShownAt;
-                imageElement.style.display = 'none';
-                confidenceElement.style.display = 'table';
-            }
-        };
-        var onConfidence = function(confidence) {
-            if (isVisible(confidenceElement)) {
-                confidenceElement.style.display = 'none';
-                imageConfidence = confidence;
-                sendResponse();
-            }
-        };
-        function onArrowLeft() { onJudgement(@((int)Judgements.Old)); }
-        function onArrowRight() { onJudgement(@((int)Judgements.New)); }
-        function onNumber1() { onConfidence(@((int)Confidences.NotConfident)); }
-        function onNumber2() { onConfidence(@((int)Confidences.SomewhatConfident)); }
-        function onNumber3() { onConfidence(@((int)Confidences.Confident)); }
-        function onNumber4() { onConfidence(@((int)Confidences.VeryConfident)); }
-        document.addEventListener('keyup', function(e) {
-            if (!(e.ctrlKey || e.altKey || e.shiftKey || e.metaKey)) {
-                const callback = {
-                    "ArrowLeft"  : onArrowLeft,
-                    "ArrowRight" : onArrowRight,
-                    "1" : onNumber1,
-                    "2" : onNumber2,
-                    "3" : onNumber3,
-                    "4" : onNumber4
-                }[e.key];
-                callback?.();
-            }
-        });
-        var showFirstImage = function() {
-            var waitId = setTimeout(function() {
-                waitElement.style.display = 'table';
-            }, 500);
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", '@Url.Action("GetImage")', true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.onreadystatechange = function() {
-                if (this.readyState === XMLHttpRequest.DONE) {
-                    clearTimeout(waitId);
-                    waitElement.style.display = 'none';
-                    if (this.status === 200) {
-                        retryFirstImageContainerElement.style.display = 'none';
-                        var response = JSON.parse(this.response);
-                        showImage(response.viewModel.imageUrl, response.viewModel.progress);
-                    } else {
-                        retryFirstImageContainerElement.style.display = 'table';
-                    }
-                }
-            }
-            xhr.send(`participantID=@Model.ParticipantID&progress=@Model.Progress`);            
-        };
-
-        retryFirstImageButtonElement.addEventListener("click", function(){
-            retryFirstImageContainerElement.style.display = 'none';
-            setTimeout(showFirstImage, 500);
-        });
-
-        showFirstImage();
-    });
-</script>
+@section Scripts {
+    <script src="~/js/testPhase.js" asp-append-version="true"></script>
+    <script>
+        var initOptions = @Html.Raw(Json.Serialize(Model));
+        initOptions.shouldAutomate = @($"{Model.ShouldAutomate}".ToLower());
+        initOptions.responseDataUrl = '@Url.Action("ResponseData")';
+        initOptions.questionsUrl = '@Url.Action("Questions")';
+        initOptions.endUrl = '@Url.Action("End")';
+        initOptions.feedbacksCorrectDisplay = '@(Enum.GetName(typeof(Feedbacks), Feedbacks.Correct))';
+        initOptions.feedbacksIncorrectDisplay = '@(Enum.GetName(typeof(Feedbacks), Feedbacks.Incorrect))';
+        initOptions.judgementsOld = @((int)Judgements.Old);
+        initOptions.judgementsNew = @((int)Judgements.New);
+        initOptions.confidencesNotConfident = @((int)Confidences.NotConfident);
+        initOptions.confidencesSomewhatConfident = @((int)Confidences.SomewhatConfident);
+        initOptions.confidencesConfident = @((int)Confidences.Confident);
+        initOptions.veryConfident = @((int)Confidences.VeryConfident);
+        initOptions.getImageUrl = '@Url.Action("GetImage")';
+        testInit(initOptions);        
+    </script>
+}
 <div id="imageViewer" style="vertical-align: top; text-align: center;">
+    <div id="loadingDiv">
+        <div>Images are loading. Please do not resize your browser.</div>
+        <div style="margin-top: 10px;"><progress id="progressBar" value="0" max="100"></progress></div>
+        <div><span>Loading Images: </span><span id="loadingPercentageSpan">0</span><span>%</span></div>
+    </div>
     <img id="image" class="testBox" style="display: none;"/>
     <div id="confidence" class="testBox" style="display: none;">
         <div>
@@ -174,6 +59,9 @@
             <p>Image failed to load.</p>
             <button id="retryFirstImageButton">Try again</button>
         </div>
+    </div>
+    <div id="unableToLoadImages" class="textBox" style="display: none;">
+        <div>Unable to load images.  Please contact the researcher (@(await Html.PartialAsync("~/Views/Shared/ResearcherEmailLink.cshtml"))).</div>
     </div>
 </div>
 <div>

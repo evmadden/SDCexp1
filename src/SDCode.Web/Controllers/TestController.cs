@@ -90,7 +90,8 @@ namespace SDCode.Web.Controllers
                 _stanfordRepository.Save(participantID, testName, stanford.Value);
             }
             _testResponsesRepository.Archive(participantID, testName);
-            var viewModel = new TestIndexViewModel(participantID, progress, testName, _config.AttentionResetDisplayDurationInMilliseconds, _config.AutomateTests, _config.TestAutomationDelayInMilliseconds);
+            var testAllImageTypes = PhaseSetsGetter.TestOldImageTypes.Union(PhaseSetsGetter.TestNewImageTypes);
+            var viewModel = new TestIndexViewModel(participantID, progress, testName, _config.AttentionResetDisplayDurationInMilliseconds, _config.AutomateTests, _config.TestAutomationDelayInMilliseconds, testAllImageTypes);
             return View(viewModel);
         }
 
@@ -107,11 +108,10 @@ namespace SDCode.Web.Controllers
             var phaseSets = _phaseSetsGetter.Get(participantID);
             var seenTestName = _testNameGetter.Get(phaseSets, progress);
             var seenViewModel = GetViewModel(phaseSets, progress);
-            var congruency = _imageCongruencyGetter.Get(seenViewModel.ImageUrl);
-            var context = _imageContextGetter.Get(seenViewModel.ImageUrl);
-            var imageName = Path.GetFileNameWithoutExtension(seenViewModel.ImageUrl);
-            var feedback = _responseFeedbackGetter.Get(imageName, judgement);
-            var imageResponse = new ResponseDataModel{Image = imageName, Congruency = congruency, Context = context, Judgement = judgement, Confidence = confidence, ReactionTime = reactionTime, Feedback = feedback, WhenUtc = DateTime.UtcNow};
+            var congruency = _imageCongruencyGetter.Get(seenViewModel.ImageToDisplay);
+            var context = _imageContextGetter.Get(seenViewModel.ImageToDisplay);
+            var feedback = _responseFeedbackGetter.Get(seenViewModel.ImageToDisplay, judgement);
+            var imageResponse = new ResponseDataModel{Image = seenViewModel.ImageToDisplay, Congruency = congruency, Context = context, Judgement = judgement, Confidence = confidence, ReactionTime = reactionTime, Feedback = feedback, WhenUtc = DateTime.UtcNow};
             _testResponsesRepository.Add(participantID, seenTestName, imageResponse);
             var nextProgress = progress + 1;
             var nextTestName = _testNameGetter.Get(phaseSets, nextProgress);
@@ -122,8 +122,7 @@ namespace SDCode.Web.Controllers
 
         private TestImageViewModel GetViewModel(PhaseSetsModel phaseSets, int progress) {
             var imageToDisplay = _nextImageGetter.Get(phaseSets, progress);
-            var imageUrl = _stimuliImageUrlGetter.Get(imageToDisplay);
-            var result = new TestImageViewModel(phaseSets.ParticipantID, progress, imageUrl);
+            var result = new TestImageViewModel(phaseSets.ParticipantID, progress, imageToDisplay);
             return result;
         }
 

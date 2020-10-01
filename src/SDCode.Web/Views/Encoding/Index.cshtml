@@ -7,172 +7,20 @@
         max-width: 830px;
     }
 </style>
-<script>
-    document.addEventListener("DOMContentLoaded", function(){
-        var images = [];
-        var imageElement = document.getElementById('image');
-        var numberElement = document.getElementById('number');
-        var submittingResultsElement = document.getElementById('submittingResults');
-        var submissionErrorElement = document.getElementById('submissionError');
-        var loadingElement = document.getElementById('loadingDiv');
-        var loadingPercentageElement = document.getElementById('loadingPercentageSpan');
-        var spacebarDetected = false;
-        
-
-        var neglectedIndexes = [];
-        var obscuredIndexes = [];
-        var canShowNumberNext;
-        var imageIndex = 0;
-        var showNextImage = function() {
-            hideBothImageAndNumber();
-            var imageUrl = images[imageIndex];
-            imageElement.src = imageUrl;
-            imageElement.style.display = 'block';
-            imageIndex = imageIndex + 1;
-            var whatToDo = imageIndex === images.length ? onLastImageShown : showPlusSign;
-            canShowNumberNext = true;
-            if (!isInViewport(imageElement)) {
-                obscuredIndexes.push(imageIndex);
-            }
-            setTimeout(whatToDo, @Model.ImageDisplayDurationInMilliseconds);
-        };
-
-        function onLastImageShown() {
-            numberElement.style.display = 'none';
-            imageElement.style.display = 'none';
-            submitResults();
-        }
-
-        function getRandomInt(max) {
-            return Math.floor(Math.random() * Math.floor(max));
-        }
-
-        var showNextNumber = function() {
-            hideBothImageAndNumber();
-            var randomNumber = getRandomInt(100);
-            numberElement.innerText = randomNumber;
-            numberElement.style.display = 'block';
-
-            var timeSinceNumberDisplayedInMilliseconds = 0;
-            spacebarDetected = false;
-            var checkOnTheNumber = function() {
-                timeSinceNumberDisplayedInMilliseconds = timeSinceNumberDisplayedInMilliseconds + @Model.NumberCheckIntervalInMilliseconds;
-                if (timeSinceNumberDisplayedInMilliseconds > @Model.NumberDisplayThresholdInMilliseconds) {
-                    neglectedIndexes.push(imageIndex);
-                    showPlusSign();
-                } else if (spacebarDetected) {
-                    showPlusSign();
-                } else {
-                    setTimeout(checkOnTheNumber, @Model.NumberCheckIntervalInMilliseconds);
-                }
-            };
-            canShowNumberNext = false;
-            setTimeout(checkOnTheNumber, @Model.NumberCheckIntervalInMilliseconds);
-        };
-
-        var hideBothImageAndNumber = function() {
-            imageElement.style.display = 'none';
-            numberElement.style.display = 'none';
-        }
-
-        var showNextImageOrNumber = function() {
-            var randomNumber = getRandomInt(100);
-            var shouldShowNumber = canShowNumberNext && randomNumber <= (@Model.NumberDisplayProbabilityPercentage);
-            var whatToDo = shouldShowNumber ? showNextNumber : showNextImage;
-            whatToDo();
-        };
-
-        function keyIsSpacebar(key) {
-            return key === ' ';
-        }
-
-        document.body.onkeyup = function(e){
-            if (keyIsSpacebar(e.key)) {
-                spacebarDetected = true;
-            }
-        }
-
-        document.body.onkeydown = function(e){
-            if (keyIsSpacebar(e.key)) { @* prevent the browser from scrolling the webpage *@
-                e.preventDefault();
-            }
-        }
-
-        var showPlusSign = function() {
-            hideBothImageAndNumber();
-            numberElement.innerText = '+';
-            numberElement.style.display = 'block';
-            setTimeout(showNextImageOrNumber, @Model.PlusSignDisplayDurationInMilliseconds);
-        };
-
-        document.getElementById('tryAgainButton').addEventListener('click', function() {
-            submitResults();
-        });
-
-        var submitResults = function() {
-            submissionErrorElement.style.display = 'none';
-            submittingResultsElement.style.display = 'block';
-            setTimeout(function(){
-                var xhr = new XMLHttpRequest();
-                xhr.open("POST", '@Url.Action("RecordResults")', true);
-                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                xhr.onreadystatechange = function() {
-                    submittingResultsElement.style.display = 'none';
-                    var submissionFailed;
-                    if (this.readyState === XMLHttpRequest.DONE) {
-                        if (this.status === 200) {
-                            var response = JSON.parse(this.response);
-                            if (response.success) {
-                                var nextActionFormElement = document.getElementById('nextActionForm');
-                                nextActionFormElement.action = response.nextAction;
-                                nextActionFormElement.submit();
-                            } else {
-                                submissionFailed = true;
-                            }
-                        } else {
-                            submissionFailed = true;
-                        }
-                    }
-                    if (submissionFailed) {
-                        submissionErrorElement.style.display = 'block';
-                    }
-                }
-                var neglectedIndexesCommaDelimited = neglectedIndexes.join(',');
-                var obscuredIndexesCommaDelimited = obscuredIndexes.join(',');
-                xhr.send(`participantID=@Model.ParticipantID&neglectedIndexesCommaDelimited=${neglectedIndexesCommaDelimited}&obscuredIndexesCommaDelimited=${obscuredIndexesCommaDelimited}`);
-            }, 1000);
-        };
-
-        function updateProgress(evt) {
-            if (evt.lengthComputable) 
-            {
-                var percentComplete = (evt.loaded / evt.total) * 100;
-                loadingPercentageElement.innerText = parseInt(percentComplete);
-            }
-        }
-
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", '@Url.Action("GetImageDataUrls")', true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.onprogress = updateProgress;
-        xhr.onreadystatechange = function() {
-            if (this.readyState === XMLHttpRequest.DONE) {
-                loadingElement.style.display = 'none';
-                if (this.status === 200) {
-                    images = JSON.parse(this.response);
-                    showPlusSign();
-                } else {
-                    document.getElementById('unableToLoadImages').style.display = 'block';
-                }
-            }
-        }
-        xhr.send(`participantID=@Model.ParticipantID`);
-    });
-</script>
-<div style="vertical-align: top; text-align: center;">
+@section Scripts {
+    <script src="~/js/encodingPhase.js" asp-append-version="true"></script>
+    <script>
+        var initOptions = @Html.Raw(Json.Serialize(Model));
+        initOptions.recordResultsUrl = '@Url.Action("RecordResults")';
+        initOptions.getImageDataUrlsUrl = '@Url.Action("GetImageDataUrls")';
+        encodingInit(initOptions);
+    </script>
+}
+<div id="topContainer" style="vertical-align: top; text-align: center;">
     <div id="loadingDiv">
         <div>Images are loading. Please do not resize your browser.</div>
-        <span>Loading Images: </span><span id="loadingPercentageSpan">0</span><span>%</span>
+        <div style="margin-top: 10px;"><progress id="progressBar" value="0" max="100"></progress></div>
+        <div><span id="loadingPercentageSpan">0</span><span>%</span></div>
     </div>
     <img id="image" style="display: none; width: 800px; height: 700px;"/>
     <div id="number" style="font-size: 100px; line-height: 600px; display: none; width: 800px; height: 700px;"></div>
@@ -180,16 +28,11 @@
         <div>Submitting responses...</div>
     </div>
     <div id="unableToLoadImages" style="display: none;">
-        <div>Unable to load images.  Please contact the researcher.</div>
+        <div>Unable to load images.  Please contact the researcher (@(await Html.PartialAsync("~/Views/Shared/ResearcherEmailLink.cshtml"))).</div>
     </div>
     <div id="submissionError" style="display: none;">
         <div>Error submitting the responses.  Please check your network connection and try again.</div>
         <div><button id="tryAgainButton">Try Again</button></div>
     </div>
 </div>
-
-<div>
-    <form id="nextActionForm" method="POST"> 
-        <input type="hidden" name="participantID" value="@Model.ParticipantID" />
-    </form>
-</div>
+<form id="nextActionForm" method="POST"> <input type="hidden" name="participantID" value="@Model.ParticipantID" /></form>

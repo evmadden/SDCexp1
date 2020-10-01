@@ -11,9 +11,8 @@ namespace SDCode.Web.Classes
     {
         public Feedbacks Get(string imageName, Judgements judgement)
         {
-            imageName = Path.GetFileNameWithoutExtension(imageName);
-            var correctJudgement = imageName.Contains('N') ? Judgements.New : Judgements.Old;
-            var result =  correctJudgement == judgement ? Feedbacks.Correct : Feedbacks.Incorrect;
+            var expectedJudgement = imageName.Contains('N') ? Judgements.New : Judgements.Old;
+            var result =  judgement == expectedJudgement ? Feedbacks.Correct : Feedbacks.Incorrect;
             return result;
         }
     }
