@@ -20,6 +20,7 @@
         <input type="hidden" name="participantID" value="@Model.ParticipantID" />
         <input type="hidden" name="nextActionAfterImageCheck" value="@Model.NextActionAfterImageCheck" />
         <input type="hidden" name="showSpacebarOrientation" value="@($"{Model.ShowSpacebarOrientation}".ToLower())" />
+        <input type="hidden" name="stanford" value="@(Model.Stanford)" />
         @await Html.PartialAsync("~/Views/Shared/ActionBar.cshtml", new ActionBarViewModel("Next"))
     </form>
 </div>

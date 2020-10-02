@@ -100,7 +100,7 @@ namespace SDCode.Web.Controllers
         public IActionResult EncodingInstructions(string participantID, Sleepinesses? stanford, string nextActionAfterImageCheck, bool showSpacebarOrientation)
         {
             _stanfordRepository.Save(participantID, "Immediate", stanford);
-            return View(new EncodingInstructionsViewModel(participantID, nextActionAfterImageCheck, showSpacebarOrientation));
+            return View(new EncodingInstructionsViewModel(participantID, nextActionAfterImageCheck, showSpacebarOrientation, stanford));
         }
 
         public IActionResult Privacy() 
