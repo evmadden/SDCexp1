@@ -28,28 +28,32 @@
     });
 </script>
 
-<div style="vertical-align: top; text-align: center;">
-    <div id="imagePrep" style="display: table; width: 800px; height: 700px; border: 3px solid black; margin: auto;">
-        <div style="display: table-cell; vertical-align: middle; text-align: center; padding-bottom: 300px;">
-            <h1 class="display-4">Preparing to View Images</h1> @* todo mlh throughout entire codebase and user experience (including browser address bar URLs...), choose "Study" or "Encoding" and use it consistently, removing references to the competing, synonymous jargon *@
-            <div id="NotReady" style="display: none;">
-                <p style="margin-top: 50px;"><strong>Scroll or zoom your browser until you see all four sides of this bordered area.</strong></p>
-                <p>Adjust zoom: Hold your (Control or Command) key and press - or + on your keyboard.</p>
-                <hr style="margin-left: 200px; margin-right: 200px; border: 2px solid black;" />
-                <p>It is critically important during this phase<br/>that you are able to see every image unobstructed.</p>
-            </div>
-            <div id="Ready" style="display: none;">
-                <p style="margin-top: 50px;"><strong>IMPORTANT: Keep your browser window <em>this size</em><br/>so that images remain fully visible at <em>all times</em>.</strong></p>
-                @if (Model.ShowSpacebarOrientation) {
-                    <p><strong>Any time you see a NUMBER, press <em>SPACE bar</em>.</strong></p>
-                }
-                <p>Press the "Next" button to begin.</p>
-                <input id="submitButton" type="button" value="Next"/>
+@* https://stackoverflow.com/a/6182661/116895 *@
+<div id="imageViewer" class="outer">
+  <div class="middle">
+    <div class="inner">
+        <div id="imagePrep" style="display: table; width: 800px; height: 700px; border: 3px solid black; margin: auto;">
+            <div style="display: table-cell; vertical-align: middle; text-align: center; padding-bottom: 300px;">
+                <h1 class="display-4">Preparing to View Images</h1> @* todo mlh throughout entire codebase and user experience (including browser address bar URLs...), choose "Study" or "Encoding" and use it consistently, removing references to the competing, synonymous jargon *@
+                <div id="NotReady" style="display: none;">
+                    <p style="margin-top: 50px;"><strong>Scroll or zoom your browser until you see all four sides of this bordered area.</strong></p>
+                    <p>Adjust zoom: Hold your (Control or Command) key and press - or + on your keyboard.</p>
+                    <hr style="margin-left: 200px; margin-right: 200px; border: 2px solid black;" />
+                    <p>It is critically important during this phase<br/>that you are able to see every image unobstructed.</p>
+                </div>
+                <div id="Ready" style="display: none;">
+                    <p style="margin-top: 50px;"><strong>IMPORTANT: Keep your browser window <em>this size</em><br/>so that images remain fully visible at <em>all times</em>.</strong></p>
+                    @if (Model.ShowSpacebarOrientation) {
+                        <p><strong>Any time you see a NUMBER, press <em>SPACE bar</em>.</strong></p>
+                    }
+                    <p>Press the "Next" button to begin.</p>
+                    <input id="submitButton" type="button" value="Next"/>
+                </div>
             </div>
         </div>
+        <img id="image" style="width: 800px; height: 700px; display: none;" />
     </div>
-
-    <img id="image" style="width: 800px; height: 700px; display: none;" />
+  </div>
 </div>
 
 <form action="@Model.NextActionAfterImageCheck" method="POST">

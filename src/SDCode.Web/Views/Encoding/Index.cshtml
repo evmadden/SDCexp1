@@ -16,23 +16,28 @@
         encodingInit(initOptions);
     </script>
 }
-<div id="topContainer" style="vertical-align: top; text-align: center;">
-    <div id="loadingDiv">
-        <div>Images are loading. Please wait.</div>
-        <div style="margin-top: 10px;"><progress id="progressBar" value="0" max="100"></progress></div>
-        <div><span id="loadingPercentageSpan">0</span><span>%</span></div>
+@* https://stackoverflow.com/a/6182661/116895 *@
+<div id="imageViewer" class="outer">
+  <div class="middle">
+    <div class="inner">
+        <div id="loadingDiv">
+            <div>Images are loading. Please wait.</div>
+            <div style="margin-top: 10px;"><progress id="progressBar" value="0" max="100"></progress></div>
+            <div><span id="loadingPercentageSpan">0</span><span>%</span></div>
+        </div>
+        <img id="image" style="display: none; width: 800px; height: 700px;"/>
+        <div id="number" style="font-size: 100px; line-height: 600px; display: none; width: 800px; height: 700px;"></div>
+        <div id="submittingResults" style="display: none;">
+            <div>Submitting responses...</div>
+        </div>
+        <div id="unableToLoadImages" style="display: none;">
+            <div>Unable to load images.  Please contact the researcher (@(await Html.PartialAsync("~/Views/Shared/ResearcherEmailLink.cshtml"))).</div>
+        </div>
+        <div id="submissionError" style="display: none;">
+            <div>Error submitting the responses.  Please check your network connection and try again.</div>
+            <div><button id="tryAgainButton">Try Again</button></div>
+        </div>
     </div>
-    <img id="image" style="display: none; width: 800px; height: 700px;"/>
-    <div id="number" style="font-size: 100px; line-height: 600px; display: none; width: 800px; height: 700px;"></div>
-    <div id="submittingResults" style="display: none;">
-        <div>Submitting responses...</div>
-    </div>
-    <div id="unableToLoadImages" style="display: none;">
-        <div>Unable to load images.  Please contact the researcher (@(await Html.PartialAsync("~/Views/Shared/ResearcherEmailLink.cshtml"))).</div>
-    </div>
-    <div id="submissionError" style="display: none;">
-        <div>Error submitting the responses.  Please check your network connection and try again.</div>
-        <div><button id="tryAgainButton">Try Again</button></div>
-    </div>
+  </div>
 </div>
 <form id="nextActionForm" method="POST"> <input type="hidden" name="participantID" value="@Model.ParticipantID" /></form>
