@@ -7,6 +7,7 @@
         loadImagesInterface(initOptions.imageTypesToPreload, 'progressBar', 'loadingPercentageSpan', function getDataUrls_OnComplete(dataUrls) {
             loadingElement.style.display = 'none';
             var imageElement = document.getElementById('image');
+            var imageContainerElement = document.getElementById('imageContainer');
             var confidenceElement = document.getElementById('confidence');
             var feedbackElement = document.getElementById('feedback');
             var feedbackMessageElement = document.getElementById('feedbackMessage');
@@ -59,7 +60,7 @@
                 xhr.send(`participantID=${initOptions.participantID}&progress=${progress}&judgement=${imageJudgement}&confidence=${imageConfidence}&reactionTime=${imageReactionTime}`);
             };
             imageElement.onload = function() { 
-                imageElement.style.display = 'block';
+                imageContainerElement.style.display = 'block';
                 if (!isInViewport(imageElement)) {
                     obscuredIndexes.push(imageIndex);
                     imageIndex = imageIndex + 1
@@ -79,7 +80,7 @@
                 if (isVisible(imageElement)) {
                     imageJudgement = judgement;
                     imageReactionTime = new Date().getTime() - imageShownAt;
-                    imageElement.style.display = 'none';
+                    imageContainerElement.style.display = 'none';
                     confidenceElement.style.display = 'table';
                 }
             };

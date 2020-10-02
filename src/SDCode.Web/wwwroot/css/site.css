@@ -196,6 +196,19 @@ span.menuHighlight {
   margin-bottom: -20px;
 }
 
+#loadingDiv, #confidence, #feedback, #wait, #retryFirstImageContainer, #unableToLoadImages, #image, #number, #submittingResults, #submissionError {
+  margin: auto;
+}
+
+#confidence, #feedback, .arrows {
+  font-size: x-large;
+}
+
+.arrows {
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
 
 
 
@@ -221,5 +234,5 @@ span.menuHighlight {
 .inner {
   margin-left: auto;
   margin-right: auto;
-  width: 800px;
+  width: 950px;
 }

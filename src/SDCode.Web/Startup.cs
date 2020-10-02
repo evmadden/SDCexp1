@@ -58,6 +58,7 @@ namespace SDCode.Web
             services.AddScoped<IReturningUserPhaseDataGetter, ReturningUserPhaseDataGetter>();
             services.AddScoped<IEncodingFinishedChecker, EncodingFinishedChecker>();
             services.AddScoped<IParticipantEnrollmentVerifier, ParticipantEnrollmentVerifier>();
+            services.AddScoped<IConfidencesDescriptionGetter, ConfidencesDescriptionGetter>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

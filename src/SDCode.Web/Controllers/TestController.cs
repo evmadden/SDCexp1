@@ -31,8 +31,9 @@ namespace SDCode.Web.Controllers
         private readonly IStimuliImageUrlGetter _stimuliImageUrlGetter;
         private readonly ITestStartTimeGetter _testStartTimeGetter;
         private readonly IReturningUserPhaseDataGetter _returningUserPhaseDataGetter;
+        private readonly IConfidencesDescriptionGetter _confidencesDescriptionGetter;
 
-        public TestController(ILogger<TestController> logger, IPhaseSetsGetter phaseSetsGetter, INextImageGetter nextImageGetter, IImageCongruencyGetter imageCongruencyGetter, ITestNameGetter testNameGetter, IImageContextGetter imageContextGetter, IProgressGetter progressGetter, IStanfordRepository stanfordRepository, IResponseFeedbackGetter responseFeedbackGetter, IOptions<Config> config, ITestResponsesRepository testResponsesRepository, ISessionMetaRepository sessionMetaRepository, ICommaDelimitedIntegersCollector commaDelimitedIntegersCollector, IStimuliImageUrlGetter stimuliImageUrlGetter, ITestStartTimeGetter testStartTimeGetter, IReturningUserPhaseDataGetter returningUserPhaseDataGetter)
+        public TestController(ILogger<TestController> logger, IPhaseSetsGetter phaseSetsGetter, INextImageGetter nextImageGetter, IImageCongruencyGetter imageCongruencyGetter, ITestNameGetter testNameGetter, IImageContextGetter imageContextGetter, IProgressGetter progressGetter, IStanfordRepository stanfordRepository, IResponseFeedbackGetter responseFeedbackGetter, IOptions<Config> config, ITestResponsesRepository testResponsesRepository, ISessionMetaRepository sessionMetaRepository, ICommaDelimitedIntegersCollector commaDelimitedIntegersCollector, IStimuliImageUrlGetter stimuliImageUrlGetter, ITestStartTimeGetter testStartTimeGetter, IReturningUserPhaseDataGetter returningUserPhaseDataGetter, IConfidencesDescriptionGetter confidencesDescriptionGetter)
         {
             _logger = logger;
             _phaseSetsGetter = phaseSetsGetter;
@@ -50,6 +51,7 @@ namespace SDCode.Web.Controllers
             _stimuliImageUrlGetter = stimuliImageUrlGetter;
             _testStartTimeGetter = testStartTimeGetter;
             _returningUserPhaseDataGetter = returningUserPhaseDataGetter;
+            _confidencesDescriptionGetter = confidencesDescriptionGetter;
         }
 
         [HttpPost]
@@ -91,7 +93,22 @@ namespace SDCode.Web.Controllers
             }
             _testResponsesRepository.Archive(participantID, testName);
             var testAllImageTypes = PhaseSetsGetter.TestOldImageTypes.Union(PhaseSetsGetter.TestNewImageTypes);
-            var viewModel = new TestIndexViewModel(participantID, progress, testName, _config.AttentionResetDisplayDurationInMilliseconds, _config.AutomateTests, _config.TestAutomationDelayInMilliseconds, testAllImageTypes);
+
+
+            // todo mlh refactor to separate class
+            var confidenceDescriptions = new Dictionary<string, string>();
+            foreach (int confidence in Enum.GetValues(typeof(Confidences)))
+            {
+                String description = _confidencesDescriptionGetter.Get((Confidences)confidence);
+                confidenceDescriptions.Add($"{confidence}", description);
+            }
+            // todo mlh refactor to separate class
+            var oldDescription = Enum.GetName(typeof(Judgements), Judgements.Old);
+            var newDescription = Enum.GetName(typeof(Judgements), Judgements.New);
+
+
+
+            var viewModel = new TestIndexViewModel(participantID, progress, testName, _config.AttentionResetDisplayDurationInMilliseconds, _config.AutomateTests, _config.TestAutomationDelayInMilliseconds, testAllImageTypes, confidenceDescriptions, oldDescription, newDescription);
             return View(viewModel);
         }
 

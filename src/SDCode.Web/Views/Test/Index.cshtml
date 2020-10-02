@@ -38,15 +38,28 @@
             <div style="margin-top: 10px;"><progress id="progressBar" value="0" max="100"></progress></div>
             <div><span>Loading Images: </span><span id="loadingPercentageSpan">0</span><span>%</span></div>
         </div>
-        <img id="image" style="display: none;"/>
+        <div id="imageContainer" style="display: none;">
+            <table>
+                <tr>
+                    <td class="arrows" style="padding-right: 7px; width: 75px;">&lsaquo; @Model.OldDescription</td>
+                    <td><img id="image" /></td>
+                    <td class="arrows" style="padding-left: 7px; width: 75px;">@Model.NewDescription &rsaquo;</td>
+                </tr>
+            </table>
+        </div>
         <div id="confidence" class="testBox" style="display: none;">
             <div>
                 <p>How confident are you in your answer?</p>
                 <div>
-                    1 - @(Views_Shared_TestInstructions.GetDescription(Confidences.NotConfident)) @* todo mlh refactor away from this method use, which requires hard recompile to load View source modifications *@
-                    2 - @(Views_Shared_TestInstructions.GetDescription(Confidences.SomewhatConfident))
-                    3 - @(Views_Shared_TestInstructions.GetDescription(Confidences.Confident))
-                    4 - @(Views_Shared_TestInstructions.GetDescription(Confidences.VeryConfident))
+                    <table style="margin: auto;">
+                        @foreach ((string confidence, string description) in Model.ConfidenceDescriptions) {
+                            <tr>
+                                <td style="text-align: right;">@confidence</td>
+                                <td style="text-align: center; padding-left: 3px; padding-right: 3px;">-</td>
+                                <td style="text-align: left;">@description</td>
+                            </tr>
+                        }
+                    </table>
                 </div>
             </div>
         </div>
