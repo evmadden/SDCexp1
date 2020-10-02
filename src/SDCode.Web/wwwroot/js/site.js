@@ -3,38 +3,30 @@
 
 // Write your JavaScript code.
 
-document.addEventListener("DOMContentLoaded", function() {
-    function enforceFullscreen() {
-        var deviceIsLargeEnough = !isVisible(document.getElementById('deviceTooSmallContainer'));
-        if (deviceIsLargeEnough) {
-            var mustBeInFullscreen = document.querySelectorAll('[data-fullscreenexempt]').length == 0;
-            if (mustBeInFullscreen) {
-                var browserIsFullscreen = isFullScreen();
-                document.getElementById('container').style.display = browserIsFullscreen ? 'block' : 'none';
-                document.getElementById('mustBeFullscreenContainer').style.display = browserIsFullscreen ? 'none' : 'block';
-            } else {
-                document.getElementById('container').style.display = 'block';
-                document.getElementById('mustBeFullscreenContainer').style.display = 'none';
-            }
-        } else {
-            document.getElementById('container').style.display = 'none';
-            document.getElementById('mustBeFullscreenContainer').style.display = 'none';
-        }
-        setTimeout(enforceFullscreen, 100);
-    }
-   enforceFullscreen();
-});
-
-function isFullScreen() { // https://stackoverflow.com/a/52160506/116895
-    const windowWidth = window.innerWidth * window.devicePixelRatio;
-    const windowHeight = window.innerHeight * window.devicePixelRatio;
-    const screenWidth = window.screen.width;
-    const screenHeight = window.screen.height;
-    const widthUsed = windowWidth/screenWidth;
-    const heightUsed = windowHeight/screenHeight;
-    var result = widthUsed>=0.95 && heightUsed>=0.95;
+function isFullScreen() { // https://stackoverflow.com/a/58210211/116895 replaces https://stackoverflow.com/a/52160506/116895
+    var result = window.matchMedia('(display-mode: fullscreen)').matches || window.document.fullscreenElement;
     return result;
 }
+
+function enforceFullscreen() { // todo mlh maybe refactor to CSS media query https://stackoverflow.com/a/54855387/116895
+    var deviceIsLargeEnough = !isVisible(document.getElementById('deviceTooSmallContainer'));
+    if (deviceIsLargeEnough) {
+        var mustBeInFullscreen = document.querySelectorAll('[data-fullscreenexempt]').length == 0;
+        if (mustBeInFullscreen) {
+            var browserIsFullscreen = isFullScreen();
+            document.getElementById('container').style.display = browserIsFullscreen ? 'block' : 'none';
+            document.getElementById('mustBeFullscreenContainer').style.display = browserIsFullscreen ? 'none' : 'block';
+        } else {
+            document.getElementById('container').style.display = 'block';
+            document.getElementById('mustBeFullscreenContainer').style.display = 'none';
+        }
+    } else {
+        document.getElementById('container').style.display = 'none';
+        document.getElementById('mustBeFullscreenContainer').style.display = 'none';
+    }
+    setTimeout(enforceFullscreen, 100);
+}
+document.addEventListener("DOMContentLoaded", enforceFullscreen);
 
 function isInViewport(element) { // https://www.javascripttutorial.net/dom/css/check-if-an-element-is-visible-in-the-viewport
     const rect = element.getBoundingClientRect();
