@@ -1,0 +1,10 @@
+﻿<div id="mustBeFullscreenContainer" class="mustBeFullscreenContainer">
+    <p>@await Html.PartialAsync("~/Views/Shared/StudyTitle.cshtml")</p>
+    <p>@await Html.PartialAsync("~/Views/Shared/FullscreenInstructions.cshtml")</p>
+    <p>Researcher: @await Html.PartialAsync("~/Views/Shared/ResearcherEmailLink.cshtml")</p>
+</div>
+@* Don't copy this HTML to other files. Instead, re-use this HTML in other files, with this syntax:
+
+@await Html.PartialAsync("~/Views/Shared/MustBeFullscreen.cshtml", new ActionBarViewModel("Next"))
+
+*@

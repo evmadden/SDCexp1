@@ -3,12 +3,14 @@
     ViewData["Title"] = "Not Enrolled";
 }
 @await Html.PartialAsync("~/Views/Shared/LogoBanner.cshtml")
+@await Html.PartialAsync("~/Views/Shared/FullscreenExempt.cshtml")
 <h1 class="display-4">Not Enrolled</h1>
 <div class="orientationContainer">
     <p>Oops!  It looks like you are using a Participant ID that does not exist yet.</p>
 </div>
 <p>Please check the ID and @Html.ActionLink("try again", "Index", "Home").<br/>
 <p>@await Html.PartialAsync("~/Views/Shared/Mistake.cshtml")</p>
-<div>
+<p>
     Participant ID Not Found: @Model.ParticipantID
-</div>
+</p>
+<p>@await Html.PartialAsync("~/Views/Shared/Close.cshtml")</p>

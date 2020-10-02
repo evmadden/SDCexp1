@@ -166,11 +166,36 @@ input[type="radio"] {
   font-weight: bold;
 }
 
+.mustBeFullscreenContainer {
+  text-align: center;
+  display: none;
+}
+
+.mustBeFullScreenContainer > div {
+  font-weight: bold;
+}
+
+#container {
+  display: none;
+}
+
 @media only screen and (max-device-width: 1024px) {
-  .container {
+  #container {
     display: none;
   }
   .deviceTooSmallContainer {
     display: block;
   }
+}
+
+#loadingDiv {
+  margin-top: 150px;
+}
+
+span.menuHighlight {
+  font-weight: bold;
+  background-color: lightgray;
+  padding-right: 5px;
+  padding-left: 5px;
+  margin-bottom: -20px;
 }

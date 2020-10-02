@@ -4,6 +4,7 @@
 
 @* todo mlh move javascript to .js file(s) *@
 
+@section Scripts {
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         var loginFormElement = document.getElementById('loginForm');
@@ -11,45 +12,59 @@
         var participantIdInputElement = document.getElementById('participantId')
         loginFormElement.addEventListener("submit", function(e){
             e.preventDefault();
-            var participantID = participantIdInputElement.value;
-            loginButtonElement.setAttribute('disabled', 'disabled');
-            var originalLoginButtonText = loginButtonElement.value;
-            loginButtonElement.value = 'Wait...';
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", '@Url.Action("Login")', true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.onreadystatechange = function() {
-                if (this.readyState === XMLHttpRequest.DONE) {
-                    var errorMessage;
-                    if (this.status === 200) {
-                        var response = JSON.parse(this.response);
-                        if (response.success) {
-                            var nextFormElement = document.getElementById('nextForm');
-                            var nextParticipantIdElement = document.getElementById('nextParticipantID');
-                            var nextWhenToReturnElement = document.getElementById('nextWhenToReturn');
-                            nextFormElement.action = response.action;
-                            nextParticipantIdElement.value = response.participantID;
-                            nextWhenToReturnElement.value = response.whenToReturn;
-                            nextFormElement.submit();
+            if (isFullScreen()) {
+                var participantID = participantIdInputElement.value;
+                loginButtonElement.setAttribute('disabled', 'disabled');
+                var originalLoginButtonText = loginButtonElement.value;
+                loginButtonElement.value = 'Wait...';
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", '@Url.Action("Login")', true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.onreadystatechange = function() {
+                    if (this.readyState === XMLHttpRequest.DONE) {
+                        var errorMessage;
+                        if (this.status === 200) {
+                            var response = JSON.parse(this.response);
+                            if (response.success) {
+                                var nextFormElement = document.getElementById('nextForm');
+                                var nextParticipantIdElement = document.getElementById('nextParticipantID');
+                                var nextWhenToReturnElement = document.getElementById('nextWhenToReturn');
+                                nextFormElement.action = response.action;
+                                nextParticipantIdElement.value = response.participantID;
+                                nextWhenToReturnElement.value = response.whenToReturn;
+                                nextFormElement.submit();
+                            } else {
+                                errorMessage = "There was an unexpected error."
+                            }
                         } else {
                             errorMessage = "There was an unexpected error."
                         }
-                    } else {
-                        errorMessage = "There was an unexpected error."
-                    }
-                    if (errorMessage) {
-                        setTimeout(function() {
-                            alert(errorMessage);
-                        },25);
-                        loginButtonElement.value = originalLoginButtonText;
-                        loginButtonElement.removeAttribute('disabled');
+                        if (errorMessage) {
+                            setTimeout(function() {
+                                alert(errorMessage);
+                            },25);
+                            loginButtonElement.value = originalLoginButtonText;
+                            loginButtonElement.removeAttribute('disabled');
+                        }
                     }
                 }
+                xhr.send(`participantID=${participantID}`);
+            } else {
+                alert('Place your browser into full-screen mode,\nand then press the Login button again.');
             }
-            xhr.send(`participantID=${participantID}`);
         });
+
+        function showFinalInstructions() {
+            var fullscreenDetected = isFullScreen();
+            document.getElementById('fullscreenNotDetected').style.display = fullscreenDetected ? 'none' : 'block';
+            document.getElementById('fullscreenDetected').style.display = fullscreenDetected ? 'block' : 'none';
+            setTimeout(showFinalInstructions, 100);
+        }
+        showFinalInstructions();
+        
     });
 </script>
+}
 
 @await Html.PartialAsync("~/Views/Shared/LogoMasthead.cshtml")
 <div class="text-center">
@@ -79,14 +94,28 @@
         and one final session 1-week from today).  Each session should last roughly one (1) hour. 
         Please only agree to take part if you are prepared to fully commit to all of the 
         experimental sessions.</p>
+        <p>Also note: your browser must remain in full-screen mode while using this website.</p>
         <p>Please login below. If you need a login, contact the researcher (@await Html.PartialAsync("~/Views/Shared/ResearcherEmailLink.cshtml")).</p>
     </div>
 </div>
 
 <div id="formDiv">
     <form id="loginForm" action="" method="POST">
-        <label for="participantId">Participant ID:</label> <input type="text" id="participantId" name="participantID" />
-        @await Html.PartialAsync("~/Views/Shared/ActionBar.cshtml", new ActionBarViewModel("Login"))
+        <div>
+            <input id="fullscreenCheckbox" type="checkbox" data-fullscreenexempt required> <label for="fullscreenCheckbox">I understand that my browser must remain in full-screen mode while using this site.</label>
+        </div>
+        <div>
+            <label for="participantId">Participant ID:</label> <input type="text" id="participantId" name="participantID" required />
+        </div>
+        <div id="fullscreenNotDetected" style="display: none;">
+            @await Html.PartialAsync("~/Views/Shared/FullscreenInstructions.cshtml")
+        </div>
+        <div id="fullscreenDetected" style="display: none;">
+            Press the Login button to continue.
+        </div>
+        <div>
+            @await Html.PartialAsync("~/Views/Shared/ActionBar.cshtml", new ActionBarViewModel("Login"))
+        </div>
     </form>
 </div>
 

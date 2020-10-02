@@ -19,8 +19,9 @@ namespace SDCode.Web.Controllers
         private readonly IProgressGetter _progressGetter;
         private readonly IEncodingFinishedChecker _encodingFinishedChecker;
         private readonly IReturningUserPhaseDataGetter _returningUserPhaseDataGetter;
+        private readonly IParticipantEnrollmentVerifier _participantEnrollmentVerifier;
 
-        public HomeController(ILogger<HomeController> logger, IStanfordRepository stanfordRepository, IRepository<ConsentModel> consentRepository, IRepository<PSQIModel> psqiRepository, IRepository<EpworthModel> epworthRepository, IRepository<DemographicsModel> demographicsRepository, ITestNameGetter testNameGetter, IPhaseSetsGetter phaseSetsGetter, IProgressGetter progressGetter, IEncodingFinishedChecker encodingFinishedChecker, IReturningUserPhaseDataGetter returningUserPhaseDataGetter)
+        public HomeController(ILogger<HomeController> logger, IStanfordRepository stanfordRepository, IRepository<ConsentModel> consentRepository, IRepository<PSQIModel> psqiRepository, IRepository<EpworthModel> epworthRepository, IRepository<DemographicsModel> demographicsRepository, ITestNameGetter testNameGetter, IPhaseSetsGetter phaseSetsGetter, IProgressGetter progressGetter, IEncodingFinishedChecker encodingFinishedChecker, IReturningUserPhaseDataGetter returningUserPhaseDataGetter, IParticipantEnrollmentVerifier participantEnrollmentVerifier)
         {
             _logger = logger;
             _stanfordRepository = stanfordRepository;
@@ -33,6 +34,7 @@ namespace SDCode.Web.Controllers
             _progressGetter = progressGetter;
             _encodingFinishedChecker = encodingFinishedChecker;
             _returningUserPhaseDataGetter = returningUserPhaseDataGetter;
+            _participantEnrollmentVerifier = participantEnrollmentVerifier;
         }
 
         public IActionResult Index()
@@ -109,22 +111,27 @@ namespace SDCode.Web.Controllers
         [HttpPost]
         public IActionResult Login(string participantID) 
         {
+            var isEnrolled = _participantEnrollmentVerifier.Verify(participantID);
             string action;
             string whenToReturn = null;
-            IReturningUserPhaseData phaseData = _returningUserPhaseDataGetter.Get(participantID);
-            if (phaseData.Action == ReturningUserAction.Done) {
-                action = Url.Action("Index", "ThankYou");
-            } else if (phaseData.Action == ReturningUserAction.Wait) {
-                var nextTestWhenUtc = phaseData.NextTestWhenUtc.Value.AddMinutes(1);
-                whenToReturn = $"{nextTestWhenUtc.ToShortDateString()} {(nextTestWhenUtc.ToString("h:mm tt"))} UTC";
-                action = Url.Action("Wait", "Test");
-            } else if (phaseData.Action == ReturningUserAction.TooLate) {
-                action = Url.Action("Expired", "Test");
-            } else if (phaseData.Action == ReturningUserAction.Test) {
-                action = Url.Action("WelcomeBack", "Test");
+            if (isEnrolled) {
+                IReturningUserPhaseData phaseData = _returningUserPhaseDataGetter.Get(participantID);
+                if (phaseData.Action == ReturningUserAction.Done) {
+                    action = Url.Action("Index", "ThankYou");
+                } else if (phaseData.Action == ReturningUserAction.Wait) {
+                    var nextTestWhenUtc = phaseData.NextTestWhenUtc.Value.AddMinutes(1);
+                    whenToReturn = $"{nextTestWhenUtc.ToShortDateString()} {(nextTestWhenUtc.ToString("h:mm tt"))} UTC";
+                    action = Url.Action("Wait", "Test");
+                } else if (phaseData.Action == ReturningUserAction.TooLate) {
+                    action = Url.Action("Expired", "Test");
+                } else if (phaseData.Action == ReturningUserAction.Test) {
+                    action = Url.Action("WelcomeBack", "Test");
+                } else {
+                    var stanford = _stanfordRepository.Get(participantID);
+                    action = stanford.Immediate.HasValue ? Url.Action("PreviouslyInterrupted", "Home") : Url.Action("ConsentInfo", "Home");
+                }
             } else {
-                var stanford = _stanfordRepository.Get(participantID);
-                action = stanford.Immediate.HasValue ? Url.Action("PreviouslyInterrupted", "Home") : Url.Action("ConsentInfo", "Home");
+                action = Url.Action("NotEnrolled", "Participant", new {id=participantID});
             }
             return Json(new {success=true, action, participantID, whenToReturn});
         }

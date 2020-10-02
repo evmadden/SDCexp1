@@ -3,6 +3,39 @@
 
 // Write your JavaScript code.
 
+document.addEventListener("DOMContentLoaded", function() {
+    function enforceFullscreen() {
+        var deviceIsLargeEnough = !isVisible(document.getElementById('deviceTooSmallContainer'));
+        if (deviceIsLargeEnough) {
+            var mustBeInFullscreen = document.querySelectorAll('[data-fullscreenexempt]').length == 0;
+            if (mustBeInFullscreen) {
+                var browserIsFullscreen = isFullScreen();
+                document.getElementById('container').style.display = browserIsFullscreen ? 'block' : 'none';
+                document.getElementById('mustBeFullscreenContainer').style.display = browserIsFullscreen ? 'none' : 'block';
+            } else {
+                document.getElementById('container').style.display = 'block';
+                document.getElementById('mustBeFullscreenContainer').style.display = 'none';
+            }
+        } else {
+            document.getElementById('container').style.display = 'none';
+            document.getElementById('mustBeFullscreenContainer').style.display = 'none';
+        }
+        setTimeout(enforceFullscreen, 100);
+    }
+   enforceFullscreen();
+});
+
+function isFullScreen() { // https://stackoverflow.com/a/52160506/116895
+    const windowWidth = window.innerWidth * window.devicePixelRatio;
+    const windowHeight = window.innerHeight * window.devicePixelRatio;
+    const screenWidth = window.screen.width;
+    const screenHeight = window.screen.height;
+    const widthUsed = windowWidth/screenWidth;
+    const heightUsed = windowHeight/screenHeight;
+    var result = widthUsed>=0.95 && heightUsed>=0.95;
+    return result;
+}
+
 function isInViewport(element) { // https://www.javascripttutorial.net/dom/css/check-if-an-element-is-visible-in-the-viewport
     const rect = element.getBoundingClientRect();
     return (
@@ -36,7 +69,6 @@ function allProgress(proms, progress_cb) { // <3 https://stackoverflow.com/a/423
 
 
 function getDataUrls(fetchUrls, progressCallback, completedCallback, errorCallback) { // todo mlh refactor to Promise
-    debugger;
     var dataUrls = {};
 
     async function getHashes(urls) {
@@ -88,9 +120,23 @@ function loadImagesInterface(imageTypes, progressBarElementId, loadingPercentage
     var loadingPercentageElement = document.getElementById(loadingPercentageElementId);
     var imageTypesToFetch = getImageTypesToFetch(imageTypes);
     var fetchUrls = imageTypesToFetch.map(x=>`https://cdn.jsdelivr.net/gh/lancehilliard/temp@70601f506fb04c5e378cc4fb686fa9ceb593f187/${x}.json`); // todo mlh store base URL elsewhere
-    debugger;
     getDataUrls(fetchUrls, function(percentComplete){
         progressBarElement.value = percentComplete;
         loadingPercentageElement.innerHTML = parseInt(percentComplete);
     }, completedCallback, errorCallback); // todo mlh refactor to Promise
+}
+
+function enableFullscreen() {
+    var element = document.documentElement;
+    if (element.requestFullscreen) {
+        element.requestFullscreen().catch(err => {
+            // fullscreen request errors needn't be logged
+        });
+    } else if (element.mozRequestFullScreen) {
+        element.mozRequestFullScreen();
+    } else if (element.webkitRequestFullscreen) {
+        element.webkitRequestFullscreen();
+    } else if (element.msRequestFullscreen) {
+        element.msRequestFullscreen();
+    }
 }

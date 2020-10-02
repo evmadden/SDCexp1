@@ -1,4 +1,5 @@
 ﻿function encodingInit(initOptions) {
+    enableFullscreen();
     document.addEventListener("DOMContentLoaded", function() {
         var loadFailureElement = document.getElementById('unableToLoadImages');
         var loadingElement = document.getElementById('loadingDiv');

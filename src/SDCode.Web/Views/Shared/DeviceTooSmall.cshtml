@@ -1,5 +1,10 @@
-﻿<div class="deviceTooSmallContainer">
+﻿<div id="deviceTooSmallContainer" class="deviceTooSmallContainer">
     <div><p>@await Html.PartialAsync("~/Views/Shared/StudyTitle.cshtml")</p></div>
     <p>Please use a full-size<br/>desktop browser to<br/>access the study.</p>
     <p>Researcher: @await Html.PartialAsync("~/Views/Shared/ResearcherEmailLink.cshtml")</p>
 </div>
+@* Don't copy this HTML to other files. Instead, re-use this HTML in other files, with this syntax:
+
+@await Html.PartialAsync("~/Views/Shared/DeviceTooSmall.cshtml", new ActionBarViewModel("Next"))
+
+*@

@@ -1,8 +1,6 @@
-﻿using System.Linq;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Routing;
-using SDCode.Web.Models;
 
 namespace SDCode.Web.Classes
 {
@@ -14,9 +12,9 @@ namespace SDCode.Web.Classes
         {
             if (context.ActionArguments.TryGetValue("participantID", out var value)) {
                 var participantID = (string)value;
-                if (!string.IsNullOrWhiteSpace(participantID)) {
-                    var participantCsvFile = new CsvFile<ParticipantModel, ParticipantModel.Map>(new ModelTypeCsvFilenameGetter());
-                    var isVerified = participantCsvFile.Read().Any(x=>string.Equals(x.ID, participantID));
+                if (!string.IsNullOrWhiteSpace(participantID) && !string.Equals(context.RouteData.Values["action"], "Login")) {
+                    var participantEnrollmentVerifier = new ParticipantEnrollmentVerifier();
+                    var isVerified = participantEnrollmentVerifier.Verify(participantID);
                     if (!isVerified) {
                         context.Result = new RedirectToRouteResult(new RouteValueDictionary {{ "controller", "Participant" }, { "action", "NotEnrolled" }, {"id", participantID}});
                     }

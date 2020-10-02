@@ -4,6 +4,7 @@
 }
 
 @await Html.PartialAsync("~/Views/Shared/LogoBanner.cshtml")
+@await Html.PartialAsync("~/Views/Shared/FullscreenExempt.cshtml")
 
 <h1 class="display-4">Wait</h1>
 
@@ -14,3 +15,4 @@
 <p>Next session available at: @Model.WhenToReturn</p>
 
 <p>@await Html.PartialAsync("~/Views/Shared/Mistake.cshtml")</p>
+<p>@await Html.PartialAsync("~/Views/Shared/Close.cshtml")</p>
