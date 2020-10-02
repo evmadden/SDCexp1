@@ -1,7 +1,7 @@
 ﻿@model SDCode.Web.Models.StanfordFormViewModel
 @using SDCode.Web.Classes
 <div>
-    <h1 class="display-4">Stanford Sleepiness Scale</h1>
+    
     <form action="@Model.FormAction" method="POST">
         <input type="hidden" name="nextActionAfterImageCheck" value="@Model.NextAction" />
         <input type="hidden" name="participantID" value="@Model.ParticipantID" />
