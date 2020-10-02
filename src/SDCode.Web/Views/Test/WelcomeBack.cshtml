@@ -13,7 +13,7 @@
     <p>First, you will be asked to rate your CURRENT sleepiness.  Then, like before, you will see 144 images.</p>
 </div>
 <div>
-    @await Html.PartialAsync("~/Views/Shared/TestInstructions.cshtml")
+    @await Html.PartialAsync("~/Views/Shared/TestInstructions.cshtml", Model.TestInstructionsViewModel)
 </div>
 <div>
     <p>Press the "Next" button to rate your sleepiness and start the next TEST PHASE.</p>

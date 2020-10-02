@@ -32,8 +32,11 @@ namespace SDCode.Web.Controllers
         private readonly ITestStartTimeGetter _testStartTimeGetter;
         private readonly IReturningUserPhaseDataGetter _returningUserPhaseDataGetter;
         private readonly IConfidencesDescriptionGetter _confidencesDescriptionGetter;
+        private readonly IJudgementsDescriptionGetter _judgementsDescriptionGetter;
+        private readonly IConfidencesDescriptionsGetter _confidencesDescriptionsGetter;
+        private readonly ITestInstructionsViewModelGetter _testInstructionsViewModelGetter;
 
-        public TestController(ILogger<TestController> logger, IPhaseSetsGetter phaseSetsGetter, INextImageGetter nextImageGetter, IImageCongruencyGetter imageCongruencyGetter, ITestNameGetter testNameGetter, IImageContextGetter imageContextGetter, IProgressGetter progressGetter, IStanfordRepository stanfordRepository, IResponseFeedbackGetter responseFeedbackGetter, IOptions<Config> config, ITestResponsesRepository testResponsesRepository, ISessionMetaRepository sessionMetaRepository, ICommaDelimitedIntegersCollector commaDelimitedIntegersCollector, IStimuliImageUrlGetter stimuliImageUrlGetter, ITestStartTimeGetter testStartTimeGetter, IReturningUserPhaseDataGetter returningUserPhaseDataGetter, IConfidencesDescriptionGetter confidencesDescriptionGetter)
+        public TestController(ILogger<TestController> logger, IPhaseSetsGetter phaseSetsGetter, INextImageGetter nextImageGetter, IImageCongruencyGetter imageCongruencyGetter, ITestNameGetter testNameGetter, IImageContextGetter imageContextGetter, IProgressGetter progressGetter, IStanfordRepository stanfordRepository, IResponseFeedbackGetter responseFeedbackGetter, IOptions<Config> config, ITestResponsesRepository testResponsesRepository, ISessionMetaRepository sessionMetaRepository, ICommaDelimitedIntegersCollector commaDelimitedIntegersCollector, IStimuliImageUrlGetter stimuliImageUrlGetter, ITestStartTimeGetter testStartTimeGetter, IReturningUserPhaseDataGetter returningUserPhaseDataGetter, IConfidencesDescriptionGetter confidencesDescriptionGetter, IJudgementsDescriptionGetter judgementsDescriptionGetter, IConfidencesDescriptionsGetter confidencesDescriptionsGetter, ITestInstructionsViewModelGetter testInstructionsViewModelGetter)
         {
             _logger = logger;
             _phaseSetsGetter = phaseSetsGetter;
@@ -52,19 +55,24 @@ namespace SDCode.Web.Controllers
             _testStartTimeGetter = testStartTimeGetter;
             _returningUserPhaseDataGetter = returningUserPhaseDataGetter;
             _confidencesDescriptionGetter = confidencesDescriptionGetter;
+            _judgementsDescriptionGetter = judgementsDescriptionGetter;
+            _confidencesDescriptionsGetter = confidencesDescriptionsGetter;
+            _testInstructionsViewModelGetter = testInstructionsViewModelGetter;
         }
 
         [HttpPost]
         public IActionResult Welcome(string participantID)
         {
-            return View(new TestWelcomeViewModel(participantID));
+            var testInstructionsViewModel = _testInstructionsViewModelGetter.Get();
+            return View(new TestWelcomeViewModel(participantID, testInstructionsViewModel));
         }
 
         public IActionResult WelcomeBack(string participantID)
         {
             var testName = _testNameGetter.Get(participantID);
             var stanfordNeeded = !string.Equals(testName, "Immediate");
-            return View(new TestWelcomeBackViewModel(participantID, stanfordNeeded));
+            var testInstructionsViewModel = _testInstructionsViewModelGetter.Get();
+            return View(new TestWelcomeBackViewModel(participantID, stanfordNeeded, testInstructionsViewModel));
         }
        
         [HttpPost]
@@ -93,22 +101,8 @@ namespace SDCode.Web.Controllers
             }
             _testResponsesRepository.Archive(participantID, testName);
             var testAllImageTypes = PhaseSetsGetter.TestOldImageTypes.Union(PhaseSetsGetter.TestNewImageTypes);
-
-
-            // todo mlh refactor to separate class
-            var confidenceDescriptions = new Dictionary<string, string>();
-            foreach (int confidence in Enum.GetValues(typeof(Confidences)))
-            {
-                String description = _confidencesDescriptionGetter.Get((Confidences)confidence);
-                confidenceDescriptions.Add($"{confidence}", description);
-            }
-            // todo mlh refactor to separate class
-            var oldDescription = Enum.GetName(typeof(Judgements), Judgements.Old);
-            var newDescription = Enum.GetName(typeof(Judgements), Judgements.New);
-
-
-
-            var viewModel = new TestIndexViewModel(participantID, progress, testName, _config.AttentionResetDisplayDurationInMilliseconds, _config.AutomateTests, _config.TestAutomationDelayInMilliseconds, testAllImageTypes, confidenceDescriptions, oldDescription, newDescription);
+            var testInstructionsViewModel = _testInstructionsViewModelGetter.Get();
+            var viewModel = new TestIndexViewModel(participantID, progress, testName, _config.AttentionResetDisplayDurationInMilliseconds, _config.AutomateTests, _config.TestAutomationDelayInMilliseconds, testAllImageTypes, testInstructionsViewModel);
             return View(viewModel);
         }
 
