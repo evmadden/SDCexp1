@@ -4,7 +4,7 @@
         var loadFailureElement = document.getElementById('unableToLoadImages');
         var loadingElement = document.getElementById('loadingDiv');
 
-        loadImagesInterface(initOptions.imageTypesToPreload, 'progressBar', 'loadingPercentageSpan', function getDataUrls_OnComplete(dataUrls) {
+        function onSuccess(dataUrls) {
             var images = [];
             var imageElement = document.getElementById('image');
             var numberElement = document.getElementById('number');
@@ -151,10 +151,14 @@
                 }
             }
             xhr.send(`participantID=${initOptions.participantID}`);
-        }, function getDataUrls_OnError(err) {
+        }
+
+        function onFailure(err) {
             console.log('getDataUrls_OnError', err);
             loadingElement.style.display = 'none';
             loadFailureElement.style.display = 'block';
-        });
+        }
+
+        loadImagesInterface(initOptions.imageTypesToPreload, 'progressBar', 'loadingPercentageSpan').then(onSuccess).catch(onFailure);
     });
 }

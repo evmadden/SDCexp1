@@ -4,7 +4,8 @@
     document.addEventListener("DOMContentLoaded", function(){
         var loadingElement = document.getElementById('loadingDiv');
         var unableToLoadImagesElement = document.getElementById('unableToLoadImages');
-        loadImagesInterface(initOptions.imageTypesToPreload, 'progressBar', 'loadingPercentageSpan', function getDataUrls_OnComplete(dataUrls) {
+
+        function onSuccess(dataUrls) {
             loadingElement.style.display = 'none';
             var imageElement = document.getElementById('image');
             var imageContainerElement = document.getElementById('imageContainer');
@@ -139,10 +140,14 @@
             });
 
             showFirstImage();            
-        }, function getDataUrls_OnError(err) {
+        }
+
+        function onFailure(err) {
             console.log('getDataUrls_OnError', err);
             loadingElement.style.display = 'none';
             unableToLoadImagesElement.style.display = 'table';
-        });
+        }
+
+        loadImagesInterface(initOptions.imageTypesToPreload, 'progressBar', 'loadingPercentageSpan').then(onSuccess).catch(onFailure);
     });
 }

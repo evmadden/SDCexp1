@@ -60,36 +60,39 @@ function allProgress(proms, progress_cb) { // <3 https://stackoverflow.com/a/423
   }
 
 
-function getDataUrls(fetchUrls, progressCallback, completedCallback, errorCallback) { // todo mlh refactor to Promise
-    var dataUrls = {};
-
-    async function getHashes(urls) {
-        var hashes = [];
-        var operationsCompleted = 0;
-        var operationsTotal = fetchUrls.length * 2;
-        function advanceProgress() {
-            operationsCompleted = operationsCompleted + 1;
-            var percentComplete = (operationsCompleted / operationsTotal) * 100;
-            progressCallback(percentComplete);
-        }
-        for (let url of urls) {
-            advanceProgress();
-            let response = await fetch(url);
-            if (response.ok) {
-                let hash = await response.json();
-                hashes.push(hash);
-                advanceProgress();
-            } else {
-                throw `Unable to fetch image data (url:'${url}';responseStatus: '${response.status}').`;
+function getDataUrls(fetchUrls, progressCallback) {
+    return new Promise(function(resolve, reject) {
+        (function (fetchUrls, progressCallback, completedCallback, errorCallback) {
+            var dataUrls = {};
+            async function getHashes(urls) {
+                var hashes = [];
+                var operationsCompleted = 0;
+                var operationsTotal = fetchUrls.length * 2;
+                function advanceProgress() {
+                    operationsCompleted = operationsCompleted + 1;
+                    var percentComplete = (operationsCompleted / operationsTotal) * 100;
+                    progressCallback(percentComplete);
+                }
+                for (let url of urls) {
+                    advanceProgress();
+                    let response = await fetch(url);
+                    if (response.ok) {
+                        let hash = await response.json();
+                        hashes.push(hash);
+                        advanceProgress();
+                    } else {
+                        throw `Unable to fetch image data (url:'${url}';responseStatus: '${response.status}').`;
+                    }
+                }
+                return hashes;
             }
-        }
-        return hashes;
-    }
-    getHashes(fetchUrls).then(hashes => {
-        hashes.forEach(hash=>{ Object.assign(dataUrls, hash); });
-        completedCallback(dataUrls);
-    }).catch(err => {
-        errorCallback(err);
+            getHashes(fetchUrls).then(hashes => {
+                hashes.forEach(hash=>{ Object.assign(dataUrls, hash); });
+                completedCallback(dataUrls);
+            }).catch(err => {
+                errorCallback(err);
+            });
+        })(fetchUrls, progressCallback, resolve, reject);
     });
 }
 
@@ -107,18 +110,22 @@ function getImageTypesToFetch(imageTypes) {
     return result;
 }
 
-function loadImagesInterface(imageTypes, progressBarElementId, loadingPercentageElementId, completedCallback, errorCallback) {
-    var progressBarElement = document.getElementById(progressBarElementId);
-    var loadingPercentageElement = document.getElementById(loadingPercentageElementId);
-    var imageTypesToFetch = getImageTypesToFetch(imageTypes);
-    var fetchUrls = imageTypesToFetch.map(x=>`https://cdn.jsdelivr.net/gh/lancehilliard/temp@70601f506fb04c5e378cc4fb686fa9ceb593f187/${x}.json`); // todo mlh store base URL elsewhere
-    getDataUrls(fetchUrls, function(percentComplete){
-        progressBarElement.value = percentComplete;
-        loadingPercentageElement.innerHTML = parseInt(percentComplete);
-    }, completedCallback, errorCallback); // todo mlh refactor to Promise
+function loadImagesInterface(imageTypes, progressBarElementId, loadingPercentageElementId) {
+    return new Promise(function(resolve, reject) {
+        (function (imageTypes, progressBarElementId, loadingPercentageElementId, completedCallback, errorCallback) {
+            var progressBarElement = document.getElementById(progressBarElementId);
+            var loadingPercentageElement = document.getElementById(loadingPercentageElementId);
+            var imageTypesToFetch = getImageTypesToFetch(imageTypes);
+            var fetchUrls = imageTypesToFetch.map(x=>`https://cdn.jsdelivr.net/gh/lancehilliard/temp@70601f506fb04c5e378cc4fb686fa9ceb593f187/${x}.json`); // todo mlh store base URL elsewhere
+            getDataUrls(fetchUrls, function(percentComplete) {
+                progressBarElement.value = percentComplete;
+                loadingPercentageElement.innerHTML = parseInt(percentComplete);
+            }).then(completedCallback).catch(errorCallback);
+        })(imageTypes, progressBarElementId, loadingPercentageElementId, resolve, reject);
+    });
 }
 
-function enableFullscreen() {
+function enableFullscreen() { // todo mlh remove method and calls
     var element = document.documentElement;
     if (element.requestFullscreen) {
         element.requestFullscreen().catch(err => {
