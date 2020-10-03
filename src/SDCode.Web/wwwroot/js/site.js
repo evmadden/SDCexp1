@@ -124,18 +124,3 @@ function loadImagesInterface(imageTypes, progressBarElementId, loadingPercentage
         })(imageTypes, progressBarElementId, loadingPercentageElementId, resolve, reject);
     });
 }
-
-function enableFullscreen() { // todo mlh remove method and calls
-    var element = document.documentElement;
-    if (element.requestFullscreen) {
-        element.requestFullscreen().catch(err => {
-            // fullscreen request errors needn't be logged
-        });
-    } else if (element.mozRequestFullScreen) {
-        element.mozRequestFullScreen();
-    } else if (element.webkitRequestFullscreen) {
-        element.webkitRequestFullscreen();
-    } else if (element.msRequestFullscreen) {
-        element.msRequestFullscreen();
-    }
-}
