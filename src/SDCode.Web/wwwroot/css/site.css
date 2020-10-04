@@ -278,3 +278,8 @@ progress::-webkit-progress-value {
 progress::-webkit-progress-bar {
   background: #bdf1ff
 }
+
+/* override bootstrap */
+.form-row {
+  margin-right: 0;
+}
