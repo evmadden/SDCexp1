@@ -7,7 +7,6 @@ using SDCode.Web.Classes;
 using Microsoft.Extensions.Options;
 using System.Text.Json;
 using System;
-using System.Collections.Generic;
 
 namespace SDCode.Web.Controllers
 {
@@ -36,15 +35,13 @@ namespace SDCode.Web.Controllers
         public IActionResult Index(string participantID, Sleepinesses? stanford)
         {
             _stanfordRepository.Save(participantID, "Immediate", stanford);
-            var viewModel = new EncodingIndexViewModel(participantID, stanford, _config.ImageDisplayDurationInMilliseconds, _config.AttentionResetDisplayDurationInMilliseconds, _config.NumberDisplayProbabilityPercentage, _config.NumberCheckIntervalInMilliseconds, _config.NumberDisplayThresholdInMilliseconds, PhaseSetsGetter.EncodingImageTypes);
+            var viewModel = new EncodingIndexViewModel(participantID, stanford, _config.ImageDisplayDurationInMilliseconds, _config.AttentionResetDisplayDurationInMilliseconds, _config.NumberDisplayProbabilityPercentage, _config.NumberCheckIntervalInMilliseconds, _config.NumberDisplayThresholdInMilliseconds, PhaseSetsGetter.EncodingImageTypes, _config.ImageTypesUrlTemplate);
             return View(viewModel);
         }
 
         [HttpPost]
         public IActionResult GetImageDataUrls(string participantID) {
             var phaseSets = _phaseSetsGetter.Get(participantID);
-            //var imageDataUrls = _stimuliImageDataUrlGetter.Get(phaseSets.Encoding);
-            //var json = JsonSerializer.Serialize(imageDataUrls);
             var json = JsonSerializer.Serialize(phaseSets.Encoding);
             Response.Headers.Add("Content-Length", $"{json.Length}");
             return Content(json, "application/json");

@@ -15,6 +15,7 @@
         int EncodingImageCountPerSubset { get; set; }
         int TestImageCountPerOldSubset { get; set; }
         int TestImageCountPerNewSubset { get; set; }
+        string ImageTypesUrlTemplate { get; set; }
     }
 
     public class Config : IConfig
@@ -32,5 +33,6 @@
         public int EncodingImageCountPerSubset { get; set; }
         public int TestImageCountPerOldSubset { get; set; }
         public int TestImageCountPerNewSubset { get; set; }
+        public string ImageTypesUrlTemplate { get; set; }
     }
 }

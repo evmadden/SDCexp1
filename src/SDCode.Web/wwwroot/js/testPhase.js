@@ -148,6 +148,6 @@
             unableToLoadImagesElement.style.display = 'table';
         }
 
-        loadImagesInterface(initOptions.imageTypesToPreload, 'progressBar', 'loadingPercentageSpan').then(onSuccess).catch(onFailure);
+        loadImagesInterface(initOptions.imageTypesUrlTemplate, initOptions.imageTypesToPreload, 'progressBar', 'loadingPercentageSpan').then(onSuccess).catch(onFailure);
     });
 }

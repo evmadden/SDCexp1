@@ -114,13 +114,13 @@ function getImageTypesToFetch(imageTypes) {
     return result;
 }
 
-function loadImagesInterface(imageTypes, progressBarElementId, loadingPercentageElementId) {
+function loadImagesInterface(imageTypesUrlTemplate, imageTypes, progressBarElementId, loadingPercentageElementId) {
     return new Promise(function(resolve, reject) {
         (function (imageTypes, progressBarElementId, loadingPercentageElementId, completedCallback, errorCallback) {
             var progressBarElement = document.getElementById(progressBarElementId);
             var loadingPercentageElement = document.getElementById(loadingPercentageElementId);
             var imageTypesToFetch = getImageTypesToFetch(imageTypes);
-            var fetchUrls = imageTypesToFetch.map(x=>`https://cdn.jsdelivr.net/gh/lancehilliard/temp@70601f506fb04c5e378cc4fb686fa9ceb593f187/${x}.json`); // todo mlh store base URL elsewhere
+            var fetchUrls = imageTypesToFetch.map(x=>imageTypesUrlTemplate.replace('{0}', x));
             getDataUrls(fetchUrls, function(percentComplete) {
                 progressBarElement.value = percentComplete;
                 loadingPercentageElement.innerHTML = parseInt(percentComplete);

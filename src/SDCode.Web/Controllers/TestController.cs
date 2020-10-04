@@ -102,7 +102,7 @@ namespace SDCode.Web.Controllers
             _testResponsesRepository.Archive(participantID, testName);
             var testAllImageTypes = PhaseSetsGetter.TestOldImageTypes.Union(PhaseSetsGetter.TestNewImageTypes);
             var testInstructionsViewModel = _testInstructionsViewModelGetter.Get();
-            var viewModel = new TestIndexViewModel(participantID, progress, testName, _config.AttentionResetDisplayDurationInMilliseconds, _config.AutomateTests, _config.TestAutomationDelayInMilliseconds, testAllImageTypes, testInstructionsViewModel);
+            var viewModel = new TestIndexViewModel(participantID, progress, testName, _config.AttentionResetDisplayDurationInMilliseconds, _config.AutomateTests, _config.TestAutomationDelayInMilliseconds, testAllImageTypes, testInstructionsViewModel, _config.ImageTypesUrlTemplate);
             return View(viewModel);
         }
 

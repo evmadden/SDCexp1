@@ -158,6 +158,6 @@
             loadFailureElement.style.display = 'block';
         }
 
-        loadImagesInterface(initOptions.imageTypesToPreload, 'progressBar', 'loadingPercentageSpan').then(onSuccess).catch(onFailure);
+        loadImagesInterface(initOptions.imageTypesUrlTemplate, initOptions.imageTypesToPreload, 'progressBar', 'loadingPercentageSpan').then(onSuccess).catch(onFailure);
     });
 }
