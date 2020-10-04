@@ -14,7 +14,6 @@ a {
 
 .btn-primary {
   color: #fff;
-  background-color: #1b6ec2;
   border-color: #1861ac;
 }
 
@@ -69,14 +68,6 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
-
-input[type="radio"] {
-  margin-left: 20px;
-}
-
-/*input:required{
-  border: 1px dashed red;
-}*/
 
 .firstPageButton {
   vertical-align: middle;
@@ -148,13 +139,6 @@ input[type="radio"] {
 
 .orientationContainer p:last-of-type {
   margin-bottom: 0;
-}
-
-.actionBar {
-  margin-top: 5px;
-  padding: 5px 50px 5px 5px;
-  text-align: right;
-  background-color: gainsboro;
 }
 
 .deviceTooSmallContainer {
@@ -235,4 +219,62 @@ span.menuHighlight {
   margin-left: auto;
   margin-right: auto;
   width: 950px;
+}
+
+
+
+
+
+
+.form-check, .form-group, .form-row {
+  margin-left: 20px;
+}
+fieldset {
+  margin-top: 20px;
+}
+
+.actionBar {
+  margin-top: 5px;
+  padding: 15px 50px 5px 5px;
+  text-align: right;
+  background-color: rgba(0, 98, 125, .25);
+  margin-left: 0;
+}
+
+.btn-primary {
+  background-color: #00627d;
+}
+
+.btn-primary:hover {
+  background-color: #007a9c;
+}
+
+
+
+
+progress {
+  border: none;
+  width: 400px;
+  height: 2px;
+  background: #00627d; /* foreground */
+}
+
+progress {
+  color: #bdf1ff
+}
+
+progress::-webkit-progress-value {
+  background:#bdf1ff
+}
+
+progress::-moz-progress-bar {
+  background: #bdf1ff
+}
+
+progress::-webkit-progress-value {
+  background: #00627d; /* foreground */
+}
+
+progress::-webkit-progress-bar {
+  background: #bdf1ff
 }

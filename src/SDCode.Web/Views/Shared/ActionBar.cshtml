@@ -1,6 +1,8 @@
 ﻿@model ActionBarViewModel
-<div class="actionBar">
-    <input id="actionBarSubmitButton" type="submit" value="@Model.ButtonName"/>
+<div class="form-row justify-content-end rounded actionBar">
+    <div class="col-auto">
+        <input id="actionBarSubmitButton" type="submit" class="p-1 btn btn-primary mb-2" value="@Model.ButtonName"/>
+    </div>
 </div>
 @* Don't copy this HTML to other files. Instead, re-use this HTML in other files, with this syntax:
 

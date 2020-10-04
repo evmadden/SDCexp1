@@ -6,30 +6,44 @@
         <input type="hidden" name="nextActionAfterImageCheck" value="@Model.NextAction" />
         <input type="hidden" name="participantID" value="@Model.ParticipantID" />
         <input type="hidden" name="showSpacebarOrientation" value="@($"{Model.IsEncoding}".ToLower())" />
-        <div class="orientationContainer">
+        <div class="orientationContainer rounded">
             <p>This is a quick way to assess how alert you are feeling CURRENTLY.</p>
             <p>Please select the option that best describes how sleepy you are feeling RIGHT NOW.</p>
         </div>
-        <div class="questionContainer">
-            <input type="radio" id="1" name="stanford" value="@((int)Sleepinesses.WideAwake)"> <label for="1">Feeling active, vital, alert, or wide awake</label>
+        <div class="form-row questionContainer">
+            <div class="col-auto">
+                <input type="radio" id="1" name="stanford" value="@((int)Sleepinesses.WideAwake)"> <label for="1">Feeling active, vital, alert, or wide awake</label>
+            </div>
         </div>
-        <div class="questionContainer">
-            <input type="radio" id="2" name="stanford" value="@((int)Sleepinesses.FunctioningOffPeak)"> <label for="2">Functioning at high levels, but not at peak; able to concentrate</label>
+        <div class="form-row questionContainer">
+            <div class="col-auto">
+                <input type="radio" id="2" name="stanford" value="@((int)Sleepinesses.FunctioningOffPeak)"> <label for="2">Functioning at high levels, but not at peak; able to concentrate</label>
+            </div>
         </div>
-        <div class="questionContainer">
-            <input type="radio" id="3" name="stanford" value="@((int)Sleepinesses.AwakeButRelaxed)"> <label for="3">Awake, but relaxed; responsive but not fully alert</label>
+        <div class="form-row questionContainer">
+            <div class="col-auto">
+                <input type="radio" id="3" name="stanford" value="@((int)Sleepinesses.AwakeButRelaxed)"> <label for="3">Awake, but relaxed; responsive but not fully alert</label>
+            </div>
         </div>
-        <div class="questionContainer">
-            <input type="radio" id="4" name="stanford" value="@((int)Sleepinesses.SomewhatFoggy)"> <label for="4">Somewhat foggy, let down</label>
+        <div class="form-row questionContainer">
+            <div class="col-auto">
+                <input type="radio" id="4" name="stanford" value="@((int)Sleepinesses.SomewhatFoggy)"> <label for="4">Somewhat foggy, let down</label>
+            </div>
         </div>
-        <div class="questionContainer">
-            <input type="radio" id="5" name="stanford" value="@((int)Sleepinesses.SlowedDown)"> <label for="5">Foggy; losing interest in remaining awake; slowed down</label>
+        <div class="form-row questionContainer">
+            <div class="col-auto">
+                <input type="radio" id="5" name="stanford" value="@((int)Sleepinesses.SlowedDown)"> <label for="5">Foggy; losing interest in remaining awake; slowed down</label>
+            </div>
         </div>
-        <div class="questionContainer">
-            <input type="radio" id="6" name="stanford" value="@((int)Sleepinesses.FightingSleep)"> <label for="6">Sleepy, woozy, fighting sleep; prefer to lie down</label>
+        <div class="form-row questionContainer">
+            <div class="col-auto">
+                <input type="radio" id="6" name="stanford" value="@((int)Sleepinesses.FightingSleep)"> <label for="6">Sleepy, woozy, fighting sleep; prefer to lie down</label>
+            </div>
         </div>
-        <div class="questionContainer">
-            <input type="radio" id="7" name="stanford" value="@((int)Sleepinesses.SleepSoon)"> <label for="7">No longer fighting sleep, sleep onset soon; having dream-like thoughts</label>
+        <div class="form-row questionContainer">
+            <div class="col-auto">
+                <input type="radio" id="7" name="stanford" value="@((int)Sleepinesses.SleepSoon)"> <label for="7">No longer fighting sleep, sleep onset soon; having dream-like thoughts</label>
+            </div>
         </div>
         @await Html.PartialAsync("~/Views/Shared/ActionBar.cshtml", new ActionBarViewModel("Next"))
     </form>

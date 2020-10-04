@@ -12,8 +12,12 @@ function enforceFullscreen() { // todo mlh maybe refactor to CSS media query htt
     var deviceIsLargeEnough = !isVisible(document.getElementById('deviceTooSmallContainer'));
     if (deviceIsLargeEnough) {
         var mustBeInFullscreen = document.querySelectorAll('[data-fullscreenexempt]').length == 0;
+        var loginAlertElement = document.getElementById('loginAlert');
+        var browserIsFullscreen = isFullScreen();
+        if (loginAlertElement) {
+            loginAlertElement.style.display = browserIsFullscreen ? 'none' : 'block';
+        }
         if (mustBeInFullscreen) {
-            var browserIsFullscreen = isFullScreen();
             document.getElementById('container').style.display = browserIsFullscreen ? 'block' : 'none';
             document.getElementById('mustBeFullscreenContainer').style.display = browserIsFullscreen ? 'none' : 'block';
         } else {

@@ -6,12 +6,15 @@
 
 @section Scripts {
 <script>
+    var alertTimeoutId;
     document.addEventListener("DOMContentLoaded", function() {
         var loginFormElement = document.getElementById('loginForm');
         var loginButtonElement = document.getElementById('actionBarSubmitButton');
-        var participantIdInputElement = document.getElementById('participantId')
+        var participantIdInputElement = document.getElementById('participantId');
+        var loginAlertElement = document.getElementById('loginAlert');
         loginFormElement.addEventListener("submit", function(e){
             e.preventDefault();
+            clearTimeout(alertTimeoutId);
             if (isFullScreen()) {
                 var participantID = participantIdInputElement.value;
                 loginButtonElement.setAttribute('disabled', 'disabled');
@@ -50,28 +53,25 @@
                 }
                 xhr.send(`participantID=${participantID}`);
             } else {
-                alert('Place your browser into full-screen mode,\nand then press the Login button again.');
+                loginAlertElement.classList.remove('alert-warning');
+                loginAlertElement.classList.add('alert-danger');
+                alertTimeoutId = setTimeout(function() {
+                    loginAlertElement.classList.remove('alert-danger');
+                    loginAlertElement.classList.add('alert-warning');
+                }, 1000);
             }
         });
-
-        function showFinalInstructions() {
-            var fullscreenDetected = isFullScreen();
-            document.getElementById('fullscreenNotDetected').style.display = fullscreenDetected ? 'none' : 'block';
-            document.getElementById('fullscreenDetected').style.display = fullscreenDetected ? 'block' : 'none';
-            setTimeout(showFinalInstructions, 100);
-        }
-        showFinalInstructions();
-        
     });
 </script>
 }
 
 @await Html.PartialAsync("~/Views/Shared/LogoMasthead.cshtml")
+@await Html.PartialAsync("~/Views/Shared/FullscreenExempt.cshtml")
 <div class="text-center">
     <h1 class="display-4">@await Html.PartialAsync("~/Views/Shared/StudyTitle.cshtml")</h1>
 </div>
 <div class="text-left">
-    <div class="orientationContainer">
+    <div class="orientationContainer rounded">
         <p>Welcome, and thank you for your interest in our study.</p>
     </div>
     <div>
@@ -101,17 +101,29 @@
 
 <div id="formDiv">
     <form id="loginForm" action="" method="POST">
-        <div>
-            <input id="fullscreenCheckbox" type="checkbox" data-fullscreenexempt required> <label for="fullscreenCheckbox">I understand that my browser must remain in full-screen mode while using this site.</label>
+        <div class="form-row">
+            <div class="col-auto">
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" id="fullscreenCheckbox" required />
+                    <label class="form-check-label" for="fullscreenCheckbox">
+                    I understand that my browser must remain in full-screen mode while using this site.
+                    </label>
+                </div>
+            </div>
         </div>
-        <div>
-            <label for="participantId">Participant ID:</label> <input type="text" id="participantId" name="participantID" required />
-        </div>
-        <div id="fullscreenNotDetected" style="display: none;">
-            @await Html.PartialAsync("~/Views/Shared/FullscreenInstructions.cshtml")
-        </div>
-        <div id="fullscreenDetected" style="display: none;">
-            Press the Login button to continue.
+        <div class="form-row">
+            <div class="col-auto">
+                <label class="sr-only" for="participantID">Participant ID</label>
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">Participant ID</div>
+                    </div>
+                    <input type="text" class="form-control" style="width: 75px;" id="participantId" name="participantID" required data-lpignore="true" />
+                </div>                
+            </div>
+            <div class="ml-auto">
+                <div id="loginAlert" class="alert alert-warning p-2 rounded" role="alert">@await Html.PartialAsync("~/Views/Shared/FullscreenInstructions.cshtml")</div>
+            </div>
         </div>
         <div>
             @await Html.PartialAsync("~/Views/Shared/ActionBar.cshtml", new ActionBarViewModel("Login"))

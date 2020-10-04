@@ -5,7 +5,7 @@
 @await Html.PartialAsync("~/Views/Shared/LogoBanner.cshtml")
 @await Html.PartialAsync("~/Views/Shared/FullscreenExempt.cshtml")
 <h1 class="display-4">Not Enrolled</h1>
-<div class="orientationContainer">
+<div class="orientationContainer rounded">
     <p>Oops!  It looks like you are using a Participant ID that does not exist yet.</p>
 </div>
 <p>Please check the ID and @Html.ActionLink("try again", "Index", "Home").<br/>

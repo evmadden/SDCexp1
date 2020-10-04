@@ -10,67 +10,117 @@
     <h1 class="display-4">Demographics</h1>
     <form action="@Url.Action("PSQI", "Home")" method="POST">
         <input type="hidden" name="participantID" value="@Model.ParticipantID" />
-        <div class="orientationContainer">
+        <div class="orientationContainer rounded">
             <p>Before we get started, we would like to know some basic demographic information.</p>
         </div>
-        <div class="questionContainer">
-            <label>Sex:</label><br/>
-            <input type="radio" id="male" name="sex" value="male"> <label for="male">Male</label><br/>
-            <input type="radio" id="female" name="sex" value="female"> <label for="female">Female</label><br/>
-            <input type="radio" id="other" name="sex" value="other"> <label for="other">Other</label>
-        </div>
-        <div class="questionContainer">
-            <label for="age">Age:</label><br/>
-            <input type="number" id="age" name="age">
-        </div>
-        <div class="questionContainer">
-            <label for="year">Year of study (if you are not a student, put your highest degree awarded; e.g., "Master's Awarded"):</label><br/>
-            <input type="text" id="year" name="yearstudy">
-        </div>
-        <div class="questionContainer">
-            <label>Right or Left handed:</label><br/>
-            <input type="radio" id="Right" name="handed" value="@((int)Hands.Right)"> <label for="Right">Right</label><br/>
-            <input type="radio" id="Left" name="handed" value="@((int)Hands.Left)"> <label for="Left">Left</label>
-        </div>
-        <div class="questionContainer">
-            <label>Do you have hearing, vision or speech impairments?</label><br/>
-            <input type="radio" id="impairyes" name="impairments" value="true"> <label for="impairyes">Yes</label><br/>
-            <input type="radio" id="impairno" name="impairments" value="false"> <label for="impairno">No</label>
-        </div>
-        <div class="questionContainer">
-            <label>Do you wear glasses or contacts?</label><br/>
-            <input type="radio" id="glassesyes" name="glasses" value="true"> <label for="glassesyes">Yes</label><br/>
-            <input type="radio" id="glassesno" name="glasses" value="false"> <label for="glassesno">No</label>
-        </div>
-        <div class="questionContainer">
-            <label for="language">What is your native language?<br/>
-            Please write the language your parents spoke to you as a child.</label><br/>
-            <input type="text" id="language" name="language">
-        </div>
-        <div class="questionContainer">
-            <label for="bilingual">Please list any other languages you speak fluently.</label><br/>
-            <input type="text" id="bilingual" name="bilingual">
-        </div>
-        <div class="questionContainer">
-            <label for="currentcountry">In what country do you currently live?</label><br/>
-            <input type="text" id="currentcountry" name="currentcountry">
-        </div>
-        <div class="questionContainer">
-            <label for="bed">What time did you go to bed last night? (please enter in 24-hour format; e.g. 2100)</label><br/>
-            <input type="number" id="bed" name="bed">
-        </div>
-        <div class="questionContainer">
-            <label for="wake">What time did you wake up this morning? (please enter in 24-hour format: e.g., 0700)</label><br/>
-            <input type="number" id="wake" name="wake">
-        </div>
-        <div class="questionContainer">
-            <label for="latency">Amount of time taken to fall asleep (mins):</label><br/>
-            <input type="number" id="latency" name="latency">
-        </div>
-        <div class="questionContainer">
-            <label for="TST">Total hours of sleep:</label><br/>
-            <input type="text" id="TST" name="tst">
-        </div>
+        <fieldset>
+            <legend><label>Sex</label></legend>
+            <div class="form-check">
+                <input class="form-check-input" id="male" name="sex" type="radio" value="male">
+                <label class="form-check-label" for="male">Male</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" id="female" name="sex" type="radio" value="female">
+                <label class="form-check-label" for="female">Female</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" id="male" name="sex" type="radio" value="other">
+                <label class="form-check-label" for="male">Other</label>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend><label for="age">Age</label></legend>
+            <div class="form-group">
+                <input type="number" class="form-control" style="width: 75px;" id="age" name="age">
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend><label for="year">Year of Study</label></legend>
+            <div class="form-group">
+                <input type="text" class="form-control w-50" id="year" name="yearstudy" data-lpignore="true">
+                <small class="form-text text-muted">If you are not a student, put your highest degree awarded (e.g. "Master's Awarded").</small>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend><label>Right or Left Handed</label></legend>
+            <div class="form-check">
+                <input class="form-check-input" id="Right" name="handed" type="radio" value="@((int)Hands.Right)">
+                <label class="form-check-label" for="Right">Right</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" id="Left" name="handed" type="radio" value="@((int)Hands.Left)">
+                <label class="form-check-label" for="Left">Left</label>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend><label>Do you have hearing, vision or speech impairments?</label></legend>
+            <div class="form-check">
+                <input class="form-check-input" id="impairyes" name="impairments" type="radio" value="true">
+                <label class="form-check-label" for="impairyes">Yes</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" id="impairno" name="impairments" type="radio" value="false">
+                <label class="form-check-label" for="impairno">No</label>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend><label>Do you wear glasses or contacts?</label></legend>
+            <div class="form-check">
+                <input class="form-check-input" id="glassesyes" name="glasses" type="radio" value="true">
+                <label class="form-check-label" for="glassesyes">Yes</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" id="glassesno" name="glasses" type="radio" value="false">
+                <label class="form-check-label" for="glassesno">No</label>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend><label for="language">What is your native language?</label></legend>
+            <div class="form-group">
+                <input type="text" class="form-control w-50" id="language" name="language" data-lpignore="true">
+                <small class="form-text text-muted">Please write the language your parents spoke to you as a child.</small>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend><label for="bilingual">Please list any other languages you speak fluently.</label></legend>
+            <div class="form-group">
+                <input type="text" class="form-control w-50" id="bilingual" name="bilingual" data-lpignore="true">
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend><label for="currentcountry">In what country do you currently live?</label></legend>
+            <div class="form-group">
+                <input type="text" class="form-control w-50" id="currentcountry" name="currentcountry" data-lpignore="true">
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend><label for="bed">What time did you go to bed last night?</label></legend>
+            <div class="form-group">
+                <input type="number" class="form-control" style="width: 90px" id="bed" name="bed">
+                <small class="form-text text-muted">Please enter in 24-hour format (e.g. 2100).</small>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend><label for="wake">What time did you wake up this morning?</label></legend>
+            <div class="form-group">
+                <input type="number" class="form-control" style="width: 90px" id="wake" name="wake">
+                <small class="form-text text-muted">Please enter in 24-hour format (e.g. 0700).</small>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend><label for="latency">Amount of time taken to fall asleep (mins)</label></legend>
+            <div class="form-group">
+                <input type="number" class="form-control" style="width: 75px" id="latency" name="latency">
+                <small class="form-text text-muted">Please enter minutes taken to fall asleep.</small>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend><label for="latency">Total hours of sleep</label></legend>
+            <div class="form-group">
+                <input type="text" class="form-control" style="width: 75px" id="TST" name="tst" data-lpignore="true">
+            </div>
+        </fieldset>
+        <p>Please press the "Next" button to continue.</p>
         @await Html.PartialAsync("~/Views/Shared/ActionBar.cshtml", new ActionBarViewModel("Next"))
     </form>
 </div>

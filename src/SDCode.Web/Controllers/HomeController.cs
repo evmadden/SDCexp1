@@ -111,6 +111,7 @@ namespace SDCode.Web.Controllers
         [HttpPost]
         public IActionResult Login(string participantID) 
         {
+            participantID = participantID.Trim();
             var isEnrolled = _participantEnrollmentVerifier.Verify(participantID);
             string action;
             string whenToReturn = null;

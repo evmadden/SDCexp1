@@ -50,7 +50,7 @@
         @foreach (var file in Model.Files)
         {
             var borderClass = "";
-            <fieldset class="border p-2">
+            <fieldset class="border p-2 rounded">
                 <legend  class="w-auto"><span>@file.Name @(string.IsNullOrWhiteSpace(file.Description) ? string.Empty : " - ") @file.Description</span></legend>
                 @foreach (var column in file.Columns) {
                     <div class="row @borderClass columnName">

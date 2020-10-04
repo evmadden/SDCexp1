@@ -10,23 +10,37 @@
 
     <h1 class="display-4">Study Phase Questions</h1>
     <br/>
-    <p>This completes the STUDY PHASE.</p>
+    <div class="orientationContainer rounded">
+        <p>This completes the STUDY PHASE.</p>
+    </div>
     <div>
         <div>
             <h1 class="display-5">Questions</h1>
             <p>Please explain problem(s) that occurred during the STUDY PHASE.</p>
         </div>
-        @if (Model.ShouldQuestionNeglected) {
-            <p>
-                Why were images neglected? <input type="text" name="neglectedReason" class="longSingleLine" required />
-            </p>
-        }
-        @if (Model.ShouldQuestionObscured) {
-            <p>
-                Why were images obscured? <input type="text" name="obscuredReason" class="longSingleLine" required />
-            </p>
-        }
+            @if (Model.ShouldQuestionNeglected) {
+                <div class="questionContainer subQuestionContainer form-row">
+                    <div class="col-md-3">
+                        <label for="neglectedReason">Why were images neglected?</label>
+                    </div>
+                    <div class="col-md-9">
+                        <input id="neglectedReason" type="text" name="neglectedReason" class="form-control w-100" required data-lpignore="true" />
+                    </div>                                 
+                </div>
+            }
+            @if (Model.ShouldQuestionObscured) {
+                <div class="questionContainer subQuestionContainer form-row">
+                    <div class="col-md-3">
+                        <label for="obscuredReason">Why were images obscured?</label>
+                    </div>
+                    <div class="col-md-9">
+                        <input id="obscuredReason" type="text" name="obscuredReason" class="form-control w-100" required data-lpignore="true" />
+                    </div>                                 
+                </div>
+            }
     </div>
-    <p>Press the "Next" button to finish to the STUDY PHASE.</p>
+    <div class="questionContainer">
+        <p>Press the "Next" button to finish to the STUDY PHASE.</p>
+    </div>
     @await Html.PartialAsync("~/Views/Shared/ActionBar.cshtml", new ActionBarViewModel("Next"))
     </form>
