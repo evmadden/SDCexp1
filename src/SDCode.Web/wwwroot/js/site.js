@@ -3,34 +3,10 @@
 
 // Write your JavaScript code.
 
-function isFullScreen() { // https://stackoverflow.com/a/58210211/116895 replaces https://stackoverflow.com/a/52160506/116895
+function isFullScreen() { // https://stackoverflow.com/a/58210211/116895
     var result = window.matchMedia('(display-mode: fullscreen)').matches || window.document.fullscreenElement;
     return result;
 }
-
-function enforceFullscreen() { // todo mlh maybe refactor to CSS media query https://stackoverflow.com/a/54855387/116895
-    var deviceIsLargeEnough = !isVisible(document.getElementById('deviceTooSmallContainer'));
-    if (deviceIsLargeEnough) {
-        var mustBeInFullscreen = document.querySelectorAll('[data-fullscreenexempt]').length == 0;
-        var loginAlertElement = document.getElementById('loginAlert');
-        var browserIsFullscreen = isFullScreen();
-        if (loginAlertElement) {
-            loginAlertElement.style.display = browserIsFullscreen ? 'none' : 'block';
-        }
-        if (mustBeInFullscreen) {
-            document.getElementById('container').style.display = browserIsFullscreen ? 'block' : 'none';
-            document.getElementById('mustBeFullscreenContainer').style.display = browserIsFullscreen ? 'none' : 'block';
-        } else {
-            document.getElementById('container').style.display = 'block';
-            document.getElementById('mustBeFullscreenContainer').style.display = 'none';
-        }
-    } else {
-        document.getElementById('container').style.display = 'none';
-        document.getElementById('mustBeFullscreenContainer').style.display = 'none';
-    }
-    setTimeout(enforceFullscreen, 100);
-}
-document.addEventListener("DOMContentLoaded", enforceFullscreen);
 
 function isInViewport(element) { // https://www.javascripttutorial.net/dom/css/check-if-an-element-is-visible-in-the-viewport
     const rect = element.getBoundingClientRect();
@@ -47,8 +23,8 @@ function isVisible(element) {
 }
 
 function isHidden(element) {
-    var style = window.getComputedStyle(element);
-    return (style.display === 'none');
+    var result = (element.offsetParent === null); // https://stackoverflow.com/a/21696585/116895
+    return result;
 }
 
 function allProgress(proms, progress_cb) { // <3 https://stackoverflow.com/a/42342373/116895
