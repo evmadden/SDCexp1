@@ -134,7 +134,8 @@ body {
   margin-top: 10px;
   margin-bottom: 10px;
   padding: 10px;
-  background-color: gainsboro;
+  background-color: #e7e2d3;
+  color: #312605;
 }
 
 .orientationContainer p:last-of-type {
@@ -282,4 +283,7 @@ progress::-webkit-progress-bar {
 /* override bootstrap */
 .form-row {
   margin-right: 0;
+}
+.foo {
+  background-color: #fbb800;
 }
