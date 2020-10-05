@@ -159,6 +159,10 @@ body {
   font-weight: bold;
 }
 
+#container {
+  display: none;
+}
+
 @media only screen and (max-device-width: 1024px) {
   #container {
     display: none;
@@ -278,28 +282,4 @@ progress::-webkit-progress-bar {
 /* override bootstrap */
 .form-row {
   margin-right: 0;
-}
-
-@media only screen and (min-device-width: 1025px) and (display-mode: browser) { /* https://developer.mozilla.org/en-US/docs/Web/CSS/@media/display-mode */
-  #container[data-fs="true"] {
-    display: none;
-  }
-  #mustBeFullscreenContainer[data-fs="true"] {
-    display: block;
-  }
-  #loginAlert {
-    display: block;
-  }
-  #loginConfirm {
-    display: none;
-  }
-}
-
-@media only screen and (min-device-width: 1025px) and (display-mode: fullscreen) { /* https://developer.mozilla.org/en-US/docs/Web/CSS/@media/display-mode */
-  #loginAlert {
-    display: none;
-  }
-  #loginConfirm {
-    display: block;
-  }
 }
