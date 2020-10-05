@@ -3,19 +3,27 @@
 
 // Write your JavaScript code.
 
-function isFullScreen() { // https://stackoverflow.com/a/58210211/116895 replaces https://stackoverflow.com/a/52160506/116895
-    var result = window.matchMedia('(display-mode: fullscreen)').matches || window.document.fullscreenElement;
+function isFullScreen() { // https://stackoverflow.com/a/52160506/116895
+    const windowWidth = window.innerWidth * window.devicePixelRatio;
+    const windowHeight = window.innerHeight * window.devicePixelRatio;
+    const screenWidth = window.screen.width;
+    const screenHeight = window.screen.height;
+    const widthUsed = windowWidth/screenWidth;
+    const heightUsed = windowHeight/screenHeight;
+    var result = widthUsed>=0.95 && heightUsed>=0.95;
     return result;
 }
 
-function enforceFullscreen() { // todo mlh maybe refactor to CSS media query https://stackoverflow.com/a/54855387/116895
+function enforceFullscreen() {
     var deviceIsLargeEnough = !isVisible(document.getElementById('deviceTooSmallContainer'));
     if (deviceIsLargeEnough) {
         var mustBeInFullscreen = document.querySelectorAll('[data-fullscreenexempt]').length == 0;
         var loginAlertElement = document.getElementById('loginAlert');
+        var loginConfirmElement = document.getElementById('loginConfirm');
         var browserIsFullscreen = isFullScreen();
-        if (loginAlertElement) {
+        if (loginAlertElement && loginConfirmElement) {
             loginAlertElement.style.display = browserIsFullscreen ? 'none' : 'block';
+            loginConfirmElement.style.display = browserIsFullscreen ? 'block' : 'none';
         }
         if (mustBeInFullscreen) {
             document.getElementById('container').style.display = browserIsFullscreen ? 'block' : 'none';
@@ -23,6 +31,10 @@ function enforceFullscreen() { // todo mlh maybe refactor to CSS media query htt
         } else {
             document.getElementById('container').style.display = 'block';
             document.getElementById('mustBeFullscreenContainer').style.display = 'none';
+            var fullscreenGuidanceElement = document.getElementById('fullscreenGuidance');
+            if (fullscreenGuidanceElement) {
+                fullscreenGuidanceElement.style.display = browserIsFullscreen ? 'none' : 'block';
+            }
         }
     } else {
         document.getElementById('container').style.display = 'none';
@@ -47,8 +59,8 @@ function isVisible(element) {
 }
 
 function isHidden(element) {
-    var style = window.getComputedStyle(element);
-    return (style.display === 'none');
+    var result = (element.offsetParent === null); // https://stackoverflow.com/a/21696585/116895
+    return result;
 }
 
 function allProgress(proms, progress_cb) { // <3 https://stackoverflow.com/a/42342373/116895

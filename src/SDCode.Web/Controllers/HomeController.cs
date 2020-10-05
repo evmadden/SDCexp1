@@ -115,6 +115,7 @@ namespace SDCode.Web.Controllers
             var isEnrolled = _participantEnrollmentVerifier.Verify(participantID);
             string action;
             string whenToReturn = null;
+            string nextActionAfterScreenCheck = null;
             if (isEnrolled) {
                 IReturningUserPhaseData phaseData = _returningUserPhaseDataGetter.Get(participantID);
                 if (phaseData.Action == ReturningUserAction.Done) {
@@ -126,15 +127,21 @@ namespace SDCode.Web.Controllers
                 } else if (phaseData.Action == ReturningUserAction.TooLate) {
                     action = Url.Action("Expired", "Test");
                 } else if (phaseData.Action == ReturningUserAction.Test) {
-                    action = Url.Action("WelcomeBack", "Test");
+                    nextActionAfterScreenCheck = Url.Action("WelcomeBack", "Test");
+                    action = Url.Action("Index", "ScreenCheck");
                 } else {
                     var stanford = _stanfordRepository.Get(participantID);
-                    action = stanford.Immediate.HasValue ? Url.Action("PreviouslyInterrupted", "Home") : Url.Action("ConsentInfo", "Home");
+                    if (stanford.Immediate.HasValue) {
+                        action = Url.Action("PreviouslyInterrupted", "Home");
+                    } else {
+                        nextActionAfterScreenCheck = Url.Action("ConsentInfo", "Home");
+                        action = Url.Action("Index", "ScreenCheck");
+                    }
                 }
             } else {
                 action = Url.Action("NotEnrolled", "Participant", new {id=participantID});
             }
-            return Json(new {success=true, action, participantID, whenToReturn});
+            return Json(new {success=true, action, participantID, whenToReturn, nextActionAfterScreenCheck});
         }
 
         public IActionResult Contact() 

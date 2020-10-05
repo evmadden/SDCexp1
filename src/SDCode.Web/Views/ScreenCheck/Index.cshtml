@@ -1,0 +1,54 @@
+﻿@model ScreenCheckIndexViewModel
+@{
+    ViewData["Title"] = "Screen Check";
+}
+
+@section Scripts {
+    <script src="~/js/screenCheck.js" asp-append-version="true"></script>
+    <script>
+        //var initOptions = @Html.Raw(Json.Serialize(Model));
+        //initOptions.getImageDataUrlsUrl = '@Url.Action("GetImageDataUrls")';
+        //screenCheckInit(initOptions);
+        screenCheckInit();
+    </script>
+}
+
+@await Html.PartialAsync("~/Views/Shared/LogoMasthead.cshtml")
+@await Html.PartialAsync("~/Views/Shared/FullscreenExempt.cshtml")
+<div class="text-center">
+    <h1 class="display-4">@await Html.PartialAsync("~/Views/Shared/StudyTitle.cshtml")</h1>
+</div>
+<form id="screenCheckForm" action="@Model.NextActionAfterScreenCheck" method="POST">
+    <input type="hidden" name="participantID" value="@Model.ParticipantID" />
+    <div class="text-left">
+        <div class="orientationContainer rounded">
+            <p>This page prepares your browser for full-screen participation.</p>
+        </div>
+        <div>
+            <p>To participate in this study, you must keep your browser in full-screen mode.</p>
+            <div class="form-row">
+                <div class="col-auto">
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="fullscreenCheckbox" required />
+                        <label class="form-check-label" for="fullscreenCheckbox">
+                        I understand that my browser must remain in full-screen mode while using this site.
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div id="fullscreenGuidance" class="questionContainer">
+                <p><span id="entireScreenGuidance">Your browser must cover your entire screen to proceed.</span> For example: if you're on a Mac, disable "Always Show Bookmarks Bar" and "Always Show Toolbar in Full Screen" (probably in the "View" menu).</p>
+                <p>If you need assistance getting past this screen, contact the researcher (@await Html.PartialAsync("~/Views/Shared/ResearcherEmailLink.cshtml")).</p>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="ml-auto">
+                <div id="loginAlert" class="alert alert-warning p-2 rounded" role="alert">@await Html.PartialAsync("~/Views/Shared/FullscreenInstructions.cshtml")</div>
+                <div id="loginConfirm" class="alert alert-success p-2 rounded" role="alert">You're full-screen. <strong>Stay in full-screen while you use this site.</strong></div>
+            </div>
+        </div>
+    </div>
+    <div>
+        @await Html.PartialAsync("~/Views/Shared/ActionBar.cshtml", new ActionBarViewModel("Proceed"))
+    </div>
+</form>
