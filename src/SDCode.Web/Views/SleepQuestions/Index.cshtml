@@ -1,0 +1,10 @@
+@model SDCode.Web.Models.SleepQuestionsIndexViewModel
+@{
+    ViewData["Title"] = "Sleep Questions";
+}
+@await Html.PartialAsync("~/Views/Shared/LogoBanner.cshtml")
+<form action="@(Url.Action("Stanford","Test"))" method="POST">
+    <input type="hidden" name="participantID" value="@Model.ParticipantID" />
+    @await Html.PartialAsync("~/Views/Shared/SleepQuestions.cshtml")
+    @await Html.PartialAsync("~/Views/Shared/ActionBar.cshtml", new ActionBarViewModel("Next"))
+</form>

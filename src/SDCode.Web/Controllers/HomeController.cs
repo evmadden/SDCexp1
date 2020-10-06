@@ -20,8 +20,9 @@ namespace SDCode.Web.Controllers
         private readonly IEncodingFinishedChecker _encodingFinishedChecker;
         private readonly IReturningUserPhaseDataGetter _returningUserPhaseDataGetter;
         private readonly IParticipantEnrollmentVerifier _participantEnrollmentVerifier;
+        private readonly ISleepQuestionsRepository _sleepQuestionsRepository;
 
-        public HomeController(ILogger<HomeController> logger, IStanfordRepository stanfordRepository, IRepository<ConsentModel> consentRepository, IRepository<PSQIModel> psqiRepository, IRepository<EpworthModel> epworthRepository, IRepository<DemographicsModel> demographicsRepository, ITestNameGetter testNameGetter, IPhaseSetsGetter phaseSetsGetter, IProgressGetter progressGetter, IEncodingFinishedChecker encodingFinishedChecker, IReturningUserPhaseDataGetter returningUserPhaseDataGetter, IParticipantEnrollmentVerifier participantEnrollmentVerifier)
+        public HomeController(ILogger<HomeController> logger, IStanfordRepository stanfordRepository, IRepository<ConsentModel> consentRepository, IRepository<PSQIModel> psqiRepository, IRepository<EpworthModel> epworthRepository, IRepository<DemographicsModel> demographicsRepository, ITestNameGetter testNameGetter, IPhaseSetsGetter phaseSetsGetter, IProgressGetter progressGetter, IEncodingFinishedChecker encodingFinishedChecker, IReturningUserPhaseDataGetter returningUserPhaseDataGetter, IParticipantEnrollmentVerifier participantEnrollmentVerifier, ISleepQuestionsRepository sleepQuestionsRepository)
         {
             _logger = logger;
             _stanfordRepository = stanfordRepository;
@@ -35,6 +36,7 @@ namespace SDCode.Web.Controllers
             _encodingFinishedChecker = encodingFinishedChecker;
             _returningUserPhaseDataGetter = returningUserPhaseDataGetter;
             _participantEnrollmentVerifier = participantEnrollmentVerifier;
+            _sleepQuestionsRepository = sleepQuestionsRepository;
         }
 
         public IActionResult Index()
@@ -57,18 +59,8 @@ namespace SDCode.Web.Controllers
         [HttpPost]
         public IActionResult Demographics(string participantID, bool infoSheet, bool withdraw, bool npsDisorder, bool adhd, bool headInjury, bool normalVision, bool visionProblems, bool altShifts, bool smoker, bool dataProtection, bool agreeParticipate)
         {
-            var encodingFinished = _encodingFinishedChecker.IsFinished(participantID);
-            if (encodingFinished) {
-                return RedirectToAction("Returning", "Home");
-            } else {
-                var stanford = _stanfordRepository.Get(participantID);
-                if (stanford.Immediate.HasValue) {
-                    return RedirectToAction("PreviouslyInterrupted", "Home");
-                } else {
-                    _consentRepository.Save(new ConsentModel{ParticipantID = participantID, InfoSheet = infoSheet, Withdraw = withdraw, NPSDisorder = npsDisorder, ADHD = adhd, HeadInjury = headInjury, NormalVision = normalVision, VisionProblems = visionProblems, AltShifts = altShifts, Smoker = smoker, DataProtection = dataProtection, AgreeParticipate = agreeParticipate});
-                    return View(new DemographicsViewModel(participantID));
-                }
-            }
+            _consentRepository.Save(new ConsentModel{ParticipantID = participantID, InfoSheet = infoSheet, Withdraw = withdraw, NPSDisorder = npsDisorder, ADHD = adhd, HeadInjury = headInjury, NormalVision = normalVision, VisionProblems = visionProblems, AltShifts = altShifts, Smoker = smoker, DataProtection = dataProtection, AgreeParticipate = agreeParticipate});
+            return View(new DemographicsViewModel(participantID));
         }
 
         public IActionResult PreviouslyInterrupted() {
@@ -85,7 +77,8 @@ namespace SDCode.Web.Controllers
         [HttpPost]
         public IActionResult Stanford(string participantID, Sexes? sex, string age, string yearStudy, Hands? handed, bool? impairments, bool? glasses, string language, string bilingual, string currentCountry, string bed, string wake, string latency, string tst)
         {
-            _demographicsRepository.Save(new DemographicsModel{ParticipantID = participantID, Sex = sex, Age = age, YearStudy = yearStudy, Handed = handed, Impairments = impairments, Glasses = glasses, Language = language, Bilingual = bilingual, CurrentCountry = currentCountry, Bed = bed, Wake = wake, Latency = latency, TST = tst});
+            var testName = _testNameGetter.Get(participantID);
+            _sleepQuestionsRepository.Save(participantID, testName, bed, wake, latency, tst);
             return View(new StanfordViewModel(participantID, true));
         }
 
@@ -121,8 +114,8 @@ namespace SDCode.Web.Controllers
                     action = Url.Action("Expired", "Test");
                 } else if (phaseData.Action == ReturningUserAction.Test) {
                     var testName = _testNameGetter.Get(participantID);
-                    var stanfordNeeded = !string.Equals(testName, "Immediate");
-                    nextActionAfterScreenCheck = stanfordNeeded ? Url.Action("Stanford", "Test") : Url.Action("WelcomeBack", "Test");
+                    var preTestQuestionsNeeded = !string.Equals(testName, "Immediate");
+                    nextActionAfterScreenCheck = preTestQuestionsNeeded ? Url.Action("Index", "SleepQuestions") : Url.Action("WelcomeBack", "Test");
                     action = Url.Action("Index", "ScreenCheck");
                 } else {
                     var stanford = _stanfordRepository.Get(participantID);

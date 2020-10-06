@@ -31,18 +31,6 @@ namespace SDCode.Web.Models
         public string Bilingual{ get; set; }    
         [Name(nameof(CurrentCountry))]
         public string CurrentCountry{ get; set; }
-        [Name(nameof(Bed))]
-        [Description("Participant notes what time they went to bed the previous night.")] 
-        public string Bed{ get; set; }
-        [Name(nameof(Wake))]
-        [Description("Participant notes what time they woke the day of the study.")]
-        public string Wake{ get; set; }    
-        [Name(nameof(Latency))]
-        [Description("Participant notes how long it took them to fall asleep the previous night.")]
-        public string Latency{ get; set; }   
-        [Name(nameof(TST))]
-        [Description("Participant notes their total sleep time for the previous night.")]
-        public string TST{ get; set; }           
 
         public sealed class Map : ClassMap<DemographicsModel>
         {
@@ -58,10 +46,6 @@ namespace SDCode.Web.Models
                 Map(m => m.Language).Name(nameof(DemographicsModel.Language));
                 Map(m => m.Bilingual).Name(nameof(DemographicsModel.Bilingual));
                 Map(m => m.CurrentCountry).Name(nameof(DemographicsModel.CurrentCountry));
-                Map(m => m.Bed).Name(nameof(DemographicsModel.Bed));
-                Map(m => m.Wake).Name(nameof(DemographicsModel.Wake));
-                Map(m => m.Latency).Name(nameof(DemographicsModel.Latency));
-                Map(m => m.TST).Name(nameof(DemographicsModel.TST));
             }
         }
     }

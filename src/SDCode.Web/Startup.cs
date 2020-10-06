@@ -62,6 +62,8 @@ namespace SDCode.Web
             services.AddScoped<IJudgementsDescriptionGetter, JudgementsDescriptionGetter>();
             services.AddScoped<ITestInstructionsViewModelGetter, TestInstructionsViewModelGetter>();
             services.AddScoped<IConfidencesDescriptionsGetter, ConfidencesDescriptionsGetter>();
+            services.AddScoped<ISleepQuestionsRepository, SleepQuestionsRepository>();
+            services.AddScoped<ICsvFile<SleepQuestionsModel, SleepQuestionsModel.Map>, CsvFile<SleepQuestionsModel, SleepQuestionsModel.Map>>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

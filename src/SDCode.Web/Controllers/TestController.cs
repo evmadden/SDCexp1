@@ -23,9 +23,7 @@ namespace SDCode.Web.Controllers
         private readonly IStanfordRepository _stanfordRepository;
         private readonly IResponseFeedbackGetter _responseFeedbackGetter;
         private readonly IConfig _config;
-
         private readonly ITestResponsesRepository _testResponsesRepository;
-
         private readonly ISessionMetaRepository _sessionMetaRepository;
         private readonly ICommaDelimitedIntegersCollector _commaDelimitedIntegersCollector;
         private readonly IStimuliImageUrlGetter _stimuliImageUrlGetter;
@@ -35,8 +33,9 @@ namespace SDCode.Web.Controllers
         private readonly IJudgementsDescriptionGetter _judgementsDescriptionGetter;
         private readonly IConfidencesDescriptionsGetter _confidencesDescriptionsGetter;
         private readonly ITestInstructionsViewModelGetter _testInstructionsViewModelGetter;
+        private readonly ISleepQuestionsRepository _sleepQuestionsRepository;
 
-        public TestController(ILogger<TestController> logger, IPhaseSetsGetter phaseSetsGetter, INextImageGetter nextImageGetter, IImageCongruencyGetter imageCongruencyGetter, ITestNameGetter testNameGetter, IImageContextGetter imageContextGetter, IProgressGetter progressGetter, IStanfordRepository stanfordRepository, IResponseFeedbackGetter responseFeedbackGetter, IOptions<Config> config, ITestResponsesRepository testResponsesRepository, ISessionMetaRepository sessionMetaRepository, ICommaDelimitedIntegersCollector commaDelimitedIntegersCollector, IStimuliImageUrlGetter stimuliImageUrlGetter, ITestStartTimeGetter testStartTimeGetter, IReturningUserPhaseDataGetter returningUserPhaseDataGetter, IConfidencesDescriptionGetter confidencesDescriptionGetter, IJudgementsDescriptionGetter judgementsDescriptionGetter, IConfidencesDescriptionsGetter confidencesDescriptionsGetter, ITestInstructionsViewModelGetter testInstructionsViewModelGetter)
+        public TestController(ILogger<TestController> logger, IPhaseSetsGetter phaseSetsGetter, INextImageGetter nextImageGetter, IImageCongruencyGetter imageCongruencyGetter, ITestNameGetter testNameGetter, IImageContextGetter imageContextGetter, IProgressGetter progressGetter, IStanfordRepository stanfordRepository, IResponseFeedbackGetter responseFeedbackGetter, IOptions<Config> config, ITestResponsesRepository testResponsesRepository, ISessionMetaRepository sessionMetaRepository, ICommaDelimitedIntegersCollector commaDelimitedIntegersCollector, IStimuliImageUrlGetter stimuliImageUrlGetter, ITestStartTimeGetter testStartTimeGetter, IReturningUserPhaseDataGetter returningUserPhaseDataGetter, IConfidencesDescriptionGetter confidencesDescriptionGetter, IJudgementsDescriptionGetter judgementsDescriptionGetter, IConfidencesDescriptionsGetter confidencesDescriptionsGetter, ITestInstructionsViewModelGetter testInstructionsViewModelGetter, ISleepQuestionsRepository sleepQuestionsRepository)
         {
             _logger = logger;
             _phaseSetsGetter = phaseSetsGetter;
@@ -58,6 +57,7 @@ namespace SDCode.Web.Controllers
             _judgementsDescriptionGetter = judgementsDescriptionGetter;
             _confidencesDescriptionsGetter = confidencesDescriptionsGetter;
             _testInstructionsViewModelGetter = testInstructionsViewModelGetter;
+            _sleepQuestionsRepository = sleepQuestionsRepository;
         }
 
         [HttpPost]
@@ -78,8 +78,10 @@ namespace SDCode.Web.Controllers
         }
        
         [HttpPost]
-        public IActionResult Stanford(string participantID)
+        public IActionResult Stanford(string participantID, string bed, string wake, string latency, string tst)
         {
+            var testName = _testNameGetter.Get(participantID);
+            _sleepQuestionsRepository.Save(participantID, testName, bed, wake, latency, tst);
             return View(new StanfordViewModel(participantID, false));
         }
 
