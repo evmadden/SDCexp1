@@ -67,12 +67,14 @@ namespace SDCode.Web.Controllers
             return View(new TestWelcomeViewModel(participantID, testInstructionsViewModel));
         }
 
-        public IActionResult WelcomeBack(string participantID)
+        public IActionResult WelcomeBack(string participantID, Sleepinesses? stanford)
         {
             var testName = _testNameGetter.Get(participantID);
-            var stanfordNeeded = !string.Equals(testName, "Immediate");
+            if (stanford.HasValue) {
+                _stanfordRepository.Save(participantID, testName, stanford.Value);
+            }
             var testInstructionsViewModel = _testInstructionsViewModelGetter.Get();
-            return View(new TestWelcomeBackViewModel(participantID, stanfordNeeded, testInstructionsViewModel));
+            return View(new TestWelcomeBackViewModel(participantID, testInstructionsViewModel));
         }
        
         [HttpPost]

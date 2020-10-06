@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using SDCode.Web.Classes;
 using SDCode.Web.Models;
 
 namespace SDCode.Web.Controllers
@@ -8,10 +9,12 @@ namespace SDCode.Web.Controllers
     public class ScreenCheckController : Controller
     {
         private readonly ILogger<ScreenCheckController> _logger;
+        private ITestNameGetter _testNameGetter;
 
-        public ScreenCheckController(ILogger<ScreenCheckController> logger)
+        public ScreenCheckController(ILogger<ScreenCheckController> logger, ITestNameGetter testNameGetter)
         {
             _logger = logger;
+            _testNameGetter = testNameGetter;
         }
 
         [HttpPost]

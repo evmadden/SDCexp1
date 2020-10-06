@@ -3,4 +3,4 @@
     ViewData["Title"] = "Stanford";
 }
 @await Html.PartialAsync("~/Views/Shared/LogoBanner.cshtml")
-@await Html.PartialAsync("~/Views/ImageCheck/StanfordForm.cshtml", new StanfordFormViewModel(Model.ParticipantID, Url.Action("Index", "ImageCheck"), Url.Action("Index"), Model.IsEncoding))
+@await Html.PartialAsync("~/Views/ImageCheck/StanfordForm.cshtml", new StanfordFormViewModel(Model.ParticipantID, Url.Action("WelcomeBack", "Test"), null, Model.IsEncoding))

@@ -17,17 +17,10 @@
 </div>
 <div>
     <p>Press the "Next" button to rate your sleepiness and start the next TEST PHASE.</p>
-    @if (Model.StanfordNeeded) {
-        <form action="@Url.Action("Stanford")" method="POST">
-            <input type="hidden" name="participantID" value="@Model.ParticipantID" />
-            @await Html.PartialAsync("~/Views/Shared/ActionBar.cshtml", new ActionBarViewModel("Next"))
-        </form>
-    } else {
-        <form action="@Url.Action("Index", "ImageCheck")" method="POST">
-            <input type="hidden" name="participantID" value="@Model.ParticipantID" />
-            <input type="hidden" name="nextActionAfterImageCheck" value="@Url.Action("Index")" />
-            <input type="hidden" name="showSpacebarOrientation" value="false" />
-            @await Html.PartialAsync("~/Views/Shared/ActionBar.cshtml", new ActionBarViewModel("Next"))
-        </form>
-    }
+    <form action="@Url.Action("Index", "ImageCheck")" method="POST">
+        <input type="hidden" name="participantID" value="@Model.ParticipantID" />
+        <input type="hidden" name="nextActionAfterImageCheck" value="@Url.Action("Index")" />
+        <input type="hidden" name="showSpacebarOrientation" value="false" />
+        @await Html.PartialAsync("~/Views/Shared/ActionBar.cshtml", new ActionBarViewModel("Next"))
+    </form>
 </div>

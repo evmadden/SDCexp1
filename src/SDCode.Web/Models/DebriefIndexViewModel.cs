@@ -1,8 +1,8 @@
 namespace SDCode.Web.Models
 {
-    public class PSQIViewModel
+    public class DebriefIndexViewModel
     {
-        public PSQIViewModel(string participantID)
+        public DebriefIndexViewModel(string participantID)
         {
             ParticipantID = participantID;
         }

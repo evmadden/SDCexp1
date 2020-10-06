@@ -1,4 +1,7 @@
 @model TestEndedViewModel
+<div class="orientationContainer rounded">
+    <p>This ends the TEST Phase.</p>
+</div>
 <div>
     <p>Thank you for completing the second session of the experiment.<br/>
     <br/>
@@ -7,4 +10,5 @@
     Please be aware that you must wait 1 week before completing the next session.<br/>
     <br/>
     Contact the researcher at @await Html.PartialAsync("~/Views/Shared/ResearcherEmailLink.cshtml") if you have any further questions.</p>
+    <p>@await Html.PartialAsync("~/Views/Shared/Close.cshtml")</p>
 </div>
