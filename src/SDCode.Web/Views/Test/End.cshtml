@@ -5,4 +5,7 @@
 
 @await Html.PartialAsync("~/Views/Shared/LogoMasthead.cshtml")
 <h1 class="display-4">Test Phase Finished</h1>
+<div class="orientationContainer rounded">
+    <p>This ends the TEST Phase.</p>
+</div>
 <div>@await Html.PartialAsync($"Ended{Model.TestName}")</div>

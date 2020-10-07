@@ -1,14 +1,9 @@
 @model TestEndedViewModel
-<div class="orientationContainer rounded">
-    <p>This ends the TEST Phase.</p>
-</div>
 <div>
-    <p>Thank you for completing the second session of the experiment.<br/>
-    <br/>
-    Your next test session will be 1 week from now.  You will receive a reminder email with a link to continue the experiment.
+    <p>Thank you for completing the second session of the experiment.</p>
+    <p>Your next test session will be 1 week from now.  You will receive a reminder email with a link to continue the experiment.
     You will need your Participant ID to continue to the next phase of the experiment.
-    Please be aware that you must wait 1 week before completing the next session.<br/>
-    <br/>
-    Contact the researcher at @await Html.PartialAsync("~/Views/Shared/ResearcherEmailLink.cshtml") if you have any further questions.</p>
+    Please be aware that you must wait 1 week before completing the next session.</p>
+    <p>Contact the researcher at @await Html.PartialAsync("~/Views/Shared/ResearcherEmailLink.cshtml") if you have any further questions.</p>
     <p>@await Html.PartialAsync("~/Views/Shared/Close.cshtml")</p>
 </div>
