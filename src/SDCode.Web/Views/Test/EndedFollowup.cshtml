@@ -1,7 +1,8 @@
 @model TestEndedViewModel
 <div>
-    <p>Thank you for completing the final session of the experiment.</p>
-    <p>PREPARE_FOR_SLEEP_QUESTIONAIRES_PLACEHOLDER</p>
+    <p>Thank you for completing the final test session of the experiment.</p>
+    <p>The next two pages will ask you some questions about your sleep habits over the last month.</p>
+    <p>Please press 'Next' to continue.</p>
     <form action="@Url.Action("Index", "PSQI")" method="POST">
       <input type="hidden" name="participantID" value="@Model.ParticipantID" />
       @await Html.PartialAsync("~/Views/Shared/ActionBar.cshtml", new ActionBarViewModel("Next"))
