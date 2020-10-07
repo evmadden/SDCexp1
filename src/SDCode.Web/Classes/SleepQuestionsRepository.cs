@@ -34,11 +34,11 @@ namespace SDCode.Web.Classes
             var bedProperty = model.GetType().GetProperty($"{testName}Bed") ?? throw new Exception($"Unexpected test name.");
             bedProperty.SetValue(model, bed, null);
             var wakeProperty = model.GetType().GetProperty($"{testName}Wake") ?? throw new Exception($"Unexpected test name.");
-            bedProperty.SetValue(model, wake, null);
+            wakeProperty.SetValue(model, wake, null);
             var latencyProperty = model.GetType().GetProperty($"{testName}Latency") ?? throw new Exception($"Unexpected test name.");
-            bedProperty.SetValue(model, latency, null);
+            latencyProperty.SetValue(model, latency, null);
             var tstProperty = model.GetType().GetProperty($"{testName}TST") ?? throw new Exception($"Unexpected test name.");
-            bedProperty.SetValue(model, tst, null);
+            tstProperty.SetValue(model, tst, null);
             models.Add(model);
             _sleepQuestionsCsvFile.Write(models);
         }
