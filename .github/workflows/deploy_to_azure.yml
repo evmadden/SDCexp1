@@ -32,14 +32,14 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - name: Log Message of Build Commit
-      run: "git log -1 ${{ github.event.inputs.Commit }} --pretty=format:%s"
-    
     - name: Get Source
       uses: actions/checkout@master
       with:
         ref: ${{ github.event.inputs.Commit }}
         
+    - name: Log Message of Build Commit
+      run: "git log -1 ${{ github.event.inputs.Commit }} --pretty=format:%s"
+    
     - name: Add Version Comment
       uses: DamianReeves/write-file-action/@v1.0
       with:
