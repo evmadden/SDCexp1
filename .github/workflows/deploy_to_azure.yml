@@ -17,7 +17,7 @@ on:
         required: true
 
 jobs:
-  show-inputs:
+  log-inputs:
     runs-on: windows-latest
     steps:
       - run: "echo Commit: ${{ github.event.inputs.Commit }}" 
