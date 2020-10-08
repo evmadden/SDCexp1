@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       Commit:
-        description: 'e.g. bf819e2...f35ede9'
+        description: 'e.g. bf819e2...yadayada...f35ede9'
         required: true
       Site:
         description: '___________.azurewebsites.net'
