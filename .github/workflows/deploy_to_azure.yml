@@ -17,9 +17,13 @@ on:
         required: true
 
 jobs:
+  verify site inputs match:
+    if: github.event.inputs.Site == github.event.inputs.SiteConfirm
+    runs-on: windows-latest
+    
   deploy:
     runs-on: windows-latest
-    if: github.event.inputs.Site == github.event.inputs.SiteConfirm
+    needs: [verify site inputs match]
 
     steps:
     - name: Get Source
