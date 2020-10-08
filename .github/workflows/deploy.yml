@@ -8,6 +8,7 @@ on:
     inputs:
       Commit:
         required: true
+        default: 'bf819e21bb8dd7366974cd6a38012080ff3aede9'
       Site:
         description: '___________.azurewebsites.net'
         required: true,
