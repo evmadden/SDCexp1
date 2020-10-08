@@ -1,18 +1,17 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Deploy
+name: Deploy to Azure
 
 on:
   workflow_dispatch:
     inputs:
       Commit:
+        description: 'e.g. bf819e21bb3dd7366974cd6a380120d0ff35ede9'
         required: true
-        default: 'bf819e21bb8dd7366974cd6a38012080ff3aede9'
       Site:
         description: '___________.azurewebsites.net'
         required: true
-        default: 'memorystudy-short'
 
 jobs:
   build-and-deploy:
@@ -37,7 +36,7 @@ jobs:
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
-        app-name: 'memorystudy-short'
+        app-name: ${{ github.event.inputs.Commit }}
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_77d137eb06fc4b819d24d148b3622329 }}
         package: ${{env.DOTNET_ROOT}}/myapp 
