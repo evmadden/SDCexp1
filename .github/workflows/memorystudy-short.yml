@@ -1,12 +1,14 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy ASP.Net Core app to Azure Web App - memorystudy-short
+name: To memorystudy-short
 
 on:
-  push:
-    branches:
-      - master
+  workflow_dispatch:
+    inputs:
+      Commit:
+        description: 'Commit'
+        required: true
 
 jobs:
   build-and-deploy:
@@ -14,6 +16,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@master
+      with:
+        ref: ${{ github.event.inputs.Commit }}
 
     - name: Set up .NET Core
       uses: actions/setup-dotnet@v1
