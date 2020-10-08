@@ -17,7 +17,7 @@ on:
         required: true
 
 jobs:
-  verify site inputs match:
+  verify-site-inputs-match:
     if: github.event.inputs.Site == github.event.inputs.SiteConfirm
     runs-on: windows-latest
     steps:
@@ -25,7 +25,7 @@ jobs:
     
   deploy:
     runs-on: windows-latest
-    needs: [verify site inputs match]
+    needs: [verify-site-inputs-match]
 
     steps:
     - name: Get Source
