@@ -9,6 +9,10 @@ on:
       Commit:
         description: 'Commit'
         required: true
+      Site:
+        description: '___________.azurewebsites.net'
+        required: true,
+        default: 'memorystudy-short'
 
 jobs:
   build-and-deploy:
@@ -33,7 +37,7 @@ jobs:
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
-        app-name: 'memorystudy-short'
+        app-name: ${{ github.event.inputs.Site }}
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_77d137eb06fc4b819d24d148b3622329 }}
         package: ${{env.DOTNET_ROOT}}/myapp 
