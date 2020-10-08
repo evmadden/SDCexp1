@@ -23,17 +23,10 @@ jobs:
       - run: "echo Commit: ${{ github.event.inputs.Commit }}" 
       - run: "echo Site: ${{ github.event.inputs.Site }}"
       - run: "echo SiteConfirm: ${{ github.event.inputs.SiteConfirm }}"
-      - run: "echo Checking to make sure Site and SiteConfirm match..."
-    
-  verify-site-inputs-match:
-    if: github.event.inputs.Site == github.event.inputs.SiteConfirm
-    runs-on: windows-latest
-    steps:
-      - run: echo Site inputs match. Proceeding to 'deploy'.
     
   deploy:
+    if: github.event.inputs.Site == github.event.inputs.SiteConfirm
     runs-on: windows-latest
-    needs: [verify-site-inputs-match]
 
     steps:
     - name: Get Source
