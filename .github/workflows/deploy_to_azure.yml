@@ -38,7 +38,7 @@ jobs:
         ref: ${{ github.event.inputs.Commit }}
         
     - name: Add Version Comment
-      uses: DamianReeves/write-file-action
+      uses: DamianReeves/write-file-action/@v1.0
       with:
         path: src/SDCode.Web/Views/Home/Index.cshtml
         contents: echo "<!-- built from https://github.com/evmadden/SDCexp1/commit/${{ github.event.inputs.Commit }} -->"
