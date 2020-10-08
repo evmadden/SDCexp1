@@ -24,6 +24,7 @@ jobs:
       - run: "echo Site: ${{ github.event.inputs.Site }}"
       - run: "echo SiteConfirm: ${{ github.event.inputs.SiteConfirm }}"
       - run: exit 1
+        name: Halt if Site and SiteConfirm differ
         if: github.event.inputs.Site != github.event.inputs.SiteConfirm
     
   deploy:
@@ -35,6 +36,13 @@ jobs:
       uses: actions/checkout@master
       with:
         ref: ${{ github.event.inputs.Commit }}
+        
+    - name: Add Version Comment
+      uses: DamianReeves/write-file-action
+      with:
+        path: src/SDCode.Web/Views/Home/Index.cshtml
+        contents: echo "<!-- built from https://github.com/evmadden/SDCexp1/commit/${{ github.event.inputs.Commit }} -->"
+        write-mode: append
 
     - name: Set up .NET Core
       uses: actions/setup-dotnet@v1
