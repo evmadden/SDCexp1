@@ -56,7 +56,7 @@ jobs:
       run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp src\SDCode.Web
 
     - name: Deploy to Azure Web App
-      uses: azure/webapps-deploy@27f2138902f2955844d5f132801b4f320ba59321
+      uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ github.event.inputs.Site }}
         slot-name: 'production'
