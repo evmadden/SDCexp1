@@ -18,8 +18,8 @@ on:
 
 jobs:
   deploy:
-    if: ${{ github.event.inputs.Site }} == ${{ github.event.inputs.SiteConfirm }}
     runs-on: windows-latest
+    if: ${{ github.event.inputs.Site }} == "b"
 
     steps:
     - name: Get Source
