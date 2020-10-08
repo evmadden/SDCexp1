@@ -17,6 +17,14 @@ on:
         required: true
 
 jobs:
+  show-inputs:
+    runs-on: windows-latest
+    steps:
+      - run: "echo Commit: ${{ github.event.inputs.Commit }}" 
+      - run: "echo Site: ${{ github.event.inputs.Site }}"
+      - run: "echo SiteConfirm: ${{ github.event.inputs.SiteConfirm }}"
+      - run: "echo Checking to make sure Site and SiteConfirm match..."
+    
   verify-site-inputs-match:
     if: github.event.inputs.Site == github.event.inputs.SiteConfirm
     runs-on: windows-latest
