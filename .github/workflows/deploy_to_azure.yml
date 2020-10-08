@@ -26,7 +26,7 @@ jobs:
       - run: exit 1
         name: Halt if Site and SiteConfirm differ
         if: github.event.inputs.Site != github.event.inputs.SiteConfirm
-    
+
   deploy:
     needs: [validate-inputs]
     runs-on: windows-latest
@@ -50,12 +50,22 @@ jobs:
         dotnet-version: '3.1.102'
 
     - name: Build with dotnet
-      run: dotnet build --configuration Release src\SDCode.Web
+      run: dotnet build --configuration Release src/SDCode.Web
 
     - name: dotnet publish
-      run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp src\SDCode.Web
+      run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp src/SDCode.Web
 
-    - name: Deploy to Azure Web App
+    - name: Deploy to memorystudy
+      if: github.event.inputs.Site != "memorystudy"
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ github.event.inputs.Site }}
+        slot-name: 'production'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_5049c6ee14a642c38e5ae94f8ba4718f }}
+        package: ${{env.DOTNET_ROOT}}/myapp 
+
+    - name: Deploy to memorystudy-short
+      if: github.event.inputs.Site != "memorystudy-short"
       uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ github.event.inputs.Site }}
