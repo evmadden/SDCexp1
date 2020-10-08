@@ -17,11 +17,11 @@ on:
         required: true
 
 jobs:
-  deploy ${{ github.event.inputs.Commit }}:
+  deploy:
     runs-on: windows-latest
 
     steps:
-    - name: Get ${{ github.event.inputs.Commit }}
+    - name: Get Source
     - if: ${{ github.event.inputs.Site }} == ${{ github.event.inputs.SiteConfirm }}
     - uses: actions/checkout@master
       with:
