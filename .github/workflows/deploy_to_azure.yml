@@ -7,10 +7,13 @@ on:
   workflow_dispatch:
     inputs:
       Commit:
-        description: 'e.g. bf819e21bb3dd7366974cd6a380120d0ff35ede9'
+        description: 'e.g. bf819e2...f35ede9'
         required: true
       Site:
         description: '___________.azurewebsites.net'
+        required: true
+      SiteConfirm:
+        description: '___________.azurewebsites.net (confirm)'
         required: true
 
 jobs:
@@ -19,6 +22,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@master
+      if: ${{ github.event.inputs.Site }} == ${{ github.event.inputs.SiteConfirm }}
+
       with:
         ref: ${{ github.event.inputs.Commit }}
 
