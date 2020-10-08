@@ -19,7 +19,7 @@ on:
 jobs:
   deploy:
     runs-on: windows-latest
-    if: ${{ github.event.inputs.Site }} == "b"
+    if: github.event.inputs.Site == github.event.inputs.SiteConfirm
 
     steps:
     - name: Get Source
