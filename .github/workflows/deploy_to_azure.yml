@@ -17,7 +17,7 @@ on:
         required: true
 
 jobs:
-  confirm-inputs:
+  validate-inputs:
     runs-on: windows-latest
     steps:
       - run: "echo Commit: ${{ github.event.inputs.Commit }}" 
@@ -27,7 +27,7 @@ jobs:
         if: github.event.inputs.Site != github.event.inputs.SiteConfirm
     
   deploy:
-    needs: [confirm-inputs]
+    needs: [validate-inputs]
     runs-on: windows-latest
 
     steps:
