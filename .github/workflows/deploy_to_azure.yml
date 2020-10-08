@@ -20,6 +20,8 @@ jobs:
   verify site inputs match:
     if: github.event.inputs.Site == github.event.inputs.SiteConfirm
     runs-on: windows-latest
+    steps:
+      - run: echo Site inputs match. Proceeding to 'deploy'.
     
   deploy:
     runs-on: windows-latest
