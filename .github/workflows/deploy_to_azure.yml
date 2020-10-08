@@ -18,12 +18,11 @@ on:
 
 jobs:
   build-and-deploy:
+    if: ${{ github.event.inputs.Site }} == ${{ github.event.inputs.SiteConfirm }}
     runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@master
-      if: ${{ github.event.inputs.Site }} == ${{ github.event.inputs.SiteConfirm }}
-
       with:
         ref: ${{ github.event.inputs.Commit }}
 
@@ -41,7 +40,7 @@ jobs:
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
-        app-name: ${{ github.event.inputs.Commit }}
+        app-name: ${{ github.event.inputs.Site }}
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_77d137eb06fc4b819d24d148b3622329 }}
         package: ${{env.DOTNET_ROOT}}/myapp 
