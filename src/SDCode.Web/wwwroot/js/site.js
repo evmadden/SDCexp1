@@ -6,8 +6,8 @@
 function isFullScreen() { // https://stackoverflow.com/a/52160506/116895
     const windowWidth = window.innerWidth * window.devicePixelRatio;
     const windowHeight = window.innerHeight * window.devicePixelRatio;
-    const screenWidth = window.screen.width;
-    const screenHeight = window.screen.height;
+    const screenWidth = window.screen.width * window.devicePixelRatio;
+    const screenHeight = window.screen.height * window.devicePixelRatio;
     const widthUsed = windowWidth/screenWidth;
     const heightUsed = windowHeight/screenHeight;
     var result = widthUsed>=0.95 && heightUsed>=0.95;
