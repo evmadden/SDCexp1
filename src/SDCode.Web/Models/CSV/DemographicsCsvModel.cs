@@ -3,9 +3,9 @@ using CsvHelper.Configuration;
 using CsvHelper.Configuration.Attributes;
 using SDCode.Web.Classes;
 
-namespace SDCode.Web.Models
+namespace SDCode.Web.Models.CSV
 {
-    public class DemographicsModel : IParticipantModel
+    public class DemographicsCsvModel
     {
         [Name(nameof(ParticipantID))]
         public string ParticipantID { get; set; }
@@ -32,20 +32,20 @@ namespace SDCode.Web.Models
         [Name(nameof(CurrentCountry))]
         public string CurrentCountry{ get; set; }
 
-        public sealed class Map : ClassMap<DemographicsModel>
+        public sealed class Map : ClassMap<DemographicsCsvModel>
         {
             public Map()
             {
-                Map(m => m.ParticipantID).Name(nameof(DemographicsModel.ParticipantID));
-                Map(m => m.Sex).Name(nameof(DemographicsModel.Sex)).TypeConverter<CsvSexesConverter>();
-                Map(m => m.Age).Name(nameof(DemographicsModel.Age));
-                Map(m => m.YearStudy).Name(nameof(DemographicsModel.YearStudy));
-                Map(m => m.Handed).Name(nameof(DemographicsModel.Handed)).TypeConverter<CsvHandsConverter>();
-                Map(m => m.Impairments).Name(nameof(DemographicsModel.Impairments)).TypeConverter<CsvBooleanConverter>();
-                Map(m => m.Glasses).Name(nameof(DemographicsModel.Glasses)).TypeConverter<CsvBooleanConverter>();
-                Map(m => m.Language).Name(nameof(DemographicsModel.Language));
-                Map(m => m.Bilingual).Name(nameof(DemographicsModel.Bilingual));
-                Map(m => m.CurrentCountry).Name(nameof(DemographicsModel.CurrentCountry));
+                Map(m => m.ParticipantID).Name(nameof(ParticipantID));
+                Map(m => m.Sex).Name(nameof(Sex)).TypeConverter<CsvSexesConverter>();
+                Map(m => m.Age).Name(nameof(Age));
+                Map(m => m.YearStudy).Name(nameof(YearStudy));
+                Map(m => m.Handed).Name(nameof(Handed)).TypeConverter<CsvHandsConverter>();
+                Map(m => m.Impairments).Name(nameof(Impairments)).TypeConverter<CsvBooleanConverter>();
+                Map(m => m.Glasses).Name(nameof(Glasses)).TypeConverter<CsvBooleanConverter>();
+                Map(m => m.Language).Name(nameof(Language));
+                Map(m => m.Bilingual).Name(nameof(Bilingual));
+                Map(m => m.CurrentCountry).Name(nameof(CurrentCountry));
             }
         }
     }

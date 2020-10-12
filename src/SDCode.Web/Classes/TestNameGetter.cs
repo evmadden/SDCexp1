@@ -6,7 +6,7 @@ namespace SDCode.Web.Classes
     public interface ITestNameGetter
     {
         string Get(string participantID);
-        string Get(PhaseSetsModel phaseSets, int progress);
+        string Get(PhaseSets phaseSets, int progress);
     }
 
     public class TestNameGetter : ITestNameGetter
@@ -26,7 +26,7 @@ namespace SDCode.Web.Classes
             var result = Get(phaseSets, progress);
             return result;
         }
-        public string Get(PhaseSetsModel phaseSets, int progress)
+        public string Get(PhaseSets phaseSets, int progress)
         {
             string result = default;
             if (progress >= phaseSets.Immediate.Count())

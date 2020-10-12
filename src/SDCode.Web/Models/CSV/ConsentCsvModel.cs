@@ -2,10 +2,10 @@ using System.ComponentModel;
 using CsvHelper.Configuration;
 using CsvHelper.Configuration.Attributes;
 
-namespace SDCode.Web.Models
+namespace SDCode.Web.Models.CSV
 {
     [Description("Participant's consent to participate.")]
-    public class ConsentModel : IParticipantModel
+    public class ConsentCsvModel
     {
         [Name(nameof(ParticipantID))]
         [Description("ID of the participant.")]
@@ -34,9 +34,6 @@ namespace SDCode.Web.Models
         [Name(nameof(AltShifts))]
         [Description("Participant confirms they do not work alternating shift patterns.")]
         public bool AltShifts{ get; set; }
-        [Name(nameof(Smoker))]
-        [Description("Participant confirms they are not a smoker.")]
-        public bool Smoker{ get; set; }
         [Name(nameof(DataProtection))]
         [Description("Participant understands that data will be anonymised and accessed by researchers.")]
         public bool DataProtection{ get; set; }   
@@ -44,22 +41,21 @@ namespace SDCode.Web.Models
         [Description("Participant agrees to take part in the study.")]
         public bool AgreeParticipate{ get; set; }            
 
-        public sealed class Map : ClassMap<ConsentModel>
+        public sealed class Map : ClassMap<ConsentCsvModel>
         {
             public Map()
             {
-                Map(m => m.ParticipantID).Name(nameof(ConsentModel.ParticipantID));
-                Map(m => m.InfoSheet).Name(nameof(ConsentModel.InfoSheet));
-                Map(m => m.Withdraw).Name(nameof(ConsentModel.Withdraw));
-                Map(m => m.NPSDisorder).Name(nameof(ConsentModel.NPSDisorder));
-                Map(m => m.ADHD).Name(nameof(ConsentModel.ADHD));
-                Map(m => m.HeadInjury).Name(nameof(ConsentModel.HeadInjury));
-                Map(m => m.NormalVision).Name(nameof(ConsentModel.NormalVision));
-                Map(m => m.VisionProblems).Name(nameof(ConsentModel.VisionProblems));
-                Map(m => m.AltShifts).Name(nameof(ConsentModel.AltShifts));
-                Map(m => m.Smoker).Name(nameof(ConsentModel.Smoker));
-                Map(m => m.DataProtection).Name(nameof(ConsentModel.DataProtection));
-                Map(m => m.AgreeParticipate).Name(nameof(ConsentModel.AgreeParticipate));
+                Map(m => m.ParticipantID).Name(nameof(ParticipantID));
+                Map(m => m.InfoSheet).Name(nameof(InfoSheet));
+                Map(m => m.Withdraw).Name(nameof(Withdraw));
+                Map(m => m.NPSDisorder).Name(nameof(NPSDisorder));
+                Map(m => m.ADHD).Name(nameof(ADHD));
+                Map(m => m.HeadInjury).Name(nameof(HeadInjury));
+                Map(m => m.NormalVision).Name(nameof(NormalVision));
+                Map(m => m.VisionProblems).Name(nameof(VisionProblems));
+                Map(m => m.AltShifts).Name(nameof(AltShifts));
+                Map(m => m.DataProtection).Name(nameof(DataProtection));
+                Map(m => m.AgreeParticipate).Name(nameof(AgreeParticipate));
             }
         }
     }

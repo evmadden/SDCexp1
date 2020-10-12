@@ -22,13 +22,13 @@ namespace SDCode.Web.Classes
         {
             int result;
             var phaseSets = _phaseSetsGetter.Get(participantID);
-            var immediateResponsesCount = _testResponsesRepository.GetCount(participantID, nameof(phaseSets.Immediate));
+            var immediateResponsesCount = _testResponsesRepository.GetResponsesFromMostRecentSession(participantID, nameof(phaseSets.Immediate)).Count();
             var immediateTestComplete = immediateResponsesCount == phaseSets.Immediate.Count();
             if (immediateTestComplete) {
-                var delayedResponsesCount = _testResponsesRepository.GetCount(participantID, nameof(phaseSets.Delayed));
+                var delayedResponsesCount = _testResponsesRepository.GetResponsesFromMostRecentSession(participantID, nameof(phaseSets.Delayed)).Count();
                 var delayedTestComplete = delayedResponsesCount == phaseSets.Delayed.Count();
                 if (delayedTestComplete) {
-                    var followupResponsesCount = _testResponsesRepository.GetCount(participantID, nameof(phaseSets.Followup));
+                    var followupResponsesCount = _testResponsesRepository.GetResponsesFromMostRecentSession(participantID, nameof(phaseSets.Followup)).Count();
                     var followupTestComplete = followupResponsesCount == phaseSets.Followup.Count();
                     if (followupTestComplete) {
                         result = phaseSets.Immediate.Count() + phaseSets.Delayed.Count() + phaseSets.Followup.Count();

@@ -1,69 +1,37 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using SDCode.Web.Models;
+using SDCode.Web.Classes.Database;
+using SDCode.Web.Models.Data;
 
 namespace SDCode.Web.Classes
 {
     public interface ITestResponsesRepository
     {
-        IEnumerable<ResponseDataModel> Read(string participantID, string testName);
-        void Add(string participantID, string testName, ResponseDataModel model);
-        int GetCount(string participantID, string testName);
-        void Archive(string participantID, string testName);
+        void Save(ResponseDbDataModel model);
+        IEnumerable<ResponseDbDataModel> GetResponsesFromMostRecentSession(string participantID, string testName);
     }
 
     public class TestResponsesRepository : ITestResponsesRepository
     {
-        private readonly ICsvFile<ResponseDataModel, ResponseDataModel.Map> _responseDataCsvFile;
+        private readonly SQLiteDBContext _dbContext;
 
-        public TestResponsesRepository(ICsvFile<ResponseDataModel, ResponseDataModel.Map> responseDataCsvFile)
+        public TestResponsesRepository(SQLiteDBContext dbContext)
         {
-            _responseDataCsvFile = responseDataCsvFile;
+            _dbContext = dbContext;
         }
 
-        public void Add(string participantID, string testName, ResponseDataModel model) {
-            var csvFile = GetResponseDataCsvFile(participantID, testName);
-            var records = csvFile.Read().ToList();
-            records.Add(model);
-            csvFile = GetResponseDataCsvFile(participantID, testName);
-            csvFile.Write(records);
+        public void Save(ResponseDbDataModel model) {
+            _dbContext.Add(model);
+            _dbContext.SaveChanges();
         }
 
-        public void Archive(string participantID, string testName)
+        public IEnumerable<ResponseDbDataModel> GetResponsesFromMostRecentSession(string participantID, string testName)
         {
-            var csvFile = GetResponseDataCsvFile(participantID, testName);
-            var responses = csvFile?.Read().ToList();
-            if (responses?.Any() ?? false) {
-                var firstResponseWhenUtc = responses.Select(x=>x.WhenUtc).Min().ToString("yyyyMMddHHmmss");
-                csvFile = _responseDataCsvFile.WithFilename($"{participantID}_{testName}_{firstResponseWhenUtc}");
-                csvFile.Write(responses);
-            }
-            Clear(participantID, testName);
-        }
-
-        private void Clear(string participantID, string testName)
-        {
-            var csvFile = GetResponseDataCsvFile(participantID, testName);
-            csvFile.Write(new List<ResponseDataModel>());
-        }
-
-        public int GetCount(string participantID, string testName)
-        {
-            var records = Read(participantID, testName);
-            var result = records.Count();
-            return result;
-        }
-
-        private ICsvFile<ResponseDataModel, ResponseDataModel.Map> GetResponseDataCsvFile(string participantID, string testName) {
-            var csvFilename = $"{participantID}_{testName}";
-            var result = _responseDataCsvFile.WithFilename(csvFilename);
-            return result;
-        }
-
-        public IEnumerable<ResponseDataModel> Read(string participantID, string testName)
-        {
-            var csvFile = GetResponseDataCsvFile(participantID, testName);
-            var result = csvFile.Read();
+            var whenUtcs = _dbContext.ResponseDatas.Where(x=>string.Equals(participantID, x.ParticipantID) && string.Equals(testName, x.TestName)).Select(x=>x.WhenUtc);
+            var latestWhenUtc = whenUtcs.Any() ? whenUtcs.Max() : DateTime.MinValue;
+            var sessionID = _dbContext.ResponseDatas.FirstOrDefault(x=>DateTime.Equals(latestWhenUtc, x.WhenUtc))?.SessionID ?? Guid.NewGuid();
+            var result = _dbContext.ResponseDatas.Where(x=>Guid.Equals(sessionID, x.SessionID));
             return result;
         }
     }

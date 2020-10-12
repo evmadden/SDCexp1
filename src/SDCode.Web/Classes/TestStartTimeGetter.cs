@@ -43,8 +43,8 @@ namespace SDCode.Web.Classes
                 priorPhaseStartTimeUtc = encodingSessionMeta.FinishedWhenUtc.HasValue ? encodingSessionMeta.FinishedWhenUtc.Value : throw new Exception("Encoding's FinishedWhenUtc missing unexpectedly.");
             } else {
                 var priorTestName = _testNameGetter.Get(phaseSets, progress-1);
-                var priorTestResponses = _testResponsesRepository.Read(participantID, priorTestName);
-                priorPhaseStartTimeUtc = priorTestResponses.Select(x=>x.WhenUtc).DefaultIfEmpty().Min();
+                var priorTestResponses = _testResponsesRepository.GetResponsesFromMostRecentSession(participantID, priorTestName);
+                priorPhaseStartTimeUtc = priorTestResponses.Select(x=>x.WhenUtc).Min();
             }
             var result = priorPhaseStartTimeUtc + testStartDelay;
             return result;

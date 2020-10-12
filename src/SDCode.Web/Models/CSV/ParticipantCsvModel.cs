@@ -2,20 +2,20 @@ using System.ComponentModel;
 using CsvHelper.Configuration;
 using CsvHelper.Configuration.Attributes;
 
-namespace SDCode.Web.Models
+namespace SDCode.Web.Models.CSV
 {
     [Description("Participant IDs enrolled.")]
-    public class ParticipantModel
+    public class ParticipantCsvModel
     {
         [Name(nameof(ID))]
         [Description("Set of Participant ID's for ALL participants in the study.")]
         public string ID { get; set; }
 
-        public sealed class Map : ClassMap<ConsentModel>
+        public sealed class Map : ClassMap<ParticipantCsvModel>
         {
             public Map()
             {
-                Map(m => m.ParticipantID).Name(nameof(ID));
+                Map(m => m.ID).Name(nameof(ID));
             }
         }
     }

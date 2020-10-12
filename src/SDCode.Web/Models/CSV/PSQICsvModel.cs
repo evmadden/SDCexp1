@@ -3,9 +3,9 @@ using CsvHelper.Configuration;
 using CsvHelper.Configuration.Attributes;
 using SDCode.Web.Classes;
 
-namespace SDCode.Web.Models
+namespace SDCode.Web.Models.CSV
 {
-    public class PSQIModel : IParticipantModel
+    public class PSQICsvModel
     {
         [Name(nameof(ParticipantID))]
         public string ParticipantID { get; set; }
@@ -91,38 +91,38 @@ namespace SDCode.Web.Models
         [Description("Q20e. Description of the other restlessness during sleep.")]
         public string OtherRestDescribe{ get; set; } 
 
-        public sealed class Map : ClassMap<PSQIModel>
+        public sealed class Map : ClassMap<PSQICsvModel>
         {
             public Map()
             {
-                Map(m => m.ParticipantID).Name(nameof(PSQIModel.ParticipantID));
-                Map(m => m.MonthBed).Name(nameof(PSQIModel.MonthBed));
-                Map(m => m.MonthLatency).Name(nameof(PSQIModel.MonthLatency));
-                Map(m => m.MonthWake).Name(nameof(PSQIModel.MonthWake));
-                Map(m => m.TotalHours).Name(nameof(PSQIModel.TotalHours));
-                Map(m => m.TotalMinutes).Name(nameof(PSQIModel.TotalMinutes));
-                Map(m => m.No30Min).Name(nameof(PSQIModel.No30Min)).TypeConverter<CsvFrequenciesWeeklyConverter>();
-                Map(m => m.WASO).Name(nameof(PSQIModel.WASO)).TypeConverter<CsvFrequenciesWeeklyConverter>();
-                Map(m => m.Bathroom).Name(nameof(PSQIModel.Bathroom)).TypeConverter<CsvFrequenciesWeeklyConverter>();
-                Map(m => m.Breathing).Name(nameof(PSQIModel.Breathing)).TypeConverter<CsvFrequenciesWeeklyConverter>();
-                Map(m => m.Snoring).Name(nameof(PSQIModel.Snoring)).TypeConverter<CsvFrequenciesWeeklyConverter>();
-                Map(m => m.Hot).Name(nameof(PSQIModel.Hot)).TypeConverter<CsvFrequenciesWeeklyConverter>();
-                Map(m => m.Cold).Name(nameof(PSQIModel.Cold)).TypeConverter<CsvFrequenciesWeeklyConverter>();
-                Map(m => m.Dreams).Name(nameof(PSQIModel.Dreams)).TypeConverter<CsvFrequenciesWeeklyConverter>();
-                Map(m => m.Pain).Name(nameof(PSQIModel.Pain)).TypeConverter<CsvFrequenciesWeeklyConverter>();
-                Map(m => m.OtherFrequency).Name(nameof(PSQIModel.OtherFrequency)).TypeConverter<CsvFrequenciesWeeklyConverter>();
-                Map(m => m.OtherDescribe).Name(nameof(PSQIModel.OtherDescribe));
-                Map(m => m.SleepQuality).Name(nameof(PSQIModel.SleepQuality)).TypeConverter<CsvQualitiesConverter>();
-                Map(m => m.Medication).Name(nameof(PSQIModel.Medication)).TypeConverter<CsvFrequenciesWeeklyConverter>();
-                Map(m => m.Sleepiness).Name(nameof(PSQIModel.Sleepiness)).TypeConverter<CsvFrequenciesWeeklyConverter>();
-                Map(m => m.Enthusiasm).Name(nameof(PSQIModel.Enthusiasm)).TypeConverter<CsvProblemsConverter>();
-                Map(m => m.BedPartner).Name(nameof(PSQIModel.BedPartner)).TypeConverter<CsvBedPartnersConverter>();
-                Map(m => m.PartSnore).Name(nameof(PSQIModel.PartSnore)).TypeConverter<CsvFrequenciesWeeklyConverter>();
-                Map(m => m.BreathPause).Name(nameof(PSQIModel.BreathPause)).TypeConverter<CsvFrequenciesWeeklyConverter>();
-                Map(m => m.Legs).Name(nameof(PSQIModel.Legs)).TypeConverter<CsvFrequenciesWeeklyConverter>();
-                Map(m => m.Disorientation).Name(nameof(PSQIModel.Disorientation)).TypeConverter<CsvFrequenciesWeeklyConverter>();
-                Map(m => m.OtherRestless).Name(nameof(PSQIModel.OtherRestless)).TypeConverter<CsvFrequenciesWeeklyConverter>();
-                Map(m => m.OtherRestDescribe).Name(nameof(PSQIModel.OtherRestDescribe));
+                Map(m => m.ParticipantID).Name(nameof(ParticipantID));
+                Map(m => m.MonthBed).Name(nameof(MonthBed));
+                Map(m => m.MonthLatency).Name(nameof(MonthLatency));
+                Map(m => m.MonthWake).Name(nameof(MonthWake));
+                Map(m => m.TotalHours).Name(nameof(TotalHours));
+                Map(m => m.TotalMinutes).Name(nameof(TotalMinutes));
+                Map(m => m.No30Min).Name(nameof(No30Min)).TypeConverter<CsvFrequenciesWeeklyConverter>();
+                Map(m => m.WASO).Name(nameof(WASO)).TypeConverter<CsvFrequenciesWeeklyConverter>();
+                Map(m => m.Bathroom).Name(nameof(Bathroom)).TypeConverter<CsvFrequenciesWeeklyConverter>();
+                Map(m => m.Breathing).Name(nameof(Breathing)).TypeConverter<CsvFrequenciesWeeklyConverter>();
+                Map(m => m.Snoring).Name(nameof(Snoring)).TypeConverter<CsvFrequenciesWeeklyConverter>();
+                Map(m => m.Hot).Name(nameof(Hot)).TypeConverter<CsvFrequenciesWeeklyConverter>();
+                Map(m => m.Cold).Name(nameof(Cold)).TypeConverter<CsvFrequenciesWeeklyConverter>();
+                Map(m => m.Dreams).Name(nameof(Dreams)).TypeConverter<CsvFrequenciesWeeklyConverter>();
+                Map(m => m.Pain).Name(nameof(Pain)).TypeConverter<CsvFrequenciesWeeklyConverter>();
+                Map(m => m.OtherFrequency).Name(nameof(OtherFrequency)).TypeConverter<CsvFrequenciesWeeklyConverter>();
+                Map(m => m.OtherDescribe).Name(nameof(OtherDescribe));
+                Map(m => m.SleepQuality).Name(nameof(SleepQuality)).TypeConverter<CsvQualitiesConverter>();
+                Map(m => m.Medication).Name(nameof(Medication)).TypeConverter<CsvFrequenciesWeeklyConverter>();
+                Map(m => m.Sleepiness).Name(nameof(Sleepiness)).TypeConverter<CsvFrequenciesWeeklyConverter>();
+                Map(m => m.Enthusiasm).Name(nameof(Enthusiasm)).TypeConverter<CsvProblemsConverter>();
+                Map(m => m.BedPartner).Name(nameof(BedPartner)).TypeConverter<CsvBedPartnersConverter>();
+                Map(m => m.PartSnore).Name(nameof(PartSnore)).TypeConverter<CsvFrequenciesWeeklyConverter>();
+                Map(m => m.BreathPause).Name(nameof(BreathPause)).TypeConverter<CsvFrequenciesWeeklyConverter>();
+                Map(m => m.Legs).Name(nameof(Legs)).TypeConverter<CsvFrequenciesWeeklyConverter>();
+                Map(m => m.Disorientation).Name(nameof(Disorientation)).TypeConverter<CsvFrequenciesWeeklyConverter>();
+                Map(m => m.OtherRestless).Name(nameof(OtherRestless)).TypeConverter<CsvFrequenciesWeeklyConverter>();
+                Map(m => m.OtherRestDescribe).Name(nameof(OtherRestDescribe));
             }
         }
     }

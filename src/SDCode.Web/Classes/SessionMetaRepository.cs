@@ -1,36 +1,38 @@
 ﻿using System.Linq;
-using SDCode.Web.Models;
+using SDCode.Web.Classes.Database;
+using SDCode.Web.Models.Data;
 
 namespace SDCode.Web.Classes
 {
     public interface ISessionMetaRepository
     {
-        SessionMetaModel Get(string participantID, string sessionName);
-        void Save(SessionMetaModel sessionMeta);
+        SessionMetaDbModel Get(string participantID, string sessionName);
+        void Save(SessionMetaDbModel sessionMeta);
     }
 
     public class SessionMetaRepository : ISessionMetaRepository
     {
-        private readonly ICsvFile<SessionMetaModel, SessionMetaModel.Map> _csvFile;
+        private readonly SQLiteDBContext _dbContext;
 
-        public SessionMetaRepository(ICsvFile<SessionMetaModel, SessionMetaModel.Map> csvFile)
+        public SessionMetaRepository(SQLiteDBContext dbContext)
         {
-            _csvFile = csvFile;
+            _dbContext = dbContext;
         }
 
-        public SessionMetaModel Get(string participantID, string sessionName)
+        public SessionMetaDbModel Get(string participantID, string sessionName)
         {
-            var records = _csvFile.Read().ToList();
-            var result = records.SingleOrDefault(x=>string.Equals(x.ParticipantID, participantID) && string.Equals(x.SessionName, sessionName)) ?? new SessionMetaModel{ParticipantID=participantID, SessionName=sessionName};
+            var result = _dbContext.SessionMetas.SingleOrDefault(x=>string.Equals(x.ParticipantID, participantID) && string.Equals(x.SessionName, sessionName)) ?? new SessionMetaDbModel{ParticipantID=participantID, SessionName=sessionName};
             return result;
         }
 
-        public void Save(SessionMetaModel sessionMeta)
+        public void Save(SessionMetaDbModel sessionMeta)
         {
-            var records = _csvFile.Read().ToList();
-            records.RemoveAll(x => string.Equals(x.ParticipantID, sessionMeta.ParticipantID) && string.Equals(x.SessionName, sessionMeta.SessionName));
-            records.Add(sessionMeta);
-            _csvFile.Write(records);
+            if (_dbContext.SessionMetas.Any(x=>string.Equals(sessionMeta.ParticipantID, x.ParticipantID) && string.Equals(sessionMeta.SessionName, x.SessionName))) {
+                _dbContext.Update(sessionMeta);
+            } else {
+                _dbContext.Add(sessionMeta);
+            }
+            _dbContext.SaveChanges();
         }
     }
 }

@@ -11,7 +11,7 @@ namespace SDCode.Web.Classes
     {
         public string Get(Type modelType)
         {
-            var result = modelType.Name.Replace("Model", "Records.csv");
+            var result = modelType.Name.Replace("CsvModel", "Records.csv");
             return result;
         }
     }

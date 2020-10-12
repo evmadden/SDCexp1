@@ -58,7 +58,7 @@
                     }
                 }
                 var progress = imageElement.getAttribute('data-progress');
-                xhr.send(`participantID=${initOptions.participantID}&progress=${progress}&judgement=${imageJudgement}&confidence=${imageConfidence}&reactionTime=${imageReactionTime}`);
+                xhr.send(`participantID=${initOptions.participantID}&progress=${progress}&sessionID=${initOptions.sessionID}&judgement=${imageJudgement}&confidence=${imageConfidence}&reactionTime=${imageReactionTime}`);
             };
             imageElement.onload = function() { 
                 imageContainerElement.style.display = 'block';

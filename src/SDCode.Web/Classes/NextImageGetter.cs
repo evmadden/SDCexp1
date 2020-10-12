@@ -1,16 +1,16 @@
 ﻿using System.Linq;
-using SDCode.Web.Models;
+using SDCode.Web.Classes;
 
 namespace SDCode.Web.Classes
 {
     public interface INextImageGetter
     {
-        string Get(PhaseSetsModel phaseSets, int progress);
+        string Get(PhaseSets phaseSets, int progress);
     }
 
     public class NextImageGetter : INextImageGetter
     {
-        public string Get(PhaseSetsModel phaseSets, int progress)
+        public string Get(PhaseSets phaseSets, int progress)
         {
             string result;
             if (progress > phaseSets.Immediate.Count() - 1)

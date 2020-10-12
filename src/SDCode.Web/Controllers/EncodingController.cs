@@ -19,8 +19,10 @@ namespace SDCode.Web.Controllers
         private readonly ISessionMetaRepository _sessionMetaRepository;
         private readonly IPhaseSetsGetter _phaseSetsGetter;
         private readonly ICommaDelimitedIntegersCollector _commaDelimitedIntegersCollector;
+        private readonly INeglectedImagesRepository _neglectedImagesRepository;
+        private readonly IObscuredImagesRepository _obscuredImagesRepository;
 
-        public EncodingController(ILogger<EncodingController> logger, IStimuliImageDataUrlGetter stimuliImageDataUrlGetter, IStanfordRepository stanfordRepository, IOptions<Config> config, ISessionMetaRepository sessionMetaRepository, IPhaseSetsGetter phaseSetsGetter, ICommaDelimitedIntegersCollector commaDelimitedIntegersCollector)
+        public EncodingController(ILogger<EncodingController> logger, IStimuliImageDataUrlGetter stimuliImageDataUrlGetter, IStanfordRepository stanfordRepository, IOptions<Config> config, ISessionMetaRepository sessionMetaRepository, IPhaseSetsGetter phaseSetsGetter, ICommaDelimitedIntegersCollector commaDelimitedIntegersCollector, INeglectedImagesRepository neglectedImagesRepository, IObscuredImagesRepository obscuredImagesRepository)
         {
             _logger = logger;
             _stimuliImageDataUrlGetter = stimuliImageDataUrlGetter;
@@ -29,6 +31,8 @@ namespace SDCode.Web.Controllers
             _sessionMetaRepository = sessionMetaRepository;
             _phaseSetsGetter = phaseSetsGetter;
             _commaDelimitedIntegersCollector = commaDelimitedIntegersCollector;
+            _neglectedImagesRepository = neglectedImagesRepository;
+            _obscuredImagesRepository = obscuredImagesRepository;
         }
 
         [HttpPost]
@@ -54,12 +58,13 @@ namespace SDCode.Web.Controllers
             var obscuredIndexes = _commaDelimitedIntegersCollector.Collect(obscuredIndexesCommaDelimited);
             var sessionMeta = _sessionMetaRepository.Get(participantID, "Encoding");
             var phaseSets = _phaseSetsGetter.Get(participantID);
-            var encoding = phaseSets.Encoding.ToList();
-            sessionMeta.NeglectedImages = neglectedIndexes.Select(x=>encoding[x]).ToList();
-            sessionMeta.ObscuredImages = obscuredIndexes.Select(x=>encoding[x]).ToList();
+            var neglectedImages = neglectedIndexes.Select(x=>phaseSets.Encoding.ElementAt(x)).ToList();
+            var obscuredImages = obscuredIndexes.Select(x=>phaseSets.Encoding.ElementAt(x)).ToList();
             sessionMeta.FinishedWhenUtc = DateTime.UtcNow;
             _sessionMetaRepository.Save(sessionMeta);
-            var nextAction = sessionMeta.NeglectedImages.Any() || sessionMeta.ObscuredImages.Any() ? Url.Action(nameof(Questions)) : Url.Action(nameof(Finished));
+            _neglectedImagesRepository.Save(participantID, "Encoding", neglectedImages);
+            _obscuredImagesRepository.Save(participantID, "Encoding", obscuredImages);
+            var nextAction = neglectedImages.Any() || obscuredImages.Any() ? Url.Action(nameof(Questions)) : Url.Action(nameof(Finished));
             return Json(new {success=true, nextAction});
         }
 
@@ -67,7 +72,9 @@ namespace SDCode.Web.Controllers
         public IActionResult Questions(string participantID)
         {
             var sessionMeta = _sessionMetaRepository.Get(participantID, "Encoding");
-            return View(new EncodingQuestionsViewModel(participantID, sessionMeta.NeglectedImages.Any(), sessionMeta.ObscuredImages.Any()));
+            var neglectedImages = _neglectedImagesRepository.Get(participantID, "Encoding");
+            var obscuredImages = _obscuredImagesRepository.Get(participantID, "Encoding");
+            return View(new EncodingQuestionsViewModel(participantID, neglectedImages.Any(), obscuredImages.Any()));
         }
 
         [HttpPost]

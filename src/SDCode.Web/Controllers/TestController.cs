@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SDCode.Web.Models;
 using SDCode.Web.Classes;
-using System.IO;
 using System.Collections.Generic;
 using System;
 using Microsoft.Extensions.Options;
+using SDCode.Web.Models.Data;
 
 namespace SDCode.Web.Controllers
 {
@@ -34,8 +34,9 @@ namespace SDCode.Web.Controllers
         private readonly IConfidencesDescriptionsGetter _confidencesDescriptionsGetter;
         private readonly ITestInstructionsViewModelGetter _testInstructionsViewModelGetter;
         private readonly ISleepQuestionsRepository _sleepQuestionsRepository;
+        private readonly IObscuredImagesRepository _obscuredImagesRepository;
 
-        public TestController(ILogger<TestController> logger, IPhaseSetsGetter phaseSetsGetter, INextImageGetter nextImageGetter, IImageCongruencyGetter imageCongruencyGetter, ITestNameGetter testNameGetter, IImageContextGetter imageContextGetter, IProgressGetter progressGetter, IStanfordRepository stanfordRepository, IResponseFeedbackGetter responseFeedbackGetter, IOptions<Config> config, ITestResponsesRepository testResponsesRepository, ISessionMetaRepository sessionMetaRepository, ICommaDelimitedIntegersCollector commaDelimitedIntegersCollector, IStimuliImageUrlGetter stimuliImageUrlGetter, ITestStartTimeGetter testStartTimeGetter, IReturningUserPhaseDataGetter returningUserPhaseDataGetter, IConfidencesDescriptionGetter confidencesDescriptionGetter, IJudgementsDescriptionGetter judgementsDescriptionGetter, IConfidencesDescriptionsGetter confidencesDescriptionsGetter, ITestInstructionsViewModelGetter testInstructionsViewModelGetter, ISleepQuestionsRepository sleepQuestionsRepository)
+        public TestController(ILogger<TestController> logger, IPhaseSetsGetter phaseSetsGetter, INextImageGetter nextImageGetter, IImageCongruencyGetter imageCongruencyGetter, ITestNameGetter testNameGetter, IImageContextGetter imageContextGetter, IProgressGetter progressGetter, IStanfordRepository stanfordRepository, IResponseFeedbackGetter responseFeedbackGetter, IOptions<Config> config, ITestResponsesRepository testResponsesRepository, ISessionMetaRepository sessionMetaRepository, ICommaDelimitedIntegersCollector commaDelimitedIntegersCollector, IStimuliImageUrlGetter stimuliImageUrlGetter, ITestStartTimeGetter testStartTimeGetter, IReturningUserPhaseDataGetter returningUserPhaseDataGetter, IConfidencesDescriptionGetter confidencesDescriptionGetter, IJudgementsDescriptionGetter judgementsDescriptionGetter, IConfidencesDescriptionsGetter confidencesDescriptionsGetter, ITestInstructionsViewModelGetter testInstructionsViewModelGetter, ISleepQuestionsRepository sleepQuestionsRepository, IObscuredImagesRepository obscuredImagesRepository)
         {
             _logger = logger;
             _phaseSetsGetter = phaseSetsGetter;
@@ -58,6 +59,7 @@ namespace SDCode.Web.Controllers
             _confidencesDescriptionsGetter = confidencesDescriptionsGetter;
             _testInstructionsViewModelGetter = testInstructionsViewModelGetter;
             _sleepQuestionsRepository = sleepQuestionsRepository;
+            _obscuredImagesRepository = obscuredImagesRepository;
         }
 
         [HttpPost]
@@ -103,10 +105,10 @@ namespace SDCode.Web.Controllers
             if (stanford.HasValue) {
                 _stanfordRepository.Save(participantID, testName, stanford.Value);
             }
-            _testResponsesRepository.Archive(participantID, testName);
             var testAllImageTypes = PhaseSetsGetter.TestOldImageTypes.Union(PhaseSetsGetter.TestNewImageTypes);
             var testInstructionsViewModel = _testInstructionsViewModelGetter.Get();
-            var viewModel = new TestIndexViewModel(participantID, progress, testName, _config.AttentionResetDisplayDurationInMilliseconds, _config.AutomateTests, _config.TestAutomationDelayInMilliseconds, testAllImageTypes, testInstructionsViewModel, _config.ImageTypesUrlTemplate);
+            var sessionID = Guid.NewGuid();
+            var viewModel = new TestIndexViewModel(participantID, progress, testName, sessionID, _config.AttentionResetDisplayDurationInMilliseconds, _config.AutomateTests, _config.TestAutomationDelayInMilliseconds, testAllImageTypes, testInstructionsViewModel, _config.ImageTypesUrlTemplate);
             return View(viewModel);
         }
 
@@ -119,15 +121,15 @@ namespace SDCode.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult ResponseData(string participantID, int progress, Judgements judgement, Confidences confidence, long reactionTime) {
+        public IActionResult ResponseData(string participantID, Guid sessionID, int progress, Judgements judgement, Confidences confidence, long reactionTime) {
             var phaseSets = _phaseSetsGetter.Get(participantID);
             var seenTestName = _testNameGetter.Get(phaseSets, progress);
             var seenViewModel = GetViewModel(phaseSets, progress);
             var congruency = _imageCongruencyGetter.Get(seenViewModel.ImageToDisplay);
             var context = _imageContextGetter.Get(seenViewModel.ImageToDisplay);
             var feedback = _responseFeedbackGetter.Get(seenViewModel.ImageToDisplay, judgement);
-            var imageResponse = new ResponseDataModel{Image = seenViewModel.ImageToDisplay, Congruency = congruency, Context = context, Judgement = judgement, Confidence = confidence, ReactionTime = reactionTime, Feedback = feedback, WhenUtc = DateTime.UtcNow};
-            _testResponsesRepository.Add(participantID, seenTestName, imageResponse);
+            var imageResponse = new ResponseDbDataModel{ParticipantID = participantID, TestName = seenTestName, SessionID = sessionID, Image = seenViewModel.ImageToDisplay, Congruency = congruency, Context = context, Judgement = judgement, Confidence = confidence, ReactionTime = reactionTime, Feedback = feedback, WhenUtc = DateTime.UtcNow};
+            _testResponsesRepository.Save(imageResponse);
             var nextProgress = progress + 1;
             var nextTestName = _testNameGetter.Get(phaseSets, nextProgress);
             var testHasEnded = !string.Equals(seenTestName, nextTestName);
@@ -135,7 +137,7 @@ namespace SDCode.Web.Controllers
             return Json(new {TestEnded=testHasEnded, feedback=((int)feedback), ViewModel=nextViewModel});
         }
 
-        private TestImageViewModel GetViewModel(PhaseSetsModel phaseSets, int progress) {
+        private TestImageViewModel GetViewModel(PhaseSets phaseSets, int progress) {
             var imageToDisplay = _nextImageGetter.Get(phaseSets, progress);
             var result = new TestImageViewModel(phaseSets.ParticipantID, progress, imageToDisplay);
             return result;
@@ -148,7 +150,8 @@ namespace SDCode.Web.Controllers
             var sessionMeta = _sessionMetaRepository.Get(participantID, testName);
             var phaseSets = _phaseSetsGetter.Get(participantID);
             var testImages = ((IEnumerable<string>)(phaseSets.GetType().GetProperty(testName) ?? throw new Exception("Unexpected phase name.")).GetValue(phaseSets)).ToList();
-            sessionMeta.ObscuredImages = obscuredIndexes.Select(x=>testImages[x]);
+            var obscuredImages = obscuredIndexes.Select(x=>testImages[x]);
+            _obscuredImagesRepository.Save(participantID, testName, obscuredImages);
             _sessionMetaRepository.Save(sessionMeta);
             return View(new TestQuestionsViewModel(participantID, testName));
         }

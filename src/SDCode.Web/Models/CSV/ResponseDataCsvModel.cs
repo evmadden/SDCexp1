@@ -4,10 +4,10 @@ using CsvHelper.Configuration;
 using CsvHelper.Configuration.Attributes;
 using SDCode.Web.Classes;
 
-namespace SDCode.Web.Models
+namespace SDCode.Web.Models.CSV
 {
     [Description("A participant's many responses for a given test.")]
-    public class ResponseDataModel
+    public class ResponseDataCsvModel
     {
         [Name(nameof(Image))]
         [Description("The image viewed.")]
@@ -31,7 +31,7 @@ namespace SDCode.Web.Models
         [Name(nameof(WhenUtc))]
         public DateTime WhenUtc { get; set; }
 
-        public sealed class Map : ClassMap<ResponseDataModel>
+        public sealed class Map : ClassMap<ResponseDataCsvModel>
         {
             public Map()
             {

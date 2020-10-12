@@ -1,0 +1,84 @@
+@{
+    ViewData["Title"] = "Admin";
+}
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var deleteFormElement = document.getElementById('deleteForm');
+            var deleteButtonElement = document.getElementById('actionBarSubmitButton');
+            var participantIdInputElement = document.getElementById('participantId');
+            var deleteResultElement = document.getElementById('deleteResult');
+            var showHideId;
+            var originalLoginButtonText = deleteButtonElement.value;
+            deleteFormElement.addEventListener("submit", function(e){
+                e.preventDefault();
+                var participantID = participantIdInputElement.value;
+                clearTimeout(showHideId);
+                deleteButtonElement.setAttribute('disabled', 'disabled');
+                deleteButtonElement.value = 'Wait...';
+                deleteResultElement.style.visibility = 'hidden';
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", '@(Url.Action("Delete"))', true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.onreadystatechange = function() {
+                    if (this.readyState === XMLHttpRequest.DONE) {
+                        var errorMessage;
+                        if (this.status === 200) {
+                            var response = JSON.parse(this.response);
+                            if (response.success) {
+                                deleteResultElement.innerText = response.message;
+                                deleteResultElement.classList.remove('alert-danger');
+                                deleteResultElement.classList.add('alert-success');
+                            } else {
+                                errorMessage = "There was an unexpected error."
+                            }
+                        } else {
+                            errorMessage = "There was an unexpected error."
+                        }
+                        if (errorMessage) {
+                            deleteResultElement.innerText = `Delete failed: ${errorMessage}`;
+                            deleteResultElement.classList.remove('alert-success');
+                            deleteResultElement.classList.add('alert-danger');
+                        }
+                        showHideId = setTimeout(function(){
+                            deleteButtonElement.value = originalLoginButtonText;
+                            deleteButtonElement.removeAttribute('disabled');
+                            deleteResultElement.style.visibility = 'visible';
+                        }, 500);
+                    }
+                }
+                xhr.send(`pID=${participantID}`);
+            });
+        });
+    </script>
+}
+
+@await Html.PartialAsync("~/Views/Shared/LogoMasthead.cshtml")
+@await Html.PartialAsync("~/Views/Shared/FullscreenExempt.cshtml")
+
+<div>
+    <h1 class="display-4">Admin</h1>
+    <h1 class="display-5">Delete Study Data</h1>
+    <div id="formDiv">
+        <form id="deleteForm" action="" method="POST">
+            <div class="form-row">
+                <div class="col-auto">
+                    <label class="sr-only" for="participantID">Participant ID</label>
+                    <div class="input-group mb-2">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">Participant ID</div>
+                        </div>
+                        <input type="number" class="form-control" style="width: 75px;" id="participantId" name="participantID" required data-lpignore="true" />
+                    </div>                
+                </div>
+                <div class="ml-auto">
+                    <div id="deleteResult" class="alert p-2 rounded" role="alert" style="visibility: hidden;">PLACEHOLDER</strong></div>
+                </div>
+            </div>
+            <div>
+                @await Html.PartialAsync("~/Views/Shared/ActionBar.cshtml", new ActionBarViewModel("Delete"))
+            </div>
+        </form>
+    </div>
+</div>

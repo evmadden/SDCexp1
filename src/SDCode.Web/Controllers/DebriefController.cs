@@ -3,15 +3,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SDCode.Web.Classes;
 using SDCode.Web.Models;
+using SDCode.Web.Models.Data;
 
 namespace SDCode.Web.Controllers
 {
     public class DebriefController : Controller
     {
         private readonly ILogger<DebriefController> _logger;
-        private readonly IRepository<EpworthModel> _epworthRepository;
+        private readonly IEpworthRepository _epworthRepository;
 
-        public DebriefController(ILogger<DebriefController> logger, IRepository<EpworthModel> epworthRepository)
+        public DebriefController(ILogger<DebriefController> logger, IEpworthRepository epworthRepository)
         {
             _logger = logger;
             _epworthRepository = epworthRepository;
@@ -20,7 +21,7 @@ namespace SDCode.Web.Controllers
         [HttpPost]
         public IActionResult Index(string participantID, ChancesDozing? reading, ChancesDozing? tv, ChancesDozing? publicplace, ChancesDozing? passengercar, ChancesDozing? afternoon, ChancesDozing? talking, ChancesDozing? lunch, ChancesDozing? traffic)
         {
-            _epworthRepository.Save(new EpworthModel{ParticipantID = participantID, Reading = reading, TV = tv, PublicPlace = publicplace, PassengerCar = passengercar, Afternoon = afternoon, Talking = talking, Lunch = lunch, Traffic = traffic});
+            _epworthRepository.Save(new EpworthDbModel{ParticipantID = participantID, Reading = reading, TV = tv, PublicPlace = publicplace, PassengerCar = passengercar, Afternoon = afternoon, Talking = talking, Lunch = lunch, Traffic = traffic});
             return View(new DebriefIndexViewModel(participantID));
         }
 

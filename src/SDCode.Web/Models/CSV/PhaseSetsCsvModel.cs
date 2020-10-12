@@ -4,10 +4,10 @@ using CsvHelper.Configuration;
 using CsvHelper.Configuration.Attributes;
 using SDCode.Web.Classes;
 
-namespace SDCode.Web.Models
+namespace SDCode.Web.Models.CSV
 {
     [Description("Images used in each phase.")]
-    public class PhaseSetsModel
+    public class PhaseSetsCsvModel
     {
         [Name(nameof(ParticipantID))]
         public string ParticipantID { get; set; }
@@ -20,7 +20,7 @@ namespace SDCode.Web.Models
         [Name(nameof(Followup))]
         public IEnumerable<string> Followup { get; set; }
 
-        public sealed class Map : ClassMap<PhaseSetsModel> {
+        public sealed class Map : ClassMap<PhaseSetsCsvModel> {
             public Map() {
                 Map(m => m.ParticipantID).Name(nameof(ParticipantID));
                 Map(m => m.Encoding).Name(nameof(Encoding)).TypeConverter<CsvStringsConverter>();

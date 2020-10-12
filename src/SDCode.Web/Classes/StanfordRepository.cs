@@ -1,42 +1,44 @@
 ﻿using System;
 using System.Linq;
-using SDCode.Web.Models;
+using SDCode.Web.Classes.Database;
+using SDCode.Web.Models.Data;
 
 namespace SDCode.Web.Classes
 {
     public interface IStanfordRepository
     {
-        StanfordModel Get(string participantID);
+        StanfordDbModel Get(string participantID);
         void Save(string participantID, string testName, Sleepinesses? stanford);
     }
 
     public class StanfordRepository : IStanfordRepository
     {
-        private readonly ICsvFile<StanfordModel, StanfordModel.Map> _stanfordCsvFile;
+        private readonly SQLiteDBContext _dbContext;
 
-        public StanfordRepository(ICsvFile<StanfordModel, StanfordModel.Map> stanfordCsvFile)
+        public StanfordRepository(SQLiteDBContext dbContext)
         {
-            _stanfordCsvFile = stanfordCsvFile;
+            _dbContext = dbContext;
         }
 
-        public StanfordModel Get(string participantID)
+        public StanfordDbModel Get(string participantID)
         {
-            var stanfordModels = _stanfordCsvFile.Read().ToList();
-            var result = stanfordModels.SingleOrDefault(x=>string.Equals(x.ParticipantID, participantID)) ?? new StanfordModel{ParticipantID=participantID};
+            var result = _dbContext.Stanfords.SingleOrDefault(x=>string.Equals(x.ParticipantID, participantID)) ?? new StanfordDbModel{ParticipantID=participantID};
             return result;
         }
 
         public void Save(string participantID, string testName, Sleepinesses? stanford)
         {
-            var stanfordModels = _stanfordCsvFile.Read().ToList();
-            var stanfordModel = stanfordModels.SingleOrDefault(x=>string.Equals(x.ParticipantID, participantID)) ?? new StanfordModel{ParticipantID=participantID};
-            stanfordModels.RemoveAll(x=>string.Equals(x.ParticipantID, participantID));
+            var stanfordModel = _dbContext.Stanfords.SingleOrDefault(x=>string.Equals(x.ParticipantID, participantID)) ?? new StanfordDbModel{ParticipantID=participantID};
             var testNameProperty = stanfordModel.GetType().GetProperty(testName) ?? throw new Exception($"Unexpected test name.");
             testNameProperty.SetValue(stanfordModel, stanford, null);
             var utcProperty = stanfordModel.GetType().GetProperty($"{testName}Utc") ?? throw new Exception($"Unexpected test name.");
             utcProperty.SetValue(stanfordModel, DateTime.UtcNow, null);
-            stanfordModels.Add(stanfordModel);
-            _stanfordCsvFile.Write(stanfordModels);
+            if (_dbContext.Stanfords.Any(x=>string.Equals(participantID, x.ParticipantID))) {
+                _dbContext.Update(stanfordModel);
+            } else {
+                _dbContext.Add(stanfordModel);
+            }
+            _dbContext.SaveChanges();
         }
     }
 }

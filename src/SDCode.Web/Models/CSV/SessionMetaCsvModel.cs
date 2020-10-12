@@ -5,10 +5,10 @@ using CsvHelper.Configuration;
 using CsvHelper.Configuration.Attributes;
 using SDCode.Web.Classes;
 
-namespace SDCode.Web.Models
+namespace SDCode.Web.Models.CSV
 {
     [Description("Metadata about sessions.")]
-    public class SessionMetaModel : IParticipantModel
+    public class SessionMetaCsvModel
     {
         [Name(nameof(ParticipantID))]
         [Description("ID of the participant.")]
@@ -31,7 +31,7 @@ namespace SDCode.Web.Models
         [Description("The moment the participant finished the phase.")]
         public DateTime? FinishedWhenUtc { get; set; }
 
-        public sealed class Map : ClassMap<SessionMetaModel> {
+        public sealed class Map : ClassMap<SessionMetaCsvModel> {
             public Map() {
                 Map(m => m.ParticipantID).Name(nameof(ParticipantID));
                 Map(m => m.SessionName).Name(nameof(SessionName));

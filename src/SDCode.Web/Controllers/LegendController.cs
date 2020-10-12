@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SDCode.Web.Classes;
 using SDCode.Web.Models;
+using SDCode.Web.Models.CSV;
 
 namespace SDCode.Web.Controllers
 {
@@ -26,7 +27,7 @@ namespace SDCode.Web.Controllers
         public IActionResult CSV()
         {
             var files = new List<LegendCsvViewModel.File>();
-            var types = from type in Assembly.GetExecutingAssembly().GetTypes() where type.IsClass && type.Namespace == "SDCode.Web.Models" && type.Name.EndsWith("Model") && !type.Name.EndsWith("ViewModel") select type;
+            var types = from type in Assembly.GetExecutingAssembly().GetTypes() where type.IsClass && type.Namespace == "SDCode.Web.Models.CSV" && type.Name.EndsWith("CsvModel") select type;
             foreach (var type in types)
             {
                 var fileDescription = default(string);

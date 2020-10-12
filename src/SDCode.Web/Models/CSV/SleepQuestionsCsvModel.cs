@@ -2,9 +2,9 @@ using System.ComponentModel;
 using CsvHelper.Configuration;
 using CsvHelper.Configuration.Attributes;
 
-namespace SDCode.Web.Models
+namespace SDCode.Web.Models.CSV
 {
-    public class SleepQuestionsModel
+    public class SleepQuestionsCsvModel
     {
         [Name(nameof(ParticipantID))]
         public string ParticipantID { get; set; }
@@ -43,7 +43,7 @@ namespace SDCode.Web.Models
         [Description("Participant notes before Followup their total sleep time for the previous night.")]
         public string FollowupTST{ get; set; }
 
-        public sealed class Map : ClassMap<SleepQuestionsModel>
+        public sealed class Map : ClassMap<SleepQuestionsCsvModel>
         {
             public Map()
             {

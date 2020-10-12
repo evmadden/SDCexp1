@@ -14,7 +14,7 @@ namespace SDCode.Web.Classes
     public interface ICsvFile<T, TMap>
     {
         IEnumerable<T> Read();
-        void Write(IEnumerable<T> records);
+        string Write(IEnumerable<T> records);
         (IEnumerable<byte> Bytes, string ContentType, string FileName) GetDownload();
         ICsvFile<T, TMap> WithFilename(string filename);
     }
@@ -50,9 +50,10 @@ namespace SDCode.Web.Classes
             return result;
         }
 
-        public void Write(IEnumerable<T> records)
+        public string Write(IEnumerable<T> records)
         {
-            using (var sw = new StreamWriter(FilePath, false, new UTF8Encoding(true)))
+            var filePath = System.IO.Path.Join(System.IO.Path.GetTempPath(), System.IO.Path.GetFileName(FilePath));
+            using (var sw = new StreamWriter(filePath, false, new UTF8Encoding(true)))
             using (var cw = new CsvWriter(sw, CultureInfo.CurrentCulture))
             {
                 // https://stackoverflow.com/a/63523529
@@ -80,7 +81,9 @@ namespace SDCode.Web.Classes
                     cw.NextRecord();
                 }
             }
+            var result = filePath;
             _filename = null;
+            return result;
         }
 
         public (IEnumerable<byte> Bytes, string ContentType, string FileName) GetDownload() {

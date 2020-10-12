@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SDCode.Web.Models;
 using SDCode.Web.Classes;
+using SDCode.Web.Models.Data;
 
 namespace SDCode.Web.Controllers
 {
@@ -10,10 +11,10 @@ namespace SDCode.Web.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IStanfordRepository _stanfordRepository;
-        private readonly IRepository<ConsentModel> _consentRepository;
-        private readonly IRepository<DemographicsModel> _demographicsRepository;
-        private readonly IRepository<PSQIModel> _psqiRepository;
-        private readonly IRepository<EpworthModel> _epworthRepository;
+        private readonly IConsentRepository _consentRepository;
+        private readonly IDemographicsRepository _demographicsRepository;
+        private readonly IPSQIRepository _psqiRepository;
+        private readonly IEpworthRepository _epworthRepository;
         private readonly ITestNameGetter _testNameGetter;
         private readonly IPhaseSetsGetter _phaseSetsGetter;
         private readonly IProgressGetter _progressGetter;
@@ -22,7 +23,7 @@ namespace SDCode.Web.Controllers
         private readonly IParticipantEnrollmentVerifier _participantEnrollmentVerifier;
         private readonly ISleepQuestionsRepository _sleepQuestionsRepository;
 
-        public HomeController(ILogger<HomeController> logger, IStanfordRepository stanfordRepository, IRepository<ConsentModel> consentRepository, IRepository<PSQIModel> psqiRepository, IRepository<EpworthModel> epworthRepository, IRepository<DemographicsModel> demographicsRepository, ITestNameGetter testNameGetter, IPhaseSetsGetter phaseSetsGetter, IProgressGetter progressGetter, IEncodingFinishedChecker encodingFinishedChecker, IReturningUserPhaseDataGetter returningUserPhaseDataGetter, IParticipantEnrollmentVerifier participantEnrollmentVerifier, ISleepQuestionsRepository sleepQuestionsRepository)
+        public HomeController(ILogger<HomeController> logger, IStanfordRepository stanfordRepository, IConsentRepository consentRepository, IPSQIRepository psqiRepository, IEpworthRepository epworthRepository, IDemographicsRepository demographicsRepository, ITestNameGetter testNameGetter, IPhaseSetsGetter phaseSetsGetter, IProgressGetter progressGetter, IEncodingFinishedChecker encodingFinishedChecker, IReturningUserPhaseDataGetter returningUserPhaseDataGetter, IParticipantEnrollmentVerifier participantEnrollmentVerifier, ISleepQuestionsRepository sleepQuestionsRepository)
         {
             _logger = logger;
             _stanfordRepository = stanfordRepository;
@@ -57,9 +58,9 @@ namespace SDCode.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Demographics(string participantID, bool infoSheet, bool withdraw, bool npsDisorder, bool adhd, bool headInjury, bool normalVision, bool visionProblems, bool altShifts, bool smoker, bool dataProtection, bool agreeParticipate)
+        public IActionResult Demographics(string participantID, bool infoSheet, bool withdraw, bool npsDisorder, bool adhd, bool headInjury, bool normalVision, bool visionProblems, bool altShifts, bool dataProtection, bool agreeParticipate)
         {
-            _consentRepository.Save(new ConsentModel{ParticipantID = participantID, InfoSheet = infoSheet, Withdraw = withdraw, NPSDisorder = npsDisorder, ADHD = adhd, HeadInjury = headInjury, NormalVision = normalVision, VisionProblems = visionProblems, AltShifts = altShifts, Smoker = smoker, DataProtection = dataProtection, AgreeParticipate = agreeParticipate});
+            _consentRepository.Save(new ConsentDbModel{ParticipantID = participantID, InfoSheet = infoSheet, Withdraw = withdraw, NPSDisorder = npsDisorder, ADHD = adhd, HeadInjury = headInjury, NormalVision = normalVision, VisionProblems = visionProblems, AltShifts = altShifts, DataProtection = dataProtection, AgreeParticipate = agreeParticipate});
             return View(new DemographicsViewModel(participantID));
         }
 
@@ -70,7 +71,7 @@ namespace SDCode.Web.Controllers
         [HttpPost]
         public IActionResult Epworth(string participantID, string monthbed, string monthlatency, string monthwake, string totalhours, string totalminutes, FrequenciesWeekly? no30min, FrequenciesWeekly? waso, FrequenciesWeekly? bathroom, FrequenciesWeekly? breathing, FrequenciesWeekly? snoring, FrequenciesWeekly? hot, FrequenciesWeekly? cold, FrequenciesWeekly? dreams, FrequenciesWeekly? pain, FrequenciesWeekly? otherfrequency, string otherdescribe, Qualities? sleepquality, FrequenciesWeekly? medication, FrequenciesWeekly? sleepiness, Problems? enthusiasm, BedPartners? bedpartner, FrequenciesWeekly? partsnore, FrequenciesWeekly? breathpause, FrequenciesWeekly? legs, FrequenciesWeekly? disorientation, FrequenciesWeekly? otherrestless, string otherrestdescribe)
         {
-            _psqiRepository.Save(new PSQIModel{ParticipantID = participantID, MonthBed = monthbed, MonthLatency = monthlatency, MonthWake = monthwake, TotalHours = totalhours, TotalMinutes = totalminutes, No30Min = no30min, WASO = waso, Bathroom = bathroom, Breathing = breathing, Snoring = snoring, Hot = hot, Cold = cold, Dreams = dreams, Pain = pain, OtherFrequency = otherfrequency, OtherDescribe = otherdescribe, SleepQuality = sleepquality, Medication = medication, Sleepiness = sleepiness, Enthusiasm = enthusiasm, BedPartner = bedpartner, PartSnore = partsnore, BreathPause = breathpause, Legs = legs, Disorientation = disorientation, OtherRestless = otherrestless, OtherRestDescribe = otherrestdescribe});
+            _psqiRepository.Save(new PSQIDbModel{ParticipantID = participantID, MonthBed = monthbed, MonthLatency = monthlatency, MonthWake = monthwake, TotalHours = totalhours, TotalMinutes = totalminutes, No30Min = no30min, WASO = waso, Bathroom = bathroom, Breathing = breathing, Snoring = snoring, Hot = hot, Cold = cold, Dreams = dreams, Pain = pain, OtherFrequency = otherfrequency, OtherDescribe = otherdescribe, SleepQuality = sleepquality, Medication = medication, Sleepiness = sleepiness, Enthusiasm = enthusiasm, BedPartner = bedpartner, PartSnore = partsnore, BreathPause = breathpause, Legs = legs, Disorientation = disorientation, OtherRestless = otherrestless, OtherRestDescribe = otherrestdescribe});
             return View(new EpworthViewModel(participantID));
         }
 
@@ -78,6 +79,7 @@ namespace SDCode.Web.Controllers
         public IActionResult Stanford(string participantID, Sexes? sex, string age, string yearStudy, Hands? handed, bool? impairments, bool? glasses, string language, string bilingual, string currentCountry, string bed, string wake, string latency, string tst)
         {
             var testName = _testNameGetter.Get(participantID);
+            _demographicsRepository.Save(new DemographicsDbModel{ParticipantID=participantID, Sex=sex, Age=age, YearStudy=yearStudy, Handed=handed, Impairments=impairments, Glasses=glasses, Language=language, Bilingual=bilingual, CurrentCountry=currentCountry });
             _sleepQuestionsRepository.Save(participantID, testName, bed, wake, latency, tst);
             return View(new StanfordViewModel(participantID, true));
         }

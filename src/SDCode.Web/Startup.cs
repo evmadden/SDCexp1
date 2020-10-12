@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SDCode.Web.Classes;
+using SDCode.Web.Classes.Database;
 using SDCode.Web.Models;
 
 namespace SDCode.Web
@@ -24,31 +26,18 @@ namespace SDCode.Web
             services.AddControllersWithViews(options=>{
                 options.Filters.Add<ParticipantVerifyFilter>();
             }).AddRazorRuntimeCompilation();
-            services.AddScoped<ICsvFile<ConsentModel, ConsentModel.Map>, CsvFile<ConsentModel, ConsentModel.Map>>();
-            services.AddScoped<ICsvFile<DemographicsModel, DemographicsModel.Map>, CsvFile<DemographicsModel, DemographicsModel.Map>>();
-            services.AddScoped<ICsvFile<PSQIModel, PSQIModel.Map>, CsvFile<PSQIModel, PSQIModel.Map>>();
-            services.AddScoped<ICsvFile<EpworthModel, EpworthModel.Map>, CsvFile<EpworthModel, EpworthModel.Map>>();
-            services.AddScoped<ICsvFile<StanfordModel, StanfordModel.Map>, CsvFile<StanfordModel, StanfordModel.Map>>();
             services.AddScoped<IImageIndexesGetter, ImageIndexesGetter>();
             services.AddScoped<IStimuliImageDataUrlGetter, StimuliImageDataUrlGetter>();
-            services.AddScoped<ICsvFile<PhaseSetsModel, PhaseSetsModel.Map>, CsvFile<PhaseSetsModel, PhaseSetsModel.Map>>();
             services.AddScoped<IPhaseSetsGetter, PhaseSetsGetter>();
             services.AddScoped<INextImageGetter, NextImageGetter>();
             services.AddScoped<IImageCongruencyGetter, ImageCongruencyGetter>();
-            services.AddScoped<ICsvFile<ResponseDataModel, ResponseDataModel.Map>, CsvFile<ResponseDataModel, ResponseDataModel.Map>>();
             services.AddScoped<ITestNameGetter, TestNameGetter>();
             services.AddScoped<IImageContextGetter, ImageContextGetter>();
-            services.AddScoped<IResponseDataCsvFileGetter, ResponseDataCsvFileGetter>();
             services.AddScoped<IProgressGetter, ProgressGetter>();
             services.AddScoped<IStanfordRepository, StanfordRepository>();
             services.AddScoped<IResponseFeedbackGetter, ResponseFeedbackGetter>();
             services.AddScoped<ICollectionRandomizer, CollectionRandomizer>();
-            services.AddScoped<ICsvFile<SessionMetaModel, SessionMetaModel.Map>, CsvFile<SessionMetaModel, SessionMetaModel.Map>>();
             services.AddScoped<ITestResponsesRepository, TestResponsesRepository>();
-            services.AddScoped<IRepository<ConsentModel>, Repository<ConsentModel, ConsentModel.Map>>();
-            services.AddScoped<IRepository<DemographicsModel>, Repository<DemographicsModel, DemographicsModel.Map>>();
-            services.AddScoped<IRepository<PSQIModel>, Repository<PSQIModel, PSQIModel.Map>>();
-            services.AddScoped<IRepository<EpworthModel>, Repository<EpworthModel, EpworthModel.Map>>();
             services.AddScoped<ISessionMetaRepository, SessionMetaRepository>();
             services.AddScoped<ICommaDelimitedIntegersCollector, CommaDelimitedIntegersCollector>();
             services.AddScoped<IDataTypeDescriptionGetter, DataTypeDescriptionGetter>();
@@ -63,11 +52,18 @@ namespace SDCode.Web
             services.AddScoped<ITestInstructionsViewModelGetter, TestInstructionsViewModelGetter>();
             services.AddScoped<IConfidencesDescriptionsGetter, ConfidencesDescriptionsGetter>();
             services.AddScoped<ISleepQuestionsRepository, SleepQuestionsRepository>();
-            services.AddScoped<ICsvFile<SleepQuestionsModel, SleepQuestionsModel.Map>, CsvFile<SleepQuestionsModel, SleepQuestionsModel.Map>>();
+            services.AddScoped<IConsentRepository, ConsentRepository>();
+            services.AddScoped<IPSQIRepository, PSQIRepository>();
+            services.AddScoped<IEpworthRepository, EpworthRepository>();
+            services.AddScoped<IDemographicsRepository, DemographicsRepository>();
+            services.AddScoped<IObscuredImagesRepository, ObscuredImagesRepository>();
+            services.AddScoped<INeglectedImagesRepository, NeglectedImagesRepository>();
+            services.AddScoped<SQLiteDBContext, SQLiteDBContext>();
+            services.AddDbContext<SQLiteDBContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, SQLiteDBContext dbContext)
         {
             if (env.IsDevelopment())
             {
@@ -91,7 +87,8 @@ namespace SDCode.Web
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-            });
+            });            
+            dbContext.Database.Migrate();
         }
     }
 }

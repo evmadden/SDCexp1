@@ -1,0 +1,23 @@
+@model DebriefIndexViewModel
+@{
+    ViewData["Title"] = "Export";
+}
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function(){
+            document.getElementById('actionBarSubmitButton').addEventListener("click", function(){
+                window.location.href = '@(Url.Action("Download"))';
+            });
+        });
+    </script>
+}
+
+@await Html.PartialAsync("~/Views/Shared/LogoMasthead.cshtml")
+@await Html.PartialAsync("~/Views/Shared/FullscreenExempt.cshtml")
+
+<div>
+    <h1 class="display-5">Export</h1><br/>
+    <p>Press the "Export" button below to export CSV data.</p>
+    @await Html.PartialAsync("~/Views/Shared/ActionBar.cshtml", new ActionBarViewModel("Export"))
+</div>
