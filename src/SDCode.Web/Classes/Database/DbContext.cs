@@ -1,13 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using SDCode.Web.Models;
-//using SDCode.Web.Models.CSV; // todo mlh remove
 using SDCode.Web.Models.Data;
 
 namespace SDCode.Web.Classes.Database
 {
     public class SQLiteDBContext : DbContext
     {
-        // public DbSet<ParticipantCsvModel> Participants { get; set; } // todo mlh remove
         public DbSet<ConsentDbModel> Consents { get; set; }
         public DbSet<DemographicsDbModel> Demographics { get; set; }
         public DbSet<EpworthDbModel> Epworths { get; set; }
