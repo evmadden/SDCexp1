@@ -9,11 +9,13 @@
             var deleteButtonElement = document.getElementById('actionBarSubmitButton');
             var participantIdInputElement = document.getElementById('participantId');
             var deleteResultElement = document.getElementById('deleteResult');
+            var passwordElement = document.getElementById('password');
             var showHideId;
-            var originalLoginButtonText = deleteButtonElement.value;
+            var originalDeleteButtonText = deleteButtonElement.value;
             deleteFormElement.addEventListener("submit", function(e){
                 e.preventDefault();
                 var participantID = participantIdInputElement.value;
+                var password = passwordElement.value;
                 clearTimeout(showHideId);
                 deleteButtonElement.setAttribute('disabled', 'disabled');
                 deleteButtonElement.value = 'Wait...';
@@ -31,7 +33,7 @@
                                 deleteResultElement.classList.remove('alert-danger');
                                 deleteResultElement.classList.add('alert-success');
                             } else {
-                                errorMessage = "There was an unexpected error."
+                                errorMessage = response.errorMessage || "There was an unexpected error."
                             }
                         } else {
                             errorMessage = "There was an unexpected error."
@@ -42,13 +44,13 @@
                             deleteResultElement.classList.add('alert-danger');
                         }
                         showHideId = setTimeout(function(){
-                            deleteButtonElement.value = originalLoginButtonText;
+                            deleteButtonElement.value = originalDeleteButtonText;
                             deleteButtonElement.removeAttribute('disabled');
                             deleteResultElement.style.visibility = 'visible';
                         }, 500);
                     }
                 }
-                xhr.send(`pID=${participantID}`);
+                xhr.send(`pID=${participantID}&password=${password}`);
             });
         });
     </script>
@@ -66,10 +68,21 @@
                 <div class="col-auto">
                     <label class="sr-only" for="participantID">Participant ID</label>
                     <div class="input-group mb-2">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">Participant ID</div>
+                        <div class="input-group-prepend" style="text-align: right;">
+                            <div class="input-group-text" style="width: 120px;">Participant ID</div>
                         </div>
                         <input type="number" class="form-control" style="width: 75px;" id="participantId" name="participantID" required data-lpignore="true" />
+                    </div>                
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-auto">
+                    <label class="sr-only" for="participantID">Password</label>
+                    <div class="input-group mb-2">
+                        <div class="input-group-prepend" style="text-align: right;">
+                            <div class="input-group-text" style="width: 120px; padding-left: 40px; display: inline;">Password</div>
+                        </div>
+                        <input type="password" class="form-control" id="password" name="password" required data-lpignore="true" />
                     </div>                
                 </div>
                 <div class="ml-auto">

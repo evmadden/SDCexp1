@@ -27,7 +27,22 @@ namespace SDCode.Web.Controllers
             return View();
         }
 
-        public IActionResult Download() {
+        [HttpPost]
+        public IActionResult Authorize(string password) {
+            IDictionary<string, object> result;
+            if (string.Equals(password, Environment.GetEnvironmentVariable("PASSWORD_EXPORT"))) {
+                result = new Dictionary<string, object>{{"success",true}};
+            } else {
+                result = new Dictionary<string, object>{{"success",false},{"errorMessage", "Password incorrect."}};
+            }
+            return Json(result);
+        }
+
+        [HttpPost]
+        public IActionResult Download(string password) {
+            if (!string.Equals(password, Environment.GetEnvironmentVariable("PASSWORD_EXPORT"))) {
+                throw new Exception("Password incorrect.");
+            }
             var modelTypeCsvFilenameGetter = new ModelTypeCsvFilenameGetter();
             var consentCsvFile = new CsvFile<ConsentCsvModel, ConsentCsvModel.Map>(modelTypeCsvFilenameGetter);
             var demographicsCsvFile = new CsvFile<DemographicsCsvModel, DemographicsCsvModel.Map>(modelTypeCsvFilenameGetter);
