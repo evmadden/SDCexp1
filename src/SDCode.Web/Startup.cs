@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using SDCode.Web.Classes;
 using SDCode.Web.Classes.Database;
@@ -59,6 +61,8 @@ namespace SDCode.Web
             services.AddScoped<IObscuredImagesRepository, ObscuredImagesRepository>();
             services.AddScoped<INeglectedImagesRepository, NeglectedImagesRepository>();
             services.AddScoped<SQLiteDBContext, SQLiteDBContext>();
+            services.AddScoped<IEmailSender, SendGridEmailSender>();
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddDbContext<SQLiteDBContext>();
         }
 

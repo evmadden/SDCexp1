@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System;
 using Microsoft.Extensions.Options;
 using SDCode.Web.Models.Data;
+using Microsoft.AspNetCore.Http;
 
 namespace SDCode.Web.Controllers
 {
@@ -35,8 +36,10 @@ namespace SDCode.Web.Controllers
         private readonly ITestInstructionsViewModelGetter _testInstructionsViewModelGetter;
         private readonly ISleepQuestionsRepository _sleepQuestionsRepository;
         private readonly IObscuredImagesRepository _obscuredImagesRepository;
+        private readonly IEmailSender _emailSender;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public TestController(ILogger<TestController> logger, IPhaseSetsGetter phaseSetsGetter, INextImageGetter nextImageGetter, IImageCongruencyGetter imageCongruencyGetter, ITestNameGetter testNameGetter, IImageContextGetter imageContextGetter, IProgressGetter progressGetter, IStanfordRepository stanfordRepository, IResponseFeedbackGetter responseFeedbackGetter, IOptions<Config> config, ITestResponsesRepository testResponsesRepository, ISessionMetaRepository sessionMetaRepository, ICommaDelimitedIntegersCollector commaDelimitedIntegersCollector, IStimuliImageUrlGetter stimuliImageUrlGetter, ITestStartTimeGetter testStartTimeGetter, IReturningUserPhaseDataGetter returningUserPhaseDataGetter, IConfidencesDescriptionGetter confidencesDescriptionGetter, IJudgementsDescriptionGetter judgementsDescriptionGetter, IConfidencesDescriptionsGetter confidencesDescriptionsGetter, ITestInstructionsViewModelGetter testInstructionsViewModelGetter, ISleepQuestionsRepository sleepQuestionsRepository, IObscuredImagesRepository obscuredImagesRepository)
+        public TestController(ILogger<TestController> logger, IPhaseSetsGetter phaseSetsGetter, INextImageGetter nextImageGetter, IImageCongruencyGetter imageCongruencyGetter, ITestNameGetter testNameGetter, IImageContextGetter imageContextGetter, IProgressGetter progressGetter, IStanfordRepository stanfordRepository, IResponseFeedbackGetter responseFeedbackGetter, IOptions<Config> config, ITestResponsesRepository testResponsesRepository, ISessionMetaRepository sessionMetaRepository, ICommaDelimitedIntegersCollector commaDelimitedIntegersCollector, IStimuliImageUrlGetter stimuliImageUrlGetter, ITestStartTimeGetter testStartTimeGetter, IReturningUserPhaseDataGetter returningUserPhaseDataGetter, IConfidencesDescriptionGetter confidencesDescriptionGetter, IJudgementsDescriptionGetter judgementsDescriptionGetter, IConfidencesDescriptionsGetter confidencesDescriptionsGetter, ITestInstructionsViewModelGetter testInstructionsViewModelGetter, ISleepQuestionsRepository sleepQuestionsRepository, IObscuredImagesRepository obscuredImagesRepository, IEmailSender emailSender, IHttpContextAccessor httpContextAccessor)
         {
             _logger = logger;
             _phaseSetsGetter = phaseSetsGetter;
@@ -60,6 +63,8 @@ namespace SDCode.Web.Controllers
             _testInstructionsViewModelGetter = testInstructionsViewModelGetter;
             _sleepQuestionsRepository = sleepQuestionsRepository;
             _obscuredImagesRepository = obscuredImagesRepository;
+            _emailSender = emailSender;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         [HttpPost]
@@ -162,7 +167,20 @@ namespace SDCode.Web.Controllers
             participantRecord.ObscuredReason = obscuredReason;
             participantRecord.FinishedWhenUtc = DateTime.UtcNow;
             _sessionMetaRepository.Save(participantRecord);
+            SendTestEndNotifications(testName, participantID);
             return View(new TestEndedViewModel(participantID, testName));
+        }
+
+        private void SendTestEndNotifications(string testName, string participantID)
+        {
+            if (_config.NotificationsEnabled) {
+                try {
+                    _emailSender.Send(new EmailAddress(_config.NotificationsFromAddress, _config.NotificationsFromName), new EmailAddress(_config.NotificationsToAddress, _config.NotificationsToName), $"{participantID} {testName}", $"Participant {participantID} completed {testName} ({_httpContextAccessor.HttpContext.Request.Host}).");
+                }
+                catch (System.Exception exception) {
+                    _logger.LogError(exception, $"Unable to send {testName} email ({participantID}).");
+                }
+            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

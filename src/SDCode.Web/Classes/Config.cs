@@ -16,6 +16,11 @@
         int TestImageCountPerOldSubset { get; set; }
         int TestImageCountPerNewSubset { get; set; }
         string ImageTypesUrlTemplate { get; set; }
+        bool NotificationsEnabled { get; set; }
+        string NotificationsFromAddress { get; set; }
+        string NotificationsFromName { get; set; }
+        string NotificationsToAddress { get; set; }
+        string NotificationsToName { get; set; }
     }
 
     public class Config : IConfig
@@ -34,5 +39,10 @@
         public int TestImageCountPerOldSubset { get; set; }
         public int TestImageCountPerNewSubset { get; set; }
         public string ImageTypesUrlTemplate { get; set; }
+        public bool NotificationsEnabled { get; set; }
+        public string NotificationsFromAddress { get; set; }
+        public string NotificationsFromName { get; set; }
+        public string NotificationsToAddress { get; set; }
+        public string NotificationsToName { get; set; }
     }
 }
