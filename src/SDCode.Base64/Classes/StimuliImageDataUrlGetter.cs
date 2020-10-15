@@ -1,10 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Microsoft.AspNetCore.Hosting;
 
-namespace SDCode.Web.Classes
+namespace SDCode.Base64.Classes
 {
     public interface IStimuliImageDataUrlGetter
     {
@@ -14,13 +13,6 @@ namespace SDCode.Web.Classes
 
     public class StimuliImageDataUrlGetter : IStimuliImageDataUrlGetter
     {
-        private readonly IWebHostEnvironment _webHostEnvironment;
-
-        public StimuliImageDataUrlGetter(IWebHostEnvironment webHostEnvironment)
-        {
-            _webHostEnvironment = webHostEnvironment;
-        }
-
         public IEnumerable<string> Get(IEnumerable<string> indexes)
         {
             var result = indexes.Select(Get);
@@ -29,7 +21,7 @@ namespace SDCode.Web.Classes
 
         public string Get(string index)
         {
-            var fullPath = Path.Join(new List<string>{_webHostEnvironment.WebRootPath,"img","Stimuli",$"{index}.jpg"}.ToArray());
+            var fullPath = Path.Join(new List<string>{"..","assets","img","Stimuli",$"{index}.jpg"}.ToArray());
             var bytes = File.ReadAllBytes(fullPath);
             var base64 = Convert.ToBase64String(bytes);
             var result = $"data:image/jpg;base64,{base64}";

@@ -13,7 +13,6 @@ namespace SDCode.Web.Controllers
     public class EncodingController : Controller
     {
         private readonly ILogger<EncodingController> _logger;
-        private readonly IStimuliImageDataUrlGetter _stimuliImageDataUrlGetter;
         private readonly IStanfordRepository _stanfordRepository;
         private readonly IConfig _config;
         private readonly ISessionMetaRepository _sessionMetaRepository;
@@ -22,10 +21,9 @@ namespace SDCode.Web.Controllers
         private readonly INeglectedImagesRepository _neglectedImagesRepository;
         private readonly IObscuredImagesRepository _obscuredImagesRepository;
 
-        public EncodingController(ILogger<EncodingController> logger, IStimuliImageDataUrlGetter stimuliImageDataUrlGetter, IStanfordRepository stanfordRepository, IOptions<Config> config, ISessionMetaRepository sessionMetaRepository, IPhaseSetsGetter phaseSetsGetter, ICommaDelimitedIntegersCollector commaDelimitedIntegersCollector, INeglectedImagesRepository neglectedImagesRepository, IObscuredImagesRepository obscuredImagesRepository)
+        public EncodingController(ILogger<EncodingController> logger, IStanfordRepository stanfordRepository, IOptions<Config> config, ISessionMetaRepository sessionMetaRepository, IPhaseSetsGetter phaseSetsGetter, ICommaDelimitedIntegersCollector commaDelimitedIntegersCollector, INeglectedImagesRepository neglectedImagesRepository, IObscuredImagesRepository obscuredImagesRepository)
         {
             _logger = logger;
-            _stimuliImageDataUrlGetter = stimuliImageDataUrlGetter;
             _stanfordRepository = stanfordRepository;
             _config = config.Value;
             _sessionMetaRepository = sessionMetaRepository;

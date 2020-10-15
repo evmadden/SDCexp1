@@ -29,7 +29,6 @@ namespace SDCode.Web
                 options.Filters.Add<ParticipantVerifyFilter>();
             }).AddRazorRuntimeCompilation();
             services.AddScoped<IImageIndexesGetter, ImageIndexesGetter>();
-            services.AddScoped<IStimuliImageDataUrlGetter, StimuliImageDataUrlGetter>();
             services.AddScoped<IPhaseSetsGetter, PhaseSetsGetter>();
             services.AddScoped<INextImageGetter, NextImageGetter>();
             services.AddScoped<IImageCongruencyGetter, ImageCongruencyGetter>();

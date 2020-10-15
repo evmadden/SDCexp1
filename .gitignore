@@ -1,4 +1,4 @@
 *.csv
 .DS_Store
-_dataUrls/
 MemoryStudy.db
+src/assets/base64/*.zip
