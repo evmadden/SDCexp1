@@ -19,7 +19,7 @@ namespace SDCode.Web.Classes
         private readonly ICollectionRandomizer _collectionRandomizer;
         private readonly IConfig _config;
 
-        public static readonly IEnumerable<string> TestOldImageTypes = new List<string>{"A", "AI", "D", "DI", "F", "FI"};
+        public static readonly IEnumerable<string> TestOldImageTypes = new List<string>{"E", "EI", "D", "DI", "F", "FI"};
         public static readonly IEnumerable<string> TestNewImageTypes = new List<string>{"N", "NI"};
         public static readonly IEnumerable<string> EncodingImageTypes = new List<string> { "A", "A", "AI", "AI", "B", "BI", "C", "CI", "F", "F", "FI", "FI" };
 
@@ -50,7 +50,7 @@ namespace SDCode.Web.Classes
                     , {testImageCountPerNewType, newImageIndexes} // during each test, X images should be shown per image type stored in Y (X = {testImageCountPerNewType} - see line 44) (Y = {newImageIndexes} = see line 46)
                 };
 
-                var encodingIndexes = CreateEncodingSet().ToList(); // see comment near line 102
+                var encodingIndexes = CreateEncodingSet().ToList(); // see comment near line 100
                 var immediateIndexes = CreateTestSet().ToList(); // see comment near line 82
                 var delayedIndexes = CreateTestSet().ToList(); // see comment near line 82
                 var followupIndexes = CreateTestSet().ToList(); // see comment near line 82
@@ -68,7 +68,7 @@ namespace SDCode.Web.Classes
 
                 IEnumerable<string> CreateTestSet() { // this method is used near lines 54-56
                     var testSet = new List<string>(); // create an empty list of image names, which we'll gradually fill throughout this method and eventually return to the caller
-                    foreach (var (imageCount, imageIndexes) in imageTypeCounts) // for each of "old" and "new", each loop iteration will know the count of images to show per test phase and the list of image names
+                    foreach (var (imageCount, imageIndexes) in imageTypeCounts) // for each of "old" and "new", each loop iteration will know the count of images to show per test phase and the dictionary of image types to list of image names
                     {
                         foreach (var (imageType, imageTypeIndexes) in imageIndexes) // for each image type, each loop iteration will know the image type and the randomized list of image names (from line 95)
                         {
