@@ -7,7 +7,7 @@ namespace SDCode.Web.Classes
 {
     public interface ITestStartTimeGetter
     {
-        DateTime GetUtc(string participantID);
+        (DateTime Start, DateTime End) GetUtc(string participantID);
     }
 
     public class TestStartTimeGetter : ITestStartTimeGetter
@@ -29,7 +29,7 @@ namespace SDCode.Web.Classes
             _sessionMetaRepository = sessionMetaRepository;
         }
 
-        public DateTime GetUtc(string participantID)
+        public (DateTime Start, DateTime End) GetUtc(string participantID)
         {
             var phaseSets = _phaseSetsGetter.Get(participantID);
             var progress = _progressGetter.Get(participantID);
@@ -46,7 +46,8 @@ namespace SDCode.Web.Classes
                 var priorTestResponses = _testResponsesRepository.GetResponsesFromMostRecentSession(participantID, priorTestName);
                 priorPhaseStartTimeUtc = priorTestResponses.Select(x=>x.WhenUtc).Min();
             }
-            var result = priorPhaseStartTimeUtc + testStartDelay;
+            var middle = priorPhaseStartTimeUtc + testStartDelay;
+            var result = (middle.AddMinutes(_config.TestStartTimePlusMinusMinutes), middle.AddMinutes(_config.TestStartTimePlusMinusMinutes));
             return result;
         }
     }

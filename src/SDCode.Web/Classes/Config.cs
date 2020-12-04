@@ -11,7 +11,7 @@
         int TestAutomationDelayInMilliseconds { get; set; }
         int TestWaitDelayedDays { get; set; }
         int TestWaitFollowupDays { get; set; }
-        int TestTooLateDays { get; set; }
+        int TestStartTimePlusMinusMinutes { get; set; }
         int EncodingImageCountPerSubset { get; set; }
         int TestImageCountPerOldSubset { get; set; }
         int TestImageCountPerNewSubset { get; set; }
@@ -34,7 +34,7 @@
         public int TestAutomationDelayInMilliseconds { get; set; }
         public int TestWaitDelayedDays { get; set; }
         public int TestWaitFollowupDays { get; set; }
-        public int TestTooLateDays { get; set; }
+        public int TestStartTimePlusMinusMinutes { get; set; }
         public int EncodingImageCountPerSubset { get; set; }
         public int TestImageCountPerOldSubset { get; set; }
         public int TestImageCountPerNewSubset { get; set; }

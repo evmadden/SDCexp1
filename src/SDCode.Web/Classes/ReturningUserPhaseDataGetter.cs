@@ -44,14 +44,13 @@ namespace SDCode.Web.Classes
             } else if (testName == default) {
                 action = ReturningUserAction.Done;
             } else {
-                var nextTestStartTimeBeginUtc = _testStartTimeGetter.GetUtc(participantID);
-                var nextTestStartTimeEndUtc = nextTestStartTimeBeginUtc.AddDays(_config.TestTooLateDays);
+                var nextTestStartTime = _testStartTimeGetter.GetUtc(participantID);
                 DateTime utcNow = DateTime.UtcNow;
-                bool mustWait = nextTestStartTimeBeginUtc > utcNow;
-                bool tooLate = nextTestStartTimeEndUtc < utcNow;
+                bool mustWait = nextTestStartTime.Start > utcNow;
+                bool tooLate = nextTestStartTime.End < utcNow;
                 if (mustWait) {
                     action = ReturningUserAction.Wait;
-                    nextTestWhenUtc = nextTestStartTimeBeginUtc;
+                    nextTestWhenUtc = nextTestStartTime.Start;
                 } else if (tooLate) {
                     action = ReturningUserAction.TooLate;
                 } else {
