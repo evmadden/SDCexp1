@@ -47,7 +47,7 @@ namespace SDCode.Web.Classes
                 priorPhaseStartTimeUtc = priorTestResponses.Select(x=>x.WhenUtc).Min();
             }
             var middle = priorPhaseStartTimeUtc + testStartDelay;
-            var result = (middle.AddMinutes(_config.TestStartTimePlusMinusMinutes), middle.AddMinutes(_config.TestStartTimePlusMinusMinutes));
+            var result = (middle.AddMinutes(-_config.TestStartTimePlusMinusMinutes), middle.AddMinutes(_config.TestStartTimePlusMinusMinutes));
             return result;
         }
     }
