@@ -100,33 +100,37 @@ namespace SDCode.Web.Controllers
         public IActionResult Login(string participantID) 
         {
             participantID = participantID.Trim();
-            var isEnrolled = _participantEnrollmentVerifier.Verify(participantID);
+            var (isEnrolled, isActive) = _participantEnrollmentVerifier.Verify(participantID);
             string action;
             string whenToReturn = null;
             string nextActionAfterScreenCheck = null;
             if (isEnrolled) {
                 IReturningUserPhaseData phaseData = _returningUserPhaseDataGetter.Get(participantID);
-                if (phaseData.Action == ReturningUserAction.Done) {
-                    action = Url.Action("Index", "ThankYou");
-                } else if (phaseData.Action == ReturningUserAction.Wait) {
-                    var nextTestWhenUtc = phaseData.NextTestWhenUtc.Value.AddMinutes(1);
-                    whenToReturn = $"{nextTestWhenUtc.ToShortDateString()} {(nextTestWhenUtc.ToString("h:mm tt"))} UTC";
-                    action = Url.Action("Wait", "Test");
-                } else if (phaseData.Action == ReturningUserAction.TooLate) {
-                    action = Url.Action("Expired", "Test");
-                } else if (phaseData.Action == ReturningUserAction.Test) {
-                    var testName = _testNameGetter.Get(participantID);
-                    var preTestQuestionsNeeded = !string.Equals(testName, "Immediate");
-                    nextActionAfterScreenCheck = preTestQuestionsNeeded ? Url.Action("Index", "SleepQuestions") : Url.Action("WelcomeBack", "Test");
-                    action = Url.Action("Index", "ScreenCheck");
-                } else {
-                    var stanford = _stanfordRepository.Get(participantID);
-                    if (stanford.Immediate.HasValue) {
-                        action = Url.Action("PreviouslyInterrupted", "Home");
-                    } else {
-                        nextActionAfterScreenCheck = Url.Action("ConsentInfo", "Home");
+                if (isActive) {
+                    if (phaseData.Action == ReturningUserAction.Done) {
+                        action = Url.Action("Index", "ThankYou");
+                    } else if (phaseData.Action == ReturningUserAction.Wait) {
+                        var nextTestWhenUtc = phaseData.NextTestWhenUtc.Value.AddMinutes(1);
+                        whenToReturn = $"{nextTestWhenUtc.ToShortDateString()} {(nextTestWhenUtc.ToString("h:mm tt"))} UTC";
+                        action = Url.Action("Wait", "Test");
+                    } else if (phaseData.Action == ReturningUserAction.TooLate) {
+                        action = Url.Action("Expired", "Test");
+                    } else if (phaseData.Action == ReturningUserAction.Test) {
+                        var testName = _testNameGetter.Get(participantID);
+                        var preTestQuestionsNeeded = !string.Equals(testName, "Immediate");
+                        nextActionAfterScreenCheck = preTestQuestionsNeeded ? Url.Action("Index", "SleepQuestions") : Url.Action("WelcomeBack", "Test");
                         action = Url.Action("Index", "ScreenCheck");
+                    } else {
+                        var stanford = _stanfordRepository.Get(participantID);
+                        if (stanford.Immediate.HasValue) {
+                            action = Url.Action("PreviouslyInterrupted", "Home");
+                        } else {
+                            nextActionAfterScreenCheck = Url.Action("ConsentInfo", "Home");
+                            action = Url.Action("Index", "ScreenCheck");
+                        }
                     }
+                } else {
+                    action = Url.Action("Index", "Finished");
                 }
             } else {
                 action = Url.Action("NotEnrolled", "Participant", new {id=participantID});

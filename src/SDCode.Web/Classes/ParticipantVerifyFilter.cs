@@ -14,8 +14,12 @@ namespace SDCode.Web.Classes
                 var participantID = (string)value;
                 if (!string.IsNullOrWhiteSpace(participantID) && !string.Equals(context.RouteData.Values["action"], "Login")) {
                     var participantEnrollmentVerifier = new ParticipantEnrollmentVerifier();
-                    var isVerified = participantEnrollmentVerifier.Verify(participantID);
-                    if (!isVerified) {
+                    var (isEnrolled, isActive) = participantEnrollmentVerifier.Verify(participantID);
+                    if (isEnrolled) {
+                        if (!isActive) {
+                            context.Result = new RedirectToRouteResult(new RouteValueDictionary {{ "controller", "Finished" }, { "action", "Index" }});
+                        }
+                    } else {
                         context.Result = new RedirectToRouteResult(new RouteValueDictionary {{ "controller", "Participant" }, { "action", "NotEnrolled" }, {"id", participantID}});
                     }
                 }

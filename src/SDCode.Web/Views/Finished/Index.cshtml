@@ -1,0 +1,17 @@
+@model SDCode.Web.Models.TestIndexViewModel
+@{
+    ViewData["Title"] = "Thank You";
+}
+
+@await Html.PartialAsync("~/Views/Shared/LogoBanner.cshtml")
+@await Html.PartialAsync("~/Views/Shared/FullscreenExempt.cshtml")
+
+<h1 class="display-4">Finished</h1>
+<div class="orientationContainer rounded">
+    <p>You have no further sessions in this study.</p>
+</div>
+<div class="questionContainer">
+    <p>@await Html.PartialAsync("~/Views/Shared/Mistake.cshtml")</p>
+    <p>Thank you for your time.</p>
+    <p>@await Html.PartialAsync("~/Views/Shared/Close.cshtml")</p>
+</div>

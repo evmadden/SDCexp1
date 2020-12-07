@@ -8,14 +8,19 @@ namespace SDCode.Web.Models.CSV
     public class ParticipantCsvModel
     {
         [Name(nameof(ID))]
-        [Description("Set of Participant ID's for ALL participants in the study.")]
+        [Description("Participant enrollment identifier.")]
         public string ID { get; set; }
+
+        [Name(nameof(Active))]
+        [Description("Participant's activity status.")]
+        public bool Active { get; set; }
 
         public sealed class Map : ClassMap<ParticipantCsvModel>
         {
             public Map()
             {
                 Map(m => m.ID).Name(nameof(ID));
+                Map(m => m.Active).Name(nameof(Active));
             }
         }
     }
