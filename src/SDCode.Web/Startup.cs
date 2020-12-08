@@ -61,6 +61,7 @@ namespace SDCode.Web
             services.AddScoped<INeglectedImagesRepository, NeglectedImagesRepository>();
             services.AddScoped<SQLiteDBContext, SQLiteDBContext>();
             services.AddScoped<IEmailSender, SendGridEmailSender>();
+            services.AddScoped<IParticipantLanguageQualificationChecker, ParticipantLanguageQualificationChecker>();
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddDbContext<SQLiteDBContext>();
         }

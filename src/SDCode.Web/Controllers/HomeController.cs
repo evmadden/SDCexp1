@@ -22,8 +22,9 @@ namespace SDCode.Web.Controllers
         private readonly IReturningUserPhaseDataGetter _returningUserPhaseDataGetter;
         private readonly IParticipantEnrollmentVerifier _participantEnrollmentVerifier;
         private readonly ISleepQuestionsRepository _sleepQuestionsRepository;
+        private readonly IParticipantLanguageQualificationChecker _participantLanguageQualificationChecker;
 
-        public HomeController(ILogger<HomeController> logger, IStanfordRepository stanfordRepository, IConsentRepository consentRepository, IPSQIRepository psqiRepository, IEpworthRepository epworthRepository, IDemographicsRepository demographicsRepository, ITestNameGetter testNameGetter, IPhaseSetsGetter phaseSetsGetter, IProgressGetter progressGetter, IEncodingFinishedChecker encodingFinishedChecker, IReturningUserPhaseDataGetter returningUserPhaseDataGetter, IParticipantEnrollmentVerifier participantEnrollmentVerifier, ISleepQuestionsRepository sleepQuestionsRepository)
+        public HomeController(ILogger<HomeController> logger, IStanfordRepository stanfordRepository, IConsentRepository consentRepository, IPSQIRepository psqiRepository, IEpworthRepository epworthRepository, IDemographicsRepository demographicsRepository, ITestNameGetter testNameGetter, IPhaseSetsGetter phaseSetsGetter, IProgressGetter progressGetter, IEncodingFinishedChecker encodingFinishedChecker, IReturningUserPhaseDataGetter returningUserPhaseDataGetter, IParticipantEnrollmentVerifier participantEnrollmentVerifier, ISleepQuestionsRepository sleepQuestionsRepository, IParticipantLanguageQualificationChecker participantLanguageQualificationChecker)
         {
             _logger = logger;
             _stanfordRepository = stanfordRepository;
@@ -38,6 +39,7 @@ namespace SDCode.Web.Controllers
             _returningUserPhaseDataGetter = returningUserPhaseDataGetter;
             _participantEnrollmentVerifier = participantEnrollmentVerifier;
             _sleepQuestionsRepository = sleepQuestionsRepository;
+            _participantLanguageQualificationChecker = participantLanguageQualificationChecker;
         }
 
         public IActionResult Index()
@@ -81,7 +83,13 @@ namespace SDCode.Web.Controllers
             var testName = _testNameGetter.Get(participantID);
             _demographicsRepository.Save(new DemographicsDbModel{ParticipantID=participantID, Sex=sex, Age=age, YearStudy=yearStudy, Handed=handed, Impairments=impairments, Glasses=glasses, Language=language, Bilingual=bilingual, CurrentCountry=currentCountry });
             _sleepQuestionsRepository.Save(participantID, testName, bed, wake, latency, tst);
-            return View(new StanfordViewModel(participantID, true));
+            IActionResult result;
+            if (_participantLanguageQualificationChecker.IsQualified(language)) {
+                result = View(new StanfordViewModel(participantID, true));
+            } else {
+                result = RedirectToAction("Index", "Language");
+            }
+            return result;
         }
 
         [HttpPost]
