@@ -60,9 +60,9 @@ namespace SDCode.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Demographics(string participantID, bool infoSheet, bool withdraw, bool npsDisorder, bool adhd, bool headInjury, bool normalVision, bool visionProblems, bool altShifts, bool dataProtection, bool agreeParticipate)
+        public IActionResult Demographics(string participantID, bool infoSheet, bool withdraw, bool npsDisorder, bool adhd, bool headInjury, bool normalVision, bool visionProblems, bool altShifts, bool dataProtection, bool agreeParticipate, bool agreeLanguage)
         {
-            _consentRepository.Save(new ConsentDbModel{ParticipantID = participantID, InfoSheet = infoSheet, Withdraw = withdraw, NPSDisorder = npsDisorder, ADHD = adhd, HeadInjury = headInjury, NormalVision = normalVision, VisionProblems = visionProblems, AltShifts = altShifts, DataProtection = dataProtection, AgreeParticipate = agreeParticipate});
+            _consentRepository.Save(new ConsentDbModel{ParticipantID = participantID, InfoSheet = infoSheet, Withdraw = withdraw, NPSDisorder = npsDisorder, ADHD = adhd, HeadInjury = headInjury, NormalVision = normalVision, VisionProblems = visionProblems, AltShifts = altShifts, DataProtection = dataProtection, AgreeParticipate = agreeParticipate, AgreeLanguage = agreeLanguage});
             return View(new DemographicsViewModel(participantID));
         }
 
@@ -87,7 +87,7 @@ namespace SDCode.Web.Controllers
             if (_participantLanguageQualificationChecker.IsQualified(language)) {
                 result = View(new StanfordViewModel(participantID, true));
             } else {
-                result = RedirectToAction("Index", "Language");
+                result = RedirectToAction("Index", "Language", new {participantID});
             }
             return result;
         }

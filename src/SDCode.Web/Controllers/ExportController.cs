@@ -278,6 +278,7 @@ namespace SDCode.Web.Controllers
                 VisionProblems = x.VisionProblems,
                 AltShifts = x.AltShifts,
                 DataProtection = x.DataProtection,
+                AgreeLanguage = x.AgreeLanguage,
                 AgreeParticipate = x.AgreeParticipate
             });
         }

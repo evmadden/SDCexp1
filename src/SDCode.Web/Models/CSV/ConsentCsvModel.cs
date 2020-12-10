@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using CsvHelper.Configuration;
 using CsvHelper.Configuration.Attributes;
+using SDCode.Web.Classes;
 
 namespace SDCode.Web.Models.CSV
 {
@@ -38,8 +39,8 @@ namespace SDCode.Web.Models.CSV
         [Description("Participant understands that data will be anonymised and accessed by researchers.")]
         public bool DataProtection{ get; set; }   
         [Name(nameof(AgreeLanguage))]
-        [Description("Participant confrms native English speaker.")]
-        public bool AgreeLanguage{ get; set; }      
+        [Description("Participant confirms native English speaker.")]
+        public bool? AgreeLanguage{ get; set; }      
         [Name(nameof(AgreeParticipate))]
         [Description("Participant agrees to take part in the study.")]
         public bool AgreeParticipate{ get; set; }            
@@ -58,7 +59,7 @@ namespace SDCode.Web.Models.CSV
                 Map(m => m.VisionProblems).Name(nameof(VisionProblems));
                 Map(m => m.AltShifts).Name(nameof(AltShifts));
                 Map(m => m.DataProtection).Name(nameof(DataProtection));
-                Map(m => m.AgreeLanguage).Name(nameof(AgreeLanguage));
+                Map(m => m.AgreeLanguage).Name(nameof(AgreeLanguage)).TypeConverter<CsvBooleanConverter>();
                 Map(m => m.AgreeParticipate).Name(nameof(AgreeParticipate));
             }
         }

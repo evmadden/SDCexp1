@@ -11,6 +11,7 @@ namespace SDCode.Web.Models.Data
         public bool NormalVision{ get; set; }    
         public bool VisionProblems{ get; set; }   
         public bool AltShifts{ get; set; }
+        public bool? AgreeLanguage{ get; set; }
         public bool DataProtection{ get; set; }   
         public bool AgreeParticipate{ get; set; }            
     }
