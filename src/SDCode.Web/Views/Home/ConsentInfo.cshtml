@@ -21,7 +21,9 @@
             <li>Be between 18 and 30 years old.</li>
             <li>Have normal or corrected-to-normal vision (with glasses or contacts).</li>
             <li>Have a regular sleep/wake pattern, where you typically rise by 8am each morning after at least 6 hours of sleep.</li>
-            <li>Be a native speaker of English (i.e. English is your first language spoken to you from birth). This is not the same as being fluent in English. Non-native English speakers will not be able to take part.</li>
+            @if (Model.ShowLanguageRequirement) {
+                <li>Be a native speaker of English (i.e. English is your first language spoken to you from birth). This is not the same as being fluent in English. Non-native English speakers will not be able to take part.</li>
+            }
         </ul>
         <h4 class="display-6">YOU MUST NOT:</h4>
         <ul>

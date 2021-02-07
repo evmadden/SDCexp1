@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using SDCode.Web.Models;
 using SDCode.Web.Classes;
 using SDCode.Web.Models.Data;
+using Microsoft.Extensions.Options;
 
 namespace SDCode.Web.Controllers
 {
@@ -23,8 +24,9 @@ namespace SDCode.Web.Controllers
         private readonly IParticipantEnrollmentVerifier _participantEnrollmentVerifier;
         private readonly ISleepQuestionsRepository _sleepQuestionsRepository;
         private readonly IParticipantLanguageQualificationChecker _participantLanguageQualificationChecker;
+        private readonly IConfig _config;
 
-        public HomeController(ILogger<HomeController> logger, IStanfordRepository stanfordRepository, IConsentRepository consentRepository, IPSQIRepository psqiRepository, IEpworthRepository epworthRepository, IDemographicsRepository demographicsRepository, ITestNameGetter testNameGetter, IPhaseSetsGetter phaseSetsGetter, IProgressGetter progressGetter, IEncodingFinishedChecker encodingFinishedChecker, IReturningUserPhaseDataGetter returningUserPhaseDataGetter, IParticipantEnrollmentVerifier participantEnrollmentVerifier, ISleepQuestionsRepository sleepQuestionsRepository, IParticipantLanguageQualificationChecker participantLanguageQualificationChecker)
+        public HomeController(ILogger<HomeController> logger, IStanfordRepository stanfordRepository, IConsentRepository consentRepository, IPSQIRepository psqiRepository, IEpworthRepository epworthRepository, IDemographicsRepository demographicsRepository, ITestNameGetter testNameGetter, IPhaseSetsGetter phaseSetsGetter, IProgressGetter progressGetter, IEncodingFinishedChecker encodingFinishedChecker, IReturningUserPhaseDataGetter returningUserPhaseDataGetter, IParticipantEnrollmentVerifier participantEnrollmentVerifier, ISleepQuestionsRepository sleepQuestionsRepository, IParticipantLanguageQualificationChecker participantLanguageQualificationChecker, IOptions<Config> config)
         {
             _logger = logger;
             _stanfordRepository = stanfordRepository;
@@ -40,6 +42,7 @@ namespace SDCode.Web.Controllers
             _participantEnrollmentVerifier = participantEnrollmentVerifier;
             _sleepQuestionsRepository = sleepQuestionsRepository;
             _participantLanguageQualificationChecker = participantLanguageQualificationChecker;
+            _config = config.Value;
         }
 
         public IActionResult Index()
@@ -50,20 +53,20 @@ namespace SDCode.Web.Controllers
         [HttpPost]
         public IActionResult ConsentInfo(string participantID)
         {
-            return View(new HomeConsentInfoViewModel(participantID));
+            return View(new HomeConsentInfoViewModel(participantID, _config.LanguageIsRelevant));
         }
 
         [HttpPost]
         public IActionResult ConsentForm(string participantID)
         {
-            return View(new HomeConsentFormViewModel(participantID));
+            return View(new HomeConsentFormViewModel(participantID, _config.LanguageIsRelevant));
         }
 
         [HttpPost]
-        public IActionResult Demographics(string participantID, bool infoSheet, bool withdraw, bool npsDisorder, bool adhd, bool headInjury, bool normalVision, bool visionProblems, bool altShifts, bool dataProtection, bool agreeParticipate, bool agreeLanguage)
+        public IActionResult Demographics(string participantID, bool infoSheet, bool withdraw, bool npsDisorder, bool adhd, bool headInjury, bool normalVision, bool visionProblems, bool altShifts, bool dataProtection, bool agreeParticipate, bool? agreeLanguage)
         {
             _consentRepository.Save(new ConsentDbModel{ParticipantID = participantID, InfoSheet = infoSheet, Withdraw = withdraw, NPSDisorder = npsDisorder, ADHD = adhd, HeadInjury = headInjury, NormalVision = normalVision, VisionProblems = visionProblems, AltShifts = altShifts, DataProtection = dataProtection, AgreeParticipate = agreeParticipate, AgreeLanguage = agreeLanguage});
-            return View(new DemographicsViewModel(participantID));
+            return View(new DemographicsViewModel(participantID, _config.LanguageIsRelevant));
         }
 
         public IActionResult PreviouslyInterrupted() {
