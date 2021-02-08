@@ -1,4 +1,6 @@
-﻿namespace SDCode.Web.Classes
+﻿using System.Collections.Generic;
+
+namespace SDCode.Web.Classes
 {
     public interface IConfig
     {
@@ -23,10 +25,12 @@
         string NotificationsToName { get; set; }
         bool LanguageIsRelevant {get; set;}
         string StudyTitle {get;set;}
+        Config.ContactInfo[] Researchers { get; set; }
     }
 
     public class Config : IConfig
     {
+        private ContactInfo[] _researchers;
         public int ImageDisplayDurationInMilliseconds { get; set; }
         public int AttentionResetDisplayDurationInMilliseconds { get; set; }
         public int NumberDisplayProbabilityPercentage { get; set; }
@@ -47,6 +51,18 @@
         public string NotificationsToAddress { get; set; }
         public string NotificationsToName { get; set; }
         public bool LanguageIsRelevant { get; set; }
-        public string StudyTitle {get;set;}
+        public string StudyTitle { get; set; }
+        public ContactInfo[] Researchers { 
+            get {
+                return _researchers ?? new ContactInfo[]{};
+            } 
+            set {
+                _researchers = value;
+            } 
+        }
+        public class ContactInfo {
+            public string Name { get; set; }
+            public string EmailAddress { get; set; }
+        }
     }
 }

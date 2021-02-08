@@ -1,4 +1,5 @@
-﻿@{
+﻿@model SDCode.Web.Models.ContactViewModel
+@{
     ViewData["Title"] = "Contact";
 }
 
@@ -7,7 +8,25 @@
 
 <div>
     <h1 class="display-4">Contact</h1>
-    <p><p>If you have any questions about this study or encounter any problems, please contact the researcher 
-        Emily Madden at @await Html.PartialAsync("~/Views/Shared/ResearcherEmailLink.cshtml").
-        </p></p>
+    <p>
+        <p>
+            If you have any questions about this study or encounter any problems, please contact the
+            @if (Model.Researchers.Count == 1) {
+                var researcher = @Model.Researchers.Single();
+                <span>researcher @researcher.Name - <a href="mailto:@researcher.EmailAddress">@researcher.EmailAddress</a>.</span>
+            } else if (Model.Researchers.Count > 1) {
+                <span>
+                    researchers:
+                    <ul>
+                        @foreach (var researcher in Model.Researchers)
+                        {
+                            <li>@researcher.Name - <a href="mailto:@researcher.EmailAddress">@researcher.EmailAddress</a></li>
+                        }
+                    </ul>
+                </span>
+            } else {
+                <span>researcher(s).</span>
+            }
+        </p>
+    </p>
 </div>

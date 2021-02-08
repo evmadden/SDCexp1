@@ -151,7 +151,7 @@ namespace SDCode.Web.Controllers
 
         public IActionResult Contact() 
         {
-            return View();
+            return View(new ContactViewModel(_config.Researchers));
         }
 
         public IActionResult LearnMore() 
