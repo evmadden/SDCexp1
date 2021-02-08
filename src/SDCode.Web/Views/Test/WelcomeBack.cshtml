@@ -5,7 +5,7 @@
 
 @await Html.PartialAsync("~/Views/Shared/LogoMasthead.cshtml")
 <div class="text-center">
-    <h1 class="display-4">@await Html.PartialAsync("~/Views/Shared/StudyTitle.cshtml")</h1>
+    <h1 class="display-4">@await Component.InvokeAsync("StudyTitle")</h1>
 </div>
 <div class="orientationContainer rounded">
     <p>In this session, we will be testing your memory of the objects within the red boxes that you saw in the STUDY PHASE.

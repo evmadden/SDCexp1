@@ -22,6 +22,7 @@
         string NotificationsToAddress { get; set; }
         string NotificationsToName { get; set; }
         bool LanguageIsRelevant {get; set;}
+        string StudyTitle {get;set;}
     }
 
     public class Config : IConfig
@@ -46,5 +47,6 @@
         public string NotificationsToAddress { get; set; }
         public string NotificationsToName { get; set; }
         public bool LanguageIsRelevant { get; set; }
+        public string StudyTitle {get;set;}
     }
 }

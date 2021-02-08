@@ -37,7 +37,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; @DateTime.UtcNow.Year - @await Html.PartialAsync("~/Views/Shared/StudyTitle.cshtml") - <a asp-area="" asp-controller="Home" asp-action="LearnMore" target="_blank">Learn More</a> - <a asp-area="" asp-controller="Home" asp-action="Contact" target="_blank">Contact</a>
+            &copy; @DateTime.UtcNow.Year - @await Component.InvokeAsync("StudyTitle") - <a asp-area="" asp-controller="Home" asp-action="LearnMore" target="_blank">Learn More</a> - <a asp-area="" asp-controller="Home" asp-action="Contact" target="_blank">Contact</a>
             @{
                 var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
                 var isDevelopment = environment == Environments.Development;
