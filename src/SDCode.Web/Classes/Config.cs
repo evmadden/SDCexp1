@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace SDCode.Web.Classes
+﻿namespace SDCode.Web.Classes
 {
     public interface IConfig
     {
@@ -27,11 +25,14 @@ namespace SDCode.Web.Classes
         string StudyTitle {get;set;}
         Config.ContactInfo[] Researchers { get; set; }
         string DebriefHtml {get;set;}
+
+        Config.ContactInfo[] PrincipleInvestigators { get; set; }
     }
 
     public class Config : IConfig
     {
         private ContactInfo[] _researchers;
+        private ContactInfo[] _principleInvestigators;
         public int ImageDisplayDurationInMilliseconds { get; set; }
         public int AttentionResetDisplayDurationInMilliseconds { get; set; }
         public int NumberDisplayProbabilityPercentage { get; set; }
@@ -59,6 +60,14 @@ namespace SDCode.Web.Classes
             } 
             set {
                 _researchers = value;
+            } 
+        }
+        public ContactInfo[] PrincipleInvestigators { 
+            get {
+                return _principleInvestigators ?? new ContactInfo[]{};
+            } 
+            set {
+                _principleInvestigators = value;
             } 
         }
         public class ContactInfo {

@@ -48,10 +48,24 @@
         to withdraw your study data.</p>
     <h4 class="display-5">Questions or Concerns</h4>
     <p>If you have any questions about this participant information sheet or concerns about how your data is being processed, 
-        please contact the researcher, Emily Madden at @await Html.PartialAsync("~/Views/Shared/ResearcherEmailLink.cshtml"), or the principal investigators, 
-        Karla K Evans (<a href="mailto:karla.evans@york.ac.uk">karla.evans@york.ac.uk</a>) or 
-        Scott Cairney (<a href="mailto:scott.cairney@york.ac.uk">scott.cairney@york.ac.uk</a>), in the first instance via email. 
-        If you are still dissatisfied, please contact the University’s Acting Data Protection Officer at 
+        please contact:</p>
+    <div>
+        <span>Researcher@(Model.Researchers.Count > 1 ? "s" : string.Empty):</span>
+        <ul>
+            @foreach (var x in Model.Researchers)
+            {
+                <li>@x.Name (<a href="mailto:@x.EmailAddress">@x.EmailAddress</a>)</li>
+            }
+        </ul>
+        <span>Principle Investigators@(Model.PrincipleInvestigators.Count > 1 ? "s" : string.Empty):</span>
+        <ul>
+            @foreach (var x in Model.PrincipleInvestigators)
+            {
+                <li>@x.Name (<a href="mailto:@x.EmailAddress">@x.EmailAddress</a>)</li>
+            }
+        </ul>
+    </div>
+    <p>If you are still dissatisfied, please contact the University’s Acting Data Protection Officer at 
         <a href="mailto:dataprotection@york.ac.uk">dataprotection@york.ac.uk</a>.</p>
     <p>This study has been approved by the Research Ethics Committee of the Department of Psychology at the University of York.</p>
     <p>If you wish to take part in the study, please click the "Next" button below to view the informed consent form and to continue.</p>

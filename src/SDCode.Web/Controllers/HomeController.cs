@@ -53,7 +53,7 @@ namespace SDCode.Web.Controllers
         [HttpPost]
         public IActionResult ConsentInfo(string participantID)
         {
-            return View(new HomeConsentInfoViewModel(participantID, _config.LanguageIsRelevant));
+            return View(new HomeConsentInfoViewModel(participantID, _config.LanguageIsRelevant, _config.Researchers, _config.PrincipleInvestigators));
         }
 
         [HttpPost]
