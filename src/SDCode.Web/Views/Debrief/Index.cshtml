@@ -10,7 +10,7 @@
     <h1 class="display-5">Debrief Information</h1>
     <p>Thank you for your participation in our @await Component.InvokeAsync("StudyTitle").</p>
     <div>
-        @Model.DebriefHtml
+        @Html.Raw(Model.DebriefHtml)
     </div>
         <p>Please feel free to contact the 
             @if (Model.Researchers.Count == 1) {
