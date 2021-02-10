@@ -57,7 +57,7 @@
                 <li>@x.Name (<a href="mailto:@x.EmailAddress">@x.EmailAddress</a>)</li>
             }
         </ul>
-        <span>Principle Investigators@(Model.PrincipleInvestigators.Count > 1 ? "s" : string.Empty):</span>
+        <span>Principle Investigator@(Model.PrincipleInvestigators.Count > 1 ? "s" : string.Empty):</span>
         <ul>
             @foreach (var x in Model.PrincipleInvestigators)
             {
