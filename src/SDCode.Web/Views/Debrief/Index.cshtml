@@ -7,13 +7,11 @@
 @await Html.PartialAsync("~/Views/Shared/FullscreenExempt.cshtml")
 
 <div>
-    <h1 class="display-5">Debrief Information</h1><br/>
-    <p>Thank you for your participation in our @await Component.InvokeAsync("StudyTitle").<br/>
-        <p>We are examining the effects of context, congruency and time on episodic memory.</p>
-        <p>Specifically, we are looking at whether changing the background of a target item influences how well an observer is able to recognise the item as having been previously seen.  
-            In this study, you viewed a series of pictures or words.  We will be comparing the effects context, congruency and time have on both verbal and visual recognition memory 
-            to see how each, individually and in combination, contribute to the consolidation of episodic memories in both domains.
-        </p>
+    <h1 class="display-5">Debrief Information</h1>
+    <p>Thank you for your participation in our @await Component.InvokeAsync("StudyTitle").</p>
+    <div>
+        @Model.DebriefHtml
+    </div>
         <p>Please feel free to contact the 
             @if (Model.Researchers.Count == 1) {
                 var researcher = @Model.Researchers.Single();

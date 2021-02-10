@@ -25,7 +25,7 @@ namespace SDCode.Web.Controllers
         public IActionResult Index(string participantID, ChancesDozing? reading, ChancesDozing? tv, ChancesDozing? publicplace, ChancesDozing? passengercar, ChancesDozing? afternoon, ChancesDozing? talking, ChancesDozing? lunch, ChancesDozing? traffic)
         {
             _epworthRepository.Save(new EpworthDbModel{ParticipantID = participantID, Reading = reading, TV = tv, PublicPlace = publicplace, PassengerCar = passengercar, Afternoon = afternoon, Talking = talking, Lunch = lunch, Traffic = traffic});
-            return View(new DebriefIndexViewModel(participantID, _config.Researchers));
+            return View(new DebriefIndexViewModel(participantID, _config.Researchers, _config.DebriefHtml));
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -26,6 +26,7 @@ namespace SDCode.Web.Classes
         bool LanguageIsRelevant {get; set;}
         string StudyTitle {get;set;}
         Config.ContactInfo[] Researchers { get; set; }
+        string DebriefHtml {get;set;}
     }
 
     public class Config : IConfig
@@ -64,5 +65,6 @@ namespace SDCode.Web.Classes
             public string Name { get; set; }
             public string EmailAddress { get; set; }
         }
+        public string DebriefHtml { get; set; }
     }
 }
