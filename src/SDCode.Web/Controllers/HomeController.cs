@@ -66,7 +66,7 @@ namespace SDCode.Web.Controllers
         public IActionResult Demographics(string participantID, bool infoSheet, bool withdraw, bool npsDisorder, bool adhd, bool headInjury, bool normalVision, bool visionProblems, bool altShifts, bool dataProtection, bool agreeParticipate, bool? agreeLanguage)
         {
             _consentRepository.Save(new ConsentDbModel{ParticipantID = participantID, InfoSheet = infoSheet, Withdraw = withdraw, NPSDisorder = npsDisorder, ADHD = adhd, HeadInjury = headInjury, NormalVision = normalVision, VisionProblems = visionProblems, AltShifts = altShifts, DataProtection = dataProtection, AgreeParticipate = agreeParticipate, AgreeLanguage = agreeLanguage});
-            return View(new DemographicsViewModel(participantID, _config.LanguageIsRelevant));
+            return View(new DemographicsViewModel(participantID));
         }
 
         public IActionResult PreviouslyInterrupted() {

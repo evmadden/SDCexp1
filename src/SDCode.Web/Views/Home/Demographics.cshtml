@@ -74,21 +74,19 @@
                 <label class="form-check-label" for="glassesno">No</label>
             </div>
         </fieldset>
-        @if (Model.ShowLanguageQuestions) {
-            <fieldset>
-                <legend><label for="language">What is your native language?</label></legend>
-                <div class="form-group">
-                    <input type="text" class="form-control w-50" id="language" name="language" data-lpignore="true">
-                    <small class="form-text text-muted">Please write the language your parents spoke to you as a child.</small>
-                </div>
-            </fieldset>
-            <fieldset>
-                <legend><label for="bilingual">Please list any other languages you speak fluently.</label></legend>
-                <div class="form-group">
-                    <input type="text" class="form-control w-50" id="bilingual" name="bilingual" data-lpignore="true">
-                </div>
-            </fieldset>
-        }
+        <fieldset>
+            <legend><label for="language">What is your native language?</label></legend>
+            <div class="form-group">
+                <input type="text" class="form-control w-50" id="language" name="language" data-lpignore="true">
+                <small class="form-text text-muted">Please write the language your parents spoke to you as a child.</small>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend><label for="bilingual">Please list any other languages you speak fluently.</label></legend>
+            <div class="form-group">
+                <input type="text" class="form-control w-50" id="bilingual" name="bilingual" data-lpignore="true">
+            </div>
+        </fieldset>
         <fieldset>
             <legend><label for="currentcountry">In what country do you currently live?</label></legend>
             <div class="form-group">
