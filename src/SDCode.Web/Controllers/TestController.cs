@@ -168,7 +168,7 @@ namespace SDCode.Web.Controllers
             participantRecord.FinishedWhenUtc = DateTime.UtcNow;
             _sessionMetaRepository.Save(participantRecord);
             SendTestEndNotifications(testName, participantID);
-            return View(new TestEndedViewModel(participantID, testName));
+            return View(new TestEndedViewModel(participantID, testName, _config.Researchers));
         }
 
         private void SendTestEndNotifications(string testName, string participantID)

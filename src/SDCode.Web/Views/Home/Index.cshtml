@@ -1,4 +1,5 @@
-﻿@{
+﻿@model SDCode.Web.Models.HomeIndexViewModel
+@{
     ViewData["Title"] = "Home";
 }
 
@@ -40,7 +41,17 @@
         sessions should last roughly 30 minutes. 
         Please only agree to take part if you are prepared to fully commit to all of the 
         experimental sessions.</p>
-        <p>Please login below. If you need a login, contact the researcher (@await Html.PartialAsync("~/Views/Shared/ResearcherEmailLink.cshtml")).</p>
+        <p>Please login below. If you need a login, contact:</p>
+        <div>
+            <span>Researcher@(Model.Researchers.Count > 1 ? "s" : string.Empty):</span>
+            <ul>
+                @foreach (var x in Model.Researchers)
+                {
+                    <li>@x.Name (<a href="mailto:@x.EmailAddress">@x.EmailAddress</a>)</li>
+                }
+            </ul>
+        </div>
+
     </div>
 </div>
 

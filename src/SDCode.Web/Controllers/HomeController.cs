@@ -47,7 +47,7 @@ namespace SDCode.Web.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View(new HomeIndexViewModel(_config.Researchers));
         }
 
         [HttpPost]
