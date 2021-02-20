@@ -10,10 +10,12 @@ namespace SDCode.Base64
 {
     class Program
     {
+        public static readonly string ImagesPath = System.IO.Path.Join("..","assets","img","Stimuli", "Animacy");
+        //public static readonly string ImagesPath = System.IO.Path.Join("..","assets","img","Stimuli", "Congruency");
         static void Main(string[] args)
         {
             var stimuliImageDataUrlGetter = new StimuliImageDataUrlGetter();
-            var indexes = System.IO.Directory.GetFiles(System.IO.Path.Join("..","assets","img","Stimuli")).Select(System.IO.Path.GetFileNameWithoutExtension);
+            var indexes = System.IO.Directory.GetFiles(ImagesPath).Select(System.IO.Path.GetFileNameWithoutExtension);
             var indexTypes = indexes.Select(x=>Regex.Replace(x, "[0-9]", string.Empty));
             var distinctIndexTypes = indexTypes.Distinct();
             var indexesByLetter = distinctIndexTypes.ToDictionary(x=>x, x=>indexes.Where(y=>y.StartsWith(x)));

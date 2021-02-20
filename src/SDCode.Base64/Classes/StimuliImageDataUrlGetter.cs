@@ -21,7 +21,7 @@ namespace SDCode.Base64.Classes
 
         public string Get(string index)
         {
-            var fullPath = Path.Join(new List<string>{"..","assets","img","Stimuli",$"{index}.jpg"}.ToArray());
+            var fullPath = Path.Join(Program.ImagesPath,$"{index}.jpg");
             var bytes = File.ReadAllBytes(fullPath);
             var base64 = Convert.ToBase64String(bytes);
             var result = $"data:image/jpg;base64,{base64}";
