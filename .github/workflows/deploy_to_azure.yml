@@ -76,6 +76,15 @@ jobs:
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_77d137eb06fc4b819d24d148b3622329 }}
         package: ${{env.DOTNET_ROOT}}/myapp 
    
+    - name: Deploy to memorystudy-bsc
+      if: github.event.inputs.Site == 'memorystudy-bsc'
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ github.event.inputs.Site }}
+        slot-name: 'production'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_67E032F0A8F542CEA5B90E47683BE9B1 }}
+        package: ${{env.DOTNET_ROOT}}/myapp 
+        
     - name: Deploy to memorystudy-bsc-short
       if: github.event.inputs.Site == 'memorystudy-bsc-short'
       uses: azure/webapps-deploy@v2
