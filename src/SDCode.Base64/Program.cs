@@ -15,6 +15,7 @@ namespace SDCode.Base64
         static void Main(string[] args)
         {
             var stimuliImageDataUrlGetter = new StimuliImageDataUrlGetter();
+            var directoryInfo = new DirectoryInfo(ImagesPath);
             var indexes = System.IO.Directory.GetFiles(ImagesPath).Select(System.IO.Path.GetFileNameWithoutExtension);
             var indexTypes = indexes.Select(x=>Regex.Replace(x, "[0-9]", string.Empty));
             var distinctIndexTypes = indexTypes.Distinct();
