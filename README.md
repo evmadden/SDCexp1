@@ -31,5 +31,5 @@ The wiki provides additional information about [Running the Software](https://gi
 
 ## Credits
 
-* **App Design: [Emily Madden](https://www.york.ac.uk/psychology/staff/postgrads/madden,-emily/)**, Graduate Student<br><div style="margin-left: 5px;"><small>[Complex Cognitive Processes Lab](http://ccpl.hosted.york.ac.uk), [University of York Department of Psychology](https://www.york.ac.uk/psychology)<br>York, England</small></div>
+* **App Design: [Emily Madden](https://www.york.ac.uk/psychology/staff/postgrads/madden,-emily/)**, Graduate Student<br><div style="margin-left: 5px;"><small>Complex Cognitive Processes Lab, [University of York Department of Psychology](https://www.york.ac.uk/psychology)<br>York, England</small></div>
 * **App Code: [Lance Hilliard](https://www.linkedin.com/in/lancehilliard)**, Software Developer<div style="margin-left: 5px;"><small>[Memphis Technology Foundation](https://memphistechnology.org/)<br>Memphis, Tennessee, United States</small></div>
