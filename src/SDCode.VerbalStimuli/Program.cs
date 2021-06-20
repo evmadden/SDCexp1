@@ -148,8 +148,8 @@ namespace SDCode.VerbalStimuli
             }
             var csvFile = ReadCsvFile();
             var stimuli = csvFile.Select(x => new Stimulus(x.Index, new List<DisplayText> {
-                new DisplayText($"{x.Fragment1} ", FontStyle.Regular, 0)
-                , new DisplayText($"{x.Fragment2} ", FontStyle.Underline, x.Fragment2AdjustmentX)
+                new DisplayText($"{x.Fragment1}", FontStyle.Regular, 0)
+                , new DisplayText($"{x.Fragment2}", FontStyle.Underline, x.Fragment2AdjustmentX)
                 , new DisplayText(x.Fragment3, FontStyle.Regular, x.Fragment3AdjustmentX)
             }));
             foreach (var stimulus in stimuli) {

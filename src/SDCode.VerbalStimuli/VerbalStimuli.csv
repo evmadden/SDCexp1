@@ -1,6 +1,6 @@
 Index,Fragment1,Fragment2,Fragment3,Fragment2AdjustmentX,Fragment3AdjustmentX
-"A1","The quick brown","fox jumped over"," the lazy dog.",0,0
-"A2","I like ice cream","with chocolate on top","and lots of sprinkles.",0,0
-"A3","The first concern of","any group of people","should be the salad dressing.",0,0
-"A4","","First","word.",0,0
-"A5","Last","word",".",0,-5
+"A1","The quick brown ","fox jumped over"," the lazy dog.",0,0
+"A2","I like ice cream ","with chocolate on top"," and lots of sprinkles.",0,0
+"A3","The first concern of ","any group of people"," should be the salad dressing.",0,0
+"A4","","First"," word.",0,0
+"A5","Last ","word",".",0,-5
