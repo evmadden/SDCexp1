@@ -13,6 +13,11 @@ namespace SDCode.Base64.Classes
 
     public class StimuliImageDataUrlGetter : IStimuliImageDataUrlGetter
     {
+        private readonly string _fileExtension;
+
+        public StimuliImageDataUrlGetter(string fileExtension) {
+            _fileExtension = fileExtension;
+        }
         public IEnumerable<string> Get(IEnumerable<string> indexes)
         {
             var result = indexes.Select(Get);
@@ -21,7 +26,7 @@ namespace SDCode.Base64.Classes
 
         public string Get(string index)
         {
-            var fullPath = Path.Join(Program.ImagesPath,$"{index}.jpg");
+            var fullPath = Path.Join(Program.ImagesPath,$"{index}.{_fileExtension}");
             var bytes = File.ReadAllBytes(fullPath);
             var base64 = Convert.ToBase64String(bytes);
             var result = $"data:image/jpg;base64,{base64}";

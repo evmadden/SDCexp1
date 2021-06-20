@@ -10,11 +10,18 @@ namespace SDCode.Base64
 {
     class Program
     {
-        public static readonly string ImagesPath = System.IO.Path.Join("..","assets","img","Stimuli", "Animacy");
+        //public static readonly string ImagesPath = System.IO.Path.Join("..","assets","img","Stimuli", "Animacy");
+        //static readonly string FileExtension = "jpg";
+
         //public static readonly string ImagesPath = System.IO.Path.Join("..","assets","img","Stimuli", "Congruency");
+        //static readonly string FileExtension = "jpg";
+
+        public static readonly string ImagesPath = System.IO.Path.Join("..","assets","img","Stimuli", "Verbal");
+        static readonly string FileExtension = "png";
+        
         static void Main(string[] args)
         {
-            var stimuliImageDataUrlGetter = new StimuliImageDataUrlGetter();
+            var stimuliImageDataUrlGetter = new StimuliImageDataUrlGetter(FileExtension);
             var directoryInfo = new DirectoryInfo(ImagesPath);
             var indexes = directoryInfo.GetFiles().Where(x=>(x.Attributes & FileAttributes.Hidden)==0).Select(x=>x.Name).Select(System.IO.Path.GetFileNameWithoutExtension);
             var indexTypes = indexes.Select(x=>Regex.Replace(x, "[0-9]", string.Empty));
@@ -23,11 +30,13 @@ namespace SDCode.Base64
             var indexesToThird = new List<string>{"N", "NI"};
             foreach (var index in indexesToThird)
             {
-                indexesByLetter[$"{index}1"] = indexesByLetter[index].Take(Decimal.ToInt32(indexesByLetter[index].Count()/3));
-                var secondThird = indexesByLetter[index].Except(indexesByLetter[$"{index}1"]);
-                indexesByLetter[$"{index}2"] = secondThird.Take(Decimal.ToInt32(secondThird.Count()/2));
-                indexesByLetter[$"{index}3"] = secondThird.Except(indexesByLetter[$"{index}2"]);
-                indexesByLetter.Remove(index);                
+                if (indexesByLetter.ContainsKey(index)) {
+                    indexesByLetter[$"{index}1"] = indexesByLetter[index].Take(Decimal.ToInt32(indexesByLetter[index].Count()/3));
+                    var secondThird = indexesByLetter[index].Except(indexesByLetter[$"{index}1"]);
+                    indexesByLetter[$"{index}2"] = secondThird.Take(Decimal.ToInt32(secondThird.Count()/2));
+                    indexesByLetter[$"{index}3"] = secondThird.Except(indexesByLetter[$"{index}2"]);
+                    indexesByLetter.Remove(index);                
+                }
             }
 
             var zipFilePaths = new List<string>();
