@@ -7,11 +7,11 @@ Index,Fragment1,Fragment2,Fragment3,Fragment2AdjustmentX,Fragment3AdjustmentX
 "A6","The girls won the state ","volleyball"," tournament.",0,0
 "A7","He was vaccinated against ","malaria"," before his trip.",0,0
 "A8","The kids loved watching The ","Pink"," Panther.",0,0
-"A9","He gave his wife a ","rose"," on Valentine's Day.",0,0
+"A9","He gave his wife a ","rose"," on Valentine's Day.",0,-1
 "A10","The paper was due in one ","week",".",0,0
 "A11","The young man took his ","niece"," to the cinema.",0,0
-"A12","The ","lily"," bloomed just in time for Easter.",0,0
-"A13","He entered the army as an ","engineer",".",0,0
+"A12","The ","lily"," bloomed just in time for Easter.",0,-1
+"A13","He entered the army as an ","engineer",".",0,-1
 "A14","She forgot to pick up ","aluminium"," foil at the store.",0,0
 "A15","Their youngest son was diagnosed with ","mumps",".",0,0
 "A16","They couldn't wait to meet their new ","nephew",".",0,0
@@ -19,41 +19,41 @@ Index,Fragment1,Fragment2,Fragment3,Fragment2AdjustmentX,Fragment3AdjustmentX
 "A18","She topped her salad with ","sunflower"," seeds.",0,0
 "A19","They went ","swimming"," in the nearby lake.",0,0
 "A20","She called a ","plumber"," to fix the broken sink.",0,0
-"A21","The ","farmer"," tended the crops over the summer.",0,0
-"A22","He was proud to be her ","father-in-law",".",0,0
+"A21","The ","farmer"," tended the crops over the summer.",0,-1
+"A22","He was proud to be her ","father-in-law",".",0,-1
 "A23","The sky was turning ","grey"," as the storm drew closer.",0,0
-"A24","The old man was a skilled ","carpenter",".",0,0
+"A24","The old man was a skilled ","carpenter",".",0,-1
 "A25","The sport of the week was ","badminton",".",0,0
 "A26","The news station required someone trained in ","meteorology",".",0,0
-"A27","The boy fell and broke his ","arm",".",0,0
+"A27","The boy fell and broke his ","arm",".",0,-1
 "A28","The blue ","azalea"," bush stood out in the garden.",0,0
-"A29","The young girl fought constantly with her ","brother",".",0,0
+"A29","The young girl fought constantly with her ","brother",".",0,-1
 "A30","The kids were warned about the dangers of ","syphilis",".",0,0
 "A31","The government was worried about ","carbon"," emissions.",0,0
-"A32","The boy stood up for his ","sister",".",0,0
+"A32","The boy stood up for his ","sister",".",0,-1
 "A33","She was accepted into the school of ","medicine",".",0,0
 "A34","Their song was the number one hit of the ","decade",".",0,0
 "A35","A ","zinc"," coating was applied to prevent rust.",0,0
-"A36","They spent the evening reflecting on the past ","year",".",0,0
+"A36","They spent the evening reflecting on the past ","year",".",0,-1
 "AI1","He was known for selling a ","basement"," at the market.",0,0
 "AI2","The ","paperback"," crunched under her feet as she walked to the store.",0,0
 "AI3","He prefered the stability of a ","hut",".",0,0
 "AI4","The young girl was surprised by how the ","floor"," tasted.",0,0
 "AI5","The young girl spent an hour getting ready in the ","apple"," this morning.",0,0
 "AI6","She watched for soft areas in the grass where a ","house"," might get stuck.",0,0
-"AI7","The controversial ","kayak"," quickly circulated the city.",0,0
+"AI7","The controversial ","kayak"," quickly circulated the city.",0,-1
 "AI8","All the kids in the class had a Razor ","shack",".",0,0
-"AI9","The fanfare was written for a ","valley",".",0,0
+"AI9","The fanfare was written for a ","valley",".",0,-1
 "AI10","The man buttoned his new ","sunshine",".",0,0
 "AI11","The old woman knitted her daugther a ","tornado",".",0,0
 "AI12","She reached the ","jacket"," after a long day of hiking.",0,0
 "AI13","She tugged on the ","hail"," of her robe.",0,0
 "AI14","The family pre-booked a ","hotel"," to pick them up from the airport.",0,0
-"AI15","The young boy got a job delivering the morning ","car",".",0,0
+"AI15","The young boy got a job delivering the morning ","car",".",0,-1
 "AI16","He was a good biker and just bought his third ","igloo",".",0,0
-"AI17","The photographer's picture was used on the ","train"," cover.",0,0
+"AI17","The photographer's picture was used on the ","train"," cover.",0,-1
 "AI18","She stopped at ","radishes"," to rest from a full day of driving.",0,0
-"AI19","The band was looking to add a ","cliff"," player.",0,0
+"AI19","The band was looking to add a ","cliff"," player.",0,-1
 "AI20","The couple loved the vaulted ","apricot"," in their new house.",0,0
 "AI21","The farmer planted a ","hall"," among the other leafy crops.",0,0
 "AI22","She decended into the ","dress"," to find the ponds and lakes.",0,0
@@ -98,21 +98,21 @@ Index,Fragment1,Fragment2,Fragment3,Fragment2AdjustmentX,Fragment3AdjustmentX
 "B25","The ","dandelion"," was a beautiful shade of yellow.",0,0
 "B26","They went to watch the ","tennis"," match at Wimbledon.",0,0
 "B27","","Sociology"," explores human behaviour from a global perspective.",0,0
-"B28","Plant science is also known as ","botany",".",0,0
+"B28","Plant science is also known as ","botany",".",0,-1
 "B29","They learned about the ","labourer"," accident in the mine.",0,0
 "B30","She wanted to talk to a ","laywer"," first.",0,0
 "B31","In ","eternity"," there is indeed something true and sublime.",0,0
 "B32","He died in London of ","typhoid"," fever.",0,0
 "B33","The officers used a ","violet"," light to inspect the crime scene.",0,0
 "B34","She was the best ","nurse"," on the ward.",0,0
-"B35","Their lab studied the density of ","helium",".",0,0
+"B35","Their lab studied the density of ","helium",".",0,-1
 "B36","He enjoyed studying ","astronomy"," in his free time.",0,0
 "BI1","The ","bulletin"," on the roof was soothing.",0,0
 "BI2","The bartender made her a ","violin"," mojito.",0,0
 "BI3","The author's new book quickly climbed to the top of the ","wagon"," bestsellers list.",0,0
 "BI4","They knew she could write a ","motorcycle"," that would win the contest.",0,0
 "BI5","The villagers tended a small ","banjo"," orchard.",0,0
-"BI6","The woman smilled and pulled off her ","storm",".",0,0
+"BI6","The woman smilled and pulled off her ","storm",".",0,-1
 "BI7","The tourists could choose between a Spanish or English version of the ","ship",".",0,0
 "BI8","He couldn't decide between red and green ","drums",".",0,0
 "BI9","The ","poem"," lasted most of the night.",0,0
@@ -161,7 +161,7 @@ Index,Fragment1,Fragment2,Fragment3,Fragment2AdjustmentX,Fragment3AdjustmentX
 "C16","The ","iris"," thrives in drier climates.",0,0
 "C17","","Fluorine"," is a pale greenish-yellow gas with a very sharp smell.",0,0
 "C18","The ","lacrosse"," pitch was in the park behind their house.",0,0
-"C19","She feared her diagnosis would be ","cancer",".",0,0
+"C19","She feared her diagnosis would be ","cancer",".",0,-1
 "C20","The gardner started his ","geranium"," seeds indoors.",0,0
 "C21","The kids spent the afternoon at the ","bowling"," alley.",0,0
 "C22","The ","pansy"," flower can be a variety of colours.",0,0
@@ -171,14 +171,14 @@ Index,Fragment1,Fragment2,Fragment3,Fragment2AdjustmentX,Fragment3AdjustmentX
 "C26","He was looking for a ","tennis"," partner ahead of the new season.",0,0
 "C27","","Sociology"," is a broad field that covers a wide range of topics.",0,0
 "C28","The ","botany"," lab bought several new microscopes this year.",0,0
-"C29","The company was advertising for a seasonal ","labourer",".",0,0
+"C29","The company was advertising for a seasonal ","labourer",".",0,-1
 "C30","They agreed to talk to their ","lawyer"," in the morning.",0,0
 "C31","The new couple vowed to spend ","eternity"," together.",0,0
 "C32","The ","typhoid"," epidemic ripped through the village.",0,0
 "C33","The priest wore ","viloet"," vestments during Lent.",0,0
 "C34","The ","nurse"," prepared the operating room for surgery.",0,0
 "C35","The balloon was filled with ","helium",".",0,0
-"C36","Ancient societies were fascinated by ","astronomy",".",0,0
+"C36","Ancient societies were fascinated by ","astronomy",".",0,-1
 "CI1","The ","bulletin"," kept us from hosting the annual cookout.",0,0
 "CI2","Her favourite was the pink ","violin",".",0,0
 "CI3","He packed a small ","wagon"," into his hand luggage.",0,0
@@ -215,3 +215,75 @@ Index,Fragment1,Fragment2,Fragment3,Fragment2AdjustmentX,Fragment3AdjustmentX
 "CI34","The woman quickly put on her ","snow"," and rushed out the door.",0,0
 "CI35","The bride woke to a ","pamphlet"," on her wedding day.",0,0
 "CI36","She made a lovely ","saxophone"," jam.",0,0
+"D1","The old lady bought a ","beige"," couch during the sale.",0,0
+"D2","The young girl knelt to smell the ","petunia",".",0,0
+"D3","It all takes place within a ","millisecond",".",0,0
+"D4","She became the coach of her ","softball"," team.",0,0
+"D5","His ","mother-in-law"," lived far away.",0,0
+"D6","She decided to get her ","nose"," pierced.",0,0
+"D7","Fewer ","flu"," cases were reported due to the use of masks.",0,0
+"D8","He emailed his ","professor"," to ask a question.",0,0
+"D9","A ","mauve"," dress was delicately hung in the shop window.",0,0
+"D10","She drove her son to his ","fencing"," lesson.",0,0
+"D11","","Daffodil"," bulbs were planted on either side of the pavement.",0,0
+"D12","The rubbish was collected every ","fortnight",".",0,0
+"D13","Many people who had ","polio"," survived.",0,0
+"D14","The spy wore a red ","carnation"," on his lapel.",0,0
+"D15","He made a ","magnesium"," solution for a later experiment.",0,0
+"D16","The ","iris"," flower gets its name from the Greek word for rainbow.",0,0
+"D17","He won a prize for his preparation of ","fluorine",".",0,0
+"D18","He started playing ","lacrosse"," from a young age.",0,0
+"D19","He agreed to try an experimental ","cancer"," drug.",0,0
+"D20","The ","geranium"," grows in moderate climates.",0,0
+"D21","The young girl had never been ","bowling",".",0,0
+"D22","A ","pansy"," can grow to be 9 inches tall.",0,0
+"D23","He overslept and was late for his ","physiology"," lab.",0,0
+"D24","They celebrated the acceptance of their new ","physics"," publication.",0,0
+"D25","The young girl blew all the seeds off the ","dandelion",".",0,0
+"D26","The storm destroyed the ","tennis"," net.",0,0
+"D27","","Sociology"," invesitages the sturcutre of groups and societies.",0,0
+"D28","His role in the ","botany"," lab was to keep the plants alive.",0,0
+"D29","His father was a poor farm ","labourer",".",0,-1
+"D30","He was a skilled ","lawyer"," and rarely lost his cases.",0,0
+"D31","She waited for what felt like an ","eternity",".",0,-1
+"D32","","Typhpoid"," is a bacterial infection caused by Salmonella.",0,0
+"D33","The restaurant ordered ","violet"," coloured napkins for the tables.",0,0
+"D34","The old man called for the ","nurse"," to come help him.",0,0
+"D35","","Helium"," is present in the atmosphere.",0,0
+"D36","He bought a telescope after becoming interested in ","astronomy",".",0,-1
+"DI1","She woke to a gentle ","bulletin"," on the cold morning.",0,0
+"DI2","The ","violin"," overpowered all other citrus flavours.",0,0
+"DI3","She laid in the sun and read a ","wagon"," novel.",0,0
+"DI4","She was excited to debut her newest ","motorcycle"," at the open mic night.",0,0
+"DI5","The drought decreased the ","banjo"," harvest this year.",0,0
+"DI6","She bought a new ","storm"," before the weather turned cold.",0,0
+"DI7","The ","ship"," contained a comprehensive list of activites in the area.",0,0
+"DI8","Parents should slice ","drums"," before giving them to their young children.",0,0
+"DI9","The ","poem"," was loud and woke him from his sleep.",0,0
+"DI10","The ","ocean"," is smooth in tone.",0,0
+"DI11","He pulled a ","rock"," out of his pocket and started playing.",0,0
+"DI12","It was sour like a ","trumpet",".",0,0
+"DI13","The boy got new ","sleet"," for summer.",0,0
+"DI14","She wrote in her ","taxi"," every night before going to bed.",0,0
+"DI15","She took a trip to the used ","bus"," store to find a new story to read.",0,0
+"DI16","She didn't know if she was supposed to eat the ","guitar"," seeds or not.",0,0
+"DI17","He planted the ","trombone"," seed in hopes of growing his own tree.",0,0
+"DI18","She added a teaspoon of ","viola"," juice to the bowl.",0,0
+"DI19","The path was dangerous and required them to cross the ","belt",".",0,0
+"DI20","The ","clairnet"," was growing larger every day.",0,0
+"DI21","The ","cave"," section was one of the largest in the band.",0,0
+"DI22","A damp ","novel"," coated the floor of the forest.",0,0
+"DI23","She used fresh ","cymbals"," in her margarita.",0,0
+"DI24","He wore a warm ","cyclone"," while hiking.",0,0
+"DI25","He rented a ","mansion"," for their camping trip.",0,0
+"DI26","She stood in awe of the vastness of the ","tie",".",0,0
+"DI27","The exam included a short ","truck"," component.",0,0
+"DI28","He took his ","tent"," out as soon as it was warm enough to be on the water.",0,0
+"DI29","The man taught ","river"," lessons in his spare time.",0,0
+"DI30","He removed his ","hurricane"," as he sat down to eat.",0,0
+"DI31","Headlights flashed on the curtains briefly and a ","castle"," door slammed.",0,0
+"DI32","She used the mock exam at the end of the ","Jeep"," to help her study.",0,0
+"DI33","She made a ","flute"," shortcake for her birthday.",0,0
+"DI34","The man gave the woman his ","snow"," as the sun began to set.",0,0
+"DI35","The long days and a bright ","pamphlet"," were welcomed in the village.",0,0
+"DI36","My grandmother tended the ","saxophone"," bushes.",0,0
