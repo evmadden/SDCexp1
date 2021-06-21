@@ -6,6 +6,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using CsvHelper;
 using CsvHelper.Configuration.Attributes;
 
@@ -152,11 +153,11 @@ namespace SDCode.VerbalStimuli
                 , new DisplayText($"{x.Fragment2}", FontStyle.Underline, x.Fragment2AdjustmentX)
                 , new DisplayText(x.Fragment3, FontStyle.Regular, x.Fragment3AdjustmentX)
             }));
-            foreach (var stimulus in stimuli) {
+            Parallel.ForEach(stimuli, stimulus =>{
                 var image = GetImage(stimulus.DisplayTexts);
                 var filename = Path.Join(ImagesPath, $"{stimulus.Index}.png");
                 image.Save(filename, ImageFormat.Png);
-            }
+            });
         }
     }
 }
