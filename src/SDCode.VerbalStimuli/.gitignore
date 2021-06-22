@@ -2,3 +2,4 @@
 [Bb]in/
 [Oo]bj/
 !VerbalStimuli.csv
+#To stop pushing verbal images to github, uncomment line 5 in ~/Documents/SDCexp1 .gitignore
