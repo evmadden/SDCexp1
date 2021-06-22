@@ -27,7 +27,7 @@ If you want to run the code on your local workstation (Windows, Mac, or Linux):
 * install [.NET Core 3.1 SDK](https://dotnet.microsoft.com/download/dotnet-core/3.1)
 * `dotnet run` from within `src/SDCode.Web`
 
-The wiki provides additional information about [Running the Software](https://github.com/evmadden/SDCexp1/wiki/Running-the-Software).
+The wiki provides additional information about [Running the Web Application](https://github.com/evmadden/SDCexp1/wiki/Running-the-Web-Application).
 
 ## Credits
 
