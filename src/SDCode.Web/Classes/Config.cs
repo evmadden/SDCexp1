@@ -23,6 +23,10 @@
         string NotificationsToName { get; set; }
         bool LanguageIsRelevant {get; set;}
         string StudyTitle {get;set;}
+        string StimuliTypeName {get;set;}
+        string TargetTypeName {get;set;}
+        string TargetDecorationFormat {get;set;}
+        string ContextTypeName {get;set;}
         Config.ContactInfo[] Researchers { get; set; }
         string DebriefHtml {get;set;}
 
@@ -54,6 +58,10 @@
         public string NotificationsToName { get; set; }
         public bool LanguageIsRelevant { get; set; }
         public string StudyTitle { get; set; }
+        public string StimuliTypeName { get; set; }
+        public string TargetTypeName {get;set;}
+        public string TargetDecorationFormat {get;set;}
+        public string ContextTypeName {get;set;}
         public ContactInfo[] Researchers { 
             get {
                 return _researchers ?? new ContactInfo[]{};

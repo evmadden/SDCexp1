@@ -1,4 +1,5 @@
-﻿@model TestQuestionsViewModel
+﻿@using SDCode.Web.Classes
+@model TestQuestionsViewModel
 @{
     ViewData["Title"] = "Questions";
 }
@@ -18,7 +19,7 @@
             <p>Please explain problem(s) that occurred during the TEST PHASE.</p>
         </div>
             <p>
-                Why were images obscured? <input type="text" name="obscuredReason" class="longSingleLine" required data-lpignore="true" />
+                Why were @(await Component.InvokeAsync("StimuliTypeName", new { wordForm = WordForm.LowerPlural })) obscured? <input type="text" name="obscuredReason" class="longSingleLine" required data-lpignore="true" />
             </p>
     </div>
     <p>Press the "Next" button to finish to the TEST PHASE.</p>

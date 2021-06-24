@@ -4,7 +4,7 @@
     var confidenceDescriptions = Model.ConfidenceDescriptions.ToDictionary(x=>Enum.Parse(typeof(Confidences), x.Key), x=>x.Value);
 }
 <p>
-    Your task is to indicate whether each object within the red box is "@Model.OldJudgementsDescription.ToLower()" or "@Model.NewJudgementsDescription.ToLower()".  You will also be asked to rate how confident you are in each response
+    Your task is to indicate whether each @(await Component.InvokeAsync("TargetTypeName", new { wordForm = WordForm.LowerSingular, describeDecoration = true })) is "@Model.OldJudgementsDescription.ToLower()" or "@Model.NewJudgementsDescription.ToLower()".  You will also be asked to rate how confident you are in each response
     on a scale of 1 to 4 with 1 being "@(confidenceDescriptions[Confidences.NotConfident])" and 4 being "@(confidenceDescriptions[Confidences.VeryConfident])". 
 </p>
 <div class="keysContainer">
@@ -26,7 +26,7 @@
     </div>    
 </div>
 <p>
-    This session is mostly self-paced.  The next image will automatically be presented after the confidence rating is provided.
+    This session is mostly self-paced.  The next @(await Component.InvokeAsync("StimuliTypeName", new { wordForm = WordForm.LowerSingular })) will automatically be presented after the confidence rating is provided.
     Please pay attention and answer as accurately as possible.    
 </p>
 @* Don't copy this HTML to other files. Instead, re-use this HTML in other files, with this syntax:

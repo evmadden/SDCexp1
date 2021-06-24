@@ -1,4 +1,5 @@
-﻿@model EncodingInstructionsViewModel;
+﻿@using SDCode.Web.Classes
+@model EncodingInstructionsViewModel;
 @{
     ViewData["Title"] = "Part 1 Instructions";
 }
@@ -10,8 +11,8 @@
     <div class="orientationContainer rounded">
         <p>This is the STUDY PHASE.</p>
     </div>
-    <p>You will see 432 images with 288 marked objects.  Please pay attention and try to memorize only the marked objects in the scene.  
-        Each image will be presented for 3 seconds.  Throughout the STUDY phase, numbers will randomly appear on the screen.
+    <p>You will see 432 @(await Component.InvokeAsync("StimuliTypeName", new { wordForm = WordForm.LowerPlural })) with 288 @(await Component.InvokeAsync("TargetTypeName", new { wordForm = WordForm.LowerPlural, describeDecoration = true })).  Please pay attention and try to memorize only the @(await Component.InvokeAsync("TargetTypeName", new { wordForm = WordForm.LowerPlural, describeDecoration = true })) in the @(await Component.InvokeAsync("ContextTypeName", new { wordForm = WordForm.LowerSingular })).  
+        Each @(await Component.InvokeAsync("StimuliTypeName", new { wordForm = WordForm.LowerSingular })) will be presented for 3 seconds.  Throughout the STUDY phase, numbers will randomly appear on the screen.
         Any time you see a number, press the SPACE bar.</p>
     <p>Press the "Next" button to start the Study Phase.</p>
 </div>

@@ -1,4 +1,5 @@
-﻿@model SDCode.Web.Models.HomeIndexViewModel
+﻿@using SDCode.Web.Classes
+@model SDCode.Web.Models.HomeIndexViewModel
 @{
     ViewData["Title"] = "Home";
 }
@@ -21,20 +22,20 @@
         <p>Welcome and thank you for your interest in our study.</p>
     </div>
     <div>
-        <p>In this experiment, we are looking at memory for objects within scenes.</p>
+        <p>In this experiment, we are looking at memory for @(await Component.InvokeAsync("TargetTypeName", new { wordForm = WordForm.LowerPlural, describeDecoration = false })) within @(await Component.InvokeAsync("ContextTypeName", new { wordForm = WordForm.LowerPlural })).</p>
         <p>There are four (4) parts to this experiment:  a study phase and three (3) testing phases.  
-        In the study phase, you will see a series of images.  In the test phases,
-        you will be asked to indicate whether the object within the box is old or new.</p>
+        In the study phase, you will see a series of @(await Component.InvokeAsync("StimuliTypeName", new { wordForm = WordForm.LowerPlural })).  In the test phases,
+        you will be asked to indicate whether the @(await Component.InvokeAsync("TargetTypeName", new { wordForm = WordForm.LowerSingular, describeDecoration = true })) is old or new.</p>
         <p>At the study and initial test session, you will be asked to complete basic demographic questions 
             as well as questionnaires pertaining to your sleep habits. Following the questionnaires, you will
-            be asked to view a series of images.  Memory for the objects in the images will be tested immediately following 
-            the study phase and you will be asked to indicate whether the objects presented in the test are old 
+            be asked to view a series of @(await Component.InvokeAsync("StimuliTypeName", new { wordForm = WordForm.LowerPlural })).  Memory for the @(await Component.InvokeAsync("TargetTypeName", new { wordForm = WordForm.LowerPlural, describeDecoration = false })) in the @(await Component.InvokeAsync("StimuliTypeName", new { wordForm = WordForm.LowerPlural })) will be tested immediately following 
+            the study phase and you will be asked to indicate whether the @(await Component.InvokeAsync("TargetTypeName", new { wordForm = WordForm.LowerPlural, describeDecoration = false })) presented in the test are old 
             or new.  This session should last no longer than an hour (1 hour).  24-hours after the 
             study/initial test session, you will be asked to complete another memory test.  This will follow the 
-            same procedure as the initial test.  Again, you will be shown a set of images and asked to indicate 
-            whether the objects are old or new.  You will receive a reminder the day before this session is scheduled 
+            same procedure as the initial test.  Again, you will be shown a set of @(await Component.InvokeAsync("StimuliTypeName", new { wordForm = WordForm.LowerPlural })) and asked to indicate 
+            whether the @(await Component.InvokeAsync("TargetTypeName", new { wordForm = WordForm.LowerPlural, describeDecoration = true })) are old or new.  You will receive a reminder the day before this session is scheduled 
             to take place.  The final test will follow the same procedure as the previous two tests.  You will 
-            be shown images and asked to indicate whether the objects are old or new.  You will receive a reminder email 
+            be shown @(await Component.InvokeAsync("StimuliTypeName", new { wordForm = WordForm.LowerPlural })) and asked to indicate whether the @(await Component.InvokeAsync("TargetTypeName", new { wordForm = WordForm.LowerPlural, describeDecoration = false })) are old or new.  You will receive a reminder email 
             the day before the session.</p>
         <p>Please note, this study requires participation across MULTIPLE days (today's session, one session tomorrow, 
         and one final session 1-week from today).  The first session should last roughly one hour (1 hour) and the following

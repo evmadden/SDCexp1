@@ -1,4 +1,5 @@
-﻿@model EncodingQuestionsViewModel
+﻿@using SDCode.Web.Classes
+@model EncodingQuestionsViewModel
 @{
     ViewData["Title"] = "Questions";
 }
@@ -21,7 +22,7 @@
             @if (Model.ShouldQuestionNeglected) {
                 <div class="questionContainer subQuestionContainer form-row">
                     <div class="col-md-3">
-                        <label for="neglectedReason">Why were images neglected?</label>
+                        <label for="neglectedReason">Why were @(await Component.InvokeAsync("StimuliTypeName", new { wordForm = WordForm.LowerPlural })) neglected?</label>
                     </div>
                     <div class="col-md-9">
                         <input id="neglectedReason" type="text" name="neglectedReason" class="form-control w-100" required data-lpignore="true" />
@@ -31,7 +32,7 @@
             @if (Model.ShouldQuestionObscured) {
                 <div class="questionContainer subQuestionContainer form-row">
                     <div class="col-md-3">
-                        <label for="obscuredReason">Why were images obscured?</label>
+                        <label for="obscuredReason">Why were @(await Component.InvokeAsync("StimuliTypeName", new { wordForm = WordForm.LowerPlural })) obscured?</label>
                     </div>
                     <div class="col-md-9">
                         <input id="obscuredReason" type="text" name="obscuredReason" class="form-control w-100" required data-lpignore="true" />
