@@ -50,7 +50,7 @@ namespace SDCode.VerbalStimuli
     }
     public class DisplayText {
         static readonly string FontFamilyName = "Verdana";
-        static readonly int FontEmSize = 12;
+        static readonly int FontEmSize = 14;
         readonly FontStyle _fontStyle;
 
         public DisplayText(string text, FontStyle fontStyle, int xAxisAdjustment) {
