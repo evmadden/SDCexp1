@@ -70,7 +70,7 @@ namespace SDCode.Web.Controllers
         [HttpPost]
         public IActionResult Welcome(string participantID)
         {
-            var testInstructionsViewModel = _testInstructionsViewModelGetter.Get();
+            var testInstructionsViewModel = _testInstructionsViewModelGetter.Get(participantID);
             return View(new TestWelcomeViewModel(participantID, testInstructionsViewModel));
         }
 
@@ -80,7 +80,7 @@ namespace SDCode.Web.Controllers
             if (stanford.HasValue) {
                 _stanfordRepository.Save(participantID, testName, stanford.Value);
             }
-            var testInstructionsViewModel = _testInstructionsViewModelGetter.Get();
+            var testInstructionsViewModel = _testInstructionsViewModelGetter.Get(participantID);
             return View(new TestWelcomeBackViewModel(participantID, testInstructionsViewModel));
         }
        
@@ -111,7 +111,7 @@ namespace SDCode.Web.Controllers
                 _stanfordRepository.Save(participantID, testName, stanford.Value);
             }
             var testAllImageTypes = PhaseSetsGetter.TestOldImageTypes.Union(PhaseSetsGetter.TestNewImageTypes);
-            var testInstructionsViewModel = _testInstructionsViewModelGetter.Get();
+            var testInstructionsViewModel = _testInstructionsViewModelGetter.Get(participantID);
             var sessionID = Guid.NewGuid();
             var viewModel = new TestIndexViewModel(participantID, progress, testName, sessionID, _config.AttentionResetDisplayDurationInMilliseconds, _config.AutomateTests, _config.TestAutomationDelayInMilliseconds, testAllImageTypes, testInstructionsViewModel, _config.ImageTypesUrlTemplate);
             return View(viewModel);

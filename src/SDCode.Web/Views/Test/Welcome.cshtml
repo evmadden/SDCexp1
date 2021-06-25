@@ -10,7 +10,7 @@
         <input type="hidden" name="participantID" value="@Model.ParticipantID" />
     <h1 class="display-4">Test Phase</h1>
     <div class="orientationContainer rounded">
-        <p>Next, we will test your memory for some of the @(await Component.InvokeAsync("TargetTypeName", new { wordForm = WordForm.LowerPlural, describeDecoration = true })) that you saw in the STUDY phase.  In this session, you will see 144 @(await Component.InvokeAsync("StimuliTypeName", new { wordForm = WordForm.LowerPlural })).</p>
+        <p>Next, we will test your memory for some of the @(await Component.InvokeAsync("TargetTypeName", new { wordForm = WordForm.LowerPlural, describeDecoration = true })) that you saw in the STUDY phase.  In this session, you will see @Model.TestInstructionsViewModel.StimuliCount @(await Component.InvokeAsync("StimuliTypeName", new { wordForm = WordForm.LowerPlural })).</p>
     </div>
     @await Html.PartialAsync("~/Views/Shared/TestInstructions.cshtml", Model.TestInstructionsViewModel)
     <p>Press the "Next" button to begin.</p>

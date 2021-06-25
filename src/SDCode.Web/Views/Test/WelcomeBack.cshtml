@@ -11,7 +11,7 @@
 <div class="orientationContainer rounded">
     <p>In this session, we will be testing your memory of the @(await Component.InvokeAsync("TargetTypeName", new { wordForm = WordForm.LowerPlural, describeDecoration = true })) that you saw in the STUDY PHASE.
         This testing session will follow the same format as the previous one.</p>
-    <p>First, you will be asked to rate your CURRENT sleepiness.  Then, like before, you will see 144 @(await Component.InvokeAsync("StimuliTypeName", new { wordForm = WordForm.LowerPlural })).</p>
+    <p>First, you will be asked to rate your CURRENT sleepiness.  Then, like before, you will see @Model.TestInstructionsViewModel.StimuliCount @(await Component.InvokeAsync("StimuliTypeName", new { wordForm = WordForm.LowerPlural })).</p>
 </div>
 <div>
     @await Html.PartialAsync("~/Views/Shared/TestInstructions.cshtml", Model.TestInstructionsViewModel)
