@@ -12,7 +12,7 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Verbal.Development"
+        "ASPNETCORE_ENVIRONMENT": "Main"
       }
     },
     "SDCode.Web": {
@@ -20,7 +20,7 @@
       "launchBrowser": true,
       "applicationUrl": "https://localhost:5001;http://localhost:5000",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Verbal.Development",
+        "ASPNETCORE_ENVIRONMENT": "Main",
         "PASSWORD_ADMIN": "password",
         "PASSWORD_EXPORT": "password"
       }

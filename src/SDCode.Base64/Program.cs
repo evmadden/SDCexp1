@@ -16,8 +16,11 @@ namespace SDCode.Base64
         //public static readonly string ImagesPath = System.IO.Path.Join("..","assets","img","Stimuli", "Congruency");
         //static readonly string FileExtension = "jpg";
 
-        public static readonly string ImagesPath = System.IO.Path.Join("..","assets","img","Stimuli", "Verbal");
-        static readonly string FileExtension = "png";
+        //public static readonly string ImagesPath = System.IO.Path.Join("..","assets","img","Stimuli", "Verbal");
+        //static readonly string FileExtension = "png";
+
+        public static readonly string ImagesPath = System.IO.Path.Join("..","assets","img","Stimuli", "Congruency_Fixed");
+        static readonly string FileExtension = "jpg";
         
         static void Main(string[] args)
         {
