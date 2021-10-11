@@ -21,7 +21,7 @@
             var showImage = function(url, progress) {
                 feedbackElement.style.display = 'none';
                 imageElement.setAttribute('data-progress', progress);
-                imageElement.src = dataUrls[url];
+                imageElement.src = dataUrls.image[url];
                 imageJudgement = null;
                 imageConfidence = null;
                 imageShownAt = new Date().getTime();
@@ -148,6 +148,6 @@
             unableToLoadImagesElement.style.display = 'table';
         }
 
-        loadImagesInterface(initOptions.imageTypesUrlTemplate, initOptions.imageTypesToPreload, 'progressBar', 'loadingPercentageSpan').then(onSuccess).catch(onFailure);
+        loadImagesInterface(initOptions.imageTypesImageUrlTemplate, initOptions.imageTypesAudioUrlTemplate, initOptions.imageTypesToPreload, 'progressBar', 'loadingPercentageSpan').then(onSuccess).catch(onFailure);
     });
 }

@@ -37,7 +37,7 @@ namespace SDCode.Web.Controllers
         public IActionResult Index(string participantID, Sleepinesses? stanford)
         {
             _stanfordRepository.Save(participantID, "Immediate", stanford);
-            var viewModel = new EncodingIndexViewModel(participantID, stanford, _config.ImageDisplayDurationInMilliseconds, _config.AttentionResetDisplayDurationInMilliseconds, _config.NumberDisplayProbabilityPercentage, _config.NumberCheckIntervalInMilliseconds, _config.NumberDisplayThresholdInMilliseconds, PhaseSetsGetter.EncodingImageTypes, _config.ImageTypesUrlTemplate);
+            var viewModel = new EncodingIndexViewModel(participantID, stanford, _config.ImageDisplayDurationInMilliseconds, _config.AttentionResetDisplayDurationInMilliseconds, _config.NumberDisplayProbabilityPercentage, _config.NumberCheckIntervalInMilliseconds, _config.NumberDisplayThresholdInMilliseconds, PhaseSetsGetter.EncodingImageTypes, _config.ImageTypesImageUrlTemplate, _config.ImageTypesAudioUrlTemplate);
             return View(viewModel);
         }
 

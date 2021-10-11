@@ -113,7 +113,7 @@ namespace SDCode.Web.Controllers
             var testAllImageTypes = PhaseSetsGetter.TestOldImageTypes.Union(PhaseSetsGetter.TestNewImageTypes);
             var testInstructionsViewModel = _testInstructionsViewModelGetter.Get(participantID);
             var sessionID = Guid.NewGuid();
-            var viewModel = new TestIndexViewModel(participantID, progress, testName, sessionID, _config.AttentionResetDisplayDurationInMilliseconds, _config.AutomateTests, _config.TestAutomationDelayInMilliseconds, testAllImageTypes, testInstructionsViewModel, _config.ImageTypesUrlTemplate);
+            var viewModel = new TestIndexViewModel(participantID, progress, testName, sessionID, _config.AttentionResetDisplayDurationInMilliseconds, _config.AutomateTests, _config.TestAutomationDelayInMilliseconds, testAllImageTypes, testInstructionsViewModel, _config.ImageTypesImageUrlTemplate, _config.ImageTypesAudioUrlTemplate);
             return View(viewModel);
         }
 

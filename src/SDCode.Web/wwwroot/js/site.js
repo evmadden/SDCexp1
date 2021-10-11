@@ -76,14 +76,14 @@ function allProgress(proms, progress_cb) { // <3 https://stackoverflow.com/a/423
   }
 
 
-function getDataUrls(fetchUrls, progressCallback) {
+function getDataUrls(imageFetchUrls, audioFetchUrls, progressCallback) {
+    audioFetchUrls = audioFetchUrls || [];
     return new Promise(function(resolve, reject) {
-        (function (fetchUrls, progressCallback, completedCallback, errorCallback) {
-            var dataUrls = {};
+        (function (imageFetchUrls, audioFetchUrls, progressCallback, completedCallback, errorCallback) {
+            var operationsCompleted = 0;
+            var operationsTotal = (imageFetchUrls.length * 2) + (audioFetchUrls.length * 2);
             async function getHashes(urls) {
                 var hashes = [];
-                var operationsCompleted = 0;
-                var operationsTotal = fetchUrls.length * 2;
                 function advanceProgress() {
                     operationsCompleted = operationsCompleted + 1;
                     var percentComplete = (operationsCompleted / operationsTotal) * 100;
@@ -102,13 +102,25 @@ function getDataUrls(fetchUrls, progressCallback) {
                 }
                 return hashes;
             }
-            getHashes(fetchUrls).then(hashes => {
-                hashes.forEach(hash=>{ Object.assign(dataUrls, hash); });
-                completedCallback(dataUrls);
+            getHashes(imageFetchUrls).then(imageHashes => {
+                var dataUrls = {};
+                dataUrls.image = {};
+                dataUrls.audio = {};
+                imageHashes.forEach(imageHash=>{ Object.assign(dataUrls.image, imageHash); });
+                if (audioFetchUrls) {
+                    getHashes(audioFetchUrls).then(audioHashes => {
+                        audioHashes.forEach(audioHash=>{ Object.assign(dataUrls.audio, audioHash); });
+                        completedCallback(dataUrls);
+                    }).catch(err => {
+                        errorCallback(err);
+                    });
+                } else {
+                    completedCallback(dataUrls);
+                }
             }).catch(err => {
                 errorCallback(err);
             });
-        })(fetchUrls, progressCallback, resolve, reject);
+        })(imageFetchUrls, audioFetchUrls, progressCallback, resolve, reject);
     });
 }
 
@@ -126,14 +138,15 @@ function getImageTypesToFetch(imageTypes) {
     return result;
 }
 
-function loadImagesInterface(imageTypesUrlTemplate, imageTypes, progressBarElementId, loadingPercentageElementId) {
+function loadImagesInterface(imageTypesImageUrlTemplate, imageTypesAudioUrlTemplate, imageTypes, progressBarElementId, loadingPercentageElementId) {
     return new Promise(function(resolve, reject) {
         (function (imageTypes, progressBarElementId, loadingPercentageElementId, completedCallback, errorCallback) {
             var progressBarElement = document.getElementById(progressBarElementId);
             var loadingPercentageElement = document.getElementById(loadingPercentageElementId);
             var imageTypesToFetch = getImageTypesToFetch(imageTypes);
-            var fetchUrls = imageTypesToFetch.map(x=>imageTypesUrlTemplate.replace('{0}', x));
-            getDataUrls(fetchUrls, function(percentComplete) {
+            var imageFetchUrls = imageTypesToFetch.map(x=>imageTypesImageUrlTemplate.replace('{0}', x));
+            var audioFetchUrls = imageTypesAudioUrlTemplate ? imageTypesToFetch.map(x=>imageTypesAudioUrlTemplate.replace('{0}', x)) : null;
+            getDataUrls(imageFetchUrls, audioFetchUrls, function(percentComplete) {
                 progressBarElement.value = percentComplete;
                 loadingPercentageElement.innerHTML = parseInt(percentComplete);
             }).then(completedCallback).catch(errorCallback);

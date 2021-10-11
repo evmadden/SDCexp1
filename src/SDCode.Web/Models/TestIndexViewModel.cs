@@ -5,7 +5,7 @@ namespace SDCode.Web.Models
 {
     public class TestIndexViewModel
     {
-        public TestIndexViewModel(string participantID, int progress, string testName, Guid sessionID, int feedbackDisplayDurationInMilliseconds, bool shouldAutomate, int automationDelayInMilliseconds, IEnumerable<string> imageTypesToPreload, TestInstructionsViewModel testInstructionsViewModel, string imageTypesUrlTemplate)
+        public TestIndexViewModel(string participantID, int progress, string testName, Guid sessionID, int feedbackDisplayDurationInMilliseconds, bool shouldAutomate, int automationDelayInMilliseconds, IEnumerable<string> imageTypesToPreload, TestInstructionsViewModel testInstructionsViewModel, string imageTypesImageUrlTemplate, string imageTypesAudioUrlTemplate)
         {
             ParticipantID = participantID;
             Progress = progress;
@@ -16,7 +16,8 @@ namespace SDCode.Web.Models
             AutomationDelayInMilliseconds = automationDelayInMilliseconds;
             ImageTypesToPreload = imageTypesToPreload;
             TestInstructionsViewModel = testInstructionsViewModel;
-            ImageTypesUrlTemplate = imageTypesUrlTemplate;
+            ImageTypesImageUrlTemplate = imageTypesImageUrlTemplate;
+            ImageTypesAudioUrlTemplate = imageTypesAudioUrlTemplate;
         }
 
         public string ParticipantID {get;}
@@ -28,6 +29,7 @@ namespace SDCode.Web.Models
         public int AutomationDelayInMilliseconds { get; }
         public IEnumerable<string> ImageTypesToPreload { get; }
         public TestInstructionsViewModel TestInstructionsViewModel { get; }
-        public string ImageTypesUrlTemplate { get; }
+        public string ImageTypesImageUrlTemplate { get; }
+        public string ImageTypesAudioUrlTemplate { get; }
     }
 }

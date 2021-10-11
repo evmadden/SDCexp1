@@ -5,7 +5,7 @@ namespace SDCode.Web.Models
 {
     public class EncodingIndexViewModel
     {
-        public EncodingIndexViewModel(string participantID, Sleepinesses? stanford, int imageDisplayDurationInMilliseconds, int plusSignDisplayDurationInMilliseconds, int numberDisplayProbabilityPercentage, int numberCheckIntervalInMilliseconds, int numberDisplayThresholdInMilliseconds, IEnumerable<string> imageTypesToPreload, string imageTypesUrlTemplate) {
+        public EncodingIndexViewModel(string participantID, Sleepinesses? stanford, int imageDisplayDurationInMilliseconds, int plusSignDisplayDurationInMilliseconds, int numberDisplayProbabilityPercentage, int numberCheckIntervalInMilliseconds, int numberDisplayThresholdInMilliseconds, IEnumerable<string> imageTypesToPreload, string imageTypesImageUrlTemplate, string imageTypesAudioUrlTemplate) {
             ParticipantID = participantID;
             Stanford = stanford;
             ImageDisplayDurationInMilliseconds = imageDisplayDurationInMilliseconds;
@@ -14,7 +14,8 @@ namespace SDCode.Web.Models
             NumberCheckIntervalInMilliseconds = numberCheckIntervalInMilliseconds;
             NumberDisplayThresholdInMilliseconds = numberDisplayThresholdInMilliseconds;
             ImageTypesToPreload = imageTypesToPreload;
-            ImageTypesUrlTemplate = imageTypesUrlTemplate;
+            ImageTypesImageUrlTemplate = imageTypesImageUrlTemplate;
+            ImageTypesAudioUrlTemplate = imageTypesAudioUrlTemplate;
         }
 
         public string ParticipantID { get; }
@@ -25,6 +26,7 @@ namespace SDCode.Web.Models
         public int NumberCheckIntervalInMilliseconds { get; }
         public int NumberDisplayThresholdInMilliseconds { get; }
         public IEnumerable<string> ImageTypesToPreload { get; }
-        public string ImageTypesUrlTemplate { get; }
+        public string ImageTypesImageUrlTemplate { get; }
+        public string ImageTypesAudioUrlTemplate { get; }
     }
 }

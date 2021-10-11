@@ -4,6 +4,8 @@
         var loadingElement = document.getElementById('loadingDiv');
 
         function onSuccess(dataUrls) {
+            var imageDataUrls = dataUrls.image;
+            var audioDataUrls = dataUrls.audio;
             var images = [];
             var imageElement = document.getElementById('image');
             var numberElement = document.getElementById('number');
@@ -17,14 +19,19 @@
             var showNextImage = function() {
                 hideBothImageAndNumber();
                 var dataUrlKey = images[imageIndex];
-                var imageUrl = dataUrls[dataUrlKey];
-                imageElement.src = imageUrl;
+                var imageDataUrl = imageDataUrls[dataUrlKey];
+                imageElement.src = imageDataUrl;
                 imageElement.style.display = 'block';
                 imageIndex = imageIndex + 1;
                 var whatToDo = imageIndex === images.length ? onLastImageShown : showPlusSign;
                 canShowNumberNext = true;
                 if (!isInViewport(imageElement)) {
                     obscuredIndexes.push(imageIndex);
+                }
+                if (initOptions.imageDisplayDurationInMilliseconds >= 4000 && audioDataUrls) {
+                    var audioDataUrl = audioDataUrls[dataUrlKey];
+                    var snd = new Audio(audioDataUrl);
+                    snd.play();
                 }
                 setTimeout(whatToDo, initOptions.imageDisplayDurationInMilliseconds);
             };
@@ -158,6 +165,6 @@
             loadFailureElement.style.display = 'block';
         }
 
-        loadImagesInterface(initOptions.imageTypesUrlTemplate, initOptions.imageTypesToPreload, 'progressBar', 'loadingPercentageSpan').then(onSuccess).catch(onFailure);
+        loadImagesInterface(initOptions.imageTypesImageUrlTemplate, initOptions.imageTypesAudioUrlTemplate, initOptions.imageTypesToPreload, 'progressBar', 'loadingPercentageSpan').then(onSuccess).catch(onFailure);
     });
 }

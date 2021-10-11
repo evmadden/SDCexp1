@@ -15,7 +15,8 @@
         int EncodingImageCountPerSubset { get; set; }
         int TestImageCountPerOldSubset { get; set; }
         int TestImageCountPerNewSubset { get; set; }
-        string ImageTypesUrlTemplate { get; set; }
+        string ImageTypesImageUrlTemplate { get; set; }
+        string ImageTypesAudioUrlTemplate { get; set; }
         bool NotificationsEnabled { get; set; }
         string NotificationsFromAddress { get; set; }
         string NotificationsFromName { get; set; }
@@ -50,7 +51,8 @@
         public int EncodingImageCountPerSubset { get; set; }
         public int TestImageCountPerOldSubset { get; set; }
         public int TestImageCountPerNewSubset { get; set; }
-        public string ImageTypesUrlTemplate { get; set; }
+        public string ImageTypesImageUrlTemplate { get; set; }
+        public string ImageTypesAudioUrlTemplate { get; set; }
         public bool NotificationsEnabled { get; set; }
         public string NotificationsFromAddress { get; set; }
         public string NotificationsFromName { get; set; }
