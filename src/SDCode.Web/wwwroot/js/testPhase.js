@@ -4,6 +4,7 @@
     document.addEventListener("DOMContentLoaded", function(){
         var loadingElement = document.getElementById('loadingDiv');
         var unableToLoadImagesElement = document.getElementById('unableToLoadImages');
+        var snd;
 
         function onSuccess(dataUrls) {
             loadingElement.style.display = 'none';
@@ -26,6 +27,13 @@
                 imageConfidence = null;
                 imageShownAt = new Date().getTime();
                 imageReactionTime = null;
+                if (dataUrls.audio) {
+                    var audioDataUrl = dataUrls.audio[url];
+                    if (audioDataUrl) {
+                        snd = new Audio(audioDataUrl);
+                        snd.play();
+                    }
+                }
             }
             var sendResponse = function() {
                 var waitId = setTimeout(function() {
@@ -79,6 +87,7 @@
             };
             var onJudgement = function(judgement) {
                 if (isVisible(imageElement)) {
+                    snd?.pause();
                     imageJudgement = judgement;
                     imageReactionTime = new Date().getTime() - imageShownAt;
                     imageContainerElement.style.display = 'none';

@@ -30,8 +30,10 @@
                 }
                 if (initOptions.imageDisplayDurationInMilliseconds >= 4000 && audioDataUrls) {
                     var audioDataUrl = audioDataUrls[dataUrlKey];
-                    var snd = new Audio(audioDataUrl);
-                    snd.play();
+                    if (audioDataUrl) {
+                        var snd = new Audio(audioDataUrl);
+                        snd.play();
+                    }
                 }
                 setTimeout(whatToDo, initOptions.imageDisplayDurationInMilliseconds);
             };
