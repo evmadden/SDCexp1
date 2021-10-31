@@ -111,3 +111,12 @@ jobs:
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_4c3aaa2db0874700a761f5d5961af931 }}
         package: ${{env.DOTNET_ROOT}}/myapp          
+
+    - name: Deploy to memorystudy-verbal
+      if: github.event.inputs.Site == 'memorystudy-verbal'
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'memorystudy-verbal'
+        slot-name: 'production'
+        publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_A332B750864843768793CB016294C137 }}
+        package: ${{env.DOTNET_ROOT}}/myapp  
